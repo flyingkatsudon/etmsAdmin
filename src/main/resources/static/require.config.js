@@ -1,12 +1,12 @@
 require.config({
-    shim : {
-        layout : {deps:['jquery']}
+    shim: {
+        layout: {deps: ['jquery']}
     },
-    paths : {
-        jquery : 'webjars/jquery/2.2.1/jquery'
-        layout : 'webjars/jqueryui-layout/1.4.0/jquery.layout'
+    paths: {
+        jquery: 'bower_components/jquery/dist/jquery.min',
+        layout: 'bower_components/jquery-ui-layout/source/stable/jquery.layout_and_plugins.min'
     },
-    map : {
-        '*' : {'css' : 'webjars/require-css/0.1.8/css.min'}
+    map: {
+        '*': {'css': 'webjars/require-css/0.1.8/css.min'}
     }
 });
