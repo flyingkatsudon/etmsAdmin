@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var page = [[${page}]];
+        require(['js/app/'+ page ], function (View) {
+            new View({el: '#' + page}).render();
+        });
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div th:id="${page}" class="hm-ui-tab-panel">
+    <div class="ui-layout-north">
+        <div class="ui-layout-north"></div>
+        <div class="ui-layout-center"></div>
+    </div>
+    <div class="ui-layout-center"></div>
+</div>
+</body>
+</html>

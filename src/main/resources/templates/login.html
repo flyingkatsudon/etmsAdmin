@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example </title>
+    <title>Humane System ::: 실기채점 관리 시스템</title>
+    <link rel="stylesheet" type="text/css" href="css/login.css"/>
 </head>
 <body>
-<div th:if="${param.error}"> Invalid username and password.</div>
-<div th:if="${param.logout}"> You have been logged out.</div>
-<form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
+<div th:if="${param.error}">
+    <script type="text/javascript">alert('Invalid username and password.');</script>
+</div>
+<form class="login-box" th:action="@{/login}" method="post">
+    <span class="id-f"><input name="username" type="text" placeholder="ID를 입력하세요"/></span>
+    <span class="pw-f"><input name="password" type="password" placeholder="암호를 입력하세요"/></span>
+    <span class="login-bt"><input type="submit" value=""/></span>
 </form>
+<div class="footer"><img src="images/footer.png"/></div>
 </body>
 </html>

@@ -2,17 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>ETMS</title>
-    <script src="bower_components/requirejs/require.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <script src="components/requirejs/require.js"></script>
     <script>
-        require(['require.config'], function(){
+        require(['require.config'], function () {
             require(['js/main']);
         });
     </script>
 </head>
 <body>
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+<div class="header">
+    <span><img src="images/top_logo_default.png" alt="로고"/></span>
+
+    <div class="user-info">
+        <img src="images/admin_picture.png" alt="관리자 사진"/>
+        <label th:inline="text">[[${#httpServletRequest.remoteUser}]] 님 로그인</label>
+
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="로그아웃"/>
+        </form>
+    </div>
+</div>
+<ul id="left-menu"></ul>
+<div id="tabs">
+    <div id="tab-button">
+        <ul class="hm-ui-tab-button"></ul>
+    </div>
+    <div id="tab-panels"></div>
+</div>
+
 </body>
 </html>

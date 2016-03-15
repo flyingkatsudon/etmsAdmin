@@ -34,16 +34,19 @@ configurations {
 def retrofit2_version = "2.0.0"
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.projectlombok:lombok:1.16.6')
-    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile("com.squareup.retrofit2:retrofit:${retrofit2_version}")
-    compile("com.squareup.retrofit2:converter-jackson:${retrofit2_version}")
-    compile('commons-io:commons-io:2.4')
+    compile 'org.springframework.boot:spring-boot-starter-web' 
+    compile 'org.projectlombok:lombok:1.16.6' 
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf' 
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile "com.squareup.retrofit2:retrofit:${retrofit2_version}"
+    compile "com.squareup.retrofit2:converter-scalars:${retrofit2_version}"
+    compile "com.squareup.retrofit2:converter-jackson:${retrofit2_version}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${retrofit2_version}"
+    compile 'commons-io:commons-io:2.4' 
+    compile 'io.reactivex:rxjava:1.1.1' 
 
-    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile 'org.springframework.boot:spring-boot-starter-tomcat' 
+    testCompile 'org.springframework.boot:spring-boot-starter-test' 
 
     compile('org.springframework.boot:spring-boot-devtools')
 }
