@@ -3,7 +3,7 @@ require.config({
         'layout': {deps: ['jquery']},
         'layout.tab': {deps: ['layout']},
         'jqueryui': {deps: ['jquery', 'css!components/jquery-ui/themes/smoothness/jquery-ui.min']},
-        'jqgrid': {deps: ['jquery', 'components/jqGrid/js/minified/i18n/grid.locale-kr', 'css!components/jqGrid/css/ui.jqgrid.css']},
+        'jqgrid': {deps: ['jquery', 'components/jqGrid/js/minified/i18n/grid.locale-kr', 'css!components/jqGrid/css/ui.jqgrid']},
         'jqgridlocale': {deps: ['jquery']},
         'jquid': {deps: ['jquery']},
         'backbone': {deps: ['jquery', 'underscore']},
