@@ -68,6 +68,12 @@ define(function (require) {
             var menuCd = $target.data('menu_cd');
             var menuNm = $target.text();
 
+            var findedTab = _this.tab.findTab(menuCd);
+            if (findedTab != undefined) {
+                _this.tab.selectTab(findedTab);
+                return false;
+            }
+
             require(['js/app/' + path], function (View) {
                 _this.tab.addTab(menuCd, path, menuNm, content({id: path}));
                 new View({el: '#' + path}).render();
