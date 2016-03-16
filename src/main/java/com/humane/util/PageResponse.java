@@ -1,17 +1,15 @@
-package com.humane.etms.admin.response;
+package com.humane.util;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.io.Serializable;
 import java.util.List;
 
-/**
- * spring data jpa page response
- *
- * @param <T>
- */
-@Data
-public class PageResponse<T extends Serializable> {
+@Getter
+@Setter
+@ToString
+public class PageResponse<T> {
     private List<T> content;
     private boolean last;
     private int totalElements;
@@ -20,9 +18,11 @@ public class PageResponse<T extends Serializable> {
     private int number;
     private int numberOfElements;
     private boolean first;
-    List<Sort> sort;
+    private List<Sort> sort;
 
-    @Data
+    @Getter
+    @Setter
+    @ToString
     public class Sort {
         private boolean ascending;
         private String direction;

@@ -32,8 +32,6 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'status/attend',
-                    datatype:'json',
-                    ajaxGridOptions : {contentType : 'application/json;charset=UTF-8'},
                     colModel: colModel
                 }
             }, options);

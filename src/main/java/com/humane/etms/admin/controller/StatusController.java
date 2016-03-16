@@ -1,9 +1,9 @@
 package com.humane.etms.admin.controller;
 
 import com.humane.etms.admin.api.ApiService;
-import com.humane.etms.admin.response.JqgridResponse;
-import com.humane.etms.admin.response.PageResponse;
+import com.humane.util.JqgridMapper;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,7 +37,7 @@ public class StatusController {
     }
 
     @RequestMapping(value = "attend", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridResponse<String>> attend(
+    public ResponseEntity<JqgridMapper.JqgridResponse> attend(
             @RequestParam("_search") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false) Integer page,
@@ -45,13 +45,11 @@ public class StatusController {
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        Response<PageResponse<String>> response = apiService.hall(null, 0, Integer.MAX_VALUE).execute();
-        /*if (response.isSuccessful()) {
+        String query = search ? JqgridMapper.getQueryString(filters) : "";
 
-            return ResponseEntity.ok(response.body());
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(response.raw().toString());
-        }*/
-        return null;
+        Response<ResponseBody> response = apiService.hall(query, page - 1, rows).execute();
+        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
     }
 }

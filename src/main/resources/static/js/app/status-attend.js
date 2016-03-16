@@ -12,17 +12,9 @@ define(function (require) {
     return Backbone.View.extend({
         render: function () {
             layout = this.$el.layout();
-            this.toolbar = new Toolbar({el: layout.north.pane}).render();
-            this.list = new List({el: layout.center.pane, parent: this}).render();
-
+            var list = new List({el: layout.center.pane}).render();
+            var toolbar = new Toolbar({el: layout.north.pane, list: list}).render();
             $(window).trigger('resize');
-        },
-        events : {
-            'click #hm-ui-toolbar-search' : 'searchClicked'
-        },
-        searchClicked : function(e){
-            var formData = this.toolbar.getSearch();
-            this.list.reloadGrid(formData);
         }
     });
 });

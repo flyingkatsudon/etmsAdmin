@@ -29,11 +29,12 @@ define(function (require) {
             rownumWidth: 50,
             rowList: [10, 20, 30, 2000],
             datatype: 'local',
+            ajaxGridOptions: {contentType: 'application/json;charset=UTF-8'},
             gridComplete: function () {
                 $(window).trigger('resize');
             },
-            prmNames: {search: null, nd: null},
-            loadError: function (jqXHR) {
+            //prmNames: {search: null, nd: null},
+            loadError: function (jqXHR, status, error) {
                 if (jqXHR.status == '401') {
                     $('<div title="세션종료">로그인 정보가 없습니다.<br/>다시 로그인 해주세요.</div>').dialog({
                         modal: true,
@@ -48,7 +49,7 @@ define(function (require) {
                         }
                     });
                 } else {
-                    alert('예외가 발생했습니다. 관리자에게 문의하세요.');
+                    alert(error);
                 }
             }
         },
@@ -61,7 +62,7 @@ define(function (require) {
             add: false,
             edit: false,
             del: false,
-            refresh: true,
+            refresh: false,
             position: 'right'
         }
     });
@@ -102,7 +103,27 @@ define(function (require) {
             var _this = this;
             this.$grid.jqGrid(_this.options.defaults);
             this.$grid.jqGrid('navGrid', _this.$grid.getGridParam('pager'), _this.options.nav, _this.options.edit, _this.options.add, _this.options.del, _this.options.search, _this.options.view);
+
+            if (this.options.defaults.url) this.$grid.jqGrid('setGridParam', {datatype: 'json'}).trigger('reloadGrid');
             return this;
+        },
+        search: function (o) {
+            var o = o ? o : {};
+            if ($.isEmptyObject(o)) {
+                this.$grid[0].p.search = false;
+                $.extend(this.$grid[0].p.postData, {filters: ''});
+                return;
+            }
+
+            var f = {groupOp: 'OR', rules: []};
+
+            var key;
+            for (key in o) {
+                if (o.hasOwnProperty(key)) f.rules.push({field: key, op: 'cn', data: o[key]});
+            }
+            this.$grid[0].p.search = true;
+            $.extend(this.$grid[0].p.postData, {filters: JSON.stringify(f)});
+            this.$grid.trigger('reloadGrid', [{page: 1, current: true}]);
         }
     });
 });
