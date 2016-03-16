@@ -3,9 +3,9 @@
  */
 define(function (require) {
     "use strict";
-    var JqgridView = require('./grid-base');
+    var GridBase = require('./grid-base');
 
-    var view = JqgridView.extend({
+    return GridBase.extend({
         initialize: function (options) {
             var colModel = [
                 {name: 'logSeq'},
@@ -45,5 +45,4 @@ define(function (require) {
             return this;
         }
     });
-    return view;
 });

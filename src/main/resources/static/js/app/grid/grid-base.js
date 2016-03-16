@@ -7,7 +7,6 @@ define(function (require) {
     require('jqgrid');
 
     var uuid = require('uuid');
-    var $ = require('jquery');
     var Backbone = require('backbone');
 
     $.extend($.jgrid, {

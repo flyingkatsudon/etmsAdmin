@@ -4,7 +4,6 @@ define(function (require) {
     require('layout');
 
     var Backbone = require('backbone');
-
     var Toolbar = require('./toolbar/toolbar-status');
     var List = require('./grid/grid-status-attend');
 
