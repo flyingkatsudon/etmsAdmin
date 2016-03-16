@@ -5,7 +5,6 @@ require.config({
         'jqueryui': {deps: ['jquery', 'css!components/jquery-ui/themes/smoothness/jquery-ui.min']},
         'jqgrid': {deps: ['jquery', 'components/jqGrid/js/minified/i18n/grid.locale-kr', 'css!components/jqGrid/css/ui.jqgrid']},
         'jqgridlocale': {deps: ['jquery']},
-        'jquid': {deps: ['jquery']},
         'backbone': {deps: ['jquery', 'underscore']},
         'underscore': {exports: '_'}
     },
@@ -18,7 +17,8 @@ require.config({
         'layout.tab': 'components/jquery-ui-layout/source/stable/callbacks/jquery.layout.resizeTabLayout.min',
         'backbone': 'components/backbone/backbone-min',
         'underscore': 'components/underscore/underscore-min',
-        'text': 'components/text/text'
+        'text': 'components/text/text',
+        'uuid' : 'components/lil-uuid/uuid.min'
     },
     map: {
         '*': {'css': 'components/require-css/css.min'}

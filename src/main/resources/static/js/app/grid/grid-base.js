@@ -7,6 +7,8 @@ define(function (require) {
     require('jqgrid');
     require('jquid');
 
+
+    var uuid = require('uuid');
     var Backbone = require('backbone');
 
     return Backbone.View.extend({
@@ -17,8 +19,8 @@ define(function (require) {
             });
 
             this.options = $.extend(true, {}, $.jgrid, options);
-            this.$grid = $(document.createElement('table')).attr('id', $.uid());
-            this.$pager = $(document.createElement('div')).attr('id', $.uid());
+            this.$grid = $(document.createElement('table')).attr('id', uuid.uuid());
+            this.$pager = $(document.createElement('div')).attr('id', uuid.uuid());
         },
         resize: function () {
             var $P = this.$el;
