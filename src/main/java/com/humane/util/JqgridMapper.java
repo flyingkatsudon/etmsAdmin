@@ -58,7 +58,6 @@ public class JqgridMapper {
         private List<T> rows;
     }
 
-
     /**
      * A POJO that represents a jQgrid JSON requests {@link String}<br/>
      * A sample filter follows the following format:
