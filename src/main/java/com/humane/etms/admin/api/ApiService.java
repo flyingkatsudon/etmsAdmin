@@ -1,5 +1,6 @@
 package com.humane.etms.admin.api;
 
+import com.humane.etms.admin.response.PageResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -11,7 +12,7 @@ public interface ApiService {
     Call<ResponseBody> admission(@Query("q") String q, @Query("page") int page, @Query("size") int size);
 
     @GET("api/hall")
-    Call<String> hall(@Query("q") String q, @Query("page") int page, @Query("size") int size);
+    Call<PageResponse<String>> hall(@Query("q") String q, @Query("page") int page, @Query("size") int size);
 
     @GET("api/examinee")
     Call<ResponseBody> examinee(@Query("q") String q, @Query("page") int page, @Query("size") int size);
