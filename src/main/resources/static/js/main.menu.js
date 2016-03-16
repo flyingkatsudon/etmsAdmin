@@ -13,7 +13,7 @@ define(function (require) {
     var title = _.template(require('text!tpl/menu.title.html'));
     var menu = _.template(require('text!tpl/menu.sub.html'));
 
-    var content = _.template(require('text!tpl/layout.content.html'));
+    var content = _.template(require('text!tpl/tab.content.html'));
 
     return Backbone.View.extend({
         initialize: function (options) {

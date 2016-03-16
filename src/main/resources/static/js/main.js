@@ -8,6 +8,15 @@ define(function (require) {
     var Menu = require('./main.menu');
     var Tabs = require('./main.tabs');
 
+    $.extend(true, $.layout.defaults, {
+        panes: {
+            resizeable: false,
+            closeable: false,
+            spacing_open: 0,
+            spacing_closed: 0
+        }
+    });
+
     window.layout = $('body').layout({
         north__paneSelector: '.header',
         center__paneSelector: '#tabs',

@@ -10,7 +10,7 @@ define(function (require) {
     var _ = require('underscore');
 
     var tabTemplate = _.template(require('text!tpl/tab.head.html'));
-    var contentTemplate = _.template(require('text!tpl/tab.content.html'));
+    var panelTemplate = _.template(require('text!tpl/tab.panel.html'));
 
     return Backbone.View.extend({
         tabCount: 0,
@@ -47,7 +47,7 @@ define(function (require) {
 
             this.tabCount++;
             this.$el.find(".ui-tabs-nav").append(tabTemplate({tabCount: this.tabCount, menuCd: cd, label: label}));
-            this.$el.find('#tab-panels').append(contentTemplate({tabCount: this.tabCount, content: content}));
+            this.$el.find('#tab-panels').append(panelTemplate({tabCount: this.tabCount, content: content}));
 
             this.$el.tabs('refresh');
             this.selectTab(this.findTab(cd));
