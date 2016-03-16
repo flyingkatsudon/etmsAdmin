@@ -13,7 +13,9 @@ define(function (require) {
     var title = _.template(require('text!tpl/menu.title.html'));
     var menu = _.template(require('text!tpl/menu.sub.html'));
 
-    var view = Backbone.View.extend({
+    var content = _.template(require('text!tpl/layout.content.html'));
+
+    return Backbone.View.extend({
         initialize: function (options) {
             this.tab = options.tab;
             var _this = this;
@@ -50,7 +52,7 @@ define(function (require) {
                         menuPath: models[i].menuPath,
                         menuCd: models[i].menuCd,
                         menuNm: models[i].menuNm,
-                        iconImg : models[i].iconImg
+                        iconImg: models[i].iconImg
                     }));
                 }
             }
@@ -66,8 +68,9 @@ define(function (require) {
             var menuCd = $target.data('menu_cd');
             var menuNm = $target.text();
 
-            require(['text!' + path], function (content) {
-                _this.tab.addTab(menuCd, path, menuNm, content);
+            require(['js/app/' + path], function (View) {
+                _this.tab.addTab(menuCd, path, menuNm, content({id: path}));
+                new View({el: '#' + path}).render();
             }, function (e) {
                 var dlg = $(document.createElement('div')).dialog({
                     title: '경고',
@@ -80,12 +83,11 @@ define(function (require) {
                     }
                 });
                 dlg.dialog("option", "buttons", [{
-                    text: "Ok", icons: {primary: "ui-icon-heart"}, click: function () {
+                    text: "Ok", click: function () {
                         $(this).dialog("close");
                     }
                 }]);
             });
         }
     });
-    return view;
 });

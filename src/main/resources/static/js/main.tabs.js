@@ -12,8 +12,7 @@ define(function (require) {
     var tabTemplate = _.template(require('text!tpl/tab.head.html'));
     var contentTemplate = _.template(require('text!tpl/tab.content.html'));
 
-
-    var view = Backbone.View.extend({
+    return Backbone.View.extend({
         tabCount: 0,
         render: function () {
             this.$el.tabs({
@@ -76,6 +75,4 @@ define(function (require) {
             this.$el.tabs("refresh");
         }
     });
-
-    return view;
 });

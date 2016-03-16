@@ -23,40 +23,40 @@ public class MenuController {
         List<MenuBean> list = new ArrayList<>();
 
         list.add(new MenuBean("통계", "M01"));
-        list.add(new MenuBean("계열별 통계", "M01S01", "M01", "status/page/attend", "1_1"));
-        list.add(new MenuBean("모집단위별 통계", "M01S02", "M01", "status/major", "1_2"));
-        list.add(new MenuBean("고사실별 통계", "M01S03", "M01", "status/hall", "1_3"));
+        list.add(new MenuBean("계열별 통계", "M01S01", "M01", "status-attend", "1_1"));
+        list.add(new MenuBean("모집단위별 통계", "M01S02", "M01", "status-major", "1_2"));
+        list.add(new MenuBean("고사실별 통계", "M01S03", "M01", "status-hall", "1_3"));
 
         list.add(new MenuBean("특이사항 리스트", "M02"));
-        list.add(new MenuBean("신분증 미소지자리스트", "M02S01", "M02", "unusual/licence", "2_1"));
-        list.add(new MenuBean("신원재확인필요자리스트", "M02S02", "M02", "unusual/identify", "2_2"));
-        list.add(new MenuBean("타고사실&amp;예비고사장 리스트", "M02S03", "M02", "unusual/hall", "2_3"));
-        list.add(new MenuBean("답안지 교체리스트", "M02S04", "M02", "unusual/paper", "1_1"));
-        list.add(new MenuBean("감독관 서명", "M02S05", "M02", "unusual/sign", "2_4"));
+        list.add(new MenuBean("신분증 미소지자리스트", "M02S01", "M02", "unusual-licence", "2_1"));
+        list.add(new MenuBean("신원재확인필요자리스트", "M02S02", "M02", "unusual-identify", "2_2"));
+        list.add(new MenuBean("타고사실&amp;예비고사장 리스트", "M02S03", "M02", "unusual-hall", "2_3"));
+        list.add(new MenuBean("답안지 교체리스트", "M02S04", "M02", "unusual-paper", "1_1"));
+        list.add(new MenuBean("감독관 서명", "M02S05", "M02", "unusual-sign", "2_4"));
 
         list.add(new MenuBean("Data 검색&amp;산출물", "M03"));
-        list.add(new MenuBean("수험생별 리스트", "M03S01", "M03", "data/examinee", "3_1"));
-        list.add(new MenuBean("산출물 다운로드", "M03S02", "M03", "data/report", "3_2"));
+        list.add(new MenuBean("수험생별 리스트", "M03S01", "M03", "data-examinee", "3_1"));
+        list.add(new MenuBean("산출물 다운로드", "M03S02", "M03", "data-report", "3_2"));
         list.add(new MenuBean("사용자관리", "M04"));
-        list.add(new MenuBean("게시판&amp;공지사항 관리", "M04S01", "M04", "user/board", "4_1"));
-        list.add(new MenuBean("시험 정보 관리", "M04S04", "M04", "user/exmInfo", "4_3"));
+        list.add(new MenuBean("게시판&amp;공지사항 관리", "M04S01", "M04", "user-board", "4_1"));
+        list.add(new MenuBean("시험 정보 관리", "M04S04", "M04", "user-exmInfo", "4_3"));
 
         list.add(new MenuBean("시스템 설정", "M05"));
-        list.add(new MenuBean("고객사 정보", "M05S01", "M05", "system/client", "5_1"));
-        list.add(new MenuBean("데이터 업로드", "M05S02", "M05", "system/upload", "5_2"));
-        list.add(new MenuBean("시험정보 관리", "M05S03", "M05", "system/exam", "5_3"));
-        list.add(new MenuBean("기술요원 관리", "M05S04", "M05", "user/staff", "5_4"));
-        list.add(new MenuBean("디바이스 관리", "M05S05", "M05", "system/device", "5_5"));
-        list.add(new MenuBean("APP 관리", "M05S06", "M05", "system/app", "5_6"));
-        list.add(new MenuBean("로그보기", "M05S07", "M05", "system/log", "5_7"));
-        list.add(new MenuBean("코드정보", "M05S08", "M05", "system/code", "5_8"));
+        list.add(new MenuBean("고객사 정보", "M05S01", "M05", "system-client", "5_1"));
+        list.add(new MenuBean("데이터 업로드", "M05S02", "M05", "system-upload", "5_2"));
+        list.add(new MenuBean("시험정보 관리", "M05S03", "M05", "system-exam", "5_3"));
+        list.add(new MenuBean("기술요원 관리", "M05S04", "M05", "user-staff", "5_4"));
+        list.add(new MenuBean("디바이스 관리", "M05S05", "M05", "system-device", "5_5"));
+        list.add(new MenuBean("APP 관리", "M05S06", "M05", "system-app", "5_6"));
+        list.add(new MenuBean("로그보기", "M05S07", "M05", "system-log", "5_7"));
+        list.add(new MenuBean("코드정보", "M05S08", "M05", "system-code", "5_8"));
 
         list.add(new MenuBean("Data 검증", "M06"));
-        list.add(new MenuBean("서버전송 검증리포트", "M06S01", "M06", "inspect/data", "6_1"));
-        list.add(new MenuBean("Device정보 Import & Compare", "M06S02", "M06", "inspect/device", "6_2"));
-        list.add(new MenuBean("응시율 Error detect", "M06S03", "M06", "inspect/apply", "6_3"));
-        list.add(new MenuBean("수험생&감독관 서명누락리스트", "M06S04", "M06", "inspect/sign", "6_4"));
-        list.add(new MenuBean("수험표 출력", "M06S05", "M06", "inspect/print", "6_5"));
+        list.add(new MenuBean("서버전송 검증리포트", "M06S01", "M06", "inspect-data", "6_1"));
+        list.add(new MenuBean("Device정보 Import & Compare", "M06S02", "M06", "inspect-device", "6_2"));
+        list.add(new MenuBean("응시율 Error detect", "M06S03", "M06", "inspect-apply", "6_3"));
+        list.add(new MenuBean("수험생&감독관 서명누락리스트", "M06S04", "M06", "inspect-sign", "6_4"));
+        list.add(new MenuBean("수험표 출력", "M06S05", "M06", "inspect-print", "6_5"));
         return list;
     }
 
