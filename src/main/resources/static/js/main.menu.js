@@ -41,7 +41,9 @@ define(function (require) {
         // 소메뉴 생성
         renderMenu: function () {
             var models = this.menuList;
-            for (var i in models) {
+
+            var i;
+            for (i in models) {
                 if (models[i].fkMenuCd !== undefined) {
                     var title = this.$('.ui-menu-title[data-menu_cd=' + models[i].fkMenuCd + ']');
                     var last = title.nextUntil('.ui-menu-title').last();
