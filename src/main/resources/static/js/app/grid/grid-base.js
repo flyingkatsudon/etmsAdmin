@@ -5,11 +5,67 @@ define(function (require) {
     "use strict";
 
     require('jqgrid');
-    require('jquid');
-
 
     var uuid = require('uuid');
+    var $ = require('jquery');
     var Backbone = require('backbone');
+
+    $.extend($.jgrid, {
+        defaults: {
+            cmTemplate: {
+                align: 'center'
+            },
+            caption: '',
+            colModel: [],
+            forceFit: true,
+            sortable: true,
+            autoencode: true,
+            ignoreCase: true,
+            gridview: true,
+            hidegrid: false,
+            jsonReader: {repeatitems: false},
+            multiSort: true,
+            rownumbers: true,
+            rowNum: 30,
+            rownumWidth: 50,
+            rowList: [10, 20, 30, 2000],
+            datatype: 'local',
+            gridComplete: function () {
+                $(window).trigger('resize');
+            },
+            prmNames: {search: null, nd: null},
+            loadError: function (jqXHR) {
+                if (jqXHR.status == '401') {
+                    $('<div title="세션종료">로그인 정보가 없습니다.<br/>다시 로그인 해주세요.</div>').dialog({
+                        modal: true,
+                        close: function () {
+                            $(this).dialog('destroy').remove();
+                            location.reload(true);
+                        },
+                        buttons: {
+                            '확인': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                } else {
+                    alert('예외가 발생했습니다. 관리자에게 문의하세요.');
+                }
+            }
+        },
+        add: {},
+        edit: {},
+        del: {},
+        nav: {
+            search: false,
+            view: false,
+            add: false,
+            edit: false,
+            del: false,
+            refresh: true,
+            position: 'right'
+        }
+    });
 
     return Backbone.View.extend({
         initialize: function (options) {
@@ -43,8 +99,10 @@ define(function (require) {
         },
         render: function () {
             this.$el.empty().append(this.$grid, this.$pager);
+            this.options.defaults.pager = this.$pager;
             var _this = this;
             this.$grid.jqGrid(_this.options.defaults);
+            this.$grid.jqGrid('navGrid', _this.$grid.getGridParam('pager'), _this.options.nav, _this.options.edit, _this.options.add, _this.options.del, _this.options.search, _this.options.view);
             return this;
         }
     });

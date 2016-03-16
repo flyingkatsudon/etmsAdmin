@@ -12,7 +12,6 @@ require.config({
         'jquery': 'components/jquery/dist/jquery.min',
         'jqgrid': 'components/jqGrid/js/jquery.jqGrid.min',
         'jqueryui': 'components/jquery-ui/jquery-ui.min',
-        'jquid': 'js/libs/jquery.uid',
         'layout': 'components/jquery-ui-layout/source/stable/jquery.layout_and_plugins.min',
         'layout.tab': 'components/jquery-ui-layout/source/stable/callbacks/jquery.layout.resizeTabLayout.min',
         'backbone': 'components/backbone/backbone-min',
