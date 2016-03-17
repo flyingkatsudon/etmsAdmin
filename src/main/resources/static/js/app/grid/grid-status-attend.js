@@ -3,26 +3,20 @@
  */
 define(function (require) {
     "use strict";
-    var GridBase = require('./grid-base');
+    var GridBase = require('./grid-base.js');
 
     return GridBase.extend({
         initialize: function (options) {
             var colModel = [
-                {name: 'logSeq'},
-                {name: 'logDttm'},
-                {name: 'exmSeq', hidden: true},
-                {name: 'exmDt'},
-                {name: 'exmTm'},
-                {name: 'hmTypeNm'},
-                {name: 'hmKyNm'},
-                {name: 'hmDeptNm'},
-                {name: 'hallBldgNm'},
-                {name: 'hallNm'},
-                {name: 'scorerNm'},
-                {name: 'cancelMemo'},
-                {name: 'mblUid'},
-                {name: 'cancelSeq'},
-                {name: 'cancelDttm'}
+                {name: 'admissionCd'},
+                {name: 'typeNm'},
+                {name: 'attendDate'},
+                {name: 'attendTime'},
+                {name: 'examineeCnt'},
+                {name: 'attendCnt'},
+                {name: 'attendPer'},
+                {name: 'absentCnt'},
+                {name: 'absentPer'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

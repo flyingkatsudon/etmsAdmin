@@ -3,7 +3,7 @@
  */
 define(function (require) {
     "use strict";
-    var GridBase = require('./grid-base');
+    var GridBase = require('./grid-base.js');
 
     return GridBase.extend({
         initialize: function (options) {

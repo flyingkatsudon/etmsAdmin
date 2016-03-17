@@ -20,9 +20,13 @@ define(function (require) {
             'click #search': 'searchClicked'
         },
         searchClicked: function (e) {
+            var _this = this;
             if (this.list) {
                 this.list.search({
-                    test: 'C2001'
+                    hallCd: _this.$('#hallCd').val(),
+                    typeNm : _this.$('#typeNm').val(),
+                    attendDate : _this.$('#attendDate').val(),
+                    attendTime : _this.$('#attendTime').val()
                 });
             }
         }
