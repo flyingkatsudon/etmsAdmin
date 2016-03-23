@@ -1,4 +1,4 @@
-package com.humane.util;
+package com.humane.util.spring;
 
 import lombok.Getter;
 import lombok.Setter;

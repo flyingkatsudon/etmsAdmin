@@ -1,5 +1,4 @@
-package com.humane.util;
-
+package com.humane.util.query;
 
 import java.util.HashMap;
 import java.util.Map;

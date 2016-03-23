@@ -1,4 +1,4 @@
-package com.humane.etms.admin.config;
+package com.humane.admin.etms.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

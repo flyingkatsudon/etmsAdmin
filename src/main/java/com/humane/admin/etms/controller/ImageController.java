@@ -1,6 +1,6 @@
-package com.humane.etms.admin.controller;
+package com.humane.admin.etms.controller;
 
-import com.humane.etms.admin.api.ApiService;
+import com.humane.admin.etms.api.ApiService;
 import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;

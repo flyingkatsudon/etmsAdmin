@@ -1,6 +1,8 @@
-package com.humane.util;
+package com.humane.util.jqgrid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.humane.util.query.QueryBuilder;
+import com.humane.util.spring.PageResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Maps a jQgrid JSON query to a {@link Filter} instance

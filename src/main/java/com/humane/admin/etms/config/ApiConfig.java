@@ -1,6 +1,6 @@
-package com.humane.etms.admin.config;
+package com.humane.admin.etms.config;
 
-import com.humane.etms.admin.api.ApiService;
+import com.humane.admin.etms.api.ApiService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.context.annotation.Bean;
@@ -57,7 +57,7 @@ public class ApiConfig {
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl("http://humane.ipdisk.co.kr:8080/")
+                .baseUrl("http://humane.ipdisk.co.kr:8000/")
                 .client(client)
                 .build();
     }

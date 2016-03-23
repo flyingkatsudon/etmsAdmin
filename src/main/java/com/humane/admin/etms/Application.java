@@ -1,4 +1,4 @@
-package com.humane.etms.admin;
+package com.humane.admin.etms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,8 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableCaching
-public class EtmsApplication {
+public class Application {
     public static void main(String[] args) {
-        SpringApplication.run(EtmsApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }

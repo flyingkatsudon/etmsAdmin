@@ -1,7 +1,7 @@
-package com.humane.etms.admin.controller;
+package com.humane.admin.etms.controller;
 
-import com.humane.etms.admin.api.ApiService;
-import com.humane.util.JqgridMapper;
+import com.humane.admin.etms.api.ApiService;
+import com.humane.util.jqgrid.JqgridMapper;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;

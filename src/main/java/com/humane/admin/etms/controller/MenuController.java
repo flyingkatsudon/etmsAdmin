@@ -1,6 +1,7 @@
-package com.humane.etms.admin.controller;
+package com.humane.admin.etms.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ public class MenuController {
     @RequestMapping(value = "list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<MenuBean> menuList() {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<MenuBean> list = new ArrayList<>();
 

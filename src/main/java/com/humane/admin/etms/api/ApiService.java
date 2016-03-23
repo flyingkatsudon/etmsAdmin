@@ -1,4 +1,4 @@
-package com.humane.etms.admin.api;
+package com.humane.admin.etms.api;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
