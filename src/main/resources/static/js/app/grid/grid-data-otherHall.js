@@ -8,12 +8,20 @@ define(function (require) {
     return GridBase.extend({
         initialize: function (options) {
             var colModel = [
-                {name: 'admissionNm', label: '구분'}, // 수시, 논술 등
+                {name: 'admissionNm', label: '구분'},
                 {name: 'typeNm', label: '계열'},  // 인문, 자연, 예체능 등
-                {name: 'attendPer', label: '응시율'},
-                {name: 'examineeCnt', label: '지원자'},
-                {name: 'attendCnt', label: '응시자'},
-                {name: 'absentCnt', label: '결시자'}
+                {name: 'examineeCd', label: '수험번호'},
+                {name: 'examineeNm', label: '수험생'},
+                {name: 'birth', label: '생년월일'},
+                {name: 'deptNm', label: '모집단위'},
+                {name: 'majorNm', label: '전공'},
+                {name: 'headNm', label: '고사본부'},
+                {name: 'bldgNm', label: '고사건물'},
+                {name: 'hallNm', label: '고사실'},
+                {name: 'otherBldgNm', label: '응시고사건물'},
+                {name: 'otherHallNm', label: '응시고사실'},
+                {name: 'attendDt', label: '시험일자'},
+                {name: 'attendTm', label: '시험시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -22,7 +30,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'status/major',
+                    //url: 'data/otherHall',
                     colModel: colModel
                 }
             }, options);

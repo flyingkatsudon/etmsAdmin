@@ -9,7 +9,10 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '구분'},
-                {name: 'admissionType', label: '전형'},
+                {name: 'admissionType', label: '전형'}, // 음악특기자, 연기특기자 등
+                {name: 'deptNm', label: '모집단위'},
+                {name: 'majorNm', label: '전공'},
+                {name: 'groupNm', label: '조'}, // 필드명 미정
                 {name: 'attendPer', label: '응시율'},
                 {name: 'examineeCnt', label: '지원자'},
                 {name: 'attendCnt', label: '응시자'},
@@ -22,7 +25,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/attend',
+                    //url: 'status/group',
                     colModel: colModel
                 }
             }, options);
@@ -32,6 +35,6 @@ define(function (require) {
         render: function () {
             this.constructor.__super__.render.call(this);
             return this;
-        },
+        }
     });
 });

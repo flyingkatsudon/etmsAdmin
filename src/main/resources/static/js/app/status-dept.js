@@ -4,9 +4,9 @@ define(function (require) {
     require('layout');
 
     var Backbone = require('backbone');
-    var Toolbar = require('./toolbar/toolbar-status-major.js');
-    var List = require('./grid/grid-status-major.js');
-    var Chart = require('./chart/chart-status-major.js');
+    var Toolbar = require('./toolbar/toolbar-status-dept.js');
+    var List = require('./grid/grid-status-dept.js');
+    var Chart = require('./chart/chart-status-dept.js');
 
     var layout;
 

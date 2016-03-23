@@ -22,21 +22,29 @@ public class MenuController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<MenuBean> list = new ArrayList<>();
 
-        list.add(new MenuBean("통계", "M01"));
-        list.add(new MenuBean("계열별 통계", "M01S01", "M01", "status-attend", "1_1"));
-        list.add(new MenuBean("모집단위별 통계", "M01S02", "M01", "status-major", "1_2"));
-        list.add(new MenuBean("고사실별 통계", "M01S03", "M01", "status-hall", "1_3"));
+        list.add(new MenuBean("응시율 통계", "M01"));
+        list.add(new MenuBean("전형 별", "M01S01", "M01", "status-attend", "1_1"));
+        list.add(new MenuBean("계열 별", "M01S02", "M01", "status-major", "1_2"));
+        list.add(new MenuBean("모집단위 별", "M01S03", "M01", "status-dept", "1_3"));
+        list.add(new MenuBean("고사실 별", "M01S04", "M01", "status-hall", "1_4"));
+        list.add(new MenuBean("조 별", "M01S05", "M01", "status-group", "1_5"));//ss
+        list.add(new MenuBean("수험생 별", "M01S06", "M01", "status-examinee", "1_6"));//ss
 
-        list.add(new MenuBean("특이사항 리스트", "M02"));
-        list.add(new MenuBean("신분증 미소지자리스트", "M02S01", "M02", "unusual-licence", "2_1"));
-        list.add(new MenuBean("신원재확인필요자리스트", "M02S02", "M02", "unusual-identify", "2_2"));
-        list.add(new MenuBean("타고사실&amp;예비고사장 리스트", "M02S03", "M02", "unusual-hall", "2_3"));
-        list.add(new MenuBean("답안지 교체리스트", "M02S04", "M02", "unusual-paper", "1_1"));
-        list.add(new MenuBean("감독관 서명", "M02S05", "M02", "unusual-sign", "2_4"));
+        list.add(new MenuBean("데이터 리스트", "M02"));
+        list.add(new MenuBean("요약", "M02S01", "M02", "data-summary", "2_1"));
+        list.add(new MenuBean("신분증 미소지자", "M02S02", "M02", "data-noIdCard", "2_2"));
+        list.add(new MenuBean("재확인대상자", "M02S03", "M02", "data-recheck", "2_3"));
+        list.add(new MenuBean("타고사실 및 예비고사실", "M02S04", "M02", "data-otherHall", "2_4"));
+        list.add(new MenuBean("답안지", "M02S05", "M02", "data-answerSheet", "2_5"));
+        list.add(new MenuBean("감독관 서명", "M02S06", "M02", "data-signature", "2_6"));
+
+        list.add(new MenuBean("수험생 리스트", "M02S07", "M02", "data-examinee", "2_7"));
+        list.add(new MenuBean("산출물 다운로드", "M02S08", "M02", "data-report", "2_8"));
 
         list.add(new MenuBean("Data 검색&amp;산출물", "M03"));
         list.add(new MenuBean("수험생별 리스트", "M03S01", "M03", "data-examinee", "3_1"));
         list.add(new MenuBean("산출물 다운로드", "M03S02", "M03", "data-report", "3_2"));
+
         list.add(new MenuBean("사용자관리", "M04"));
         list.add(new MenuBean("게시판&amp;공지사항 관리", "M04S01", "M04", "user-board", "4_1"));
         list.add(new MenuBean("시험 정보 관리", "M04S04", "M04", "user-exmInfo", "4_3"));

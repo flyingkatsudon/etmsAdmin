@@ -4,9 +4,9 @@ define(function (require) {
     require('layout');
 
     var Backbone = require('backbone');
-    var Toolbar = require('./toolbar/toolbar-status-major.js');
-    var List = require('./grid/grid-status-major.js');
-    var Chart = require('./chart/chart-status-major.js');
+    var Toolbar = require('./toolbar/toolbar-data-summary.js');
+    var List = require('./grid/grid-data-summary.js');
+    var Chart = require('./chart/chart-data-summary.js'); // 필터링 한 후에 적용
 
     var layout;
 

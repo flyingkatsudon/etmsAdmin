@@ -10,10 +10,14 @@ define(function (require) {
             var colModel = [
                 {name: 'admissionNm', label: '구분'},
                 {name: 'admissionType', label: '전형'},
-                {name: 'attendPer', label: '응시율'},
-                {name: 'examineeCnt', label: '지원자'},
-                {name: 'attendCnt', label: '응시자'},
-                {name: 'absentCnt', label: '결시자'}
+                {name: 'deptNm', label: '모집단위'},
+                {name: 'majorNm', label: '전공'},
+                {name: 'groupNm', label: '조'},
+                {name: 'examineeCd', label: '수험번호'},
+                {name: 'examineeNm', label: '수험생'},
+                {name: 'attendDt', label: '시험일자'},
+                {name: 'attendTm', label: '시험시간'},
+                {name: 'isAttend', label: '응시여부'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -22,7 +26,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/attend',
+                    //url: 'status/examinee',
                     colModel: colModel
                 }
             }, options);
@@ -32,6 +36,6 @@ define(function (require) {
         render: function () {
             this.constructor.__super__.render.call(this);
             return this;
-        },
+        }
     });
 });

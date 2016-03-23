@@ -4,18 +4,14 @@ define(function (require) {
     require('layout');
 
     var Backbone = require('backbone');
-    var Toolbar = require('./toolbar/toolbar-status-major.js');
-    var List = require('./grid/grid-status-major.js');
-    var Chart = require('./chart/chart-status-major.js');
+    var List = require('./grid/grid-data-report.js');
 
     var layout;
 
     return Backbone.View.extend({
         render: function () {
             layout = this.$el.layout();
-            var chart = new Chart({el: layout.south.pane}).render();
             var list = new List({el: layout.center.pane}).render();
-            var toolbar = new Toolbar({el: layout.north.pane, list: list}).render();
             $(window).trigger('resize');
         }
     });
