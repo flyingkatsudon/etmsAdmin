@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("status")
@@ -37,9 +38,12 @@ public class StatusController {
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = search ? JqgridMapper.getQueryString(filters) : "";
-
-        Response<ResponseBody> response = apiService.statusAttend(query, page - 1, rows).execute();
+        Response<ResponseBody> response = apiService.statusAttend(
+                search ? JqgridMapper.getQueryString(filters) : ""
+                , page - 1
+                , rows
+                , Objects.equals(sidx, "") ? null : JqgridMapper.getSortString(sidx, sord)
+        ).execute();
         if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
@@ -54,9 +58,12 @@ public class StatusController {
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = search ? JqgridMapper.getQueryString(filters) : "";
-
-        Response<ResponseBody> response = apiService.statusMajor(query, page - 1, rows).execute();
+        Response<ResponseBody> response = apiService.statusMajor(
+                search ? JqgridMapper.getQueryString(filters) : ""
+                , page - 1
+                , rows
+                , Objects.equals(sidx, "") ? null : JqgridMapper.getSortString(sidx, sord)
+        ).execute();
         if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
@@ -71,9 +78,12 @@ public class StatusController {
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = search ? JqgridMapper.getQueryString(filters) : "";
-
-        Response<ResponseBody> response = apiService.statusDept(query, page - 1, rows).execute();
+        Response<ResponseBody> response = apiService.statusDept(
+                search ? JqgridMapper.getQueryString(filters) : ""
+                , page - 1
+                , rows
+                , Objects.equals(sidx, "") ? null : JqgridMapper.getSortString(sidx, sord)
+        ).execute();
         if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
@@ -88,9 +98,12 @@ public class StatusController {
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = search ? JqgridMapper.getQueryString(filters) : "";
-
-        Response<ResponseBody> response = apiService.statusHall(query, page - 1, rows).execute();
+        Response<ResponseBody> response = apiService.statusHall(
+                search ? JqgridMapper.getQueryString(filters) : ""
+                , page - 1
+                , rows
+                , Objects.equals(sidx, "") ? null : JqgridMapper.getSortString(sidx, sord)
+        ).execute();
         if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
@@ -105,9 +118,12 @@ public class StatusController {
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = search ? JqgridMapper.getQueryString(filters) : "";
-
-        Response<ResponseBody> response = apiService.statusGroup(query, page - 1, rows).execute();
+        Response<ResponseBody> response = apiService.statusGroup(
+                search ? JqgridMapper.getQueryString(filters) : ""
+                , page - 1
+                , rows
+                , Objects.equals(sidx, "") ? null : JqgridMapper.getSortString(sidx, sord)
+        ).execute();
         if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
@@ -122,9 +138,12 @@ public class StatusController {
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = search ? JqgridMapper.getQueryString(filters) : "";
-
-        Response<ResponseBody> response = apiService.statusExaminee(query, page - 1, rows).execute();
+        Response<ResponseBody> response = apiService.statusExaminee(
+                search ? JqgridMapper.getQueryString(filters) : ""
+                , page - 1
+                , rows
+                , Objects.equals(sidx, "") ? null : JqgridMapper.getSortString(sidx, sord)
+        ).execute();
         if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);

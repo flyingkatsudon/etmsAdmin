@@ -9,22 +9,22 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     @GET("api/status/attend")
-    Call<ResponseBody> statusAttend(@Query("q") String q, @Query("page") int page, @Query("size") int size);
+    Call<ResponseBody> statusAttend(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/major")
-    Call<ResponseBody> statusMajor(@Query("q") String q, @Query("page") int page, @Query("size") int size);
+    Call<ResponseBody> statusMajor(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/dept")
-    Call<ResponseBody> statusDept(@Query("q") String q, @Query("page") int page, @Query("size") int size);
+    Call<ResponseBody> statusDept(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/hall")
-    Call<ResponseBody> statusHall(@Query("q") String q, @Query("page") int page, @Query("size") int size);
+    Call<ResponseBody> statusHall(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/group")
-    Call<ResponseBody> statusGroup(@Query("q") String q, @Query("page") int page, @Query("size") int size);
+    Call<ResponseBody> statusGroup(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/examinee")
-    Call<ResponseBody> statusExaminee(@Query("q") String q, @Query("page") int page, @Query("size") int size);
+    Call<ResponseBody> statusExaminee(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/image/examinee/{fileName}")
     Call<ResponseBody> imageExaminee(@Path("fileName") String fileName);

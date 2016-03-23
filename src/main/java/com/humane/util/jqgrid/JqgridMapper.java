@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -29,6 +30,18 @@ public class JqgridMapper {
             }
         }
         return null;
+    }
+
+    public static String[] getSortString(String sidx, String sord){
+        List<String> l = new ArrayList<>();
+        String s = sidx + " " + sord;
+
+        String[] a = s.split(",");
+        for (String string : a) {
+            String[] b = string.trim().split(" ");
+            l.add(b[0] + "," + b[1]);
+        }
+        return l.toArray(new String[l.size()]);
     }
 
     public static JqgridResponse getResponse(InputStream inputStream) throws IOException {
