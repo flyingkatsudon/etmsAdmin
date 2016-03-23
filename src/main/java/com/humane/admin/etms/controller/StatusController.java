@@ -31,7 +31,7 @@ public class StatusController {
 
     @RequestMapping(value = "attend", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<JqgridMapper.JqgridResponse> attend(
-            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "rows", required = false) Integer rows,
@@ -51,7 +51,7 @@ public class StatusController {
 
     @RequestMapping(value = "major", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<JqgridMapper.JqgridResponse> major(
-            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "rows", required = false) Integer rows,
@@ -71,7 +71,7 @@ public class StatusController {
 
     @RequestMapping(value = "dept", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<JqgridMapper.JqgridResponse> dept(
-            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "rows", required = false) Integer rows,
@@ -91,7 +91,7 @@ public class StatusController {
 
     @RequestMapping(value = "hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<JqgridMapper.JqgridResponse> hall(
-            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "rows", required = false) Integer rows,
@@ -111,7 +111,7 @@ public class StatusController {
 
     @RequestMapping(value = "group", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<JqgridMapper.JqgridResponse> group(
-            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "rows", required = false) Integer rows,
@@ -131,7 +131,7 @@ public class StatusController {
 
     @RequestMapping(value = "examinee", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<JqgridMapper.JqgridResponse> examinee(
-            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "rows", required = false) Integer rows,
