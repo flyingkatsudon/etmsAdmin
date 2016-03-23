@@ -1,8 +1,6 @@
 package com.humane.util.query;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class QueryBuilder {
 
@@ -18,11 +16,11 @@ public class QueryBuilder {
     }
 
     public String build() {
-        Set<String> keyset = map.keySet();
         StringBuilder sb = new StringBuilder();
-        for (String key : keyset) {
-            sb.append(key).append("=").append(map.get(key));
-        }
+        map.forEach((String s, Object o) -> {
+            if (!Objects.equals(o, ""))
+                sb.append(s).append("=").append(o).append(",");
+        });
         return sb.toString();
     }
 }
