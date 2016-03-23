@@ -39,7 +39,92 @@ public class StatusController {
 
         String query = search ? JqgridMapper.getQueryString(filters) : "";
 
-        Response<ResponseBody> response = apiService.hall(query, page - 1, rows).execute();
+        Response<ResponseBody> response = apiService.statusAttend(query, page - 1, rows).execute();
+        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+    }
+
+    @RequestMapping(value = "major", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<JqgridMapper.JqgridResponse> major(
+            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord) throws IOException {
+
+        String query = search ? JqgridMapper.getQueryString(filters) : "";
+
+        Response<ResponseBody> response = apiService.statusMajor(query, page - 1, rows).execute();
+        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+    }
+
+    @RequestMapping(value = "dept", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<JqgridMapper.JqgridResponse> dept(
+            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord) throws IOException {
+
+        String query = search ? JqgridMapper.getQueryString(filters) : "";
+
+        Response<ResponseBody> response = apiService.statusDept(query, page - 1, rows).execute();
+        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+    }
+
+    @RequestMapping(value = "hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<JqgridMapper.JqgridResponse> hall(
+            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord) throws IOException {
+
+        String query = search ? JqgridMapper.getQueryString(filters) : "";
+
+        Response<ResponseBody> response = apiService.statusHall(query, page - 1, rows).execute();
+        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+    }
+
+    @RequestMapping(value = "group", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<JqgridMapper.JqgridResponse> group(
+            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord) throws IOException {
+
+        String query = search ? JqgridMapper.getQueryString(filters) : "";
+
+        Response<ResponseBody> response = apiService.statusGroup(query, page - 1, rows).execute();
+        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+    }
+
+    @RequestMapping(value = "examinee", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<JqgridMapper.JqgridResponse> examinee(
+            @RequestParam("_search") Boolean search,
+            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord) throws IOException {
+
+        String query = search ? JqgridMapper.getQueryString(filters) : "";
+
+        Response<ResponseBody> response = apiService.statusExaminee(query, page - 1, rows).execute();
         if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);

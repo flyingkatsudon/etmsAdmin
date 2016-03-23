@@ -25,7 +25,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'status/group',
+                    url: 'status/group',
                     colModel: colModel
                 }
             }, options);

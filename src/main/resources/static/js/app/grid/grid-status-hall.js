@@ -29,7 +29,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'status/hall',
+                    url: 'status/hall',
                     colModel: colModel
                 }
             }, options);

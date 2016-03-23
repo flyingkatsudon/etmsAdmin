@@ -22,7 +22,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'status/major',
+                    url: 'status/major',
                     colModel: colModel
                 }
             }, options);
