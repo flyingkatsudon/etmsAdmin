@@ -16,9 +16,11 @@ define(function (require) {
             this.chart = new Chart({el: layout.south.pane}).render();
             this.list = new List({el: layout.center.pane}).render();
             this.toolbar = new Toolbar({el: layout.north.pane, parent: this}).render();
+
             $(window).trigger('resize');
         },
         search : function(o){
+            console.log(o);
             this.list.search(o);
             this.chart.search(o);
         }

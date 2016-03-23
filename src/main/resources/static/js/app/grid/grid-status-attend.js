@@ -32,6 +32,6 @@ define(function (require) {
         render: function () {
             this.constructor.__super__.render.call(this);
             return this;
-        },
+        }
     });
 });
