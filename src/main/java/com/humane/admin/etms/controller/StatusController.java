@@ -33,8 +33,8 @@ public class StatusController {
     public ResponseEntity<JqgridMapper.JqgridResponse> attend(
             @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
@@ -53,8 +53,8 @@ public class StatusController {
     public ResponseEntity<JqgridMapper.JqgridResponse> major(
             @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
@@ -73,8 +73,8 @@ public class StatusController {
     public ResponseEntity<JqgridMapper.JqgridResponse> dept(
             @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
@@ -93,8 +93,8 @@ public class StatusController {
     public ResponseEntity<JqgridMapper.JqgridResponse> hall(
             @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
@@ -113,8 +113,8 @@ public class StatusController {
     public ResponseEntity<JqgridMapper.JqgridResponse> group(
             @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
@@ -133,8 +133,8 @@ public class StatusController {
     public ResponseEntity<JqgridMapper.JqgridResponse> examinee(
             @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
             @RequestParam(value = "filters", required = false) String filters,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "rows", required = false) Integer rows,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
