@@ -3,6 +3,7 @@ package com.humane.admin.etms.config;
 import com.humane.admin.etms.api.ApiService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.codec.Base64;
@@ -15,6 +16,9 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class ApiConfig {
+
+    @Value("${humane.api.url:http://localhost:8000}") String serverUrl;
+
     @Bean
     public OkHttpClient okHttpClient() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -57,7 +61,7 @@ public class ApiConfig {
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl("http://humane.ipdisk.co.kr:8000/")
+                .baseUrl(serverUrl)
                 .client(client)
                 .build();
     }

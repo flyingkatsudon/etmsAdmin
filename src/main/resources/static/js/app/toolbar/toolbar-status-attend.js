@@ -7,7 +7,7 @@ define(function (require) {
     var Backbone = require('backbone');
     var Template = require('text!tpl/toolbar.status-attend.html');
 
-    //var StatusToolbar = require('../model/model-status-toolbar');
+    var StatusToolbar = require('../model/model-status-toolbar');
 
     return Backbone.View.extend({
         initialize: function (o) {

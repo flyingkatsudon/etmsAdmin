@@ -3,7 +3,7 @@ define(function (require) {
 
     var Backbone = require('backbone');
 
-    var Collection = new Backbone.Collection.extend({
+    var Collection = Backbone.Collection.extend({
         url: 'status/toolbar',
         initialize: function () {
             this.fetch();
