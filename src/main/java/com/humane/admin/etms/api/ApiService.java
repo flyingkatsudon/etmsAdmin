@@ -28,4 +28,7 @@ public interface ApiService {
 
     @GET("api/image/examinee/{fileName}")
     Call<ResponseBody> imageExaminee(@Path("fileName") String fileName);
+
+    @GET("api/status/toolbar")
+    Call<ResponseBody> statusToolbar(@Query("q") String q);
 }

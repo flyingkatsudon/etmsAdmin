@@ -50,7 +50,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-tomcat' 
     testCompile 'org.springframework.boot:spring-boot-starter-test' 
 
-    compile('org.springframework.boot:spring-boot-devtools')
+    runtime('org.springframework.boot:spring-boot-devtools')
 }
 
 eclipse {

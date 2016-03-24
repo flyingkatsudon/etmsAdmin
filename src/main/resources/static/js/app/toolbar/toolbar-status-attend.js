@@ -7,6 +7,8 @@ define(function (require) {
     var Backbone = require('backbone');
     var Template = require('text!tpl/toolbar.status-attend.html');
 
+    //var StatusToolbar = require('../model/model-status-toolbar');
+
     return Backbone.View.extend({
         initialize: function (o) {
             this.el = o.el;
@@ -14,7 +16,6 @@ define(function (require) {
         },
         render: function () {
             this.$el.html(Template);
-           // var hallCd = this.$('#hallCd').html(this.getOptions((this.list).options));
             return this;
         },
         events: {

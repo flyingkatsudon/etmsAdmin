@@ -20,7 +20,6 @@ define(function (require) {
             $(window).trigger('resize');
         },
         search : function(o){
-            console.log(o);
             this.list.search(o);
             this.chart.search(o);
         }

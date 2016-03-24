@@ -2,12 +2,16 @@ package com.humane.admin.etms.controller;
 
 import com.humane.admin.etms.api.ApiService;
 import com.humane.util.jqgrid.JqgridMapper;
+import com.humane.util.query.QueryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -148,4 +152,31 @@ public class StatusController {
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
     }
+
+
+    /**
+     * 툴바 데이터를 전송
+     */
+    @RequestMapping(value = "toolbar")
+    public ResponseEntity<InputStreamResource> getToolbar() throws IOException {
+
+        // 1. 파라미터 생성(데이터를 가져올때 로그인한 자기것만 가져온다.)
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // TODO : 수정할 것
+        String query = new QueryBuilder()
+//                .add("admissionCd", "1")
+                .build();
+
+        // 2. api 서버에서 데이터를 가져온다.
+        Response<ResponseBody> response = apiService.statusToolbar(query).execute();
+
+        // 3. 가져온 데이터가 정상적이면 데이터를 전송한다.
+        if (response.isSuccessful()) return ResponseEntity.ok(new InputStreamResource(response.body().byteStream()));
+
+        // 4. 가져온 데이터가 에러면 에러 표시
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+    }
+
+
 }
