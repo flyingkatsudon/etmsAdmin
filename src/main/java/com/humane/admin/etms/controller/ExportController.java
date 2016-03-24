@@ -3,7 +3,10 @@ package com.humane.admin.etms.controller;
 import com.humane.admin.etms.api.ApiService;
 import com.humane.util.file.FileNameEncoder;
 import com.humane.util.jqgrid.JqgridMapper;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.jasper.constant.JasperProperty;
+import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import okhttp3.ResponseBody;
@@ -14,11 +17,13 @@ import retrofit2.Response;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 @Controller
 @RequestMapping("export")
+@Slf4j
 public class ExportController {
     private final String TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
@@ -34,9 +39,10 @@ public class ExportController {
 
         Response<ResponseBody> res = apiService.statusAttend(null, 0, Integer.MAX_VALUE).execute();
         if (res.isSuccessful()) {
+            List list = JqgridMapper.getResponse(res.body().byteStream()).getRows();
+
             JasperReportBuilder report = report()
                     //.setTemplate(Templates.reportTemplate)
-                    .ignorePageWidth()
                     .columns(
                             col.column("구분", "admissionNm", type.stringType()),
                             col.column("전형", "attendTypeNm", type.stringType()),
@@ -45,15 +51,20 @@ public class ExportController {
                             col.column("응시자", "attendCnt", type.integerType()),
                             col.column("결시자", "absentCnt", type.integerType())
                     )
-                    //.title(Templates.createTitleComponent("DynamicPageWidth"))
                     //.pageFooter(Templates.footerComponent)
-                    .setDataSource(new JRBeanCollectionDataSource(JqgridMapper.getResponse(res.body().byteStream()).getRows()));
+                    //.title(Templates.createTitleComponent("DynamicPageWidth"))
+                    .setDataSource(new JRBeanCollectionDataSource(list));
 
             toXlsx(report, response, "전형별 응시율");
         }
     }
 
     private void toXlsx(JasperReportBuilder report, HttpServletResponse response, String title) throws IOException, DRException {
+        report.ignorePageWidth()
+                .ignorePagination()
+                .setPageMargin(DynamicReports.margin(0))
+                .addProperty(JasperProperty.EXPORT_XLS_SHEET_NAMES_PREFIX, title);
+
         response.setHeader("Content-Disposition", FileNameEncoder.encode(title) + ".xlsx");
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Set-Cookie", "fileDownload=true; path=/");
