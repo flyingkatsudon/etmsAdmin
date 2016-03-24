@@ -4,18 +4,19 @@
 define(function (require) {
     "use strict";
 
-    var Backbone = require('backbone');
+    var Toolbar = require('./toolbar-base.js');
     var Template = require('text!tpl/toolbar.status-attend.html');
 
-    var StatusToolbar = require('../model/model-status-toolbar');
+    var ToolbarModel = require('../model/model-status-toolbar');
 
-    return Backbone.View.extend({
+    return Toolbar.extend({
         initialize: function (o) {
             this.el = o.el;
             this.parent = o.parent;
         },
         render: function () {
             this.$el.html(Template);
+            this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
             return this;
         },
         events: {
@@ -23,10 +24,10 @@ define(function (require) {
         },
         searchClicked: function (e) {
             var _this = this;
-            if(this.parent){
+            if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    admissionType : _this.$('#admissionType').val()
+                    admissionType: _this.$('#admissionType').val()
                 });
             }
         }
