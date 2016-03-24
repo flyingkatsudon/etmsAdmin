@@ -5,7 +5,9 @@ define(function (require) {
     "use strict";
 
     require('jqgrid');
+    require('jquery.file.download');
 
+    var DlgDownload = require('../dlg/dlg-download.js');
     var uuid = require('uuid');
     var Backbone = require('backbone');
 
@@ -124,6 +126,21 @@ define(function (require) {
             this.$grid[0].p.search = true;
             $.extend(this.$grid[0].p.postData, {filters: JSON.stringify(f)});
             this.$grid.trigger('reloadGrid', [{page: 1, current: true}]);
+        },
+        addExcel: function (url) {
+            if (url && url != '') {
+                var _this = this;
+                this.$grid.jqGrid('navButtonAdd', _this.$grid.getGridParam('pager'), {
+                    caption: '엑셀내보내기',
+                    onClickButton: function (e) {
+                        //var param = _this.$grid.getGridParam('postData').filters;
+                        new DlgDownload({url: url}).render();
+                        return false;
+                    }
+                });
+                return this;
+
+            }
         }
     });
 });

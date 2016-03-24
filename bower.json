@@ -20,6 +20,7 @@
     "jquery-ui-layout": "jquery-ui-layout-bower#^1.4.4",
     "text": "requirejs-text#^2.0.14",
     "require-css": "^0.1.8",
-    "lil-uuid": "^0.1.1"
+    "lil-uuid": "^0.1.1",
+    "jquery-file-download": "^1.4.4"
   }
 }
