@@ -7,7 +7,7 @@ define(function (require) {
     var Toolbar = require('./toolbar-base.js');
     var Template = require('text!tpl/toolbar.status-attend.html');
 
-    var ToolbarModel = require('../model/model-status-toolbar');
+    var ToolbarModel = require('../model/model-status-toolbar.js');
 
     return Toolbar.extend({
         initialize: function (o) {
