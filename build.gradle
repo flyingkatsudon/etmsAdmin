@@ -39,7 +39,7 @@ def retrofit2_version = "2.0.0"
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.projectlombok:lombok:1.16.6'
+    compile 'org.projectlombok:lombok:1.16.8'
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile "com.squareup.retrofit2:retrofit:${retrofit2_version}"
@@ -47,7 +47,7 @@ dependencies {
     compile "com.squareup.retrofit2:converter-jackson:${retrofit2_version}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit2_version}"
     compile 'commons-io:commons-io:2.4'
-    compile 'io.reactivex:rxjava:1.1.1'
+    compile 'io.reactivex:rxjava:1.1.2'
     compile('com.google.code.gson:gson:2.6.2')
 
     compile('net.sourceforge.dynamicreports:dynamicreports-core:4.1.0')
