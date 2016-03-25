@@ -1,8 +1,10 @@
 package com.humane.admin.etms.config;
 
 import com.humane.admin.etms.api.ApiService;
+import com.humane.util.retrofit.HttpServiceLoggingInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,11 +43,11 @@ public class ApiConfig {
 
         // add logging
         // HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        // loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        // loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
         // httpClient.interceptors().add(loggingInterceptor);
 
-        // db logging
-        //httpClient.interceptors().add(new HttpServiceLoggingInterceptor());
+        // logger logging
+        httpClient.interceptors().add(new HttpServiceLoggingInterceptor());
 
         // add timeout
         httpClient.connectTimeout(10, TimeUnit.SECONDS);

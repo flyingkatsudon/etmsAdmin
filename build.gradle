@@ -46,6 +46,7 @@ dependencies {
     compile "com.squareup.retrofit2:converter-scalars:${retrofit2_version}"
     compile "com.squareup.retrofit2:converter-jackson:${retrofit2_version}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit2_version}"
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     compile 'commons-io:commons-io:2.4'
     compile 'io.reactivex:rxjava:1.1.2'
     compile('com.google.code.gson:gson:2.6.2')
