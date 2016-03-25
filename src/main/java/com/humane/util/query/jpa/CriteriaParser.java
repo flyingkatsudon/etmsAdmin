@@ -16,10 +16,10 @@ public class CriteriaParser {
         criteriaList = new LinkedList<>();
 
         if (q != null) {
-            final Pattern pattern = Pattern.compile("(\\w+)(:|=|<|>)([\\w|가-힣|\\s|\\(|\\)|-]+),");
+            final Pattern pattern = Pattern.compile("(\\w+)(=|<|>)([가-힣\\w\\s\\(\\)-:]+),");
             final Matcher matcher = pattern.matcher(q + ",");
             while (matcher.find()) {
-                criteriaList.add(new Criteria(matcher.group(1), matcher.group(2), matcher.group(3)));
+                criteriaList.add(new Criteria(matcher.group(1), matcher.group(2), matcher.group(3).replaceAll(",","")));
             }
         }
     }
