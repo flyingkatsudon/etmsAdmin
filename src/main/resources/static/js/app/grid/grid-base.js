@@ -133,8 +133,10 @@ define(function (require) {
                 this.$grid.jqGrid('navButtonAdd', _this.$grid.getGridParam('pager'), {
                     caption: '엑셀내보내기',
                     onClickButton: function (e) {
-                        //var param = _this.$grid.getGridParam('postData').filters;
-                        new DlgDownload({url: url}).render();
+                        new DlgDownload({
+                            url: url,
+                            data: _this.$grid.getGridParam('postData')
+                        }).render();
                         return false;
                     }
                 });

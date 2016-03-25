@@ -13,6 +13,7 @@ import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import retrofit2.Response;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,9 +36,17 @@ public class ExportController {
     }
 
     @RequestMapping("attend")
-    public void attend(HttpServletResponse response) throws IOException, DRException {
+    public void attend(@RequestParam(value = "filters", required = false) String filters,
+                       @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                       @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
+                       @RequestParam(value = "sidx", required = false) String sidx,
+                       @RequestParam(value = "sord", required = false) String sord,
+                       HttpServletResponse response) throws IOException, DRException {
 
-        Response<ResponseBody> res = apiService.statusAttend(null, 0, Integer.MAX_VALUE).execute();
+        String query = JqgridMapper.getQueryString(filters);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
+
+        Response<ResponseBody> res = apiService.statusAttend(query, 0, Integer.MAX_VALUE, sort).execute();
         if (res.isSuccessful()) {
             List list = JqgridMapper.getResponse(res.body().byteStream()).getRows();
 
