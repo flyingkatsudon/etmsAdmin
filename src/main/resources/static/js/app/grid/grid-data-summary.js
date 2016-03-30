@@ -14,8 +14,8 @@ define(function (require) {
                 {name: 'attendCnt', label: '응시자'},
                 {name: 'nonTargetCnt', label: '비대상자'},
                 {name: 'targetCnt', label: '대상자'},
-                {name: 'attendDt', label: '시험일자'},
-                {name: 'attendTm', label: '시험시간'}
+                {name: 'attendDate', label: '시험일자'},
+                {name: 'attendTime', label: '시험시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

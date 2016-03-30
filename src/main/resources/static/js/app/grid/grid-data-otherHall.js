@@ -20,8 +20,8 @@ define(function (require) {
                 {name: 'hallNm', label: '고사실'},
                 {name: 'otherBldgNm', label: '응시고사건물'},
                 {name: 'otherHallNm', label: '응시고사실'},
-                {name: 'attendDt', label: '시험일자'},
-                {name: 'attendTm', label: '시험시간'}
+                {name: 'attendDate', label: '시험일자'},
+                {name: 'attendTime', label: '시험시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

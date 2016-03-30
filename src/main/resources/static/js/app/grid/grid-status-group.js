@@ -9,7 +9,7 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '구분'},
-                {name: 'admissionType', label: '전형'}, // 음악특기자, 연기특기자 등
+                {name: 'attendTypeNm', label: '전형'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
                 {name: 'groupNm', label: '조'}, // 필드명 미정

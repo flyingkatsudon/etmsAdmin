@@ -6,6 +6,9 @@ define(function (require) {
         render: function () {
             this.$el.html("chart area");
             return this;
+        },
+        search: function () {
+
         }
     });
 });

@@ -15,8 +15,8 @@ define(function (require) {
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'attendDt', label: '시험일자'},
-                {name: 'attendTm', label: '시험시간'},
+                {name: 'attendDate', label: '시험일자'},
+                {name: 'attendTime', label: '시험시간'},
                 {name: 'examineeCd', label: '수험번호'},
                 {name: 'examineeNm', label: '수험생'},
                 // 필드명 미생성

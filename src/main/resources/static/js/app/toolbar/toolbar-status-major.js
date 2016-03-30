@@ -4,27 +4,30 @@
 define(function (require) {
     "use strict";
 
-    var Backbone = require('backbone');
+    var Toolbar = require('./toolbar-base.js');
     var Template = require('text!tpl/toolbar.status-major.html');
 
-    return Backbone.View.extend({
+    var ToolbarModel = require('../model/model-status-toolbar.js');
+
+    return Toolbar.extend({
         initialize: function (o) {
-            this.list = o.list;
             this.el = o.el;
+            this.parent = o.parent;
         },
         render: function () {
             this.$el.html(Template);
+            this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
             return this;
         },
         events: {
-            'click #search': 'searchClicked'
+            'click #search': 'searchClicked',
+            'click #admissionNm': 'admissionNmChanged'
         },
         searchClicked: function (e) {
             var _this = this;
-            if (this.list) {
-                this.list.search({
-                    admissionNm: _this.$('#admissionNm').val(),
-                    typeNm: _this.$('#typeNm').val()
+            if (this.parent) {
+                this.parent.search({
+                    admissionNm: _this.$('#admissionNm').val()
                 });
             }
         }

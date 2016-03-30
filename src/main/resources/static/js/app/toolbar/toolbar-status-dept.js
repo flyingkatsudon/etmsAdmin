@@ -11,8 +11,8 @@ define(function (require) {
 
     return Toolbar.extend({
         initialize: function (o) {
-            this.list = o.list;
             this.el = o.el;
+            this.parent = o.parent;
         },
         render: function () {
             this.$el.html(Template);
@@ -22,14 +22,14 @@ define(function (require) {
         },
         events: {
             'click #search': 'searchClicked',
-            'change #admissionNm': 'admissionNmChanged'
+            'click #admissionNm': 'admissionNmChanged'
         },
         searchClicked: function (e) {
             var _this = this;
-            if (this.list) {
-                this.list.search({
+            if (this.parent) {
+                this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    admissionType: _this.$('#admissionType').val(),
+                    attendTypeNm: _this.$('#attendTypeNm').val(),
                     deptNm: _this.$('#deptNm').val()
                 });
             }
@@ -38,6 +38,7 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
+            this.$('#attendTypeNm').html(this.getOptions(ToolbarModel.getAttendTypeNm(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
         }
     });

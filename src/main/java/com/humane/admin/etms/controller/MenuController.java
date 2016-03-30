@@ -35,13 +35,10 @@ public class MenuController {
         list.add(new MenuBean("데이터 리스트", "M02"));
         list.add(new MenuBean("요약", "M02S01", "M02", "data-summary", "2_1"));
         list.add(new MenuBean("신분증 미소지자", "M02S02", "M02", "data-noIdCard", "2_2"));
-        list.add(new MenuBean("재확인대상자", "M02S03", "M02", "data-recheck", "2_3"));
-        list.add(new MenuBean("타고사실 및 예비고사실", "M02S04", "M02", "data-otherHall", "2_4"));
+        list.add(new MenuBean("재확인 대상자", "M02S03", "M02", "data-recheck", "2_3"));
+        list.add(new MenuBean("타고사실 응시자", "M02S04", "M02", "data-otherHall", "2_4"));
         list.add(new MenuBean("답안지", "M02S05", "M02", "data-answerSheet", "2_5"));
         list.add(new MenuBean("감독관 서명", "M02S06", "M02", "data-signature", "2_6"));
-
-        list.add(new MenuBean("수험생 리스트", "M02S07", "M02", "data-examinee", "2_7"));
-        list.add(new MenuBean("산출물 다운로드", "M02S08", "M02", "data-report", "2_8"));
 
         list.add(new MenuBean("Data 검색&amp;산출물", "M03"));
         list.add(new MenuBean("수험생별 리스트", "M03S01", "M03", "data-examinee", "3_1"));
@@ -61,8 +58,8 @@ public class MenuController {
         list.add(new MenuBean("로그보기", "M05S07", "M05", "system-log", "5_7"));
         list.add(new MenuBean("코드정보", "M05S08", "M05", "system-code", "5_8"));
 
-        list.add(new MenuBean("Data 검증", "M06"));
-        list.add(new MenuBean("서버전송 검증리포트", "M06S01", "M06", "inspect-data", "6_1"));
+        list.add(new MenuBean("데이터 검증", "M06"));
+        list.add(new MenuBean("서버전송 리포트", "M06S01", "M06", "inspect-data", "6_1"));
         list.add(new MenuBean("Device정보 Import & Compare", "M06S02", "M06", "inspect-device", "6_2"));
         list.add(new MenuBean("응시율 Error detect", "M06S03", "M06", "inspect-apply", "6_3"));
         list.add(new MenuBean("수험생&감독관 서명누락리스트", "M06S04", "M06", "inspect-sign", "6_4"));

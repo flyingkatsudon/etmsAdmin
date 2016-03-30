@@ -13,9 +13,15 @@ define(function (require) {
     return Backbone.View.extend({
         render: function () {
             layout = this.$el.layout();
-            var list = new List({el: layout.center.pane}).render();
-            var toolbar = new Toolbar({el: layout.north.pane, list: list}).render();
+            //this.chart = new Chart({el: layout.south.pane}).render();// 날짜 선택 후에 사용
+            this.list = new List({el: layout.center.pane}).render();
+            this.toolbar = new Toolbar({el: layout.north.pane, parent: this}).render();
+
             $(window).trigger('resize');
+        },
+        search : function(o){
+            this.list.search(o);
+            //this.chart.search(o);
         }
     });
 });

@@ -45,11 +45,47 @@ define(function (require) {
         getAdmissionNm: function (obj) {
             return this.getObjectList(obj, 'admissionNm', 'admissionNm');
         },
-        getMajorNm: function (obj) {
-            return this.getObjectList(obj, 'majorNm', 'majorNm');
+        getAttendTypeNm: function (obj) {
+            return this.getObjectList(obj, 'attendTypeNm', 'attendTypeNm');
         },
         getDeptNm: function (obj) {
             return this.getObjectList(obj, 'deptNm', 'deptNm');
+        },
+        getMajorNm: function (obj) {
+            return this.getObjectList(obj, 'majorNm', 'majorNm');
+        },
+        getGroupNm: function (obj) {
+            return this.getObjectList(obj, 'groupNm', 'groupNm');
+        },
+        getHeadNm: function (obj) {
+            return this.getObjectList(obj, 'headNm', 'headNm');
+        },
+        getBldgNm: function (obj) {
+            return this.getObjectList(obj, 'bldgNm', 'bldgNm');
+        },
+        getHallNm: function (obj) {
+            return this.getObjectList(obj, 'hallNm', 'hallNm');
+        },
+        getOtherBldgNm: function (obj){
+            return this.getObjectList(obj, 'otherBldgNm', 'otherBldgNm');
+        },
+        getOtherHallNm: function (obj){
+            return this.getObjectList(obj, 'otherHallNm', 'otherHallNm');
+        },
+        getAttendDate: function (obj) {
+            return this.getObjectList(obj, 'attendDate', 'attendDate');
+        },
+        getAttendTime: function (obj) {
+            return this.getObjectList(obj, 'attendTime', 'attendTime');
+        },
+        getExamNm: function(obj){
+            return this.getObjectList(obj, 'examNm', 'examNm');
+        },
+        getScorerNm: function(obj){
+            return this.getObjectList(obj, 'scorerNm', 'scorerNm');
+        },
+        getIsSent: function(obj){
+            return this.getObjectList(obj, 'isSent', 'isSent');
         }
     });
     return new Collection();

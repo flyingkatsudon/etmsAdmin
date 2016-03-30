@@ -6,16 +6,18 @@ define(function (require) {
     var Backbone = require('backbone');
     var Toolbar = require('./toolbar/toolbar-data-examinee.js');
     var List = require('./grid/grid-data-examinee.js');
-    //var Chart = require('./chart/chart-status-major.js');
 
     var layout;
 
     return Backbone.View.extend({
         render: function () {
             layout = this.$el.layout();
-            var list = new List({el: layout.center.pane}).render();
-            var toolbar = new Toolbar({el: layout.north.pane, list: list}).render();
+            this.list = new List({el: layout.center.pane}).render();
+            this.toolbar = new Toolbar({el: layout.north.pane, parent: this}).render();
             $(window).trigger('resize');
+        },
+        search: function(o){
+            this.list.search(o);
         }
     });
 });

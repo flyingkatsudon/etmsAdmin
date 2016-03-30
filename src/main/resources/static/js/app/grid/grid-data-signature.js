@@ -14,9 +14,8 @@ define(function (require) {
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
                 {name: 'examNm', label: '시험명'},
-                {name: 'attendDt', label: '시험일자'},
-                {name: 'attendTm', label: '시험시간'},
-                // 필드명 미생성
+                {name: 'attendDate', label: '시험일자'},
+                {name: 'attendTime', label: '시험시간'},
                 {name: 'isSignature', label: '서명여부'}
             ];
 

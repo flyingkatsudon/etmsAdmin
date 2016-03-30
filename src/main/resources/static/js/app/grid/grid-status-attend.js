@@ -9,7 +9,7 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '구분'},
-                {name: 'admissionType', label: '전형'},
+                {name: 'attendTypeNm', label: '전형'},
                 {name: 'attendPer', label: '응시율'},
                 {name: 'examineeCnt', label: '지원자'},
                 {name: 'attendCnt', label: '응시자'},
@@ -31,7 +31,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('export/attend');
+            this.addExcel('export/attend?type=excel');
             return this;
         }
     });

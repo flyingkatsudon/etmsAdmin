@@ -20,16 +20,23 @@ define(function (require) {
             return this;
         },
         events: {
-            'click #search': 'searchClicked'
+            'click #search': 'searchClicked',
+            'click #admissionNm': 'admissionNmChanged'
         },
         searchClicked: function (e) {
             var _this = this;
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    admissionType: _this.$('#admissionType').val()
+                    attendTypeNm: _this.$('#attendTypeNm').val()
                 });
             }
+        },
+        admissionNmChanged: function (e) {
+            var param = {
+                admissionNm: e.currentTarget.value
+            };
+            this.$('#attendTypeNm').html(this.getOptions(ToolbarModel.getAttendTypeNm(param)));
         }
     });
 });

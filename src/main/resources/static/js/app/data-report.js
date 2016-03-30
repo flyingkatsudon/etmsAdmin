@@ -1,18 +1,23 @@
-define(function (require) {
+/**
+ *
+ */
+define(function(require) {
     "use strict";
 
     require('layout');
 
     var Backbone = require('backbone');
-    var List = require('./grid/grid-data-report.js');
+    var Grid = require('./grid/grid-data-report.js');
 
     var layout;
-
-    return Backbone.View.extend({
-        render: function () {
+    var view = Backbone.View.extend({
+        render : function() {
             layout = this.$el.layout();
-            var list = new List({el: layout.center.pane}).render();
+            this.grid = new Grid({el: layout.center.pane}).render();
+
             $(window).trigger('resize');
         }
     });
+
+    return view;
 });

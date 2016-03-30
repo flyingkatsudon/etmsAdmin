@@ -8,19 +8,15 @@ define(function (require) {
     return GridBase.extend({
         initialize: function (options) {
             var colModel = [
-                {name: 'admissionNm', label: '구분'},
                 {name: 'attendTypeNm', label: '전형'},
+                {name: 'attendDate', label: '시험일자'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
-                {name: 'headNm', label: '고사본부'},
+                {name: 'examNm', label: '시험명'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'attendDate', label: '시험일자'},
-                {name: 'attendTime', label: '시험시간'},
-                {name: 'attendPer', label: '응시율'},
-                {name: 'examineeCnt', label: '지원자'},
-                {name: 'attendCnt', label: '응시자'},
-                {name: 'absentCnt', label: '결시자'}
+                {name: 'scorerNm', label: '평가위원'},
+                {name: 'isSent', label: '전송여부'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -29,7 +25,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/hall',
+                    url: 'status/examinee',
                     colModel: colModel
                 }
             }, options);
@@ -38,6 +34,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
+            this.addExcel('export/attend?type=excel');
             return this;
         }
     });
