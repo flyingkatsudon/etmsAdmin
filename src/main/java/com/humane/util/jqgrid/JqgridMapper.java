@@ -6,12 +6,12 @@ import com.humane.util.spring.PageResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -32,7 +32,9 @@ public class JqgridMapper {
         return null;
     }
 
-    public static String[] getSortString(String sidx, String sord){
+    public static String[] getSortString(String sidx, String sord) {
+        if (StringUtils.isEmpty(sidx)) return null;
+
         List<String> l = new ArrayList<>();
         String s = sidx + " " + sord;
 
@@ -57,9 +59,11 @@ public class JqgridMapper {
 
     public static String getQueryString(String filters) {
         QueryBuilder q = new QueryBuilder();
-        JqgridMapper.Filter filter = JqgridMapper.parseFilter(filters);
-        for (JqgridMapper.Filter.Rule rule : filter.getRules()) {
-            q.add(rule.getField(), rule.getData());
+        if (!StringUtils.isEmpty(filters)) {
+            JqgridMapper.Filter filter = JqgridMapper.parseFilter(filters);
+            for (JqgridMapper.Filter.Rule rule : filter.getRules()) {
+                q.add(rule.getField(), rule.getData());
+            }
         }
         return q.build();
     }
