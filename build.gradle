@@ -4,10 +4,13 @@ buildscript {
     }
     repositories {
         mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        //classpath("org.springframework:springloaded:1.2.5.RELEASE")
+        classpath 'gradle.plugin.edu.sc.seis.gradle:launch4j:1.6.1'
     }
 }
 
@@ -16,6 +19,7 @@ apply plugin: 'eclipse-wtp'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'war'
+apply plugin: 'edu.sc.seis.launch4j'
 
 war {
     baseName = 'etmsAdmin'
@@ -71,13 +75,6 @@ task wrapper(type: Wrapper) {
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-idea {
-    module {
-        inheritOutputDirs = false
-        outputDir = file("$buildDir/classes/main/")
-    }
-}
 
 bootRun {
     addResources = true
