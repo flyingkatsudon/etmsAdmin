@@ -1,0 +1,31 @@
+package com.humane.admin.etms.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class StatusDto implements Serializable {
+    String admissionNm;
+    String attendNm;
+    String majorNm;
+    String deptNm;
+    Date attendDate;
+    Date attendTime;
+    String hallCd;
+    String headNm;
+    String bldgNm;
+    String hallNm;
+    String examineeCd;
+    String examineeNm;
+    Long examineeCnt;
+    Long attendCnt;
+    Long absentCnt;
+    Boolean isAttend;
+    String groupNm;
+}

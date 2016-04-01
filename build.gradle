@@ -33,6 +33,9 @@ repositories {
     maven {
         url 'http://jasperreports.sourceforge.net/maven2/'
     }
+    maven {
+        url 'http://humane.ipdisk.co.kr:7000/content/repositories/releases/'
+    }
 }
 
 configurations {
@@ -59,8 +62,9 @@ dependencies {
 
     compile 'org.springframework.boot:spring-boot-starter-tomcat'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
-
     runtime('org.springframework.boot:spring-boot-devtools')
+
+    compile('com.humane:util-common:0.0.2')
 }
 
 eclipse {
