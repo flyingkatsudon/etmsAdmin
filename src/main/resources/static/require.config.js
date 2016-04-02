@@ -10,6 +10,7 @@ require.config({
         'underscore': {exports: '_'}
     },
     paths: {
+        'chartjs':'components/Chart.js/Chart',
         'jquery': 'components/jquery/dist/jquery.min',
         'jqgrid': 'components/jqGrid/js/jquery.jqGrid.min',
         'jqueryui': 'components/jquery-ui/jquery-ui.min',

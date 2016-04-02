@@ -45,7 +45,25 @@ public class ChartController {
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Response<ResponseBody> response = apiService.statusAttend(query, page - 1, rows, sort).execute();
-        if (response.isSuccessful()) return responseChartJsDto(response);
+        if (response.isSuccessful()){
+            ChartJsDto chartJsDto = new ChartJsDto();
+            ChartJsDto.Dataset attendDataset = new ChartJsDto.Dataset("응시율");
+            ChartJsDto.Dataset absentDataset = new ChartJsDto.Dataset("결시율");
+            ObjectMapper mapper = new ObjectMapper();
+            TypeReference<PageResponse<StatusDto>> typeRef = new TypeReference<PageResponse<StatusDto>>() {
+            };
+            PageResponse<StatusDto> pageResponse = mapper.readValue(response.body().bytes(), typeRef);
+
+            pageResponse.getContent().forEach(statusDto -> {
+                chartJsDto.addLabel(statusDto.getAttendNm());
+                attendDataset.addData(statusDto.getAttendCnt());
+                absentDataset.addData(statusDto.getAbsentCnt());
+            });
+
+            chartJsDto.addDataset(attendDataset);
+            chartJsDto.addDataset(absentDataset);
+            return ResponseEntity.ok(chartJsDto);
+        }
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
     }
@@ -62,7 +80,25 @@ public class ChartController {
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Response<ResponseBody> response = apiService.statusMajor(query, page - 1, rows, sort).execute();
-        if (response.isSuccessful()) return responseChartJsDto(response);
+        if (response.isSuccessful()){
+            ChartJsDto chartJsDto = new ChartJsDto();
+            ChartJsDto.Dataset attendDataset = new ChartJsDto.Dataset("응시율");
+            ChartJsDto.Dataset absentDataset = new ChartJsDto.Dataset("결시율");
+            ObjectMapper mapper = new ObjectMapper();
+            TypeReference<PageResponse<StatusDto>> typeRef = new TypeReference<PageResponse<StatusDto>>() {
+            };
+            PageResponse<StatusDto> pageResponse = mapper.readValue(response.body().bytes(), typeRef);
+
+            pageResponse.getContent().forEach(statusDto -> {
+                chartJsDto.addLabel(statusDto.getMajorNm());
+                attendDataset.addData(statusDto.getAttendCnt());
+                absentDataset.addData(statusDto.getAbsentCnt());
+            });
+
+            chartJsDto.addDataset(attendDataset);
+            chartJsDto.addDataset(absentDataset);
+            return ResponseEntity.ok(chartJsDto);
+        }
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
     }
@@ -79,29 +115,26 @@ public class ChartController {
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Response<ResponseBody> response = apiService.statusDept(query, page - 1, rows, sort).execute();
-        if (response.isSuccessful()) return responseChartJsDto(response);
+        if (response.isSuccessful()){
+            ChartJsDto chartJsDto = new ChartJsDto();
+            ChartJsDto.Dataset attendDataset = new ChartJsDto.Dataset("응시율");
+            ChartJsDto.Dataset absentDataset = new ChartJsDto.Dataset("결시율");
+            ObjectMapper mapper = new ObjectMapper();
+            TypeReference<PageResponse<StatusDto>> typeRef = new TypeReference<PageResponse<StatusDto>>() {
+            };
+            PageResponse<StatusDto> pageResponse = mapper.readValue(response.body().bytes(), typeRef);
+
+            pageResponse.getContent().forEach(statusDto -> {
+                chartJsDto.addLabel(statusDto.getDeptNm());
+                attendDataset.addData(statusDto.getAttendCnt());
+                absentDataset.addData(statusDto.getAbsentCnt());
+            });
+
+            chartJsDto.addDataset(attendDataset);
+            chartJsDto.addDataset(absentDataset);
+            return ResponseEntity.ok(chartJsDto);
+        }
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-    }
-
-    private ResponseEntity<ChartJsDto> responseChartJsDto(Response<ResponseBody> response) throws IOException {
-        ChartJsDto chartJsDto = new ChartJsDto();
-        ChartJsDto.Dataset attendDataset = new ChartJsDto.Dataset("응시율");
-        ChartJsDto.Dataset absentDataset = new ChartJsDto.Dataset("결시율");
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<PageResponse<StatusDto>> typeRef = new TypeReference<PageResponse<StatusDto>>() {
-        };
-        PageResponse<StatusDto> pageResponse = mapper.readValue(response.body().bytes(), typeRef);
-
-        pageResponse.getContent().forEach(statusDto -> {
-            chartJsDto.addLabel(statusDto.getDeptNm());
-            attendDataset.addData(statusDto.getAttendCnt());
-            absentDataset.addData(statusDto.getAbsentCnt());
-        });
-
-        chartJsDto.addDataset(attendDataset);
-        chartJsDto.addDataset(absentDataset);
-
-        return ResponseEntity.ok(chartJsDto);
     }
 }
