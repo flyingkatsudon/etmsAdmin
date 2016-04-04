@@ -6,7 +6,6 @@ import com.humane.admin.etms.api.ApiService;
 import com.humane.admin.etms.dto.ChartJsResponse;
 import com.humane.admin.etms.dto.StatusDto;
 import com.humane.util.jqgrid.JqgridMapper;
-import com.humane.util.query.QueryBuilder;
 import com.humane.util.spring.PageResponse;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.ResponseBody;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("chart")
@@ -37,16 +35,16 @@ public class ChartController {
 
     @RequestMapping(value = "attend", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ChartJsResponse> attend(
+            @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
             @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
     ) throws IOException {
 
-        String query = null;
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> response = apiService.statusAttend(query, page - 1, rows, sort).execute();
+        Response<ResponseBody> response = apiService.statusAttend(q, page - 1, rows, sort).execute();
         if (response.isSuccessful()) {
             ChartJsResponse chartJsResponse = new ChartJsResponse();
             ChartJsResponse.Dataset attendDataset = new ChartJsResponse.Dataset("응시율");
@@ -79,23 +77,9 @@ public class ChartController {
             @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
     ) throws IOException {
 
-        QueryBuilder queryBuilder = new QueryBuilder();
-        String query = null;
-        if (q != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, String> a = objectMapper.readValue(q, new TypeReference<Map>() {
-            });
-            a.entrySet().forEach(o -> {
-                String key = o.getKey();
-                String value = o.getValue();
-                if (!value.isEmpty()) queryBuilder.add(key, value);
-            });
-            query = queryBuilder.build();
-        }
-
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> response = apiService.statusMajor(query, page - 1, rows, sort).execute();
+        Response<ResponseBody> response = apiService.statusMajor(q, page - 1, rows, sort).execute();
         if (response.isSuccessful()) {
             ChartJsResponse chartJsResponse = new ChartJsResponse();
             ChartJsResponse.Dataset attendDataset = new ChartJsResponse.Dataset("응시자");
@@ -128,23 +112,9 @@ public class ChartController {
             @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
     ) throws IOException {
 
-        QueryBuilder queryBuilder = new QueryBuilder();
-        String query = null;
-        if (q != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, String> a = objectMapper.readValue(q, new TypeReference<Map>() {
-            });
-            a.entrySet().forEach(o -> {
-                String key = o.getKey();
-                String value = o.getValue();
-                if (!value.isEmpty()) queryBuilder.add(key, value);
-            });
-            query = queryBuilder.build();
-        }
-
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> response = apiService.statusDept(query, page - 1, rows, sort).execute();
+        Response<ResponseBody> response = apiService.statusDept(q, page - 1, rows, sort).execute();
         if (response.isSuccessful()) {
             ChartJsResponse chartJsResponse = new ChartJsResponse();
             ChartJsResponse.Dataset attendCnt = new ChartJsResponse.Dataset("응시자");
