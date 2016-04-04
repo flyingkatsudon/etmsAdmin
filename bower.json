@@ -23,6 +23,7 @@
     "lil-uuid": "^0.1.1",
     "jquery-file-download": "^1.4.4",
     "Chart.js": "^2.0.0",
-    "multiline": "^1.0.2"
+    "multiline": "^1.0.2",
+    "moment": "^2.12.0"
   }
 }
