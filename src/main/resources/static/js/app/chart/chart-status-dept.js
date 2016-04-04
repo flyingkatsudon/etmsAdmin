@@ -6,11 +6,7 @@ define(function (require) {
         url: 'chart/dept',
         options: {
             type: 'bar',
-            data: {datasets: [{type: 'line'}, {type: 'line'}, {type: 'line'}, {type: 'line'}]},
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
+            data: {datasets: [{type: 'line'}, {type: 'line'}, {type: 'line'}, {type: 'line'}]}
         }
     });
 });

@@ -72,20 +72,34 @@ public class ChartController {
 
     @RequestMapping(value = "major", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ChartJsResponse> major(
+            @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
             @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
     ) throws IOException {
 
+        QueryBuilder queryBuilder = new QueryBuilder();
         String query = null;
+        if (q != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, String> a = objectMapper.readValue(q, new TypeReference<Map>() {
+            });
+            a.entrySet().forEach(o -> {
+                String key = o.getKey();
+                String value = o.getValue();
+                if (!value.isEmpty()) queryBuilder.add(key, value);
+            });
+            query = queryBuilder.build();
+        }
+
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Response<ResponseBody> response = apiService.statusMajor(query, page - 1, rows, sort).execute();
         if (response.isSuccessful()) {
             ChartJsResponse chartJsResponse = new ChartJsResponse();
-            ChartJsResponse.Dataset attendDataset = new ChartJsResponse.Dataset("응시율");
-            ChartJsResponse.Dataset absentDataset = new ChartJsResponse.Dataset("결시율");
+            ChartJsResponse.Dataset attendDataset = new ChartJsResponse.Dataset("응시자");
+            ChartJsResponse.Dataset absentDataset = new ChartJsResponse.Dataset("결시자");
             ObjectMapper mapper = new ObjectMapper();
             TypeReference<PageResponse<StatusDto>> typeRef = new TypeReference<PageResponse<StatusDto>>() {
             };
@@ -113,7 +127,6 @@ public class ChartController {
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
             @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
     ) throws IOException {
-
 
         QueryBuilder queryBuilder = new QueryBuilder();
         String query = null;

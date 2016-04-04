@@ -19,7 +19,7 @@ define(function (require) {
             var _this = this;
             var data;
 
-            if(this.url){
+            if (this.url) {
                 $.ajax({
                     async: false,
                     url: _this.url,
@@ -33,7 +33,12 @@ define(function (require) {
             if (data) {
                 this.$el.html(html);
                 var ctx = this.$('canvas')[0].getContext('2d');
-                var chartData = $.extend(true, {data: data}, _this.options);
+                var chartData = $.extend(true, {
+                    data: data, options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                }, _this.options);
                 this.chart = new Chart(ctx, chartData);
                 this.chart.resize();
             }
