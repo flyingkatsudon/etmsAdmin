@@ -34,7 +34,6 @@ define(function (require) {
                 this.$el.html(html);
                 var ctx = this.$('canvas')[0].getContext('2d');
                 var chartData = $.extend(true, {data: data}, _this.options);
-                console.log(chartData);
                 this.chart = new Chart(ctx, chartData);
                 this.chart.resize();
             }
