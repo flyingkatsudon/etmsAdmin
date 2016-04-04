@@ -10,12 +10,12 @@ import java.util.List;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
-public class ChartJsResponse {
+public class ChartJsDto {
 
     private final List<String> labels;
     private final List<Dataset> datasets;
 
-    public ChartJsResponse() {
+    public ChartJsDto() {
         labels = new ArrayList<>();
         datasets = new ArrayList<>();
     }
