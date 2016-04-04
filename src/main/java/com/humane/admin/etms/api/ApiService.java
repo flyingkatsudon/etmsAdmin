@@ -10,22 +10,24 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
+import java.util.List;
+
 public interface ApiService {
 
     @GET("api/status/attend")
-    Call<ResponseBody> statusAttend(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> statusAttend(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/major")
-    Call<ResponseBody> statusMajor(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> statusMajor(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/dept")
-    Call<ResponseBody> statusDept(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> statusDept(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/hall")
-    Call<ResponseBody> statusHall(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> statusHall(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/group")
-    Call<ResponseBody> statusGroup(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> statusGroup(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/examinee")
     Observable<Response<PageResponse<StatusDto>>> statusExaminee(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
@@ -34,5 +36,5 @@ public interface ApiService {
     Call<ResponseBody> imageExaminee(@Path("fileName") String fileName);
 
     @GET("api/status/toolbar")
-    Call<ResponseBody> statusToolbar(@Query("q") String q);
+    Observable<Response<List<StatusDto>>> statusToolbar(@Query("q") String q);
 }

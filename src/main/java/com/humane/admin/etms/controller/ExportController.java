@@ -9,18 +9,15 @@ import net.sf.dynamicreports.jasper.constant.JasperProperty;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import retrofit2.Response;
 import rx.Observable;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
@@ -46,26 +43,27 @@ public class ExportController {
         String query = JqgridMapper.getQueryString(filters);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> res = apiService.statusAttend(query, 0, Integer.MAX_VALUE, sort).execute();
-        if (res.isSuccessful()) {
-            List list = JqgridMapper.getResponse(res.body().byteStream()).getRows();
+        Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> apiService.statusAttend(query, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                })
+                //.subscribeOn(Schedulers.computation())
+                //.observeOn(Schedulers.newThread())
+                .subscribe(list -> {
+                    JasperReportBuilder report = report()
+                            .columns(col.column("구분", "admissionNm", type.stringType()),
+                                    col.column("전형", "attendTypeNm", type.stringType()),
+                                    col.column("응시율", "attendPer", type.bigDecimalType()),
+                                    col.column("지원자", "examineeCnt", type.integerType()),
+                                    col.column("응시자", "attendCnt", type.integerType()),
+                                    col.column("결시자", "absentCnt", type.integerType()))
+                            .setDataSource(new JRBeanCollectionDataSource(list));
 
-            JasperReportBuilder report = report()
-                    //.setTemplate(Templates.reportTemplate)
-                    .columns(
-                            col.column("구분", "admissionNm", type.stringType()),
-                            col.column("전형", "attendTypeNm", type.stringType()),
-                            col.column("응시율", "attendPer", type.bigDecimalType()),
-                            col.column("지원자", "examineeCnt", type.integerType()),
-                            col.column("응시자", "attendCnt", type.integerType()),
-                            col.column("결시자", "absentCnt", type.integerType())
-                    )
-                    //.pageFooter(Templates.footerComponent)
-                    //.title(Templates.createTitleComponent("DynamicPageWidth"))
-                    .setDataSource(new JRBeanCollectionDataSource(list));
-
-            toXlsx(report, response, "전형별 응시율");
-        }
+                    toXlsx(report, response, "전형별 응시율");
+                });
     }
 
     @RequestMapping("examinee")
@@ -84,23 +82,27 @@ public class ExportController {
                     list.addAll(pageResponse.body().getContent());
                     return list;
                 })
-                //.subscribeOn(Schedulers.computation()) // computation thread 에서 defer function 이 실행됩니다.
-                //.observeOn(Schedulers.newThread()) // 새로운 thread 에서 Subscriber 로 이벤트가 전달됩니다.
+                //.subscribeOn(Schedulers.computation())
+                //.observeOn(Schedulers.newThread())
                 .subscribe(list -> {
                     JasperReportBuilder report = report()
-                            .columns(col.column("수험생코드", "examineeCd", type.stringType()),
-                                    col.column("수험생명", "examineeNm", type.stringType()))
+                            .columns(
+                                    col.column("구분", "admissionNm", type.stringType()),
+                                    col.column("모집단위", "majorNm", type.stringType()),
+                                    col.column("전공", "deptNm", type.stringType()),
+                                    col.column("수험번호", "examineeCd", type.stringType()),
+                                    col.column("수험생", "examineeNm", type.stringType()),
+                                    col.column("시험일자", "attendDate", type.dateType()),
+                                    col.column("시험시간", "attendTime", type.timeHourToSecondType()),
+                                    col.column("응시여부", "isAttend", type.booleanType())
+                            )
                             .setDataSource(new JRBeanCollectionDataSource(list));
 
-                    try {
-                        toXlsx(report, response, "전형별 응시율");
-                    } catch (IOException | DRException e) {
-                        e.printStackTrace();
-                    }
+                    toXlsx(report, response, "수험생별 응시현황");
                 });
     }
 
-    private void toXlsx(JasperReportBuilder report, HttpServletResponse response, String title) throws IOException, DRException {
+    private void toXlsx(JasperReportBuilder report, HttpServletResponse response, String title) {
         report.ignorePageWidth()
                 .ignorePagination()
                 .setPageMargin(DynamicReports.margin(0))
@@ -111,6 +113,10 @@ public class ExportController {
         response.setHeader("Set-Cookie", "fileDownload=true; path=/");
         response.setHeader("X-Frame-Options", " SAMEORIGIN");
         response.setContentType(TYPE_XLSX);
-        report.toXlsx(response.getOutputStream());
+        try {
+            report.toXlsx(response.getOutputStream());
+        } catch (DRException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }

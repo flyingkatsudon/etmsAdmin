@@ -1,29 +1,26 @@
 package com.humane.admin.etms.controller;
 
 import com.humane.admin.etms.api.ApiService;
+import com.humane.admin.etms.dto.StatusDto;
 import com.humane.util.jqgrid.JqgridMapper;
 import com.humane.util.jqgrid.JqgridResponse;
 import com.humane.util.query.QueryBuilder;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
-import retrofit2.Response;
 import rx.schedulers.Schedulers;
 
 import java.io.IOException;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("status")
 @Slf4j
 public class StatusController {
@@ -36,7 +33,7 @@ public class StatusController {
     }
 
     @RequestMapping(value = "attend", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridResponse> attend(
+    public DeferredResult<JqgridResponse> attend(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -46,14 +43,21 @@ public class StatusController {
         String query = JqgridMapper.getQueryString(filters);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> response = apiService.statusAttend(query, page - 1, rows, sort).execute();
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+        DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
 
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        apiService.statusAttend(query, page - 1, rows, sort)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread())
+                .subscribe(res -> {
+                    if (res.isSuccessful()) deferred.setResult(JqgridMapper.getResponse(res.body()));
+                    else deferred.setErrorResult(res.errorBody());
+                }, t -> deferred.setErrorResult(t.getMessage()));
+
+        return deferred;
     }
 
     @RequestMapping(value = "major", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridResponse> major(
+    public DeferredResult<JqgridResponse> major(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -63,14 +67,21 @@ public class StatusController {
         String query = JqgridMapper.getQueryString(filters);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> response = apiService.statusMajor(query, page - 1, rows, sort).execute();
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+        DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
 
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        apiService.statusMajor(query, page - 1, rows, sort)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread())
+                .subscribe(res -> {
+                    if (res.isSuccessful()) deferred.setResult(JqgridMapper.getResponse(res.body()));
+                    else deferred.setErrorResult(res.errorBody());
+                }, t -> deferred.setErrorResult(t.getMessage()));
+
+        return deferred;
     }
 
     @RequestMapping(value = "dept", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridResponse> dept(
+    public DeferredResult<JqgridResponse> dept(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -80,14 +91,21 @@ public class StatusController {
         String query = JqgridMapper.getQueryString(filters);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> response = apiService.statusDept(query, page - 1, rows, sort).execute();
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+        DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
 
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        apiService.statusDept(query, page - 1, rows, sort)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread())
+                .subscribe(res -> {
+                    if (res.isSuccessful()) deferred.setResult(JqgridMapper.getResponse(res.body()));
+                    else deferred.setErrorResult(res.errorBody());
+                }, t -> deferred.setErrorResult(t.getMessage()));
+
+        return deferred;
     }
 
     @RequestMapping(value = "hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridResponse> hall(
+    public DeferredResult<JqgridResponse> hall(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -97,14 +115,21 @@ public class StatusController {
         String query = JqgridMapper.getQueryString(filters);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> response = apiService.statusHall(query, page - 1, rows, sort).execute();
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+        DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
 
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        apiService.statusHall(query, page - 1, rows, sort)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread())
+                .subscribe(res -> {
+                    if (res.isSuccessful()) deferred.setResult(JqgridMapper.getResponse(res.body()));
+                    else deferred.setErrorResult(res.errorBody());
+                }, t -> deferred.setErrorResult(t.getMessage()));
+
+        return deferred;
     }
 
     @RequestMapping(value = "group", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridResponse> group(
+    public DeferredResult<JqgridResponse> group(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -114,14 +139,20 @@ public class StatusController {
         String query = JqgridMapper.getQueryString(filters);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> response = apiService.statusGroup(query, page - 1, rows, sort).execute();
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+        DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
 
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        apiService.statusGroup(query, page - 1, rows, sort)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread())
+                .subscribe(res -> {
+                    if (res.isSuccessful()) deferred.setResult(JqgridMapper.getResponse(res.body()));
+                    else deferred.setErrorResult(res.errorBody());
+                }, t -> deferred.setErrorResult(t.getMessage()));
+
+        return deferred;
     }
 
     @RequestMapping(value = "examinee", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @org.springframework.web.bind.annotation.ResponseBody
     public DeferredResult<JqgridResponse> examinee(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
@@ -150,23 +181,23 @@ public class StatusController {
      * 툴바 데이터를 전송
      */
     @RequestMapping(value = "toolbar")
-    public ResponseEntity<InputStreamResource> getToolbar() throws IOException {
+    public DeferredResult<List<StatusDto>> getToolbar() throws IOException {
 
-        // 1. 파라미터 생성(데이터를 가져올때 로그인한 자기것만 가져온다.)
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // TODO : 수정할 것
+        DeferredResult<List<StatusDto>> deferred = new DeferredResult<>();
         String query = new QueryBuilder()
 //                .add("admissionCd", "1")
                 .build();
+        
+        apiService.statusToolbar(query)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread())
+                .subscribe(res -> {
+                    if (res.isSuccessful()) deferred.setResult(res.body());
+                    else deferred.setErrorResult(res.errorBody());
+                }, t -> deferred.setErrorResult(t.getMessage()));
 
-        // 2. api 서버에서 데이터를 가져온다.
-        Response<ResponseBody> response = apiService.statusToolbar(query).execute();
-
-        // 3. 가져온 데이터가 정상적이면 데이터를 전송한다.
-        if (response.isSuccessful()) return ResponseEntity.ok(new InputStreamResource(response.body().byteStream()));
-
-        // 4. 가져온 데이터가 에러면 에러 표시
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        return deferred;
     }
 }
