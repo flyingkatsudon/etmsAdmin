@@ -10,7 +10,7 @@ require.config({
         'underscore': {exports: '_'}
     },
     paths: {
-        'chartjs':'components/Chart.js/Chart',
+        'chartjs':'components/Chart.js/Chart.min',
         'jquery': 'components/jquery/dist/jquery.min',
         'jqgrid': 'components/jqGrid/js/jquery.jqGrid.min',
         'jqueryui': 'components/jquery-ui/jquery-ui.min',
@@ -20,7 +20,9 @@ require.config({
         'backbone': 'components/backbone/backbone-min',
         'underscore': 'components/underscore/underscore-min',
         'text': 'components/text/text',
-        'uuid': 'components/lil-uuid/uuid.min'
+        'uuid': 'components/lil-uuid/uuid.min',
+        'moment' : 'components/moment/min/moment-with-locales.min',
+        'multiline' : 'components/multiline/browser'
     },
     map: {
         '*': {'css': 'components/require-css/css.min'}

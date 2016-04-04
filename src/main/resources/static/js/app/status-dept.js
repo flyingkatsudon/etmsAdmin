@@ -6,7 +6,7 @@ define(function (require) {
     var Backbone = require('backbone');
     var Toolbar = require('./toolbar/toolbar-status-dept.js');
     var List = require('./grid/grid-status-dept.js');
-    var Chart = require('./chart/chart-status-dept.js');
+    var BarChart = require('./chart/chart-status-dept.js');
 
     var layout;
 
@@ -17,7 +17,8 @@ define(function (require) {
                     size : '0.4'
                 }
             });
-            this.chart = new Chart({el: layout.south.pane}).render();
+
+            this.chart = new BarChart({el: layout.south.pane}).render();
             this.list = new List({el: layout.center.pane}).render();
             this.toolbar = new Toolbar({el: layout.north.pane, parent: this}).render();
 

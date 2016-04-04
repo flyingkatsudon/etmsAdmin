@@ -1,21 +1,47 @@
 define(function (require) {
+    "use strict";
 
-    require('chartjs');
+    var multiline = require('multiline');
 
+    var Chart = require('chartjs');
     var Backbone = require('backbone');
 
+    var html = multiline(function () {
+        /*!
+         <div id="canvas" class="hm-ui-tab-panel">
+         <canvas></canvas>
+         </div>
+         */
+    });
+
     return Backbone.View.extend({
-        getChart: function(data){
-            var html = $("<canvas width='1650px' height='400px'></canvas>");
+        render: function (param) {
+            var _this = this;
+            var data;
 
-            var ctx = html.get(0).getContext("2d");
-            //var lineBarChart = new Chart(ctx).LineBar(data, options);
-            var lineBarChart = new Chart(ctx).LineBar(data);
-            new Chart(ctx).LineBar(data, {
-                barShowStroke: false
-            });
+            if(this.url){
+                $.ajax({
+                    async: false,
+                    url: _this.url,
+                    data: {q: JSON.stringify(param)},
+                    success: function (result) {
+                        data = result;
+                    }
+                });
+            }
 
-            return html;
+            if (data) {
+                this.$el.html(html);
+                var ctx = this.$('canvas')[0].getContext('2d');
+                var chartData = $.extend(true, {data: data}, _this.options);
+                console.log(chartData);
+                this.chart = new Chart(ctx, chartData);
+                this.chart.resize();
+            }
+            return this;
+        },
+        search: function (o) {
+            this.render(o);
         }
-    })
+    });
 });
