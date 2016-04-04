@@ -2,6 +2,7 @@ package com.humane.admin.etms.controller;
 
 import com.humane.admin.etms.api.ApiService;
 import com.humane.util.jqgrid.JqgridMapper;
+import com.humane.util.jqgrid.JqgridResponse;
 import com.humane.util.query.QueryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.ResponseBody;
@@ -16,12 +17,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.async.DeferredResult;
 import retrofit2.Response;
-import rx.Observable;
 import rx.schedulers.Schedulers;
 
 import java.io.IOException;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("status")
@@ -36,7 +36,7 @@ public class StatusController {
     }
 
     @RequestMapping(value = "attend", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridMapper.JqgridResponse> attend(
+    public ResponseEntity<JqgridResponse> attend(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -53,7 +53,7 @@ public class StatusController {
     }
 
     @RequestMapping(value = "major", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridMapper.JqgridResponse> major(
+    public ResponseEntity<JqgridResponse> major(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -70,7 +70,7 @@ public class StatusController {
     }
 
     @RequestMapping(value = "dept", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridMapper.JqgridResponse> dept(
+    public ResponseEntity<JqgridResponse> dept(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -87,7 +87,7 @@ public class StatusController {
     }
 
     @RequestMapping(value = "hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridMapper.JqgridResponse> hall(
+    public ResponseEntity<JqgridResponse> hall(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -104,7 +104,7 @@ public class StatusController {
     }
 
     @RequestMapping(value = "group", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridMapper.JqgridResponse> group(
+    public ResponseEntity<JqgridResponse> group(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -121,7 +121,8 @@ public class StatusController {
     }
 
     @RequestMapping(value = "examinee", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<JqgridMapper.JqgridResponse> examinee(
+    @org.springframework.web.bind.annotation.ResponseBody
+    public DeferredResult<JqgridResponse> examinee(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
@@ -131,10 +132,17 @@ public class StatusController {
         String query = JqgridMapper.getQueryString(filters);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Response<ResponseBody> response = apiService.statusExaminee(query, page - 1, rows, sort).execute();
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body().byteStream()));
+        DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
 
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        apiService.statusExaminee(query, page - 1, rows, sort)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread())
+                .subscribe(res -> {
+                    if (res.isSuccessful()) deferred.setResult(JqgridMapper.getResponse(res.body()));
+                    else deferred.setErrorResult(res.errorBody());
+                }, t -> deferred.setErrorResult(t.getMessage()));
+
+        return deferred;
     }
 
 

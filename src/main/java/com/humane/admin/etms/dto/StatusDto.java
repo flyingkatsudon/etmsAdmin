@@ -1,5 +1,6 @@
 package com.humane.admin.etms.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,8 @@ public class StatusDto implements Serializable {
     String majorNm;
     String deptNm;
     Date attendDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     Date attendTime;
     String hallCd;
     String headNm;

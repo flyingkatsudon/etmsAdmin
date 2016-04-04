@@ -1,10 +1,14 @@
 package com.humane.admin.etms.api;
 
+import com.humane.admin.etms.dto.StatusDto;
+import com.humane.util.spring.PageResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Observable;
 
 public interface ApiService {
 
@@ -24,7 +28,7 @@ public interface ApiService {
     Call<ResponseBody> statusGroup(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/status/examinee")
-    Call<ResponseBody> statusExaminee(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> statusExaminee(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("api/image/examinee/{fileName}")
     Call<ResponseBody> imageExaminee(@Path("fileName") String fileName);

@@ -15,9 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import retrofit2.Response;
+import rx.Observable;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
@@ -37,8 +39,6 @@ public class ExportController {
 
     @RequestMapping("attend")
     public void attend(@RequestParam(value = "filters", required = false) String filters,
-                       @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-                       @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
                        @RequestParam(value = "sidx", required = false) String sidx,
                        @RequestParam(value = "sord", required = false) String sord,
                        HttpServletResponse response) throws IOException, DRException {
@@ -66,6 +66,38 @@ public class ExportController {
 
             toXlsx(report, response, "전형별 응시율");
         }
+    }
+
+    @RequestMapping("examinee")
+    public void examinee(@RequestParam(value = "filters", required = false) String filters,
+                         @RequestParam(value = "sidx", required = false) String sidx,
+                         @RequestParam(value = "sord", required = false) String sord,
+                         HttpServletResponse response) throws IOException, DRException {
+
+        String query = JqgridMapper.getQueryString(filters);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
+
+        Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> apiService.statusExaminee(query, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                })
+                //.subscribeOn(Schedulers.computation()) // computation thread 에서 defer function 이 실행됩니다.
+                //.observeOn(Schedulers.newThread()) // 새로운 thread 에서 Subscriber 로 이벤트가 전달됩니다.
+                .subscribe(list -> {
+                    JasperReportBuilder report = report()
+                            .columns(col.column("수험생코드", "examineeCd", type.stringType()),
+                                    col.column("수험생명", "examineeNm", type.stringType()))
+                            .setDataSource(new JRBeanCollectionDataSource(list));
+
+                    try {
+                        toXlsx(report, response, "전형별 응시율");
+                    } catch (IOException | DRException e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     private void toXlsx(JasperReportBuilder report, HttpServletResponse response, String title) throws IOException, DRException {
