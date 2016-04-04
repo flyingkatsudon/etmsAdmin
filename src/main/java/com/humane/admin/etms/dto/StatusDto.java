@@ -16,6 +16,7 @@ public class StatusDto implements Serializable {
     String attendNm;
     String majorNm;
     String deptNm;
+    String attendTypeNm;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     Date attendDate;

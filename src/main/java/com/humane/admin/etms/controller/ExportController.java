@@ -56,10 +56,10 @@ public class ExportController {
                     JasperReportBuilder report = report()
                             .columns(col.column("구분", "admissionNm", type.stringType()),
                                     col.column("전형", "attendTypeNm", type.stringType()),
-                                    col.column("응시율", "attendPer", type.bigDecimalType()),
-                                    col.column("지원자", "examineeCnt", type.integerType()),
-                                    col.column("응시자", "attendCnt", type.integerType()),
-                                    col.column("결시자", "absentCnt", type.integerType()))
+                                    col.column("응시율", "attendPer", type.longType()),
+                                    col.column("지원자", "examineeCnt", type.longType()),
+                                    col.column("응시자", "attendCnt", type.longType()),
+                                    col.column("결시자", "absentCnt", type.longType()))
                             .setDataSource(new JRBeanCollectionDataSource(list));
 
                     toXlsx(report, response, "전형별 응시율");
