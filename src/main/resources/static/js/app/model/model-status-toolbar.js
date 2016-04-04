@@ -35,7 +35,6 @@ define(function (require) {
                     delete obj[k];
                 }
             });
-
             var data = obj === undefined || Object.keys(obj).length == 0 ? this.models : this.where(obj);
             var i, length = data.length, rtn = {};
             for (i = 0; i < length; i++)
@@ -43,6 +42,7 @@ define(function (require) {
             return this.toArray(rtn, 'value');
         },
         getAdmissionNm: function (obj) {
+            //console.log(Object.keys(obj));
             return this.getObjectList(obj, 'admissionNm', 'admissionNm');
         },
         getAttendTypeNm: function (obj) {

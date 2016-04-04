@@ -12,7 +12,11 @@ define(function (require) {
 
     return Backbone.View.extend({
         render: function () {
-            layout = this.$el.layout();
+            layout = this.$el.layout({
+                south : {
+                    size : '0.4'
+                }
+            });
             this.chart = new Chart({el: layout.south.pane}).render();
             this.list = new List({el: layout.center.pane}).render();
             this.toolbar = new Toolbar({el: layout.north.pane, parent: this}).render();

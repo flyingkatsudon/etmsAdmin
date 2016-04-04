@@ -112,7 +112,8 @@ dd button{
     font-weight:bold;
     background-color: #BBBBBB;
     cursor: pointer;
-}  /*여기까지*/
+}
+/*여기까지*/
 
 .down-list dl dt, .down-list dl dd{
     float:left;

@@ -1,6 +1,3 @@
-/**
- *
- */
 define(function (require) {
     "use strict";
 
@@ -17,6 +14,7 @@ define(function (require) {
         render: function () {
             this.$el.html(Template);
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
+            this.$('#attendTypeNm').html(this.getOptions(ToolbarModel.getAttendTypeNm()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             return this;
         },
@@ -39,6 +37,13 @@ define(function (require) {
                 admissionNm: e.currentTarget.value
             };
             this.$('#attendTypeNm').html(this.getOptions(ToolbarModel.getAttendTypeNm(param)));
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+        },
+        attendTypeNmChanged: function (e) {
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                attendTypeNm: e.currentTarget.value
+            };
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
         }
     });
