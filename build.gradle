@@ -64,7 +64,7 @@ dependencies {
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     runtime('org.springframework.boot:spring-boot-devtools')
 
-    compile('com.humane:util-common:0.0.6')
+    compile('com.humane:util-common:0.0.7')
 }
 
 eclipse {
