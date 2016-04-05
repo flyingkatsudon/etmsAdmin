@@ -10,9 +10,9 @@ import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
-@Controller
+@RestController
 @RequestMapping("export")
 @Slf4j
 public class ExportController {
@@ -61,12 +61,14 @@ public class ExportController {
                     .observeOn(Schedulers.newThread())
                     .subscribe(list -> {
                         JasperReportBuilder report = report()
-                                .columns(col.column("구분", "admissionNm", type.stringType()),
-                                        col.column("전형", "attendTypeNm", type.stringType()),
-                                        col.column("지원자", "examineeCnt", type.longType()),
-                                        col.column("응시자", "attendCnt", type.longType()),
+                                .columns(col.column("전형", "admissionNm", type.stringType()),
+                                        col.column("계열", "typeNm", type.stringType()),
+                                        col.column("시험일자", "attendDate", type.dateType()),
+                                        col.column("시험시간", "attendTime", type.timeHourToSecondType()),
+                                        col.column("지원자수", "examineeCnt", type.longType()),
+                                        col.column("응시자수", "attendCnt", type.longType()),
                                         col.column("응시율", "attendPer", type.longType()),
-                                        col.column("결시자", "absentCnt", type.longType()),
+                                        col.column("결시자수", "absentCnt", type.longType()),
                                         col.column("결시율", "absentPer", type.longType())
                                 )
                                 .setDataSource(new JRBeanCollectionDataSource(list));
