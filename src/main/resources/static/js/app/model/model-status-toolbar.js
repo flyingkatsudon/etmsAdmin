@@ -45,8 +45,8 @@ define(function (require) {
             //console.log(Object.keys(obj));
             return this.getObjectList(obj, 'admissionNm', 'admissionNm');
         },
-        getAttendTypeNm: function (obj) {
-            return this.getObjectList(obj, 'attendTypeNm', 'attendTypeNm');
+        getTypeNm: function (obj) {
+            return this.getObjectList(obj, 'typeNm', 'typeNm');
         },
         getDeptNm: function (obj) {
             return this.getObjectList(obj, 'deptNm', 'deptNm');

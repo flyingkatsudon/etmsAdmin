@@ -17,6 +17,7 @@ define(function (require) {
         render: function () {
             this.$el.html(Template);
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
             return this;
         },
         events: {
@@ -28,7 +29,7 @@ define(function (require) {
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    attendTypeNm: _this.$('#attendTypeNm').val()
+                    typeNm: _this.$('#typeNm').val()
                 });
             }
         },
@@ -36,7 +37,7 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
-            this.$('#attendTypeNm').html(this.getOptions(ToolbarModel.getAttendTypeNm(param)));
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
         }
     });
 });

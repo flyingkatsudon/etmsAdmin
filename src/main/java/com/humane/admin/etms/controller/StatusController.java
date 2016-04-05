@@ -56,30 +56,6 @@ public class StatusController {
         return deferred;
     }
 
-    @RequestMapping(value = "major", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public DeferredResult<JqgridResponse> major(
-            @RequestParam(value = "filters", required = false) String filters,
-            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-            @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
-            @RequestParam(value = "sidx", required = false) String sidx,
-            @RequestParam(value = "sord", required = false) String sord) throws IOException {
-
-        String query = JqgridMapper.getQueryString(filters);
-        String[] sort = JqgridMapper.getSortString(sidx, sord);
-
-        DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
-
-        apiService.statusMajor(query, page - 1, rows, sort)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.newThread())
-                .subscribe(res -> {
-                    if (res.isSuccessful()) deferred.setResult(JqgridMapper.getResponse(res.body()));
-                    else deferred.setErrorResult(res.errorBody());
-                }, t -> deferred.setErrorResult(t.getMessage()));
-
-        return deferred;
-    }
-
     @RequestMapping(value = "dept", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public DeferredResult<JqgridResponse> dept(
             @RequestParam(value = "filters", required = false) String filters,

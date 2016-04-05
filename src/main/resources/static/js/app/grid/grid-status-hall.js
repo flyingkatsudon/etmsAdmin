@@ -8,19 +8,18 @@ define(function (require) {
     return GridBase.extend({
         initialize: function (options) {
             var colModel = [
-                {name: 'admissionNm', label: '구분'},
-                {name: 'attendTypeNm', label: '전형'},
-                {name: 'deptNm', label: '모집단위'},
-                {name: 'majorNm', label: '전공'},
+                {name: 'admissionNm', label: '전형'},
+                {name: 'attendTypeNm', label: '계열'},
+                {name: 'attendDate', label: '시험일자'},
+                {name: 'attendTime', label: '시험시간'},
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'attendDate', label: '시험일자'},
-                {name: 'attendTime', label: '시험시간'},
+                {name: 'examineeCnt', label: '지원자수'},
+                {name: 'attendCnt', label: '응시자수'},
                 {name: 'attendPer', label: '응시율'},
-                {name: 'examineeCnt', label: '지원자'},
-                {name: 'attendCnt', label: '응시자'},
-                {name: 'absentCnt', label: '결시자'}
+                {name: 'absentCnt', label: '결시자수'},
+                {name: 'absentdPer', label: '결시율'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

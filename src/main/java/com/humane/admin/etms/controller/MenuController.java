@@ -25,12 +25,12 @@ public class MenuController {
         List<MenuBean> list = new ArrayList<>();
 
         list.add(new MenuBean("응시율 통계", "M01"));
-        list.add(new MenuBean("전형 별", "M01S01", "M01", "status-attend", "1_1"));
-        list.add(new MenuBean("계열 별", "M01S02", "M01", "status-major", "1_2"));
-        list.add(new MenuBean("모집단위 별", "M01S03", "M01", "status-dept", "1_3"));
-        list.add(new MenuBean("고사실 별", "M01S04", "M01", "status-hall", "1_4"));
-        list.add(new MenuBean("조 별", "M01S05", "M01", "status-group", "1_5"));//ss
-        list.add(new MenuBean("수험생 별", "M01S06", "M01", "status-examinee", "1_6"));//ss
+        //list.add(new MenuBean("전형 별", "M01S01", "M01", "status-attend", "1_1"));
+        list.add(new MenuBean("계열 별", "M01S01", "M01", "status-attend", "1_1"));
+        list.add(new MenuBean("모집단위 별", "M01S02", "M01", "status-dept", "1_2"));
+        list.add(new MenuBean("고사실 별", "M01S03", "M01", "status-hall", "1_3"));
+        list.add(new MenuBean("조 별", "M01S04", "M01", "status-group", "1_4"));//ss
+        list.add(new MenuBean("수험생 별", "M01S05", "M01", "status-examinee", "1_5"));//ss
 
         list.add(new MenuBean("데이터 리스트", "M02"));
         list.add(new MenuBean("요약", "M02S01", "M02", "data-summary", "2_1"));

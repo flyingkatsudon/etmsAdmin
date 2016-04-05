@@ -45,43 +45,10 @@ public class ChartController {
                 .subscribe(res -> {
                     if (res.isSuccessful()) {
                         ChartJsDto chartJsDto = new ChartJsDto();
-                        ChartJsDto.Dataset attendDataset = new ChartJsDto.Dataset("응시율");
-                        ChartJsDto.Dataset absentDataset = new ChartJsDto.Dataset("결시율");
-                        res.body().getContent().forEach(statusDto -> {
-                            chartJsDto.addLabel(statusDto.getAttendNm());
-                            attendDataset.addData(statusDto.getAttendCnt());
-                            absentDataset.addData(statusDto.getAbsentCnt());
-                        });
-                        chartJsDto.addDataset(attendDataset);
-                        chartJsDto.addDataset(absentDataset);
-                        deferred.setResult(chartJsDto);
-                    } else deferred.setErrorResult(res.errorBody());
-                }, t -> deferred.setErrorResult(t.getMessage()));
-
-        return deferred;
-    }
-
-    @RequestMapping(value = "major", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public DeferredResult<ChartJsDto> major(
-            @RequestParam(value = "q", required = false) String q,
-            @RequestParam(value = "sidx", required = false) String sidx,
-            @RequestParam(value = "sord", required = false) String sord,
-            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
-    ) throws IOException {
-
-        DeferredResult<ChartJsDto> deferred = new DeferredResult<>();
-
-        apiService.statusMajor(QueryBuilder.getQueryString(q), page - 1, rows, JqgridMapper.getSortString(sidx, sord))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.newThread())
-                .subscribe(res -> {
-                    if (res.isSuccessful()) {
-                        ChartJsDto chartJsDto = new ChartJsDto();
                         ChartJsDto.Dataset attendDataset = new ChartJsDto.Dataset("응시자");
                         ChartJsDto.Dataset absentDataset = new ChartJsDto.Dataset("결시자");
                         res.body().getContent().forEach(statusDto -> {
-                            chartJsDto.addLabel(statusDto.getMajorNm());
+                            chartJsDto.addLabel(statusDto.getTypeNm());
                             attendDataset.addData(statusDto.getAttendCnt());
                             absentDataset.addData(statusDto.getAbsentCnt());
                         });

@@ -6,7 +6,7 @@ define(function (require) {
         url: 'chart/attend',
         options: {
             type: 'bar',
-            data: {datasets: [{type: 'line'}, {type: 'line'}, {type: 'line'}, {type: 'line'}]}
+            data: {datasets: [{type: 'line'}]}
         }
     });
 });

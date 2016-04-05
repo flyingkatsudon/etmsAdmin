@@ -6,7 +6,7 @@ define(function (require) {
     var Backbone = require('backbone');
     var Toolbar = require('./toolbar/toolbar-status-attend.js');
     var List = require('./grid/grid-status-attend.js');
-    var BarChart = require('./chart/chart-status-attend.js');
+    var Chart = require('./chart/chart-status-attend.js');
 
     var layout;
 
@@ -17,14 +17,13 @@ define(function (require) {
                     size : '0.4'
                 }
             });
-
-            this.chart = new BarChart({el: layout.south.pane}).render();
+            this.chart = new Chart({el: layout.south.pane}).render();
             this.list = new List({el: layout.center.pane}).render();
             this.toolbar = new Toolbar({el: layout.north.pane, parent: this}).render();
-
             $(window).trigger('resize');
         },
-        search : function(o){
+
+        search: function(o){
             this.list.search(o);
             this.chart.search(o);
         }
