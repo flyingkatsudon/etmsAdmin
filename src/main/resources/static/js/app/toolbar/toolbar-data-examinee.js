@@ -17,7 +17,7 @@ define(function (require) {
         render: function () {
             this.$el.html(Template);
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
-            this.$('#attendTypeNm').html(this.getOptions(ToolbarModel.getAttendTypeNm()));
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
             this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm()));
@@ -46,7 +46,7 @@ define(function (require) {
             if (this.list) {
                 this.list.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    attendTypeNm : _this.$('#attendTypeNm').val(),
+                    typeNm : _this.$('#typeNm').val(),
                     deptNm : _this.$('#deptNm').val(),
                     majorNm : _this.$('#majorNm').val(),
                     groupNm: _this.$('#groupNm').val(),

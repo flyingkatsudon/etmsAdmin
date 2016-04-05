@@ -13,7 +13,7 @@ define(function(require){
         },
         render: function () {
             this.$el.html(Template);
-            this.$('#attendTypeNm').html(this.getOptions(ToolbarModel.getAttendTypeNm()));
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
@@ -24,7 +24,7 @@ define(function(require){
         },
         events:{
             'click #search': 'searchClicked',
-            'click #attendTypeNm': 'attendTypeNmClicked',
+            'click #typeNm': 'typeNmClicked',
             'click #attendDate': 'attendDateClicked',
             'click #deptNm': 'deptNmClicked',
             'click #majorNm': 'majorNmClicked',
@@ -48,9 +48,9 @@ define(function(require){
                 });
             }
         },
-        attendTypeNmClicked: function (e) {
+        typeNmClicked: function (e) {
             var param = {
-                attendTypeNm: e.currentTarget.value
+                typeNm: e.currentTarget.value
             }
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
@@ -62,7 +62,7 @@ define(function(require){
         },
         attendDateClicked: function (e) {
             var param = {
-                attendTypeNm: this.$el('#attendTypeNm').val(),
+                typeNm: this.$el('#typeNm').val(),
                 attendDate: e.currentTarget.value
             }
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
@@ -74,7 +74,7 @@ define(function(require){
         },
         deptNmClicked: function (e) {
             var param = {
-                attendTypeNm: this.$el('#attendTypeNm').val(),
+                typeNm: this.$el('#typeNm').val(),
                 attendDate: this.$el('#attendDate').val(),
                 deptNm: e.currentTarget.value
             }
@@ -86,7 +86,7 @@ define(function(require){
         },
         majorNmClicked: function (e) {
             var param = {
-                attendTypeNm: this.$el('#attendTypeNm').val(),
+                typeNm: this.$el('#typeNm').val(),
                 attendDate: this.$el('#attendDate').val(),
                 deptNm: this.$el('#deptNm').val(),
                 majorNm: e.currentTarget.value
@@ -98,7 +98,7 @@ define(function(require){
         },
         scorerNmClicked: function (e) {
             var param = {
-                attendTypeNm: this.$el('#attendTypeNm').val(),
+                typeNm: this.$el('#typeNm').val(),
                 attendDate: this.$el('#attendDate').val(),
                 deptNm: this.$el('#deptNm').val(),
                 majorNm: this.$el('#majorNm').val(),
@@ -110,7 +110,7 @@ define(function(require){
         },
         bldgNmClicked: function (e){
             var param = {
-                attendTypeNm: this.$el('#attendTypeNm').val(),
+                typeNm: this.$el('#typeNm').val(),
                 attendDate: this.$el('#attendDate').val(),
                 deptNm: this.$el('#deptNm').val(),
                 majorNm: this.$el('#majorNm').val(),
@@ -122,7 +122,7 @@ define(function(require){
         },
         hallNmClicked: function (e){
             var param = {
-                attendTypeNm: this.$el('#attendTypeNm').val(),
+                typeNm: this.$el('#typeNm').val(),
                 attendDate: this.$el('#attendDate').val(),
                 deptNm: this.$el('#deptNm').val(),
                 majorNm: this.$el('#majorNm').val(),

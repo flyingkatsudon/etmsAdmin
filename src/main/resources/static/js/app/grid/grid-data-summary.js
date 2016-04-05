@@ -8,14 +8,14 @@ define(function (require) {
     return GridBase.extend({
         initialize: function (options) {
             var colModel = [
-                {name: 'admissionNm', label: '구분'},
-                {name: 'weirdNm', label: '특이사항'}, // 필드명 미생성
+                {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},  // 인문, 자연, 예체능 등
-                {name: 'attendCnt', label: '응시자'},
-                {name: 'nonTargetCnt', label: '비대상자'},
-                {name: 'targetCnt', label: '대상자'},
                 {name: 'attendDate', label: '시험일자'},
-                {name: 'attendTime', label: '시험시간'}
+                {name: 'attendTime', label: '시험시간'},
+                {name: 'weirdNm', label: '특이사항'}, // 필드명 미생성
+                {name: 'attendCnt', label: '응시자수'},
+                {name: 'nonTargetCnt', label: '비대상자'},
+                {name: 'targetCnt', label: '대상자'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

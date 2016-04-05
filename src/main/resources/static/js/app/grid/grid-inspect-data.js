@@ -8,7 +8,7 @@ define(function (require) {
     return GridBase.extend({
         initialize: function (options) {
             var colModel = [
-                {name: 'attendTypeNm', label: '전형'},
+                {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},

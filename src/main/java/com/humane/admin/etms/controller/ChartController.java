@@ -45,8 +45,8 @@ public class ChartController {
                 .subscribe(res -> {
                     if (res.isSuccessful()) {
                         ChartJsDto chartJsDto = new ChartJsDto();
-                        ChartJsDto.Dataset attendDataset = new ChartJsDto.Dataset("응시자");
-                        ChartJsDto.Dataset absentDataset = new ChartJsDto.Dataset("결시자");
+                        ChartJsDto.Dataset attendDataset = new ChartJsDto.Dataset("응시자수");
+                        ChartJsDto.Dataset absentDataset = new ChartJsDto.Dataset("결시자수");
                         res.body().getContent().forEach(statusDto -> {
                             chartJsDto.addLabel(statusDto.getTypeNm());
                             attendDataset.addData(statusDto.getAttendCnt());
@@ -78,9 +78,9 @@ public class ChartController {
                 .subscribe(res -> {
                     if (res.isSuccessful()) {
                         ChartJsDto chartJsDto = new ChartJsDto();
-                        ChartJsDto.Dataset attendCnt = new ChartJsDto.Dataset("응시자");
+                        ChartJsDto.Dataset attendCnt = new ChartJsDto.Dataset("응시자수");
                         ChartJsDto.Dataset attendPer = new ChartJsDto.Dataset("응시율");
-                        ChartJsDto.Dataset absentCnt = new ChartJsDto.Dataset("결시자");
+                        ChartJsDto.Dataset absentCnt = new ChartJsDto.Dataset("결시자수");
                         ChartJsDto.Dataset absentPer = new ChartJsDto.Dataset("결시율");
                         res.body().getContent().forEach(statusDto -> {
                             chartJsDto.addLabel(statusDto.getDeptNm());

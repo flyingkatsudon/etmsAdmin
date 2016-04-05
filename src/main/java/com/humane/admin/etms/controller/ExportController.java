@@ -79,6 +79,48 @@ public class ExportController {
         });
     }
 
+    @RequestMapping("dept")
+    public void dept(@RequestParam(value = "filters", required = false) String filters,
+                       @RequestParam(value = "sidx", required = false) String sidx,
+                       @RequestParam(value = "sord", required = false) String sord,
+                       HttpServletRequest request
+    ) throws IOException, DRException {
+        final AsyncContext async = request.startAsync();
+        async.start(() -> {
+            HttpServletResponse asyncRes = (HttpServletResponse) async.getResponse();
+
+            String query = JqgridMapper.getQueryString(filters);
+            String[] sort = JqgridMapper.getSortString(sidx, sord);
+
+            Observable.range(0, Integer.MAX_VALUE)
+                    .concatMap(currentPage -> apiService.statusDept(query, currentPage, Integer.MAX_VALUE, sort))
+                    .takeUntil(pageResponse -> pageResponse.body().isLast())
+                    .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                        list.addAll(pageResponse.body().getContent());
+                        return list;
+                    })
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(Schedulers.newThread())
+                    .subscribe(list -> {
+                        JasperReportBuilder report = report()
+                                .columns(col.column("전형", "admissionNm", type.stringType()),
+                                        col.column("계열", "typeNm", type.stringType()),
+                                        col.column("모집단위", "deptNm", type.stringType()),
+                                        col.column("시험시간", "attendTime", type.timeHourToSecondType()),
+                                        col.column("지원자수", "examineeCnt", type.longType()),
+                                        col.column("응시자수", "attendCnt", type.longType()),
+                                        col.column("응시율", "attendPer", type.longType()),
+                                        col.column("결시자수", "absentCnt", type.longType()),
+                                        col.column("결시율", "absentPer", type.longType())
+                                )
+                                .setDataSource(new JRBeanCollectionDataSource(list));
+
+                        toXlsx(asyncRes, report, "모집단위별 응시율");
+                        async.complete();
+                    });
+        });
+    }
+
     @RequestMapping("examinee")
     public void examinee(@RequestParam(value = "filters", required = false) String filters,
                          @RequestParam(value = "sidx", required = false) String sidx,
@@ -105,9 +147,9 @@ public class ExportController {
                     .subscribe(list -> {
                         JasperReportBuilder report = report()
                                 .columns(
-                                        col.column("구분", "admissionNm", type.stringType()),
-                                        col.column("모집단위", "majorNm", type.stringType()),
-                                        col.column("전공", "deptNm", type.stringType()),
+                                        col.column("전형", "admissionNm", type.stringType()),
+                                        col.column("모집단위", "deptNm", type.stringType()),
+                                        col.column("전공", "majorNm", type.stringType()),
                                         col.column("수험번호", "examineeCd", type.stringType()),
                                         col.column("수험생", "examineeNm", type.stringType()),
                                         col.column("시험일자", "attendDate", type.dateType()),

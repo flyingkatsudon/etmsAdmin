@@ -20,7 +20,7 @@ define(function(require){
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm()));
 
-            this.$('#attendTypeNm').html(this.getOptions(ToolbarModel.getAttendTypeNm()));
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
         },
@@ -31,7 +31,7 @@ define(function(require){
             'change #bldgNm': 'bldgNmChanged',
             'change #hallNm': 'hallNmChanged',
 
-            'change #attendTypeNm': 'attendTypeNmChanged',
+            'change #typeNm': 'typeNmChanged',
             'change #deptNm': 'deptNmChanged',
             'change #majorNm': 'majorNmChanged',
 
@@ -77,16 +77,16 @@ define(function(require){
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
 
-        attendTypeNmChanged: function (e){
+        typeNmChanged: function (e){
             var param = {
-                attendTypeNm: e.currentTarget.value
+                typeNm: e.currentTarget.value
             }
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
         },
         deptNmChanged: function (e) {
             var param = {
-                attendTypeNm: this.$('#attendTypeNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 deptNm: e.currentTarget.value
             }
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));

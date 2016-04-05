@@ -30,7 +30,7 @@ define(function (require) {
         events: {
             'click #search': 'searchClicked',
             'click #admissionNm': 'admissionNmChanged',
-            'click #attendTypeNm': 'attendTypeNmChanged',
+            'click #typeNm': 'typeNmChanged',
             'click #deptNm': 'deptNmChanged',
             'click #majorNm': 'majorNmChanged',
             'click #headNm': 'headNmChanged',

@@ -33,7 +33,7 @@ define(function (require) {
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    attendTypeNm : _this.$('#attendTypeNm').val(),
+                    typeNm : _this.$('#typeNm').val(),
                     deptNm : _this.$('#deptNm').val(),
                     majorNm : _this.$('#majorNm').val(),
                     groupNm : _this.$('#groupNm').val()

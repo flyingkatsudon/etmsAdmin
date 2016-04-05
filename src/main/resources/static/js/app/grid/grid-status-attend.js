@@ -16,7 +16,7 @@ define(function (require) {
                 {name: 'attendCnt', label: '응시자수'},
                 {name: 'attendPer', label: '응시율'},
                 {name: 'absentCnt', label: '결시자수'},
-                {name: 'absentdPer', label: '결시율'}
+                {name: 'absentPer', label: '결시율'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
