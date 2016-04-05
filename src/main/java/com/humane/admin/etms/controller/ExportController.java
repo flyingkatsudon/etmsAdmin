@@ -41,7 +41,7 @@ public class ExportController {
     ) throws IOException, DRException {
         final AsyncContext async = request.startAsync();
 
-        String query =  QueryBuilder.getQueryString(q);
+        String query = QueryBuilder.getQueryString(q);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         async.start(() -> {
@@ -54,25 +54,23 @@ public class ExportController {
                         list.addAll(pageResponse.body().getContent());
                         return list;
                     })
+                    .map(list -> report()
+                            .columns(col.column("전형", "admissionNm", type.stringType()),
+                                    col.column("계열", "typeNm", type.stringType()),
+                                    col.column("시험일자", "attendDate", type.dateType()),
+                                    col.column("시험시간", "attendTime", type.timeHourToSecondType()),
+                                    col.column("지원자수", "examineeCnt", type.longType()),
+                                    col.column("응시자수", "attendCnt", type.longType()),
+                                    col.column("응시율", "attendPer", type.longType()),
+                                    col.column("결시자수", "absentCnt", type.longType()),
+                                    col.column("결시율", "absentPer", type.longType())
+                            ).setDataSource(new JRBeanCollectionDataSource(list)))
                     .subscribeOn(Schedulers.computation())
                     .observeOn(Schedulers.newThread())
-                    .subscribe(list -> {
-                        JasperReportBuilder report = report()
-                                .columns(col.column("전형", "admissionNm", type.stringType()),
-                                        col.column("계열", "typeNm", type.stringType()),
-                                        col.column("시험일자", "attendDate", type.dateType()),
-                                        col.column("시험시간", "attendTime", type.timeHourToSecondType()),
-                                        col.column("지원자수", "examineeCnt", type.longType()),
-                                        col.column("응시자수", "attendCnt", type.longType()),
-                                        col.column("응시율", "attendPer", type.longType()),
-                                        col.column("결시자수", "absentCnt", type.longType()),
-                                        col.column("결시율", "absentPer", type.longType())
-                                )
-                                .setDataSource(new JRBeanCollectionDataSource(list));
-
-                        toXlsx(asyncRes, report, "전형별 응시율");
-                        async.complete();
-                    });
+                    .subscribe(
+                            jasperReportBuilder -> toXlsx(asyncRes, jasperReportBuilder, "전형별 응시율"),
+                            Throwable::printStackTrace,
+                            async::complete);
         });
     }
 
@@ -95,25 +93,23 @@ public class ExportController {
                         list.addAll(pageResponse.body().getContent());
                         return list;
                     })
+                    .map(list -> report()
+                            .columns(col.column("전형", "admissionNm", type.stringType()),
+                                    col.column("계열", "typeNm", type.stringType()),
+                                    col.column("모집단위", "deptNm", type.stringType()),
+                                    col.column("시험시간", "attendTime", type.timeHourToSecondType()),
+                                    col.column("지원자수", "examineeCnt", type.longType()),
+                                    col.column("응시자수", "attendCnt", type.longType()),
+                                    col.column("응시율", "attendPer", type.longType()),
+                                    col.column("결시자수", "absentCnt", type.longType()),
+                                    col.column("결시율", "absentPer", type.longType())
+                            ).setDataSource(new JRBeanCollectionDataSource(list)))
                     .subscribeOn(Schedulers.computation())
                     .observeOn(Schedulers.newThread())
-                    .subscribe(list -> {
-                        JasperReportBuilder report = report()
-                                .columns(col.column("전형", "admissionNm", type.stringType()),
-                                        col.column("계열", "typeNm", type.stringType()),
-                                        col.column("모집단위", "deptNm", type.stringType()),
-                                        col.column("시험시간", "attendTime", type.timeHourToSecondType()),
-                                        col.column("지원자수", "examineeCnt", type.longType()),
-                                        col.column("응시자수", "attendCnt", type.longType()),
-                                        col.column("응시율", "attendPer", type.longType()),
-                                        col.column("결시자수", "absentCnt", type.longType()),
-                                        col.column("결시율", "absentPer", type.longType())
-                                )
-                                .setDataSource(new JRBeanCollectionDataSource(list));
-
-                        toXlsx(asyncRes, report, "모집단위별 응시율");
-                        async.complete();
-                    });
+                    .subscribe(
+                            jasperReportBuilder -> toXlsx(asyncRes, jasperReportBuilder, "모집단위별 응시율")
+                            , Throwable::printStackTrace
+                            , async::complete);
         });
     }
 
@@ -137,25 +133,25 @@ public class ExportController {
                         list.addAll(pageResponse.body().getContent());
                         return list;
                     })
+                    .map(list -> report()
+                            .columns(
+                                    col.column("전형", "admissionNm", type.stringType()),
+                                    col.column("모집단위", "deptNm", type.stringType()),
+                                    col.column("전공", "majorNm", type.stringType()),
+                                    col.column("수험번호", "examineeCd", type.stringType()),
+                                    col.column("수험생", "examineeNm", type.stringType()),
+                                    col.column("시험일자", "attendDate", type.dateType()),
+                                    col.column("시험시간", "attendTime", type.timeHourToSecondType()),
+                                    col.column("응시여부", "isAttend", type.booleanType())
+                            ).setDataSource(new JRBeanCollectionDataSource(list))
+                    )
                     .subscribeOn(Schedulers.computation())
                     .observeOn(Schedulers.newThread())
-                    .subscribe(list -> {
-                        JasperReportBuilder report = report()
-                                .columns(
-                                        col.column("전형", "admissionNm", type.stringType()),
-                                        col.column("모집단위", "deptNm", type.stringType()),
-                                        col.column("전공", "majorNm", type.stringType()),
-                                        col.column("수험번호", "examineeCd", type.stringType()),
-                                        col.column("수험생", "examineeNm", type.stringType()),
-                                        col.column("시험일자", "attendDate", type.dateType()),
-                                        col.column("시험시간", "attendTime", type.timeHourToSecondType()),
-                                        col.column("응시여부", "isAttend", type.booleanType())
-                                )
-                                .setDataSource(new JRBeanCollectionDataSource(list));
-
-                        toXlsx(asyncRes, report, "수험생별 응시현황");
-                        async.complete();
-                    });
+                    .subscribe(
+                            jasperReportBuilder -> toXlsx(asyncRes, jasperReportBuilder, "수험생별 응시현황")
+                            , Throwable::printStackTrace
+                            , async::complete
+                    );
         });
     }
 
