@@ -17,9 +17,6 @@ public interface ApiService {
     @GET("api/status/attend")
     Observable<Response<PageResponse<StatusDto>>> statusAttend(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
-    @GET("api/status/major")
-    Observable<Response<PageResponse<StatusDto>>> statusMajor(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
-
     @GET("api/status/dept")
     Observable<Response<PageResponse<StatusDto>>> statusDept(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
