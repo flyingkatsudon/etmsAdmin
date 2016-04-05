@@ -1,14 +1,12 @@
 define(function (require) {
     "use strict";
-    var Backbone = require('backbone');
+    var Chart = require('./chart-base.js');
 
-    return Backbone.View.extend({
-        render: function () {
-            this.$el.html("chart area");
-            return this;
-        },
-        search: function () {
-
+    return Chart.extend({
+        url: 'chart/attend',
+        options: {
+            type: 'bar',
+            data: {datasets: [{type: 'line'}, {type: 'line'}, {type: 'line'}, {type: 'line'}]}
         }
     });
 });

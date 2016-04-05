@@ -6,7 +6,14 @@ define(function (require) {
         url: 'chart/dept',
         options: {
             type: 'bar',
-            data: {datasets: [{type: 'line'}, {type: 'line'}, {type: 'line'}, {type: 'line'}]}
+            data: {
+                datasets: [
+                    {type: 'bar', backgroundColor: 'MediumBlue'},
+                    {type: 'line', backgroundColor: 'Gray', fill: false, borderColor: 'Gray'},
+                    {type: 'bar', backgroundColor: 'Tomato'},
+                    {type: 'line'}
+                ]
+            }
         }
     });
 });
