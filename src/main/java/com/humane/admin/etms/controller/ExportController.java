@@ -28,14 +28,9 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 @RequestMapping("export")
 @Slf4j
 public class ExportController {
-    private final String TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    private static final String TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-    private final ApiService apiService;
-
-    @Autowired
-    public ExportController(ApiService apiService) {
-        this.apiService = apiService;
-    }
+    @Autowired private ApiService apiService;
 
     @RequestMapping("attend")
     public void attend(@RequestParam(value = "filters", required = false) String filters,
@@ -81,9 +76,9 @@ public class ExportController {
 
     @RequestMapping("dept")
     public void dept(@RequestParam(value = "filters", required = false) String filters,
-                       @RequestParam(value = "sidx", required = false) String sidx,
-                       @RequestParam(value = "sord", required = false) String sord,
-                       HttpServletRequest request
+                     @RequestParam(value = "sidx", required = false) String sidx,
+                     @RequestParam(value = "sord", required = false) String sord,
+                     HttpServletRequest request
     ) throws IOException, DRException {
         final AsyncContext async = request.startAsync();
         async.start(() -> {

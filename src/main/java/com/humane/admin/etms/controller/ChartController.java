@@ -21,12 +21,7 @@ import java.io.IOException;
 @Slf4j
 public class ChartController {
 
-    private final ApiService apiService;
-
-    @Autowired
-    public ChartController(ApiService apiService) {
-        this.apiService = apiService;
-    }
+    @Autowired private ApiService apiService;
 
     @RequestMapping(value = "attend", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public DeferredResult<ChartJsDto> attend(

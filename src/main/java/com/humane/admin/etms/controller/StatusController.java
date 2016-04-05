@@ -25,12 +25,7 @@ import java.util.List;
 @Slf4j
 public class StatusController {
 
-    private final ApiService apiService;
-
-    @Autowired
-    public StatusController(ApiService apiService) {
-        this.apiService = apiService;
-    }
+    @Autowired private ApiService apiService;
 
     @RequestMapping(value = "attend", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public DeferredResult<JqgridResponse> attend(

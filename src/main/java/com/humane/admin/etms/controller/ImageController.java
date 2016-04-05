@@ -19,12 +19,7 @@ import java.io.IOException;
 @RequestMapping(value = "image", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class ImageController {
 
-    private final ApiService apiService;
-
-    @Autowired
-    public ImageController(ApiService apiService) {
-        this.apiService = apiService;
-    }
+    @Autowired private ApiService apiService;
 
     @RequestMapping(value = "examinee/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> examinee(@PathVariable("fileName") String fileName) throws IOException {
