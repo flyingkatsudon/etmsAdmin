@@ -35,7 +35,11 @@ define(function (require) {
             gridComplete: function () {
                 $(window).trigger('resize');
             },
-            //prmNames: {search: null, nd: null},
+            prmNames: {search: null, nd: null},
+            serializeRowData : function(postData){
+                delete postData.filters;
+                return postData;
+            },
             loadError: function (jqXHR, status, error) {
                 if (jqXHR.status == '401') {
                     $('<div title="세션종료">로그인 정보가 없습니다.<br/>다시 로그인 해주세요.</div>').dialog({
@@ -110,7 +114,7 @@ define(function (require) {
             return this;
         },
         search: function (o) {
-            var o = o ? o : {};
+/*            var o = o ? o : {};
             if ($.isEmptyObject(o)) {
                 this.$grid[0].p.search = false;
                 $.extend(this.$grid[0].p.postData, {filters: ''});
@@ -124,7 +128,8 @@ define(function (require) {
                 if (o.hasOwnProperty(key)) f.rules.push({field: key, op: 'cn', data: o[key]});
             }
             this.$grid[0].p.search = true;
-            $.extend(this.$grid[0].p.postData, {filters: JSON.stringify(f)});
+            $.extend(this.$grid[0].p.postData, {filters: JSON.stringify(f)});*/
+            $.extend(this.$grid[0].p.postData, {q : JSON.stringify(o)});
             this.$grid.trigger('reloadGrid', [{page: 1, current: true}]);
         },
         addExcel: function (url) {

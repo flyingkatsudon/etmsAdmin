@@ -29,13 +29,13 @@ public class StatusController {
 
     @RequestMapping(value = "attend", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public DeferredResult<JqgridResponse> attend(
-            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = JqgridMapper.getQueryString(filters);
+        String query = QueryBuilder.getQueryString(q);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
@@ -53,13 +53,13 @@ public class StatusController {
 
     @RequestMapping(value = "dept", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public DeferredResult<JqgridResponse> dept(
-            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = JqgridMapper.getQueryString(filters);
+        String query = QueryBuilder.getQueryString(q);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
@@ -77,13 +77,13 @@ public class StatusController {
 
     @RequestMapping(value = "hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public DeferredResult<JqgridResponse> hall(
-            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = JqgridMapper.getQueryString(filters);
+        String query = QueryBuilder.getQueryString(q);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
@@ -101,13 +101,13 @@ public class StatusController {
 
     @RequestMapping(value = "group", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public DeferredResult<JqgridResponse> group(
-            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = JqgridMapper.getQueryString(filters);
+        String query = QueryBuilder.getQueryString(q);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
@@ -125,13 +125,13 @@ public class StatusController {
 
     @RequestMapping(value = "examinee", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public DeferredResult<JqgridResponse> examinee(
-            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord) throws IOException {
 
-        String query = JqgridMapper.getQueryString(filters);
+        String query = QueryBuilder.getQueryString(q);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         DeferredResult<JqgridResponse> deferred = new DeferredResult<>();
@@ -160,7 +160,7 @@ public class StatusController {
         String query = new QueryBuilder()
 //                .add("admissionCd", "1")
                 .build();
-        
+
         apiService.statusToolbar(query)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.newThread())

@@ -29,9 +29,9 @@ public interface ApiService {
     @GET("api/status/examinee")
     Observable<Response<PageResponse<StatusDto>>> statusExaminee(@Query("q") String q, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
-    @GET("api/image/examinee/{fileName}")
-    Call<ResponseBody> imageExaminee(@Path("fileName") String fileName);
-
     @GET("api/status/toolbar")
     Observable<Response<List<StatusDto>>> statusToolbar(@Query("q") String q);
+
+    @GET("api/image/examinee/{fileName}")
+    Observable<Response<ResponseBody>> imageExaminee(@Path("fileName") String fileName);
 }

@@ -3,6 +3,7 @@ package com.humane.admin.etms.controller;
 import com.humane.admin.etms.api.ApiService;
 import com.humane.util.file.FileNameEncoder;
 import com.humane.util.jqgrid.JqgridMapper;
+import com.humane.util.query.QueryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.jasper.constant.JasperProperty;
@@ -33,17 +34,18 @@ public class ExportController {
     @Autowired private ApiService apiService;
 
     @RequestMapping("attend")
-    public void attend(@RequestParam(value = "filters", required = false) String filters,
+    public void attend(@RequestParam(value = "q", required = false) String q,
                        @RequestParam(value = "sidx", required = false) String sidx,
                        @RequestParam(value = "sord", required = false) String sord,
                        HttpServletRequest request
     ) throws IOException, DRException {
         final AsyncContext async = request.startAsync();
+
+        String query =  QueryBuilder.getQueryString(q);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
+
         async.start(() -> {
             HttpServletResponse asyncRes = (HttpServletResponse) async.getResponse();
-
-            String query = JqgridMapper.getQueryString(filters);
-            String[] sort = JqgridMapper.getSortString(sidx, sord);
 
             Observable.range(0, Integer.MAX_VALUE)
                     .concatMap(currentPage -> apiService.statusAttend(query, currentPage, Integer.MAX_VALUE, sort))
@@ -75,17 +77,16 @@ public class ExportController {
     }
 
     @RequestMapping("dept")
-    public void dept(@RequestParam(value = "filters", required = false) String filters,
+    public void dept(@RequestParam(value = "q", required = false) String q,
                      @RequestParam(value = "sidx", required = false) String sidx,
                      @RequestParam(value = "sord", required = false) String sord,
                      HttpServletRequest request
     ) throws IOException, DRException {
         final AsyncContext async = request.startAsync();
+        String query = QueryBuilder.getQueryString(q);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
         async.start(() -> {
             HttpServletResponse asyncRes = (HttpServletResponse) async.getResponse();
-
-            String query = JqgridMapper.getQueryString(filters);
-            String[] sort = JqgridMapper.getSortString(sidx, sord);
 
             Observable.range(0, Integer.MAX_VALUE)
                     .concatMap(currentPage -> apiService.statusDept(query, currentPage, Integer.MAX_VALUE, sort))
@@ -117,18 +118,17 @@ public class ExportController {
     }
 
     @RequestMapping("examinee")
-    public void examinee(@RequestParam(value = "filters", required = false) String filters,
+    public void examinee(@RequestParam(value = "q", required = false) String q,
                          @RequestParam(value = "sidx", required = false) String sidx,
                          @RequestParam(value = "sord", required = false) String sord,
                          HttpServletRequest request
     ) throws IOException, DRException {
+        String query = QueryBuilder.getQueryString(q);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         final AsyncContext async = request.startAsync();
         async.start(() -> {
             HttpServletResponse asyncRes = (HttpServletResponse) async.getResponse();
-
-            String query = JqgridMapper.getQueryString(filters);
-            String[] sort = JqgridMapper.getSortString(sidx, sord);
 
             Observable.range(0, Integer.MAX_VALUE)
                     .concatMap(currentPage -> apiService.statusExaminee(query, currentPage, Integer.MAX_VALUE, sort))
