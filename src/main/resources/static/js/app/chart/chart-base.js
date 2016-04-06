@@ -15,6 +15,12 @@ define(function (require) {
     });
 
     return Backbone.View.extend({
+        initialize : function(){
+            var _this = this;
+            $(window).unbind('resizeEnd.' + this.cid).bind('resizeEnd.' + this.cid, function () {
+                _this.chart.resize();
+            });
+        },
         render: function (param) {
             var _this = this;
             var data;
@@ -40,7 +46,6 @@ define(function (require) {
                     }
                 }, _this.options);
                 this.chart = new Chart(ctx, chartData);
-                this.chart.resize();
             }
             return this;
         },
