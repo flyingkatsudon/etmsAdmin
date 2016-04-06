@@ -72,6 +72,29 @@ public class ChartController {
         return deferred;
     }
 
+    @RequestMapping(value = "hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public DeferredResult<ChartJsDto> hall(
+            @RequestParam(value = "q", required = false) String q,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
+    ) throws IOException {
+
+        DeferredResult<ChartJsDto> deferred = new DeferredResult<>();
+
+        apiService.statusHall(QueryBuilder.getQueryString(q), page - 1, rows, JqgridMapper.getSortString(sidx, sord))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread())
+                .subscribe(res -> {
+                    if (res.isSuccessful())
+                        deferred.setResult(toChart("hallNm", res.body().getContent()));
+                    else deferred.setErrorResult(res.errorBody());
+                }, t -> deferred.setErrorResult(t.getMessage()));
+
+        return deferred;
+    }
+
     private ChartJsDto toChart(String fieldName, List<StatusDto> content) {
         ChartJsDto chartJsDto = new ChartJsDto();
         ChartJsDto.Dataset attendCnt = new ChartJsDto.Dataset("응시자수");

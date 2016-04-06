@@ -15,10 +15,11 @@ define(function (require) {
     });
 
     return Backbone.View.extend({
-        initialize : function(){
+        initialize: function () {
             var _this = this;
             $(window).unbind('resizeEnd.' + this.cid).bind('resizeEnd.' + this.cid, function () {
-                _this.chart.resize();
+                if (_this.chart)
+                    _this.chart.resize();
             });
         },
         render: function (param) {

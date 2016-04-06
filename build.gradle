@@ -82,4 +82,5 @@ task wrapper(type: Wrapper) {
 
 bootRun {
     addResources = true
+    systemProperties System.properties
 }

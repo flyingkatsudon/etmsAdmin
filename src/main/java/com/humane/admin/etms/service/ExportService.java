@@ -61,7 +61,34 @@ public class ExportService {
                         .columns(col.column("전형", "admissionNm", type.stringType()),
                                 col.column("계열", "typeNm", type.stringType()),
                                 col.column("모집단위", "deptNm", type.stringType()),
+                                col.column("시험일자", "attendDate", type.dateType()),
                                 col.column("시험시간", "attendTime", type.timeHourToSecondType()),
+                                col.column("지원자수", "examineeCnt", type.longType()),
+                                col.column("응시자수", "attendCnt", type.longType()),
+                                col.column("응시율", "attendPer", type.longType()),
+                                col.column("결시자수", "absentCnt", type.longType()),
+                                col.column("결시율", "absentPer", type.longType())
+                        ).setDataSource(new JRBeanCollectionDataSource(list))
+                );
+    }
+
+
+    public Observable<JasperReportBuilder> reportHall(String query, String... sort) {
+        return Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> apiService.statusHall(query, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                })
+                .map(list -> report()
+                        .columns(col.column("전형", "admissionNm", type.stringType()),
+                                col.column("계열", "typeNm", type.stringType()),
+                                col.column("시험일자", "attendDate", type.dateType()),
+                                col.column("시험시간", "attendTime", type.timeHourToSecondType()),
+                                col.column("고사본부", "headNm", type.stringType()),
+                                col.column("고사건물", "bldgNm", type.stringType()),
+                                col.column("고사실", "hallNm", type.stringType()),
                                 col.column("지원자수", "examineeCnt", type.longType()),
                                 col.column("응시자수", "attendCnt", type.longType()),
                                 col.column("응시율", "attendPer", type.longType()),

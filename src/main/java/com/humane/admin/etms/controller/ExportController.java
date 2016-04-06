@@ -70,6 +70,28 @@ public class ExportController {
         });
     }
 
+    @RequestMapping("hall")
+    public void hall(@RequestParam(value = "q", required = false) String q,
+                     @RequestParam(value = "sidx", required = false) String sidx,
+                     @RequestParam(value = "sord", required = false) String sord,
+                     HttpServletRequest request
+    ) throws IOException, DRException {
+        final AsyncContext async = request.startAsync();
+        String query = QueryBuilder.getQueryString(q);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
+        async.start(() -> {
+            HttpServletResponse asyncRes = (HttpServletResponse) async.getResponse();
+
+            exportService.reportHall(query, sort)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(Schedulers.newThread())
+                    .subscribe(
+                            jasperReportBuilder -> exportService.toXlsx(asyncRes, jasperReportBuilder, "고사실별 응시율")
+                            , Throwable::printStackTrace
+                            , async::complete);
+        });
+    }
+
     @RequestMapping("examinee")
     public void examinee(@RequestParam(value = "q", required = false) String q,
                          @RequestParam(value = "sidx", required = false) String sidx,

@@ -37,6 +37,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
+            this.addExcel('export/hall?type=xlsx');
             return this;
         }
     });
