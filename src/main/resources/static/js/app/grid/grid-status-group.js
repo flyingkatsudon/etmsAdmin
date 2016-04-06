@@ -11,10 +11,9 @@ define(function (require) {
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
-                {name: 'attendTime', label: '시험시간'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
-                {name: 'groupNm', label: '조'}, // 필드명 미정
+                {name: 'groupNm', label: '조'},
                 {name: 'examineeCnt', label: '지원자수'},
                 {name: 'attendCnt', label: '응시자수'},
                 {name: 'attendPer', label: '응시율'},

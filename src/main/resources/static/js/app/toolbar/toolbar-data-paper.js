@@ -5,7 +5,7 @@ define(function (require) {
     "use strict";
 
     var Toolbar = require('./toolbar-base.js');
-    var Template = require('text!tpl/toolbar.data-examinee.html');
+    var Template = require('text!tpl/toolbar.data-paper.html');
 
     var ToolbarModel = require('../model/model-status-toolbar.js');
 
@@ -25,11 +25,10 @@ define(function (require) {
         },
         events: {
             'click #search': 'searchClicked',
-            'change #admissionNm': 'admissionNmChanged',
-            'change #typeNm': 'typeNmChanged',
-            'change #headNm': 'headNmChanged',
-            'change #bldgNm': 'bldgNmChanged',
-            'change #hallNm': 'hallNmChanged'
+            'click #admissionNm': 'admissionNmChanged',
+            'click #typeNm': 'typeNmChanged',
+            'click #headNm': 'headNmChanged',
+            'click #bldgNm': 'bldgNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -39,7 +38,7 @@ define(function (require) {
                 this.list.search({
                     admissionNm: _this.$('#admissionNm').val(),
                     typeNm : _this.$('#typeNm').val(),
-                    headNm: _this.$('#headNm').val(),
+                    headNm : _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm : _this.$('#hallNm').val(),
                     examineeCd : _this.$('#examineeCd').val(),
@@ -47,25 +46,28 @@ define(function (require) {
                 });
             }
         },
-        admissionNmChanged: function (e) {
+        admissionNmChanged: function (e){
             var param = {
                 admissionNm: e.currentTarget.value
             };
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
             this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
+            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
-        typeNmChanged: function (e) {
+        typeNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
-                typeNmNm: e.currentTarget.value
+                typeNm: e.currentTarget.value
             };
             this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
-        headNmChanged: function (e) {
+        headNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 typeNm: this.$('#typeNm').val(),
@@ -74,8 +76,7 @@ define(function (require) {
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
-
-        bldgNmChanged: function (e) {
+        bldgNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 typeNm: this.$('#typeNm').val(),

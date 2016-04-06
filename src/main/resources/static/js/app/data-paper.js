@@ -4,8 +4,8 @@ define(function (require) {
     require('layout');
 
     var Backbone = require('backbone');
-    var Toolbar = require('./toolbar/toolbar-data-answerSheet.js');
-    var List = require('./grid/grid-data-answerSheet.js');
+    var Toolbar = require('./toolbar/toolbar-data-paper.js');
+    var List = require('./grid/grid-data-paper.js');
 
     var layout;
 

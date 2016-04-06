@@ -34,7 +34,7 @@ public class MenuController {
         list.add(new MenuBean("신분증 미소지자", "M02S02", "M02", "data-noIdCard", "2_2"));
         list.add(new MenuBean("재확인 대상자", "M02S03", "M02", "data-recheck", "2_3"));
         list.add(new MenuBean("타고사실 응시자", "M02S04", "M02", "data-otherHall", "2_4"));
-        list.add(new MenuBean("답안지", "M02S05", "M02", "data-answerSheet", "2_5"));
+        list.add(new MenuBean("답안지", "M02S05", "M02", "data-paper", "2_5"));
         list.add(new MenuBean("감독관 서명", "M02S06", "M02", "data-signature", "2_6"));
 
         list.add(new MenuBean("Data 검색&amp;산출물", "M03"));

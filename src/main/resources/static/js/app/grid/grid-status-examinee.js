@@ -14,7 +14,7 @@ define(function (require) {
                 {name: 'majorNm', label: '전공'},
                 {name: 'groupNm', label: '조'},
                 {name: 'examineeCd', label: '수험번호'},
-                {name: 'examineeNm', label: '수험생'},
+                {name: 'examineeNm', label: '수험생명'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
                 {name: 'isAttend', label: '응시여부'}

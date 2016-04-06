@@ -9,20 +9,18 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
-                {name: 'typeNm', label: '계열'},  // 인문, 자연, 예체능 등
-                {name: 'deptNm', label: '모집단위'},
-                {name: 'majorNm', label: '전공'},
-                {name: 'headNm', label: '고사본부'},
-                {name: 'bldgNm', label: '고사건물'},
-                {name: 'hallNm', label: '고사실'},
+                {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
                 {name: 'examineeCd', label: '수험번호'},
-                {name: 'examineeNm', label: '수험생'},
-                // 필드명 미생성
-                {name: 'isChange', label: '교체여부'},
-                {name: 'sheetList', label: '답안지이력'},
-                {name: 'lastSheet', label: '답안지'}
+                {name: 'examineeNm', label: '수험생명'},
+                {name: 'birth', label: '생년월일'},
+                {name: 'deptNm', label: '모집단위'},
+                {name: 'paperCnt', label: '답안지 매수'},
+                {name: 'originalPaper', label: '원답안지'},
+                {name: 'finalPaper', label: '최종답안지'},
+                {name: 'paperList', label: '교체이력'},
+                {name: 'changeTime', label: '최종교체시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -31,7 +29,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'data/answerSheet',
+                    //url: 'data/paper',
                     colModel: colModel
                 }
             }, options);
