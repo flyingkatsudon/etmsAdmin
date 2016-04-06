@@ -61,7 +61,6 @@ public class ChartController {
         DeferredResult<ChartJsDto> deferred = new DeferredResult<>();
 
         apiService.statusDept(QueryBuilder.getQueryString(q), page - 1, rows, JqgridMapper.getSortString(sidx, sord))
-
                 .subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.newThread())
                 .subscribe(res -> {
