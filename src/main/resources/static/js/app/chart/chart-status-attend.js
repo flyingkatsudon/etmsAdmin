@@ -6,7 +6,12 @@ define(function (require) {
         url: 'chart/attend',
         options: {
             type: 'bar',
-            data: {datasets: [{type: 'line'}]}
+            data: {
+                datasets: [
+                    {type: 'bar', backgroundColor: 'MediumBlue'},
+                    {type: 'bar', backgroundColor: 'Tomato'}
+                ]
+            }
         }
     });
 });

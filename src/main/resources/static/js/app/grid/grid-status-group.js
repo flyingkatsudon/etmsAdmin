@@ -36,6 +36,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
+            this.addExcel('export/group?type=xlsx');
             return this;
         }
     });

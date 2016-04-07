@@ -79,6 +79,26 @@ public class ExportController {
         }
     }
 
+    @RequestMapping("group")
+    void group(@RequestParam(value = "q", required = false) String q,
+               @RequestParam(value = "sidx", required = false) String sidx,
+               @RequestParam(value = "sord", required = false) String sord,
+               HttpServletResponse response) throws IOException {
+
+        String query = QueryBuilder.getQueryString(q);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
+
+        Observable<JasperReportBuilder> observable = exportService.reportGroup(query, sort);
+        try {
+            JasperReportBuilder builder = observable.toBlocking().first();
+            exportService.toXlsx(response, builder, "조별 응시율");
+        } catch (Exception e) {
+            log.error("{}", e.getMessage());
+        }
+
+    }
+
+
     @RequestMapping("examinee")
     public void examinee(@RequestParam(value = "q", required = false) String q,
                          @RequestParam(value = "sidx", required = false) String sidx,

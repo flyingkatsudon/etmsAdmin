@@ -13,6 +13,14 @@ define(function (require) {
                     {type: 'bar', backgroundColor: 'Tomato'},
                     {type: 'line'}
                 ]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{}]
+                }
             }
         }
     });

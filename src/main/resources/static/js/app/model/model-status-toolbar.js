@@ -86,6 +86,12 @@ define(function (require) {
         },
         getIsSent: function(obj){
             return this.getObjectList(obj, 'isSent', 'isSent');
+        },
+        getWeirdNm: function(obj){
+            return this.getObjectList(obj, 'weirdNm', 'weirdNm');
+        },
+        getIsAttend: function(obj){
+            return this.getObjectList(obj, 'isAttend', 'isAttend');
         }
     });
     return new Collection();
