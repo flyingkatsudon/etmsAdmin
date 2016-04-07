@@ -23,12 +23,14 @@ public class LoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         RequestWrapper requestWrapper = RequestWrapper.of(request);
 
-        log.info("uri : {}, parameter : {}, body : {}",
-                requestWrapper.getRequestUri(),
-                //requestWrapper.headerMap(),
-                requestWrapper.parameterMap(),
-                requestWrapper.getBody());
-
+        String uri = requestWrapper.getRequestUri();
+        String[] paths = uri.split("/");
+        if (!paths[1].matches("images|css|js|tpl|components") && !paths[paths.length - 1].endsWith(".js"))
+            log.info("uri : {}, parameter : {}, body : {}",
+                    requestWrapper.getRequestUri(),
+                    //requestWrapper.headerMap(),
+                    requestWrapper.parameterMap(),
+                    requestWrapper.getBody());
         chain.doFilter(request, response);
     }
 
