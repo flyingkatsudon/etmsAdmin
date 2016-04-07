@@ -23,10 +23,11 @@ public class LoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         RequestWrapper requestWrapper = RequestWrapper.of(request);
 
-        log.info("uri : {}", requestWrapper.getRequestUri());
-        log.info("header : {}", requestWrapper.headerMap());
-        log.info("parameter : {}", requestWrapper.parameterMap());
-        log.info("body : {}", requestWrapper.getBody());
+        log.info("uri : {}, parameter : {}, body : {}",
+                requestWrapper.getRequestUri(),
+                //requestWrapper.headerMap(),
+                requestWrapper.parameterMap(),
+                requestWrapper.getBody());
 
         chain.doFilter(request, response);
     }
