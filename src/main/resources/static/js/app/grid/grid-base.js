@@ -36,12 +36,14 @@ define(function (require) {
                 $(window).trigger('resize');
             },
             prmNames: {search: null, nd: null},
-            serializeRowData : function(postData){
+            serializeRowData: function (postData) {
                 delete postData.filters;
                 return postData;
             },
             loadError: function (jqXHR, status, error) {
-                if (jqXHR.status == '401') {
+                if (jqXHR.status == '401' ||
+                    jqXHR.status == '302'
+                ) {
                     $('<div title="세션종료">로그인 정보가 없습니다.<br/>다시 로그인 해주세요.</div>').dialog({
                         modal: true,
                         close: function () {
@@ -114,22 +116,22 @@ define(function (require) {
             return this;
         },
         search: function (o) {
-/*            var o = o ? o : {};
-            if ($.isEmptyObject(o)) {
-                this.$grid[0].p.search = false;
-                $.extend(this.$grid[0].p.postData, {filters: ''});
-                return;
-            }
+            /*            var o = o ? o : {};
+             if ($.isEmptyObject(o)) {
+             this.$grid[0].p.search = false;
+             $.extend(this.$grid[0].p.postData, {filters: ''});
+             return;
+             }
 
-            var f = {groupOp: 'OR', rules: []};
+             var f = {groupOp: 'OR', rules: []};
 
-            var key;
-            for (key in o) {
-                if (o.hasOwnProperty(key)) f.rules.push({field: key, op: 'cn', data: o[key]});
-            }
-            this.$grid[0].p.search = true;
-            $.extend(this.$grid[0].p.postData, {filters: JSON.stringify(f)});*/
-            $.extend(this.$grid[0].p.postData, {q : JSON.stringify(o)});
+             var key;
+             for (key in o) {
+             if (o.hasOwnProperty(key)) f.rules.push({field: key, op: 'cn', data: o[key]});
+             }
+             this.$grid[0].p.search = true;
+             $.extend(this.$grid[0].p.postData, {filters: JSON.stringify(f)});*/
+            $.extend(this.$grid[0].p.postData, {q: JSON.stringify(o)});
             this.$grid.trigger('reloadGrid', [{page: 1, current: true}]);
         },
         addExcel: function (url) {

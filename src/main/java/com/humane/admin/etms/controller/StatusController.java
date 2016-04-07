@@ -123,7 +123,10 @@ public class StatusController {
     private ResponseEntity toJqgridResponseEntity(Observable<Response<PageResponse<StatusDto>>> observable) {
         try {
             Response<PageResponse<StatusDto>> res = observable.toBlocking().first();
-            if (res.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(res.body()));
+            if (res.isSuccessful()){
+                log.debug("{}", res.body());
+                return ResponseEntity.ok(JqgridMapper.getResponse(res.body()));
+            }
             else {
                 log.error("{}", res.errorBody());
                 return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);

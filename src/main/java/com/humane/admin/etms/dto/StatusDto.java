@@ -32,8 +32,8 @@ public class StatusDto implements Serializable {
     Long examineeCnt;
     Long attendCnt;
     Long absentCnt;
-    Long attendPer;
-    Long absentPer;
+    Double attendPer;
+    Double absentPer;
     Boolean isAttend;
     String groupNm;
     String attendHeadNm;

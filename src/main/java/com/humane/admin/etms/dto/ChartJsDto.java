@@ -31,7 +31,7 @@ public class ChartJsDto {
     @ToString
     @Getter
     public static class Dataset {
-        private List<Long> data;
+        private List<Object> data;
         private String label;
 
         public Dataset() {
@@ -47,8 +47,8 @@ public class ChartJsDto {
             this.label = label;
         }
 
-        public void addData(Long l) {
-            data.add(l);
+        public void addData(Object o) {
+            data.add(o);
         }
     }
 }
