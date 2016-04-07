@@ -24,10 +24,9 @@ public class LoggingFilter implements Filter {
         RequestWrapper requestWrapper = RequestWrapper.of(request);
 
         String uri = requestWrapper.getRequestUri();
-        String[] paths = uri.split("/");
-        if (!paths[1].matches("images|css|js|tpl|components"))
+        if (!uri.split("/")[1].matches("images|css|js|tpl|components"))
             log.info("uri : {}, parameter : {}, body : {}",
-                    requestWrapper.getRequestUri(),
+                    uri,
                     //requestWrapper.headerMap(),
                     requestWrapper.parameterMap(),
                     requestWrapper.getBody());
