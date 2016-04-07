@@ -39,4 +39,6 @@ public class StatusDto implements Serializable {
     String attendHeadNm;
     String attendBldgNm;
     String attendHallNm;
+    Boolean isEtc;
+    Boolean isSend;
 }
