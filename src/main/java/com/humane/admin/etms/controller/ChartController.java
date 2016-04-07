@@ -5,16 +5,19 @@ import com.humane.admin.etms.dto.ChartJsDto;
 import com.humane.admin.etms.dto.StatusDto;
 import com.humane.util.jqgrid.JqgridMapper;
 import com.humane.util.query.QueryBuilder;
+import com.humane.util.spring.PageResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.async.DeferredResult;
-import rx.schedulers.Schedulers;
+import retrofit2.Response;
+import rx.Observable;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,30 +30,22 @@ public class ChartController {
     @Autowired private ApiService apiService;
 
     @RequestMapping(value = "attend", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public DeferredResult<ChartJsDto> attend(
+    public ResponseEntity attend(
             @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
             @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
     ) throws IOException {
+        String query = QueryBuilder.getQueryString(q);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        DeferredResult<ChartJsDto> deferred = new DeferredResult<>();
-
-        apiService.statusAttend(QueryBuilder.getQueryString(q), page - 1, rows, JqgridMapper.getSortString(sidx, sord))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.newThread())
-                .subscribe(res -> {
-                    if (res.isSuccessful())
-                        deferred.setResult(toChart("typeNm", res.body().getContent()));
-                    else deferred.setErrorResult(res.errorBody());
-                }, t -> deferred.setErrorResult(t.getMessage()));
-
-        return deferred;
+        Observable<Response<PageResponse<StatusDto>>> observable = apiService.statusAttend(query, page - 1, rows, sort);
+        return toChart(observable, "typeNm");
     }
 
     @RequestMapping(value = "dept", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public DeferredResult<ChartJsDto> dept(
+    public ResponseEntity<ChartJsDto> dept(
             @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord,
@@ -58,22 +53,15 @@ public class ChartController {
             @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
     ) throws IOException {
 
-        DeferredResult<ChartJsDto> deferred = new DeferredResult<>();
+        String query = QueryBuilder.getQueryString(q);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        apiService.statusDept(QueryBuilder.getQueryString(q), page - 1, rows, JqgridMapper.getSortString(sidx, sord))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.newThread())
-                .subscribe(res -> {
-                    if (res.isSuccessful())
-                        deferred.setResult(toChart("deptNm", res.body().getContent()));
-                    else deferred.setErrorResult(res.errorBody());
-                }, t -> deferred.setErrorResult(t.getMessage()));
-
-        return deferred;
+        Observable<Response<PageResponse<StatusDto>>> observable = apiService.statusDept(query, page - 1, rows, sort);
+        return toChart(observable, "deptNm");
     }
 
     @RequestMapping(value = "hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public DeferredResult<ChartJsDto> hall(
+    public ResponseEntity<ChartJsDto> hall(
             @RequestParam(value = "q", required = false) String q,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord,
@@ -81,18 +69,25 @@ public class ChartController {
             @RequestParam(value = "rows", required = false, defaultValue = "1000") int rows
     ) throws IOException {
 
-        DeferredResult<ChartJsDto> deferred = new DeferredResult<>();
+        String query = QueryBuilder.getQueryString(q);
+        String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        apiService.statusHall(QueryBuilder.getQueryString(q), page - 1, rows, JqgridMapper.getSortString(sidx, sord))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.newThread())
-                .subscribe(res -> {
-                    if (res.isSuccessful())
-                        deferred.setResult(toChart("hallNm", res.body().getContent()));
-                    else deferred.setErrorResult(res.errorBody());
-                }, t -> deferred.setErrorResult(t.getMessage()));
+        Observable<Response<PageResponse<StatusDto>>> observable = apiService.statusHall(query, page - 1, rows, sort);
+        return toChart(observable, "hallNm");
+    }
 
-        return deferred;
+    private ResponseEntity<ChartJsDto> toChart(Observable<Response<PageResponse<StatusDto>>> observable, String typeNm) {
+        try {
+            Response<PageResponse<StatusDto>> res = observable.toBlocking().first();
+            if (res.isSuccessful()) return ResponseEntity.ok(toChart("typeNm", res.body().getContent()));
+            else {
+                log.error("{}", res.errorBody());
+                return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+            }
+        } catch (Throwable e) {
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+        }
     }
 
     private ChartJsDto toChart(String fieldName, List<StatusDto> content) {

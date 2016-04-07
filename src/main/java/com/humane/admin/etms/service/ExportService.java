@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.col;
-import static net.sf.dynamicreports.report.builder.DynamicReports.report;
-import static net.sf.dynamicreports.report.builder.DynamicReports.type;
+import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 @Service
 public class ExportService {
@@ -120,7 +118,7 @@ public class ExportService {
                 );
     }
 
-    public void toXlsx(HttpServletResponse response, JasperReportBuilder report, String title) {
+    public void toXlsx(HttpServletResponse response, JasperReportBuilder report, String title) throws IOException, DRException {
         report.ignorePageWidth()
                 .ignorePagination()
                 .setPageMargin(DynamicReports.margin(0))
@@ -131,10 +129,6 @@ public class ExportService {
         response.setHeader("Set-Cookie", "fileDownload=true; path=/");
         response.setHeader("X-Frame-Options", " SAMEORIGIN");
         response.setContentType(TYPE_XLSX);
-        try {
-            report.toXlsx(response.getOutputStream());
-        } catch (DRException | IOException e) {
-            e.printStackTrace();
-        }
+        report.toXlsx(response.getOutputStream());
     }
 }
