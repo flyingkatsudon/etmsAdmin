@@ -18,7 +18,6 @@ define(function (require) {
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
             this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm()));
-            this.$('#isAttend').html(this.getOptions(ToolbarModel.getIsAttend()));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate()));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime()));
             return this;
@@ -30,10 +29,11 @@ define(function (require) {
             'change #deptNm': 'deptNmChanged',
             'change #majorNm': 'majorNmChanged',
             'change #groupNm': 'groupNmChanged',
-            'change #isAttend': 'isAttendChanged',
             'change #attendDate': 'attendDateChanged'
         },
         searchClicked: function (e) {
+            e.preventDefault();
+
             var _this = this;
             if (this.parent) {
                 this.parent.search({
@@ -54,10 +54,10 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
             this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
-            this.$('#isAttend').html(this.getOptions(ToolbarModel.getIsAttend(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
@@ -70,18 +70,17 @@ define(function (require) {
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
             this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
-            this.$('#isAttend').html(this.getOptions(ToolbarModel.getIsAttend(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
         deptNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 deptNm: e.currentTarget.value
             };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
             this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
-            this.$('#isAttend').html(this.getOptions(ToolbarModel.getIsAttend(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
@@ -89,11 +88,11 @@ define(function (require) {
         majorNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: e.currentTarget.value
             };
             this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
-            this.$('#isAttend').html(this.getOptions(ToolbarModel.getIsAttend(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
@@ -101,22 +100,10 @@ define(function (require) {
         groupNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val(),
                 groupNm: e.currentTarget.value
-            };
-            this.$('#isAttend').html(this.getOptions(ToolbarModel.getIsAttend(param)));
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        },
-
-        isAttendChanged: function (e){
-            var param = {
-                admissionNm: this.$('#admissionNm').val(),
-                deptNm: this.$('#deptNm').val(),
-                majorNm: this.$('#majorNm').val(),
-                groupNm: this.$('#majorNm').val(),
-                isAttend: e.currentTarget.value
             };
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
@@ -125,10 +112,10 @@ define(function (require) {
         attendDateChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val(),
                 groupNm: this.$('#groupNm').val(),
-                isAttend: this.$('#isAttend').val(),
                 attendDate: e.currentTarget.value
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));

@@ -4,7 +4,7 @@ define(function (require) {
     var Backbone = require('backbone');
 
     var Collection = Backbone.Collection.extend({
-        url: 'status/toolbar',
+        url: 'model/toolbar',
         initialize: function () {
             this.fetch({
                 async: false

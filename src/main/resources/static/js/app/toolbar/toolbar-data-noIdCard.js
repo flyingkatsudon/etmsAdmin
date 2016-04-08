@@ -62,7 +62,7 @@ define(function (require) {
             this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-            this.$('#headNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
@@ -74,7 +74,7 @@ define(function (require) {
             };
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-            this.$('#headNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
@@ -86,7 +86,7 @@ define(function (require) {
                 attendDate: e.currentTarget.value
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-            this.$('#headNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },
@@ -98,7 +98,7 @@ define(function (require) {
                 attendDate: this.$('#attendDate').val(),
                 attendTime: e.currentTarget.value
             };
-            this.$('#headNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         },

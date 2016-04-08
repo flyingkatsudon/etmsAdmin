@@ -16,7 +16,7 @@ define(function (require) {
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
                 {name: 'scorerNm', label: '평가위원'},
-                {name: 'isSent', label: '전송여부'}
+                {name: 'isSend', label: '전송여부'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -25,7 +25,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/examinee',
+                    //url: 'data/examinee',
                     colModel: colModel
                 }
             }, options);

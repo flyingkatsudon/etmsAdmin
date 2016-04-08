@@ -17,23 +17,24 @@ define(function(require){
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
+            this.$('#examNm').html(this.getOptions(ToolbarModel.getExamNm()));
             this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm()));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm()));
-            this.$('#isSent').html(this.getOptions(ToolbarModel.getIsSent()));
         },
         events:{
             'click #search': 'searchClicked',
-            'click #typeNm': 'typeNmClicked',
-            'click #attendDate': 'attendDateClicked',
-            'click #deptNm': 'deptNmClicked',
-            'click #majorNm': 'majorNmClicked',
-            'click #scorerNm': 'scorerNmClicked',
-            'click #bldgNm': 'bldgNmClicked',
-            'click #hallNm': 'hallNmClicked',
-            'click #isSent': 'isSentClicked'
+            'change #typeNm': 'typeNmChanged',
+            'change #attendDate': 'attendDateChanged',
+            'change #deptNm': 'deptNmChanged',
+            'change #majorNm': 'majorNmChanged',
+            'change #scorerNm': 'scorerNmChanged',
+            'change #bldgNm': 'bldgNmChanged',
+            'change #hallNm': 'hallNmChanged'
         },
         searchClicked: function (e) {
+            e.preventDefault();
+            
             var _this = this;
             if(this.parent){
                 this.parent.search({
@@ -41,96 +42,97 @@ define(function(require){
                     attendDate: _this.$('#attendDate').val(),
                     deptNm: _this.$('#deptNm').val(),
                     majorNm: _this.$('#majorNm').val(),
+                    examNm: _this.$('#examNm').val(),
                     scorerNm: _this.$('#scorerNm').val(),
+                    isSend: _this.$('#isSend').val(),
                     bldgNm: _this.$('#bldgNm').val(),
-                    hallNm: _this.$('#hallNm').val(),
-                    isSent: _this.$('#isSent').val()
+                    hallNm: _this.$('#hallNm').val()
                 });
             }
         },
-        typeNmClicked: function (e) {
+        typeNmChanged: function (e) {
             var param = {
                 typeNm: e.currentTarget.value
-            }
+            };
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#examNm').html(this.getOptions(ToolbarModel.getExamNm(param)));
             this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-            this.$('#isSent').html(this.getOptions(ToolbarModel.getIsSent(param)));
         },
-        attendDateClicked: function (e) {
+        attendDateChanged: function (e) {
             var param = {
-                typeNm: this.$el('#typeNm').val(),
+                typeNm: this.$('#typeNm').val(),
                 attendDate: e.currentTarget.value
-            }
+            };
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#examNm').html(this.getOptions(ToolbarModel.getExamNm(param)));
             this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-            this.$('#isSent').html(this.getOptions(ToolbarModel.getIsSent(param)));
         },
-        deptNmClicked: function (e) {
+        deptNmChanged: function (e) {
             var param = {
-                typeNm: this.$el('#typeNm').val(),
-                attendDate: this.$el('#attendDate').val(),
+                typeNm: this.$('#typeNm').val(),
+                attendDate: this.$('#attendDate').val(),
                 deptNm: e.currentTarget.value
-            }
+            };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#examNm').html(this.getOptions(ToolbarModel.getExamNm(param)));
             this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-            this.$('#isSent').html(this.getOptions(ToolbarModel.getIsSent(param)));
         },
-        majorNmClicked: function (e) {
+        majorNmChanged: function (e) {
             var param = {
                 typeNm: this.$el('#typeNm').val(),
                 attendDate: this.$el('#attendDate').val(),
                 deptNm: this.$el('#deptNm').val(),
                 majorNm: e.currentTarget.value
-            }
+            };
+            this.$('#examNm').html(this.getOptions(ToolbarModel.getExamNm(param)));
             this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-            this.$('#isSent').html(this.getOptions(ToolbarModel.getIsSent(param)));
         },
-        scorerNmClicked: function (e) {
+        examNmChanged: function (e) {
             var param = {
-                typeNm: this.$el('#typeNm').val(),
-                attendDate: this.$el('#attendDate').val(),
-                deptNm: this.$el('#deptNm').val(),
-                majorNm: this.$el('#majorNm').val(),
-                scorerNm: e.currentTarget.value
-            }
+                typeNm: this.$('#typeNm').val(),
+                attendDate: this.$('#attendDate').val(),
+                deptNm: this.$('#deptNm').val(),
+                majorNm: this.$('#major').val(),
+                examNm: e.currentTarget.value
+            };
+            this.$('#scorerNm').html(this.getOptions(ToolbarModel.getScorerNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-            this.$('#isSent').html(this.getOptions(ToolbarModel.getIsSent(param)));
         },
-        bldgNmClicked: function (e){
+        scorerNmChanged: function (e) {
             var param = {
-                typeNm: this.$el('#typeNm').val(),
-                attendDate: this.$el('#attendDate').val(),
-                deptNm: this.$el('#deptNm').val(),
-                majorNm: this.$el('#majorNm').val(),
-                scorerNm: this.$el('#scorerNm').val(),
-                bldgNm: e.currentTarget.value
-            }
+                typeNm: this.$('#typeNm').val(),
+                attendDate: this.$('#attendDate').val(),
+                deptNm: this.$('#deptNm').val(),
+                majorNm: this.$('#majorNm').val(),
+                examNm: this.$('#examNm').val(),
+                scorerNm: e.currentTarget.value
+            };
+            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-            this.$('#isSent').html(this.getOptions(ToolbarModel.getIsSent(param)));
         },
-        hallNmClicked: function (e){
+        bldgNmChanged: function (e){
             var param = {
-                typeNm: this.$el('#typeNm').val(),
-                attendDate: this.$el('#attendDate').val(),
-                deptNm: this.$el('#deptNm').val(),
-                majorNm: this.$el('#majorNm').val(),
-                scorerNm: this.$el('#scorerNm').val(),
-                bldgNm: this.$el('#bldgNm').val(),
-                hallNm: e.currentTarget.value
-            }
-            this.$('#isSent').html(this.getOptions(ToolbarModel.getIsSent(param)));
+                typeNm: this.$('#typeNm').val(),
+                attendDate: this.$('#attendDate').val(),
+                deptNm: this.$('#deptNm').val(),
+                majorNm: this.$('#majorNm').val(),
+                examNm: this.$('#examNm').val(),
+                scorerNm: this.$('#scorerNm').val(),
+                bldgNm: e.currentTarget.value
+            };
+            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
         }
     });
 });

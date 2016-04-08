@@ -25,10 +25,10 @@ define(function (require) {
         },
         events: {
             'click #search': 'searchClicked',
-            'click #admissionNm': 'admissionNmChanged',
-            'click #typeNm': 'typeNmChanged',
-            'click #headNm': 'headNmChanged',
-            'click #bldgNm': 'bldgNmChanged'
+            'change #admissionNm': 'admissionNmChanged',
+            'change #typeNm': 'typeNmChanged',
+            'change #headNm': 'headNmChanged',
+            'change #bldgNm': 'bldgNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -50,13 +50,10 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
-            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
-            this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
             this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
         typeNmChanged: function (e){
             var param = {

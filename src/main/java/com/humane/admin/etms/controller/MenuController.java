@@ -26,8 +26,8 @@ public class MenuController {
         list.add(new MenuBean("계열 별", "M01S01", "M01", "status-attend", "1_1"));
         list.add(new MenuBean("모집단위 별", "M01S02", "M01", "status-dept", "1_2"));
         list.add(new MenuBean("고사실 별", "M01S03", "M01", "status-hall", "1_3"));
-        list.add(new MenuBean("조 별", "M01S04", "M01", "status-group", "1_4"));//ss
-        list.add(new MenuBean("수험생 별", "M01S05", "M01", "status-examinee", "1_5"));//ss
+        list.add(new MenuBean("조 별", "M01S04", "M01", "status-group", "1_4"));
+        list.add(new MenuBean("수험생 별", "M01S05", "M01", "status-examinee", "1_5"));
 
         list.add(new MenuBean("데이터 리스트", "M02"));
         list.add(new MenuBean("요약", "M02S01", "M02", "data-summary", "2_1"));
@@ -46,12 +46,12 @@ public class MenuController {
         list.add(new MenuBean("시험 정보 관리", "M04S04", "M04", "user-exmInfo", "4_3"));
 
         list.add(new MenuBean("시스템 설정", "M05"));
-        list.add(new MenuBean("고객사 정보", "M05S01", "M05", "system-client", "5_1"));
+        //list.add(new MenuBean("고객사 정보", "M05S01", "M05", "system-client", "5_1"));
         list.add(new MenuBean("데이터 업로드", "M05S02", "M05", "system-upload", "5_2"));
         list.add(new MenuBean("시험정보 관리", "M05S03", "M05", "system-exam", "5_3"));
-        list.add(new MenuBean("기술요원 관리", "M05S04", "M05", "user-staff", "5_4"));
+        //list.add(new MenuBean("기술요원 관리", "M05S04", "M05", "user-staff", "5_4"));
         list.add(new MenuBean("디바이스 관리", "M05S05", "M05", "system-device", "5_5"));
-        list.add(new MenuBean("APP 관리", "M05S06", "M05", "system-app", "5_6"));
+        //list.add(new MenuBean("APP 관리", "M05S06", "M05", "system-app", "5_6"));
         list.add(new MenuBean("로그보기", "M05S07", "M05", "system-log", "5_7"));
         list.add(new MenuBean("코드정보", "M05S08", "M05", "system-code", "5_8"));
 

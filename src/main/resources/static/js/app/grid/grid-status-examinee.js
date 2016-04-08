@@ -26,7 +26,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/examinee',
+                    url: 'data/examinee',
                     colModel: colModel
                 }
             }, options);

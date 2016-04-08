@@ -4,7 +4,7 @@ define(function (require) {
     var Backbone = require('backbone');
 
     var Collection = Backbone.Collection.extend({
-        url: 'status/toolbar',
+        url: 'model/toolbar',
         initialize: function () {
             this.fetch({
                 async: false
@@ -84,8 +84,8 @@ define(function (require) {
         getScorerNm: function(obj){
             return this.getObjectList(obj, 'scorerNm', 'scorerNm');
         },
-        getIsSent: function(obj){
-            return this.getObjectList(obj, 'isSent', 'isSent');
+        getIsSend: function(obj){
+            return this.getObjectList(obj, 'isSend', 'isSend');
         },
         getWeirdNm: function(obj){
             return this.getObjectList(obj, 'weirdNm', 'weirdNm');

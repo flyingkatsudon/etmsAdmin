@@ -50,7 +50,7 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getAttendDate(param)));
+            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
             this.$('#weirdNm').html(this.getOptions(ToolbarModel.getWeirdNm(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));

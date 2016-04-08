@@ -25,10 +25,10 @@ define(function (require) {
         },
         events: {
             'click #search': 'searchClicked',
-            'click #admissionNm': 'admissionNmChanged',
-            'click #headNm': 'headNmChanged',
-            'click #bldgNm': 'bldgNmChanged',
-            'click #hallNm': 'hallNmChanged'
+            'change #admissionNm': 'admissionNmChanged',
+            'change #headNm': 'headNmChanged',
+            'change #bldgNm': 'bldgNmChanged',
+            'change #hallNm': 'hallNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
