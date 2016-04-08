@@ -31,7 +31,7 @@ public class HttpServiceLoggingInterceptor implements Interceptor {
         BufferedSource source = response.body().source();
         source.request(Long.MAX_VALUE); // Buffer the entire body.
         Buffer buffer = source.buffer();
-        log.debug("<-- {} {} {} {} ({}ms)", response.code(), response.message(), request.url(), buffer.size(), tookMs);
+        log.debug("<-- {} {} {} {}bytes ({}ms)", response.code(), response.message(), request.url(), buffer.size(), tookMs);
         return response;
     }
 

@@ -45,25 +45,27 @@ configurations {
 def retrofit2_version = "2.0.1"
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.projectlombok:lombok:1.16.8'
-    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.boot:spring-boot-devtools')
+    compile('org.projectlombok:lombok:1.16.8')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-tomcat')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
     compile "com.squareup.retrofit2:retrofit:${retrofit2_version}"
     compile "com.squareup.retrofit2:converter-scalars:${retrofit2_version}"
     compile "com.squareup.retrofit2:converter-jackson:${retrofit2_version}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit2_version}"
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    compile 'commons-io:commons-io:2.4'
+
     compile 'io.reactivex:rxjava:1.1.2'
     compile('com.google.code.gson:gson:2.6.2')
 
     compile('net.sourceforge.dynamicreports:dynamicreports-core:4.1.0')
 
-    compile 'org.springframework.boot:spring-boot-starter-tomcat'
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
-    runtime('org.springframework.boot:spring-boot-devtools')
-
+    compile('commons-io:commons-io:2.4')
     compile('com.humane:util-common:0.0.7')
 }
 
