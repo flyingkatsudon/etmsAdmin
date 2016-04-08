@@ -31,7 +31,10 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'data/otherHall',
+                    url: 'data/examinee',
+                    postData : {
+                        isOtherHall : true
+                    },
                     colModel: colModel
                 }
             }, options);

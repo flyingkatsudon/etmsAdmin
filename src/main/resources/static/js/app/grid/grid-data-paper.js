@@ -29,7 +29,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'data/paper',
+                    url: 'data/examinee',
                     colModel: colModel
                 }
             }, options);

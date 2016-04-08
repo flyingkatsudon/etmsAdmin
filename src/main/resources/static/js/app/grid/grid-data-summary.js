@@ -10,9 +10,9 @@ define(function (require) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
+                {name: 'weirdNm', label: '특이사항'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
-                {name: 'weirdNm', label: '특이사항'},
                 {name: 'attendCnt', label: '응시자수'},
                 {name: 'nonTargetCnt', label: '비대상자'},
                 {name: 'targetCnt', label: '대상자'}
@@ -24,7 +24,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'data/summary',
+                    url: 'data/examinee',
                     colModel: colModel
                 }
             }, options);

@@ -11,7 +11,7 @@ define(function (require) {
                     {type: 'bar', backgroundColor: 'MediumBlue'},
                     {type: 'line', backgroundColor: 'Gray', fill: false, borderColor: 'Gray'},
                     {type: 'bar', backgroundColor: 'Tomato'},
-                    {type: 'line'}
+                    {type: 'line', fill: false}
                 ]
             },
             options: {

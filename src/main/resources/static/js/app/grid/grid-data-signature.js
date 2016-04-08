@@ -25,7 +25,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'data/signature',
+                    url: 'data/examinee',
                     colModel: colModel
                 }
             }, options);

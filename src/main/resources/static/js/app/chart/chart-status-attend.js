@@ -9,9 +9,11 @@ define(function (require) {
             data: {
                 datasets: [
                     {type: 'bar', backgroundColor: 'MediumBlue'},
-                    {type: 'bar', backgroundColor: 'Tomato'}
+                    {type: 'line', backgroundColor: 'Gray', fill: false, borderColor: 'Gray'},
+                    {type: 'bar', backgroundColor: 'Tomato'},
+                    {type: 'line', fill: false}
                 ]
-            }
+            },
         }
     });
 });

@@ -34,8 +34,8 @@ define(function (require) {
             e.preventDefault();
 
             var _this = this;
-            if (this.list) {
-                this.list.search({
+            if (this.parent) {
+                this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
                     headNm : _this.$('#headNm').val(),
                     bldgNm : _this.$('#bldgNm').val(),

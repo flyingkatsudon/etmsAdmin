@@ -28,7 +28,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'data/noIdCard',
+                    url: 'data/examinee',
                     colModel: colModel
                 }
             }, options);
