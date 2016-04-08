@@ -115,8 +115,13 @@ define(function (require) {
             if (this.options.defaults.url) this.$grid.jqGrid('setGridParam', {datatype: 'json'}).trigger('reloadGrid');
             return this;
         },
-        search: function (o) {
-            /*            var o = o ? o : {};
+        search: function (param) {
+            $.each(param, function(key, value){
+                if (value === "" || value === null){
+                    delete param[key];
+                }
+            });
+            /*var o = o ? o : {};
              if ($.isEmptyObject(o)) {
              this.$grid[0].p.search = false;
              $.extend(this.$grid[0].p.postData, {filters: ''});
@@ -131,7 +136,7 @@ define(function (require) {
              }
              this.$grid[0].p.search = true;
              $.extend(this.$grid[0].p.postData, {filters: JSON.stringify(f)});*/
-            $.extend(this.$grid[0].p.postData, {q: JSON.stringify(o)});
+            $.extend(this.$grid[0].p.postData, param);
             this.$grid.trigger('reloadGrid', [{page: 1, current: true}]);
         },
         addExcel: function (url) {

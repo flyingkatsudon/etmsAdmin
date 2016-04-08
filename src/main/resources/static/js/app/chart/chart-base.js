@@ -26,11 +26,17 @@ define(function (require) {
             var _this = this;
             var data;
 
+            $.each(param, function (key, value) {
+                if (value === "" || value === null) {
+                    delete param[key];
+                }
+            });
+
             if (this.url) {
                 $.ajax({
                     async: false,
                     url: _this.url,
-                    data: {q: JSON.stringify(param)},
+                    data: param,
                     success: function (result) {
                         data = result;
                     }

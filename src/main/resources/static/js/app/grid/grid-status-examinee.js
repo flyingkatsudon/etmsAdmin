@@ -27,6 +27,9 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'data/examinee',
+                    postData : {
+                        isEtc : false
+                    },
                     colModel: colModel
                 }
             }, options);

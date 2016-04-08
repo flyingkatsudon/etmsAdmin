@@ -26,7 +26,9 @@ public class ImageController {
     @Autowired private ResponseService responseService;
 
     @RequestMapping(value = "examinee/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<InputStreamResource> examinee(@PathVariable("fileName") String fileName) throws IOException {
+    public ResponseEntity<InputStreamResource> examinee(
+            @PathVariable("fileName") String fileName
+    ) throws IOException {
 
         Observable<Response<ResponseBody>> observable = apiService.imageExaminee(fileName);
         return responseService.toResourceEntity(observable);

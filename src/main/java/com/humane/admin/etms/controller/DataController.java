@@ -29,13 +29,14 @@ public class DataController {
 
     @RequestMapping(value = "examinee", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity examinee(
-            @RequestParam(value = "q", required = false) String q,
+            StatusDto statusDto,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
-            @RequestParam(value = "sord", required = false) String sord) throws IOException {
+            @RequestParam(value = "sord", required = false) String sord
+    ) throws IOException {
 
-        String query = QueryBuilder.getQueryString(q);
+        String query = new QueryBuilder(statusDto).build();
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Observable<Response<PageResponse<StatusDto>>> observable = apiService.statusExaminee(query, page - 1, rows, sort);

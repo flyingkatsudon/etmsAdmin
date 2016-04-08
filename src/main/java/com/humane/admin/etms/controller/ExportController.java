@@ -1,5 +1,6 @@
 package com.humane.admin.etms.controller;
 
+import com.humane.admin.etms.dto.StatusDto;
 import com.humane.admin.etms.service.ExportService;
 import com.humane.util.jqgrid.JqgridMapper;
 import com.humane.util.query.QueryBuilder;
@@ -23,13 +24,14 @@ public class ExportController {
     @Autowired private ExportService exportService;
 
     @RequestMapping("attend")
-    public void attend(@RequestParam(value = "q", required = false) String q,
-                       @RequestParam(value = "sidx", required = false) String sidx,
-                       @RequestParam(value = "sord", required = false) String sord,
-                       HttpServletResponse response
+    public void attend(
+            StatusDto statusDto,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord,
+            HttpServletResponse response
     ) throws IOException, DRException {
 
-        String query = QueryBuilder.getQueryString(q);
+        String query = new QueryBuilder(statusDto).build();
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Observable<JasperReportBuilder> observable = exportService.reportAttend(query, sort);
@@ -43,12 +45,13 @@ public class ExportController {
     }
 
     @RequestMapping("dept")
-    public void dept(@RequestParam(value = "q", required = false) String q,
-                     @RequestParam(value = "sidx", required = false) String sidx,
-                     @RequestParam(value = "sord", required = false) String sord,
-                     HttpServletResponse response
+    public void dept(
+            StatusDto statusDto,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord,
+            HttpServletResponse response
     ) throws IOException, DRException {
-        String query = QueryBuilder.getQueryString(q);
+        String query = new QueryBuilder(statusDto).build();
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Observable<JasperReportBuilder> observable = exportService.reportDept(query, sort);
@@ -62,12 +65,13 @@ public class ExportController {
     }
 
     @RequestMapping("hall")
-    public void hall(@RequestParam(value = "q", required = false) String q,
-                     @RequestParam(value = "sidx", required = false) String sidx,
-                     @RequestParam(value = "sord", required = false) String sord,
-                     HttpServletResponse response
+    public void hall(
+            StatusDto statusDto,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord,
+            HttpServletResponse response
     ) throws IOException, DRException {
-        String query = QueryBuilder.getQueryString(q);
+        String query = new QueryBuilder(statusDto).build();
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Observable<JasperReportBuilder> observable = exportService.reportHall(query, sort);
@@ -80,12 +84,14 @@ public class ExportController {
     }
 
     @RequestMapping("group")
-    void group(@RequestParam(value = "q", required = false) String q,
-               @RequestParam(value = "sidx", required = false) String sidx,
-               @RequestParam(value = "sord", required = false) String sord,
-               HttpServletResponse response) throws IOException {
+    void group(
+            StatusDto statusDto,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord,
+            HttpServletResponse response
+    ) throws IOException {
 
-        String query = QueryBuilder.getQueryString(q);
+        String query = new QueryBuilder(statusDto).build();
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Observable<JasperReportBuilder> observable = exportService.reportGroup(query, sort);
@@ -97,14 +103,14 @@ public class ExportController {
         }
     }
 
-
     @RequestMapping("examinee")
-    public void examinee(@RequestParam(value = "q", required = false) String q,
-                         @RequestParam(value = "sidx", required = false) String sidx,
-                         @RequestParam(value = "sord", required = false) String sord,
-                         HttpServletResponse response
+    public void examinee(
+            StatusDto statusDto,
+            @RequestParam(value = "sidx", required = false) String sidx,
+            @RequestParam(value = "sord", required = false) String sord,
+            HttpServletResponse response
     ) throws IOException, DRException {
-        String query = QueryBuilder.getQueryString(q);
+        String query = new QueryBuilder(statusDto).build();
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
         Observable<JasperReportBuilder> observable = exportService.reportExaminee(query, sort);
