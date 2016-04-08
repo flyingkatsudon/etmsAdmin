@@ -2,9 +2,11 @@ package com.humane.admin.etms.filter;
 
 import com.humane.util.filter.RequestWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 /**
@@ -24,12 +26,12 @@ public class LoggingFilter implements Filter {
         RequestWrapper requestWrapper = RequestWrapper.of(request);
 
         String uri = requestWrapper.getRequestUri();
-        if (!uri.split("/")[1].matches("images|css|js|tpl|components"))
-            log.info("uri : {}, parameter : {}, body : {}",
-                    uri,
-                    //requestWrapper.headerMap(),
-                    requestWrapper.parameterMap(),
-                    requestWrapper.getBody());
+        Map<String, String> headerMap = requestWrapper.headerMap();
+        Map<String, String> parameterMap = requestWrapper.parameterMap();
+        String body = requestWrapper.getBody();
+
+        if (!uri.matches("^(/)(images|css|js|tpl|components).*$"))
+            log.info("uri : {}, parameter : {}, body : {}", uri, parameterMap, body);
         chain.doFilter(request, response);
     }
 
