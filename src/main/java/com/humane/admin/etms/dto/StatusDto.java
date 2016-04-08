@@ -44,4 +44,5 @@ public class StatusDto implements Serializable {
     String attendHallNm;
     Boolean isEtc;
     Boolean isSend;
+    Boolean isOtherHall;
 }
