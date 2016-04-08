@@ -116,11 +116,6 @@ define(function (require) {
             return this;
         },
         search: function (param) {
-            $.each(param, function(key, value){
-                if (value === "" || value === null){
-                    delete param[key];
-                }
-            });
             /*var o = o ? o : {};
              if ($.isEmptyObject(o)) {
              this.$grid[0].p.search = false;
