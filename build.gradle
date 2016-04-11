@@ -60,7 +60,7 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit2_version}"
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
 
-    compile 'io.reactivex:rxjava:1.1.2'
+    compile 'io.reactivex:rxjava:1.1.3'
     compile('com.google.code.gson:gson:2.6.2')
 
     compile('net.sourceforge.dynamicreports:dynamicreports-core:4.1.0')
