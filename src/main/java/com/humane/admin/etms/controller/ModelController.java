@@ -3,7 +3,7 @@ package com.humane.admin.etms.controller;
 import com.humane.admin.etms.api.ApiService;
 import com.humane.admin.etms.dto.StatusDto;
 import com.humane.admin.etms.service.ResponseService;
-import com.humane.util.query.QueryBuilder;
+import com.humane.util.ObjectConvert;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import retrofit2.Response;
 import rx.Observable;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("model")
@@ -28,15 +28,12 @@ public class ModelController {
      * 툴바 데이터를 전송
      */
     @RequestMapping(value = "toolbar")
-    public ResponseEntity getToolbar() throws IOException {
+    public ResponseEntity getToolbar(StatusDto statusDto) {
 
+        Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        String query = new QueryBuilder()
-//                .add("admissionCd", "1")
-                .build();
-
-        Observable<Response<List<StatusDto>>> observable = apiService.statusToolbar(query);
+        Observable<Response<List<StatusDto>>> observable = apiService.statusToolbar(params);
         return responseService.toResponseEntity(observable);
     }
 }

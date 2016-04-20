@@ -14,6 +14,7 @@ import rx.Observable;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
@@ -24,7 +25,7 @@ public class ExportService {
 
     @Autowired private ApiService apiService;
 
-    public Observable<JasperReportBuilder> reportAttend(String query, String... sort) {
+    public Observable<JasperReportBuilder> reportAttend(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> apiService.statusAttend(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
@@ -44,10 +45,9 @@ public class ExportService {
                                 col.column("결시율", "absentPer", type.longType())
                         ).setDataSource(new JRBeanCollectionDataSource(list))
                 );
-
     }
 
-    public Observable<JasperReportBuilder> reportDept(String query, String... sort) {
+    public Observable<JasperReportBuilder> reportDept(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> apiService.statusDept(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
@@ -71,7 +71,7 @@ public class ExportService {
     }
 
 
-    public Observable<JasperReportBuilder> reportHall(String query, String... sort) {
+    public Observable<JasperReportBuilder> reportHall(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> apiService.statusHall(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
@@ -96,7 +96,7 @@ public class ExportService {
                 );
     }
 
-    public Observable<JasperReportBuilder> reportGroup(String query, String... sort) {
+    public Observable<JasperReportBuilder> reportGroup(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> apiService.statusGroup(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
@@ -122,7 +122,7 @@ public class ExportService {
                 );
     }
 
-    public Observable<JasperReportBuilder> reportExaminee(String query, String... sort) {
+    public Observable<JasperReportBuilder> reportExaminee(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> apiService.statusExaminee(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())

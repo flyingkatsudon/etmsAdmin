@@ -3,8 +3,8 @@ package com.humane.admin.etms.controller;
 import com.humane.admin.etms.api.ApiService;
 import com.humane.admin.etms.dto.StatusDto;
 import com.humane.admin.etms.service.ResponseService;
+import com.humane.util.ObjectConvert;
 import com.humane.util.jqgrid.JqgridMapper;
-import com.humane.util.query.QueryBuilder;
 import com.humane.util.spring.PageResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import retrofit2.Response;
 import rx.Observable;
 
-import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("data")
@@ -34,12 +34,12 @@ public class DataController {
             @RequestParam(value = "rows", required = false, defaultValue = "100") Integer rows,
             @RequestParam(value = "sidx", required = false) String sidx,
             @RequestParam(value = "sord", required = false) String sord
-    ) throws IOException {
+    ) {
 
-        String query = new QueryBuilder(statusDto).build();
+        Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
         String[] sort = JqgridMapper.getSortString(sidx, sord);
 
-        Observable<Response<PageResponse<StatusDto>>> observable = apiService.statusExaminee(query, page - 1, rows, sort);
+        Observable<Response<PageResponse<StatusDto>>> observable = apiService.statusExaminee(params, page - 1, rows, sort);
         return responseService.toJqgridResponseEntity(observable);
     }
 }

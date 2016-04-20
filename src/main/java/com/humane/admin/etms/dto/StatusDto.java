@@ -2,47 +2,53 @@ package com.humane.admin.etms.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.humane.util.jackson.PercentSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StatusDto implements Serializable {
-    String admissionNm;
-    String attendNm;
-    String majorNm;
-    String deptNm;
-    String typeNm;
+    private String admissionNm;
+    private String attendNm;
+    private String majorNm;
+    private String deptNm;
+    private String typeNm;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    Date attendDate;
+    private Date attendDate;
 
     @DateTimeFormat(pattern = "HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
-    Date attendTime;
-    String hallCd;
-    String headNm;
-    String bldgNm;
-    String hallNm;
-    String examineeCd;
-    String examineeNm;
-    Long examineeCnt;
-    Long attendCnt;
-    Long absentCnt;
-    Double attendPer;
-    Double absentPer;
-    Boolean isAttend;
-    String groupNm;
-    String attendHeadNm;
-    String attendBldgNm;
-    String attendHallNm;
-    Boolean isEtc;
-    Boolean isSend;
-    Boolean isOtherHall;
+    private Date attendTime;
+    private String hallCd;
+    private String headNm;
+    private String bldgNm;
+    private String hallNm;
+    private String examineeCd;
+    private String examineeNm;
+    private Long examineeCnt;
+    private Long attendCnt;
+    private Long absentCnt;
+    @JsonSerialize(using = PercentSerializer.class)
+    private BigDecimal attendPer;
+    @JsonSerialize(using = PercentSerializer.class)
+    private BigDecimal absentPer;
+    private Boolean isAttend;
+    private String groupNm;
+    private String attendHeadNm;
+    private String attendBldgNm;
+    private String attendHallNm;
+    private Boolean isEtc;
+    private Boolean isSend;
+    private Boolean isOtherHall;
+    private String paperCd;
 }

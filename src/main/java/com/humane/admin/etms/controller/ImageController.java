@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import retrofit2.Response;
 import rx.Observable;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping(value = "image", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 @Slf4j
@@ -28,7 +26,7 @@ public class ImageController {
     @RequestMapping(value = "examinee/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> examinee(
             @PathVariable("fileName") String fileName
-    ) throws IOException {
+    ) {
 
         Observable<Response<ResponseBody>> observable = apiService.imageExaminee(fileName);
         return responseService.toResourceEntity(observable);
