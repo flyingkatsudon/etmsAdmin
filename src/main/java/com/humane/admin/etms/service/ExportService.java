@@ -41,9 +41,9 @@ public class ExportService {
                                 col.column("시험시간", "attendTime", type.timeHourToSecondType()),
                                 col.column("지원자수", "examineeCnt", type.longType()),
                                 col.column("응시자수", "attendCnt", type.longType()),
-                                col.column("응시율", "attendPer", type.longType()),
+                                col.column("응시율", "attendPer", type.bigDecimalType()),
                                 col.column("결시자수", "absentCnt", type.longType()),
-                                col.column("결시율", "absentPer", type.longType())
+                                col.column("결시율", "absentPer", type.bigDecimalType())
                         ).setDataSource(new JRBeanCollectionDataSource(list))
                 );
     }
@@ -64,9 +64,9 @@ public class ExportService {
                                 col.column("시험시간", "attendTime", type.timeHourToSecondType()),
                                 col.column("지원자수", "examineeCnt", type.longType()),
                                 col.column("응시자수", "attendCnt", type.longType()),
-                                col.column("응시율", "attendPer", type.longType()),
+                                col.column("응시율", "attendPer", type.bigDecimalType()),
                                 col.column("결시자수", "absentCnt", type.longType()),
-                                col.column("결시율", "absentPer", type.longType())
+                                col.column("결시율", "absentPer", type.bigDecimalType())
                         ).setDataSource(new JRBeanCollectionDataSource(list))
                 );
     }
@@ -90,9 +90,9 @@ public class ExportService {
                                 col.column("고사실", "hallNm", type.stringType()),
                                 col.column("지원자수", "examineeCnt", type.longType()),
                                 col.column("응시자수", "attendCnt", type.longType()),
-                                col.column("응시율", "attendPer", type.longType()),
+                                col.column("응시율", "attendPer", type.bigDecimalType()),
                                 col.column("결시자수", "absentCnt", type.longType()),
-                                col.column("결시율", "absentPer", type.longType())
+                                col.column("결시율", "absentPer", type.bigDecimalType())
                         ).setDataSource(new JRBeanCollectionDataSource(list))
                 );
     }
@@ -116,9 +116,9 @@ public class ExportService {
                                 col.column("조", "groupNm", type.stringType()),
                                 col.column("지원자수", "examineeCnt", type.longType()),
                                 col.column("응시자수", "attendCnt", type.longType()),
-                                col.column("응시율", "attendPer", type.longType()),
+                                col.column("응시율", "attendPer", type.bigDecimalType()),
                                 col.column("결시자수", "absentCnt", type.longType()),
-                                col.column("결시율", "absentPer", type.longType())
+                                col.column("결시율", "absentPer", type.bigDecimalType())
                         ).setDataSource(new JRBeanCollectionDataSource(list))
                 );
     }
