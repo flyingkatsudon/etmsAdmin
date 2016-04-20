@@ -1,6 +1,7 @@
 package com.humane.admin.etms.service;
 
 import com.humane.admin.etms.api.ApiService;
+import com.humane.admin.etms.dto.StatusDto;
 import com.humane.util.file.FileNameEncoder;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.jasper.constant.JasperProperty;
@@ -122,14 +123,18 @@ public class ExportService {
                 );
     }
 
-    public Observable<JasperReportBuilder> reportExaminee(Map<String, String> query, String... sort) {
+    public Observable<ArrayList<StatusDto>> getAllExaminee(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> apiService.statusExaminee(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
                     return list;
-                })
+                });
+    }
+
+    public Observable<JasperReportBuilder> reportExaminee(Map<String, String> query, String... sort) {
+        return getAllExaminee(query, sort)
                 .map(list -> report()
                         .columns(
                                 col.column("전형", "admissionNm", type.stringType()),
