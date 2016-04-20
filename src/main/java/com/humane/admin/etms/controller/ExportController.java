@@ -6,6 +6,7 @@ import com.humane.util.ObjectConvert;
 import com.humane.util.jqgrid.JqgridMapper;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import rx.Observable;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -121,4 +124,18 @@ public class ExportController {
             log.error("{}", e.getMessage());
         }
     }
+
+    @RequestMapping("examineeId")
+    public void examineeId(
+            StatusDto statusDto,
+            HttpServletResponse response
+    ) {
+        Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
+        Observable<ArrayList<StatusDto>> observable = exportService.getAllExaminee(params);
+        ArrayList<StatusDto> list = observable.toBlocking().first();
+
+        JasperPrint jasperPrint = exportService.getPrint("jrxml/examinee-id-card.jrxml", new HashMap<>(), list);
+        exportService.toPdf(response, jasperPrint, "수험표");
+    }
 }
+

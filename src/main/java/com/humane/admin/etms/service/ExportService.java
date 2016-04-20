@@ -7,14 +7,21 @@ import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.jasper.constant.JasperProperty;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.type.WhenNoDataTypeEnum;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rx.Observable;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
@@ -23,6 +30,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 public class ExportService {
 
     private static final String TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    private static final String TYPE_PDF = "application/pdf";
 
     @Autowired private ApiService apiService;
 
@@ -161,5 +169,41 @@ public class ExportService {
         response.setHeader("X-Frame-Options", " SAMEORIGIN");
         response.setContentType(TYPE_XLSX);
         report.toXlsx(response.getOutputStream());
+    }
+
+    public JasperPrint getPrint(String path, HashMap<String, Object> param, ArrayList<StatusDto> list) {
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(path)) {
+            JasperDesign jd = JRXmlLoader.load(is);
+            JasperReport jr = JasperCompileManager.compileReport(jd);
+            jr.setWhenNoDataType(WhenNoDataTypeEnum.ALL_SECTIONS_NO_DETAIL);
+            return JasperFillManager.fillReport(jr, param, new JRBeanCollectionDataSource(list));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void toPdf(HttpServletResponse response, JasperPrint jasperPrint, String fileName) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            JasperExportManager.exportReportToPdfStream(jasperPrint, out);
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+
+        byte[] data = out.toByteArray();
+        response.setHeader("Content-Disposition", FileNameEncoder.encode(fileName) + ".pdf");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        response.setHeader("X-Frame-Options", " SAMEORIGIN");
+        response.setContentLength(data.length);
+        response.setContentType(TYPE_PDF);
+        try {
+            response.getOutputStream().write(data);
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
