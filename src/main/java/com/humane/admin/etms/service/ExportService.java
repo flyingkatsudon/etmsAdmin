@@ -1,51 +1,46 @@
 package com.humane.admin.etms.service;
 
-import com.humane.admin.etms.api.ApiService;
+import com.humane.admin.etms.api.RestApi;
 import com.humane.admin.etms.dto.StatusDto;
-import com.humane.util.file.FileNameEncoder;
+import lombok.RequiredArgsConstructor;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.jasper.constant.JasperProperty;
-import net.sf.dynamicreports.report.builder.DynamicReports;
-import net.sf.dynamicreports.report.exception.DRException;
-import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.type.WhenNoDataTypeEnum;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rx.Observable;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ExportService {
+    private final RestApi restApi;
 
-    private static final String TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    private static final String TYPE_PDF = "application/pdf";
-
-    @Autowired private ApiService apiService;
-
-    public Observable<JasperReportBuilder> reportAttend(Map<String, String> query, String... sort) {
+    public Observable<ArrayList<Object>> allAttend(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> apiService.statusAttend(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.statusAttend(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
                     return list;
-                })
+                });
+    }
+
+    public Observable<JasperReportBuilder> reportAttend(Map<String, String> query, String... sort) {
+        return allAttend(query, sort)
                 .map(list -> report()
                         .columns(col.column("전형", "admissionNm", type.stringType()),
                                 col.column("계열", "typeNm", type.stringType()),
@@ -60,14 +55,18 @@ public class ExportService {
                 );
     }
 
-    public Observable<JasperReportBuilder> reportDept(Map<String, String> query, String... sort) {
+    public Observable<ArrayList<Object>> allDept(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> apiService.statusDept(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.statusDept(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
                     return list;
-                })
+                });
+    }
+
+    public Observable<JasperReportBuilder> reportDept(Map<String, String> query, String... sort) {
+        return allDept(query, sort)
                 .map(list -> report()
                         .columns(col.column("전형", "admissionNm", type.stringType()),
                                 col.column("계열", "typeNm", type.stringType()),
@@ -83,15 +82,18 @@ public class ExportService {
                 );
     }
 
-
-    public Observable<JasperReportBuilder> reportHall(Map<String, String> query, String... sort) {
+    public Observable<ArrayList<Object>> allHall(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> apiService.statusHall(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.statusHall(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
                     return list;
-                })
+                });
+    }
+
+    public Observable<JasperReportBuilder> reportHall(Map<String, String> query, String... sort) {
+        return allHall(query, sort)
                 .map(list -> report()
                         .columns(col.column("전형", "admissionNm", type.stringType()),
                                 col.column("계열", "typeNm", type.stringType()),
@@ -109,14 +111,18 @@ public class ExportService {
                 );
     }
 
-    public Observable<JasperReportBuilder> reportGroup(Map<String, String> query, String... sort) {
+    public Observable<ArrayList<Object>> allGroup(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> apiService.statusGroup(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.statusGroup(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
                     return list;
-                })
+                });
+    }
+
+    public Observable<JasperReportBuilder> reportGroup(Map<String, String> query, String... sort) {
+        return allGroup(query, sort)
                 .map(list -> report()
                         .columns(
                                 col.column("전형", "admissionNm", type.stringType()),
@@ -137,7 +143,7 @@ public class ExportService {
 
     public Observable<ArrayList<StatusDto>> getAllExaminee(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> apiService.statusExaminee(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.statusExaminee(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -161,75 +167,17 @@ public class ExportService {
                 );
     }
 
-    public void toXlsx(HttpServletResponse response, JasperReportBuilder report, String title) throws IOException, DRException {
-        report.ignorePageWidth()
-                .ignorePagination()
-                .setPageMargin(DynamicReports.margin(0))
-                .addProperty(JasperProperty.EXPORT_XLS_SHEET_NAMES_PREFIX, title);
 
-        response.setHeader("Content-Disposition", FileNameEncoder.encode(title) + ".xlsx");
-        response.setHeader("Content-Transfer-Encoding", "binary");
-        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-        response.setHeader("X-Frame-Options", " SAMEORIGIN");
-        response.setContentType(TYPE_XLSX);
-        report.toXlsx(response.getOutputStream());
-    }
+    public JasperPrint getPrint(String path, HashMap<String, Object> param, List<StatusDto> list) {
 
-    public JasperPrint getPrint(String path, HashMap<String, Object> param, ArrayList<StatusDto> list) {
-
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(path)) {
-            JasperDesign jd = JRXmlLoader.load(is);
-            JasperReport jr = JasperCompileManager.compileReport(jd);
-            jr.setWhenNoDataType(WhenNoDataTypeEnum.ALL_SECTIONS_NO_DETAIL);
-            return JasperFillManager.fillReport(jr, param, new JRBeanCollectionDataSource(list));
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
+            JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+            jasperReport.setWhenNoDataType(WhenNoDataTypeEnum.ALL_SECTIONS_NO_DETAIL);
+            return JasperFillManager.fillReport(jasperReport, param, new JRBeanCollectionDataSource(list));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public void toPdf(HttpServletResponse response, JasperPrint jasperPrint, String title) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
-            JasperExportManager.exportReportToPdfStream(jasperPrint, out);
-        } catch (JRException e) {
-            e.printStackTrace();
-        }
-
-        byte[] data = out.toByteArray();
-        response.setHeader("Content-Disposition", "inline;attachment; filename=" + FileNameEncoder.encode(title) + ".pdf");
-        response.setHeader("Content-Transfer-Encoding", "binary");
-        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-        response.setHeader("X-Frame-Options", " SAMEORIGIN");
-        response.setContentLength(data.length);
-        response.setContentType(TYPE_PDF);
-        try {
-            response.getOutputStream().write(data);
-            response.getOutputStream().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void toXls(HttpServletResponse response, JasperPrint jasperPrint, String title) {
-        try {
-            JRXlsxExporter exporter = new JRXlsxExporter();
-            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(response.getOutputStream()));
-
-            SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
-            exporter.setConfiguration(configuration);
-
-            response.setHeader("Content-Disposition", FileNameEncoder.encode(title) + ".xlsx");
-            response.setHeader("Content-Transfer-Encoding", "binary");
-            response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-            response.setHeader("X-Frame-Options", " SAMEORIGIN");
-            response.setContentType(TYPE_XLSX);
-
-            exporter.exportReport();
-            response.getOutputStream().flush();
-        } catch (JRException | IOException e) {
-            e.printStackTrace();
-        }
     }
 }

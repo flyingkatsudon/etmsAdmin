@@ -1,6 +1,6 @@
 package com.humane.admin.etms.service;
 
-import com.humane.admin.etms.api.ApiService;
+import com.humane.admin.etms.api.RestApi;
 import lombok.RequiredArgsConstructor;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.IOUtils;
@@ -15,7 +15,7 @@ import java.io.*;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ImageService {
-    private final ApiService apiService;
+    private final RestApi restApi;
 
     @Value("${path.image.examinee:C:/api/image/examinee}") String pathImageExaminee;
 
@@ -27,7 +27,7 @@ public class ImageService {
             if (file.exists()) {
                 return new FileInputStream(file);
             } else {
-                Observable<Response<ResponseBody>> observable = apiService.imageExaminee(fileName);
+                Observable<Response<ResponseBody>> observable = restApi.imageExaminee(fileName);
                 Response<ResponseBody> response = observable.toBlocking().first();
                 if (response.isSuccessful()) {
                     byte[] ba = response.body().bytes();

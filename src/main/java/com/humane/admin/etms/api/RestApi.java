@@ -14,7 +14,7 @@ import rx.Observable;
 import java.util.List;
 import java.util.Map;
 
-public interface ApiService {
+public interface RestApi {
 
     @GET("status/attend")
     Observable<Response<PageResponse<StatusDto>>> statusAttend(@QueryMap Map<String, String> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);

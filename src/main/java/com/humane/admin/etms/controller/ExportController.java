@@ -3,15 +3,15 @@ package com.humane.admin.etms.controller;
 import com.humane.admin.etms.dto.StatusDto;
 import com.humane.admin.etms.service.ExportService;
 import com.humane.admin.etms.service.ImageService;
+import com.humane.admin.etms.service.ResponseService;
 import com.humane.util.ObjectConvert;
-import com.humane.util.jqgrid.JqgridMapper;
+import com.humane.util.jqgrid.JqgridPager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import rx.Observable;
 
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("export")
@@ -31,116 +31,74 @@ import java.util.Map;
 public class ExportController {
     private final ExportService exportService;
     private final ImageService imageService;
+    private final ResponseService responseService;
 
     @RequestMapping("attend")
-    public void attend(
-            StatusDto statusDto,
-            @RequestParam(value = "sidx", required = false) String sidx,
-            @RequestParam(value = "sord", required = false) String sord,
-            HttpServletResponse response
-    ) {
+    public void attend(StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+        Observable<JasperReportBuilder> observable = exportService.reportAttend(
+                ObjectConvert.asMap(statusDto),
+                pager.getSort()
+        );
 
-        Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
-        String[] sort = JqgridMapper.getSortString(sidx, sord);
+        JasperReportBuilder builder = observable.toBlocking().first();
 
-        Observable<JasperReportBuilder> observable = exportService.reportAttend(params, sort);
-
-        try {
-            JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "전형 별 응시율");
-        } catch (Exception e) {
-            log.error("{}", e.getMessage());
-        }
+        responseService.toXlsx(response, builder, "전형 별 응시율");
     }
 
     @RequestMapping("dept")
-    public void dept(
-            StatusDto statusDto,
-            @RequestParam(value = "sidx", required = false) String sidx,
-            @RequestParam(value = "sord", required = false) String sord,
-            HttpServletResponse response
-    ) {
-        Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
-        String[] sort = JqgridMapper.getSortString(sidx, sord);
+    public void dept(StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+        Observable<JasperReportBuilder> observable = exportService.reportDept(
+                ObjectConvert.asMap(statusDto),
+                pager.getSort()
+        );
 
-        Observable<JasperReportBuilder> observable = exportService.reportDept(params, sort);
+        JasperReportBuilder builder = observable.toBlocking().first();
 
-        try {
-            JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "모집단위 별 응시율");
-        } catch (Exception e) {
-            log.error("{}", e.getMessage());
-        }
+        responseService.toXlsx(response, builder, "모집단위 별 응시율");
     }
 
     @RequestMapping("hall")
-    public void hall(
-            StatusDto statusDto,
-            @RequestParam(value = "sidx", required = false) String sidx,
-            @RequestParam(value = "sord", required = false) String sord,
-            HttpServletResponse response
-    ) {
-        Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
-        String[] sort = JqgridMapper.getSortString(sidx, sord);
+    public void hall(StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+        Observable<JasperReportBuilder> observable = exportService.reportHall(
+                ObjectConvert.asMap(statusDto),
+                pager.getSort()
+        );
 
-        Observable<JasperReportBuilder> observable = exportService.reportHall(params, sort);
-        try {
-            JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "고사실 별 응시율");
-        } catch (Exception e) {
-            log.error("{}", e.getMessage());
-        }
+        JasperReportBuilder builder = observable.toBlocking().first();
+
+        responseService.toXlsx(response, builder, "고사실 별 응시율");
     }
 
     @RequestMapping("group")
-    void group(
-            StatusDto statusDto,
-            @RequestParam(value = "sidx", required = false) String sidx,
-            @RequestParam(value = "sord", required = false) String sord,
-            HttpServletResponse response
-    ) {
+    void group(StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+        Observable<JasperReportBuilder> observable = exportService.reportGroup(
+                ObjectConvert.asMap(statusDto),
+                pager.getSort()
+        );
 
-        Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
-        String[] sort = JqgridMapper.getSortString(sidx, sord);
+        JasperReportBuilder builder = observable.toBlocking().first();
 
-        Observable<JasperReportBuilder> observable = exportService.reportGroup(params, sort);
-        try {
-            JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "조 별 응시율");
-        } catch (Exception e) {
-            log.error("{}", e.getMessage());
-        }
+        responseService.toXlsx(response, builder, "조 별 응시율");
     }
 
     @RequestMapping("examinee")
-    public void examinee(
-            StatusDto statusDto,
-            @RequestParam(value = "sidx", required = false) String sidx,
-            @RequestParam(value = "sord", required = false) String sord,
-            HttpServletResponse response
-    ) {
-        Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
-        String[] sort = JqgridMapper.getSortString(sidx, sord);
+    public void examinee(StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+        Observable<JasperReportBuilder> observable = exportService.reportExaminee(
+                ObjectConvert.asMap(statusDto),
+                pager.getSort()
+        );
 
-        Observable<JasperReportBuilder> observable = exportService.reportExaminee(params, sort);
+        JasperReportBuilder builder = observable.toBlocking().first();
 
-        try {
-            JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "수험생 별 응시현황");
-        } catch (Exception e) {
-            log.error("{}", e.getMessage());
-        }
+        responseService.toXlsx(response, builder, "수험생 별 응시현황");
     }
 
     @RequestMapping("examineeId")
-    public void examineeId(
-            StatusDto statusDto,
-            HttpServletResponse response
-    ) {
-        Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
-        Observable<ArrayList<StatusDto>> observable = exportService.getAllExaminee(params);
+    public void examineeId(StatusDto statusDto, HttpServletResponse response) {
+        Observable<ArrayList<StatusDto>> observable = exportService.getAllExaminee(ObjectConvert.asMap(statusDto));
 
-        ArrayList<StatusDto> list = observable.toBlocking().first();
+        List<StatusDto> list = observable.toBlocking().first();
+
         list.forEach(item -> {
             try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
                 BufferedImage image = ImageIO.read(is);
@@ -151,6 +109,6 @@ public class ExportController {
         });
 
         JasperPrint jasperPrint = exportService.getPrint("jrxml/examinee-id-card.jrxml", new HashMap<>(), list);
-        exportService.toPdf(response, jasperPrint, "수험표");
+        responseService.toPdf(response, jasperPrint, "수험표");
     }
 }

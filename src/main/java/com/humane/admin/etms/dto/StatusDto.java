@@ -52,5 +52,6 @@ public class StatusDto implements Serializable {
     private Boolean isSend;
     private Boolean isOtherHall;
     private String paperCd;
+
     private BufferedImage examineeImage;
 }

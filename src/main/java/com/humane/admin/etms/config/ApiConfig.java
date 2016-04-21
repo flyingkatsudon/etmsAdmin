@@ -1,6 +1,6 @@
 package com.humane.admin.etms.config;
 
-import com.humane.admin.etms.api.ApiService;
+import com.humane.admin.etms.api.RestApi;
 import com.humane.util.retrofit.HttpServiceLoggingInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -68,7 +68,7 @@ public class ApiConfig {
     }
 
     @Bean
-    public ApiService apiService(Retrofit retrofit) {
-        return retrofit.create(ApiService.class);
+    public RestApi restApi(Retrofit retrofit) {
+        return retrofit.create(RestApi.class);
     }
 }
