@@ -21,6 +21,8 @@ public class ImageService {
 
     public InputStream getImageExaminee(String fileName) {
         try {
+            File path = new File(pathImageExaminee);
+            if(!path.exists()) path.mkdirs();
             File file = new File(pathImageExaminee + "/" + fileName);
             if (file.exists()) {
                 return new FileInputStream(file);
@@ -28,8 +30,11 @@ public class ImageService {
                 Observable<Response<ResponseBody>> observable = apiService.imageExaminee(fileName);
                 Response<ResponseBody> response = observable.toBlocking().first();
                 if (response.isSuccessful()) {
-                    IOUtils.write(response.body().bytes(), new FileOutputStream(file));
-                    return response.body().byteStream();
+                    byte[] ba = response.body().bytes();
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(ba);
+                    IOUtils.closeQuietly(fos);
+                    return new ByteArrayInputStream(ba);
                 }
             }
         } catch (IOException e) {
