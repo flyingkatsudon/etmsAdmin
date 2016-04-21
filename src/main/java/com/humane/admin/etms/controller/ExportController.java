@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.jasperreports.engine.JasperPrint;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -149,6 +150,8 @@ public class ExportController {
                 item.setExamineeImage(image);
             } catch (IOException e) {
                 e.printStackTrace();
+            }finally {
+                IOUtils.closeQuietly(is);
             }
         });
 
