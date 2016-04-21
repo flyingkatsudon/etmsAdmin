@@ -40,7 +40,7 @@ public class ExportController {
 
         try {
             JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "전형별 응시율");
+            exportService.toXlsx(response, builder, "전형 별 응시율");
         } catch (Exception e) {
             log.error("{}", e.getMessage());
         }
@@ -60,7 +60,7 @@ public class ExportController {
 
         try {
             JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "모집단위별 응시율");
+            exportService.toXlsx(response, builder, "모집단위 별 응시율");
         } catch (Exception e) {
             log.error("{}", e.getMessage());
         }
@@ -79,7 +79,7 @@ public class ExportController {
         Observable<JasperReportBuilder> observable = exportService.reportHall(params, sort);
         try {
             JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "고사실별 응시율");
+            exportService.toXlsx(response, builder, "고사실 별 응시율");
         } catch (Exception e) {
             log.error("{}", e.getMessage());
         }
@@ -99,7 +99,7 @@ public class ExportController {
         Observable<JasperReportBuilder> observable = exportService.reportGroup(params, sort);
         try {
             JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "조별 응시율");
+            exportService.toXlsx(response, builder, "조 별 응시율");
         } catch (Exception e) {
             log.error("{}", e.getMessage());
         }
@@ -119,7 +119,7 @@ public class ExportController {
 
         try {
             JasperReportBuilder builder = observable.toBlocking().first();
-            exportService.toXlsx(response, builder, "수험생별 응시현황");
+            exportService.toXlsx(response, builder, "수험생 별 응시현황");
         } catch (Exception e) {
             log.error("{}", e.getMessage());
         }
