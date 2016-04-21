@@ -10,8 +10,12 @@ import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.type.WhenNoDataTypeEnum;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rx.Observable;
@@ -184,7 +188,7 @@ public class ExportService {
         return null;
     }
 
-    public void toPdf(HttpServletResponse response, JasperPrint jasperPrint, String fileName) {
+    public void toPdf(HttpServletResponse response, JasperPrint jasperPrint, String title) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             JasperExportManager.exportReportToPdfStream(jasperPrint, out);
@@ -193,7 +197,7 @@ public class ExportService {
         }
 
         byte[] data = out.toByteArray();
-        response.setHeader("Content-Disposition", "inline;attachment; filename=" + FileNameEncoder.encode(fileName) + ".pdf");
+        response.setHeader("Content-Disposition", "inline;attachment; filename=" + FileNameEncoder.encode(title) + ".pdf");
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Set-Cookie", "fileDownload=true; path=/");
         response.setHeader("X-Frame-Options", " SAMEORIGIN");
@@ -203,6 +207,28 @@ public class ExportService {
             response.getOutputStream().write(data);
             response.getOutputStream().flush();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void toXls(HttpServletResponse response, JasperPrint jasperPrint, String title) {
+        try {
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(response.getOutputStream()));
+
+            SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+            exporter.setConfiguration(configuration);
+
+            response.setHeader("Content-Disposition", FileNameEncoder.encode(title) + ".xlsx");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+            response.setHeader("X-Frame-Options", " SAMEORIGIN");
+            response.setContentType(TYPE_XLSX);
+
+            exporter.exportReport();
+            response.getOutputStream().flush();
+        } catch (JRException | IOException e) {
             e.printStackTrace();
         }
     }

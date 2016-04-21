@@ -2,8 +2,10 @@ package com.humane.admin.etms.controller;
 
 import com.humane.admin.etms.dto.StatusDto;
 import com.humane.admin.etms.service.ExportService;
+import com.humane.admin.etms.service.ImageService;
 import com.humane.util.ObjectConvert;
 import com.humane.util.jqgrid.JqgridMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -13,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import rx.Observable;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +27,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("export")
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ExportController {
-
-    @Autowired private ExportService exportService;
+    private final ExportService exportService;
+    private final ImageService imageService;
 
     @RequestMapping("attend")
     public void attend(
@@ -132,10 +139,20 @@ public class ExportController {
     ) {
         Map<String, String> params = ObjectConvert.<String, String>asMap(statusDto);
         Observable<ArrayList<StatusDto>> observable = exportService.getAllExaminee(params);
+
         ArrayList<StatusDto> list = observable.toBlocking().first();
+        list.forEach(item -> {
+            InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg");
+            BufferedImage image = null;
+            try {
+                image = ImageIO.read(is);
+                item.setExamineeImage(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         JasperPrint jasperPrint = exportService.getPrint("jrxml/examinee-id-card.jrxml", new HashMap<>(), list);
         exportService.toPdf(response, jasperPrint, "수험표");
     }
 }
-

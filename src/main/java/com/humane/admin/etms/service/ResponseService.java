@@ -5,9 +5,7 @@ import com.humane.admin.etms.dto.StatusDto;
 import com.humane.util.jqgrid.JqgridMapper;
 import com.humane.util.spring.PageResponse;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.ResponseBody;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -45,20 +43,6 @@ public class ResponseService {
             }
         } catch (Throwable e) {
             log.debug("{}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
-        }
-    }
-
-    public ResponseEntity<InputStreamResource> toResourceEntity(Observable<Response<ResponseBody>> observable) {
-        try {
-            Response<ResponseBody> response = observable.toBlocking().first();
-            if (response.isSuccessful())
-                return ResponseEntity.ok(new InputStreamResource(response.body().byteStream()));
-            else {
-                log.error("{}", response.errorBody());
-                return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-            }
-        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
         }
     }
