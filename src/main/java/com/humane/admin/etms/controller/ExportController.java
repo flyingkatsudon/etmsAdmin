@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.jasperreports.engine.JasperPrint;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -143,15 +142,11 @@ public class ExportController {
 
         ArrayList<StatusDto> list = observable.toBlocking().first();
         list.forEach(item -> {
-            InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg");
-            BufferedImage image = null;
-            try {
-                image = ImageIO.read(is);
+            try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
+                BufferedImage image = ImageIO.read(is);
                 item.setExamineeImage(image);
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
-                IOUtils.closeQuietly(is);
             }
         });
 
