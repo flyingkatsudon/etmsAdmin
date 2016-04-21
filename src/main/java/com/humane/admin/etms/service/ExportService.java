@@ -193,7 +193,7 @@ public class ExportService {
         }
 
         byte[] data = out.toByteArray();
-        response.setHeader("Content-Disposition", FileNameEncoder.encode(fileName) + ".pdf");
+        response.setHeader("Content-Disposition", "inline;attachment; filename=" + FileNameEncoder.encode(fileName) + ".pdf");
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Set-Cookie", "fileDownload=true; path=/");
         response.setHeader("X-Frame-Options", " SAMEORIGIN");
