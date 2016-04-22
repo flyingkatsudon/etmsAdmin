@@ -7,7 +7,7 @@ define(function(require){
     require('jquery.file.download');
 
     var Backbone = require('backbone');
-    var Template = require('text!tpl/template.data-report.html');
+    var Template = require('text!tpl/content.data-report.html');
     var DlgDownload = require('../dlg/dlg-download.js');
 
     return Backbone.View.extend({
@@ -34,7 +34,7 @@ define(function(require){
         attendClicked : function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url : url
             }).render();
             return false;
@@ -42,7 +42,7 @@ define(function(require){
         majorClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
@@ -50,7 +50,7 @@ define(function(require){
         deptClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
@@ -58,7 +58,7 @@ define(function(require){
         hallClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
@@ -66,7 +66,7 @@ define(function(require){
         groupClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
@@ -74,7 +74,7 @@ define(function(require){
         statusExamineeClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
@@ -86,7 +86,7 @@ define(function(require){
         noIdCardClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
@@ -94,7 +94,7 @@ define(function(require){
         recheckClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
@@ -102,7 +102,7 @@ define(function(require){
         otherHallClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
@@ -110,7 +110,7 @@ define(function(require){
         signatureClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
@@ -118,20 +118,19 @@ define(function(require){
         dataExamineeClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
         },
-
 
         allDownClicked: function(e){
             e.preventDefault();
             var url = $(e.target).data('url');
-            var dlgDownload = new DlgDownload({
+            new DlgDownload({
                 url: url
             }).render();
             return false;
-        },
+        }
     });
 });

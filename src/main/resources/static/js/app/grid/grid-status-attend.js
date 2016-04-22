@@ -12,11 +12,11 @@ define(function (require) {
                 {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
-                {name: 'examineeCnt', label: '지원자수'},
-                {name: 'attendCnt', label: '응시자수'},
-                {name: 'attendPer', label: '응시율'},
-                {name: 'absentCnt', label: '결시자수'},
-                {name: 'absentPer', label: '결시율'}
+                {name: 'examineeCnt', label: '지원자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
+                {name: 'attendCnt', label: '응시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
+                {name: 'attendPer', label: '응시율', formatter: 'number', formatoptions: {suffix: '%'}},
+                {name: 'absentCnt', label: '결시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
+                {name: 'absentPer', label: '결시율', formatter: 'number', formatoptions: {suffix: '%'}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -34,7 +34,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('export/attend');
+            this.addExcel('report/attend');
             return this;
         }
     });

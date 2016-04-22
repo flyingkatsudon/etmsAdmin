@@ -18,7 +18,8 @@ define(function (require) {
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
-                {name: 'memo', label: '메모'},
+                {name: 'memo', label: '메모', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}
+                },
                 {name: 'checkTime', label: '확인시간'}
             ];
 

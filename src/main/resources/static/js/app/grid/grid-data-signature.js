@@ -14,7 +14,7 @@ define(function (require) {
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'isSignature', label: '서명여부'},
+                {name: 'isSignature', label: '서명여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
                 {name: 'deviceNo', label: '단말기번호'},
                 {name: 'isCheck', label: '확인'}
             ];

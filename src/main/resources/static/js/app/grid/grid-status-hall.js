@@ -15,11 +15,11 @@ define(function (require) {
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'examineeCnt', label: '지원자수'},
-                {name: 'attendCnt', label: '응시자수'},
-                {name: 'attendPer', label: '응시율'},
-                {name: 'absentCnt', label: '결시자수'},
-                {name: 'absentPer', label: '결시율'}
+                {name: 'examineeCnt', label: '지원자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
+                {name: 'attendCnt', label: '응시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
+                {name: 'attendPer', label: '응시율', formatter: 'number', formatoptions: {suffix: '%'}},
+                {name: 'absentCnt', label: '결시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
+                {name: 'absentPer', label: '결시율', formatter: 'number', formatoptions: {suffix: '%'}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

@@ -22,21 +22,21 @@ public class MenuController {
         List<MenuBean> list = new ArrayList<>();
 
         list.add(new MenuBean("응시율 통계", "M01"));
-        list.add(new MenuBean("계열 별", "M01S01", "M01", "status-attend", "1_1"));
+        list.add(new MenuBean("전형 별", "M01S01", "M01", "status-attend", "1_1"));
         list.add(new MenuBean("모집단위 별", "M01S02", "M01", "status-dept", "1_2"));
         list.add(new MenuBean("고사실 별", "M01S03", "M01", "status-hall", "1_3"));
-        list.add(new MenuBean("조 별", "M01S04", "M01", "status-group", "1_4"));
+        list.add(new MenuBean("조 별", "M01S04", "M01", "status-group", "1_3"));
 
         list.add(new MenuBean("데이터 리스트", "M02"));
         list.add(new MenuBean("요약", "M02S01", "M02", "data-summary", "2_1"));
         list.add(new MenuBean("신분증 미소지자", "M02S02", "M02", "data-noIdCard", "2_2"));
         list.add(new MenuBean("재확인 대상자", "M02S03", "M02", "data-recheck", "2_3"));
-        list.add(new MenuBean("타고사실 응시자", "M02S04", "M02", "data-otherHall", "2_4"));
-        list.add(new MenuBean("답안지", "M02S05", "M02", "data-paper", "2_5"));
-        list.add(new MenuBean("감독관 서명", "M02S06", "M02", "data-signature", "2_6"));
+        list.add(new MenuBean("타고사실 응시자", "M02S04", "M02", "data-otherHall", "2_1"));
+        list.add(new MenuBean("답안지", "M02S05", "M02", "data-paper", "2_2"));
+        list.add(new MenuBean("감독관 서명", "M02S06", "M02", "data-signature", "2_4"));
 
         list.add(new MenuBean("Data 검색&amp;산출물", "M03"));
-        list.add(new MenuBean("수험생별 리스트", "M03S01", "M03", "data-examinee", "3_1"));
+        list.add(new MenuBean("수험생 별 리스트", "M03S01", "M03", "data-examinee", "3_1"));
         list.add(new MenuBean("산출물 다운로드", "M03S02", "M03", "data-report", "3_2"));
 
         list.add(new MenuBean("사용자관리", "M04"));

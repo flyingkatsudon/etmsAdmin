@@ -3,7 +3,7 @@ package com.humane.admin.etms.controller;
 import com.humane.admin.etms.api.RestApi;
 import com.humane.admin.etms.dto.ChartJsDto;
 import com.humane.admin.etms.dto.StatusDto;
-import com.humane.admin.etms.service.ResponseService;
+import com.humane.admin.etms.service.ExportService;
 import com.humane.util.ObjectConvert;
 import com.humane.util.jqgrid.JqgridPager;
 import com.humane.util.spring.PageResponse;
@@ -24,7 +24,7 @@ import rx.Observable;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ChartController {
     private final RestApi restApi;
-    private final ResponseService responseService;
+    private final ExportService exportService;
 
     @RequestMapping(value = "attend")
     public ResponseEntity attend(StatusDto statusDto, JqgridPager pager) {
@@ -34,7 +34,7 @@ public class ChartController {
                 pager.getRows(),
                 pager.getSort()
         );
-        return responseService.toChart(observable, "typeNm");
+        return exportService.toChart(observable, "typeNm");
     }
 
     @RequestMapping(value = "dept")
@@ -45,7 +45,7 @@ public class ChartController {
                 pager.getPage() - 1,
                 pager.getRows(),
                 pager.getSort());
-        return responseService.toChart(observable, "deptNm");
+        return exportService.toChart(observable, "deptNm");
     }
 
     @RequestMapping(value = "hall")
@@ -57,6 +57,6 @@ public class ChartController {
                 pager.getRows(),
                 pager.getSort()
         );
-        return responseService.toChart(observable, "hallNm");
+        return exportService.toChart(observable, "hallNm");
     }
 }

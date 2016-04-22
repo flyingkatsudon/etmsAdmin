@@ -35,7 +35,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('export/examinee?type=excel');
+            this.addExcel('report/examinee?type=excel');
             return this;
         }
     });

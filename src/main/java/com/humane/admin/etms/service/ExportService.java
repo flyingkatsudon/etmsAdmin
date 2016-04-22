@@ -1,183 +1,167 @@
 package com.humane.admin.etms.service;
 
-import com.humane.admin.etms.api.RestApi;
+import com.humane.admin.etms.dto.ChartJsDto;
 import com.humane.admin.etms.dto.StatusDto;
-import lombok.RequiredArgsConstructor;
+import com.humane.util.file.FileNameEncoder;
+import com.humane.util.jqgrid.JqgridMapper;
+import com.humane.util.spring.PageResponse;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.dynamicreports.jasper.constant.JasperProperty;
+import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.type.WhenNoDataTypeEnum;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import retrofit2.Response;
 import rx.Observable;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
-import java.util.Map;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.*;
-
-@Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
+@Component
 public class ExportService {
-    private final RestApi restApi;
-
-    public Observable<ArrayList<Object>> allAttend(Map<String, String> query, String... sort) {
-        return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusAttend(query, currentPage, Integer.MAX_VALUE, sort))
-                .takeUntil(pageResponse -> pageResponse.body().isLast())
-                .reduce(new ArrayList<>(), (list, pageResponse) -> {
-                    list.addAll(pageResponse.body().getContent());
-                    return list;
-                });
+    public <T> ResponseEntity toJqgrid(Observable<Response<PageResponse<T>>> observable) {
+        try {
+            Response<PageResponse<T>> res = observable.toBlocking().first();
+            if (res.isSuccessful()) {
+                return ResponseEntity.ok(JqgridMapper.getResponse(res.body()));
+            } else {
+                log.error("{}", res.errorBody());
+                return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+            }
+        } catch (Throwable e) {
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+        }
     }
 
-    public Observable<JasperReportBuilder> reportAttend(Map<String, String> query, String... sort) {
-        return allAttend(query, sort)
-                .map(list -> report()
-                        .columns(col.column("전형", "admissionNm", type.stringType()),
-                                col.column("계열", "typeNm", type.stringType()),
-                                col.column("시험일자", "attendDate", type.dateType()),
-                                col.column("시험시간", "attendTime", type.timeHourToSecondType()),
-                                col.column("지원자수", "examineeCnt", type.longType()),
-                                col.column("응시자수", "attendCnt", type.longType()),
-                                col.column("응시율", "attendPer", type.bigDecimalType()),
-                                col.column("결시자수", "absentCnt", type.longType()),
-                                col.column("결시율", "absentPer", type.bigDecimalType())
-                        ).setDataSource(new JRBeanCollectionDataSource(list))
-                );
+    public <T> ResponseEntity toResponseEntity(Observable<Response<List<T>>> observable) {
+
+        try {
+            Response<List<T>> res = observable.toBlocking().first();
+            if (res.isSuccessful()) return ResponseEntity.ok(res.body());
+            else {
+                log.error("{}", res.errorBody());
+                return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+            }
+        } catch (Throwable e) {
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+        }
     }
 
-    public Observable<ArrayList<Object>> allDept(Map<String, String> query, String... sort) {
-        return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusDept(query, currentPage, Integer.MAX_VALUE, sort))
-                .takeUntil(pageResponse -> pageResponse.body().isLast())
-                .reduce(new ArrayList<>(), (list, pageResponse) -> {
-                    list.addAll(pageResponse.body().getContent());
-                    return list;
-                });
+    public ResponseEntity<ChartJsDto> toChart(Observable<Response<PageResponse<StatusDto>>> observable, String typeNm) {
+        try {
+            Response<PageResponse<StatusDto>> res = observable.toBlocking().first();
+            if (res.isSuccessful()) return ResponseEntity.ok(toChart(typeNm, res.body().getContent()));
+            else {
+                log.error("{}", res.errorBody());
+                return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+            }
+        } catch (Throwable e) {
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+        }
     }
 
-    public Observable<JasperReportBuilder> reportDept(Map<String, String> query, String... sort) {
-        return allDept(query, sort)
-                .map(list -> report()
-                        .columns(col.column("전형", "admissionNm", type.stringType()),
-                                col.column("계열", "typeNm", type.stringType()),
-                                col.column("모집단위", "deptNm", type.stringType()),
-                                col.column("시험일자", "attendDate", type.dateType()),
-                                col.column("시험시간", "attendTime", type.timeHourToSecondType()),
-                                col.column("지원자수", "examineeCnt", type.longType()),
-                                col.column("응시자수", "attendCnt", type.longType()),
-                                col.column("응시율", "attendPer", type.bigDecimalType()),
-                                col.column("결시자수", "absentCnt", type.longType()),
-                                col.column("결시율", "absentPer", type.bigDecimalType())
-                        ).setDataSource(new JRBeanCollectionDataSource(list))
-                );
+    private ChartJsDto toChart(String fieldName, List<StatusDto> content) {
+        ChartJsDto chartJsDto = new ChartJsDto();
+        ChartJsDto.Dataset attendCnt = new ChartJsDto.Dataset("응시자수");
+        ChartJsDto.Dataset attendPer = new ChartJsDto.Dataset("응시율");
+        ChartJsDto.Dataset absentCnt = new ChartJsDto.Dataset("결시자수");
+        ChartJsDto.Dataset absentPer = new ChartJsDto.Dataset("결시율");
+        content.forEach(statusDto -> {
+            try {
+                chartJsDto.addLabel(FieldUtils.readField(statusDto, fieldName, true).toString());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            attendCnt.addData(statusDto.getAttendCnt() == null ? 0 : statusDto.getAttendCnt());
+            attendPer.addData(statusDto.getAttendPer() == null ? 0 : statusDto.getAttendPer());
+            absentCnt.addData(statusDto.getAbsentCnt() == null ? 0 : statusDto.getAbsentCnt());
+            absentPer.addData(statusDto.getAbsentPer() == null ? 0 : statusDto.getAbsentPer());
+        });
+        chartJsDto.addDataset(attendCnt);
+        chartJsDto.addDataset(attendPer);
+        chartJsDto.addDataset(absentCnt);
+        chartJsDto.addDataset(absentPer);
+
+        return chartJsDto;
     }
 
-    public Observable<ArrayList<Object>> allHall(Map<String, String> query, String... sort) {
-        return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusHall(query, currentPage, Integer.MAX_VALUE, sort))
-                .takeUntil(pageResponse -> pageResponse.body().isLast())
-                .reduce(new ArrayList<>(), (list, pageResponse) -> {
-                    list.addAll(pageResponse.body().getContent());
-                    return list;
-                });
-    }
-
-    public Observable<JasperReportBuilder> reportHall(Map<String, String> query, String... sort) {
-        return allHall(query, sort)
-                .map(list -> report()
-                        .columns(col.column("전형", "admissionNm", type.stringType()),
-                                col.column("계열", "typeNm", type.stringType()),
-                                col.column("시험일자", "attendDate", type.dateType()),
-                                col.column("시험시간", "attendTime", type.timeHourToSecondType()),
-                                col.column("고사본부", "headNm", type.stringType()),
-                                col.column("고사건물", "bldgNm", type.stringType()),
-                                col.column("고사실", "hallNm", type.stringType()),
-                                col.column("지원자수", "examineeCnt", type.longType()),
-                                col.column("응시자수", "attendCnt", type.longType()),
-                                col.column("응시율", "attendPer", type.bigDecimalType()),
-                                col.column("결시자수", "absentCnt", type.longType()),
-                                col.column("결시율", "absentPer", type.bigDecimalType())
-                        ).setDataSource(new JRBeanCollectionDataSource(list))
-                );
-    }
-
-    public Observable<ArrayList<Object>> allGroup(Map<String, String> query, String... sort) {
-        return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusGroup(query, currentPage, Integer.MAX_VALUE, sort))
-                .takeUntil(pageResponse -> pageResponse.body().isLast())
-                .reduce(new ArrayList<>(), (list, pageResponse) -> {
-                    list.addAll(pageResponse.body().getContent());
-                    return list;
-                });
-    }
-
-    public Observable<JasperReportBuilder> reportGroup(Map<String, String> query, String... sort) {
-        return allGroup(query, sort)
-                .map(list -> report()
-                        .columns(
-                                col.column("전형", "admissionNm", type.stringType()),
-                                col.column("계열", "typeNm", type.stringType()),
-                                col.column("시험일자", "attendDate", type.dateType()),
-                                col.column("시험시간", "attendTime", type.timeHourToSecondType()),
-                                col.column("모집단위", "deptNm", type.stringType()),
-                                col.column("전공", "majorNm", type.stringType()),
-                                col.column("조", "groupNm", type.stringType()),
-                                col.column("지원자수", "examineeCnt", type.longType()),
-                                col.column("응시자수", "attendCnt", type.longType()),
-                                col.column("응시율", "attendPer", type.bigDecimalType()),
-                                col.column("결시자수", "absentCnt", type.longType()),
-                                col.column("결시율", "absentPer", type.bigDecimalType())
-                        ).setDataSource(new JRBeanCollectionDataSource(list))
-                );
-    }
-
-    public Observable<ArrayList<StatusDto>> getAllExaminee(Map<String, String> query, String... sort) {
-        return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusExaminee(query, currentPage, Integer.MAX_VALUE, sort))
-                .takeUntil(pageResponse -> pageResponse.body().isLast())
-                .reduce(new ArrayList<>(), (list, pageResponse) -> {
-                    list.addAll(pageResponse.body().getContent());
-                    return list;
-                });
-    }
-
-    public Observable<JasperReportBuilder> reportExaminee(Map<String, String> query, String... sort) {
-        return getAllExaminee(query, sort)
-                .map(list -> report()
-                        .columns(
-                                col.column("전형", "admissionNm", type.stringType()),
-                                col.column("모집단위", "deptNm", type.stringType()),
-                                col.column("전공", "majorNm", type.stringType()),
-                                col.column("수험번호", "examineeCd", type.stringType()),
-                                col.column("수험생", "examineeNm", type.stringType()),
-                                col.column("시험일자", "attendDate", type.dateType()),
-                                col.column("시험시간", "attendTime", type.timeHourToSecondType()),
-                                col.column("응시여부", "isAttend", type.booleanType())
-                        ).setDataSource(new JRBeanCollectionDataSource(list))
-                );
-    }
-
-
-    public JasperPrint getPrint(String path, HashMap<String, Object> param, List<StatusDto> list) {
-
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
-            JasperDesign jasperDesign = JRXmlLoader.load(inputStream);
-            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-            jasperReport.setWhenNoDataType(WhenNoDataTypeEnum.ALL_SECTIONS_NO_DETAIL);
-            return JasperFillManager.fillReport(jasperReport, param, new JRBeanCollectionDataSource(list));
-        } catch (Exception e) {
+    public void toPdf(HttpServletResponse response, JasperPrint jasperPrint, String title) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            JasperExportManager.exportReportToPdfStream(jasperPrint, out);
+        } catch (JRException e) {
             e.printStackTrace();
         }
-        return null;
+
+        byte[] data = out.toByteArray();
+        response.setHeader("Content-Disposition", "inline;attachment; filename=" + FileNameEncoder.encode(title) + ".pdf");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        response.setHeader("X-Frame-Options", " SAMEORIGIN");
+        response.setContentLength(data.length);
+        response.setContentType("application/pdf");
+        try {
+            response.getOutputStream().write(data);
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void toXlsx(HttpServletResponse response, JasperReportBuilder report, String title) {
+        report.ignorePageWidth()
+                .ignorePagination()
+                .setPageMargin(DynamicReports.margin(0))
+                .addProperty(JasperProperty.EXPORT_XLS_SHEET_NAMES_PREFIX, title);
+
+        try (OutputStream out = response.getOutputStream()) {
+            response.setHeader("Content-Disposition", FileNameEncoder.encode(title) + ".xlsx");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+            response.setHeader("X-Frame-Options", " SAMEORIGIN");
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            report.toXlsx(out);
+        } catch (IOException | DRException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void toXlsx(HttpServletResponse response, JasperPrint jasperPrint, String title) {
+        try {
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(response.getOutputStream()));
+
+            SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+            exporter.setConfiguration(configuration);
+
+            response.setHeader("Content-Disposition", FileNameEncoder.encode(title) + ".xlsx");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+            response.setHeader("X-Frame-Options", " SAMEORIGIN");
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+            exporter.exportReport();
+            response.getOutputStream().flush();
+        } catch (JRException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }

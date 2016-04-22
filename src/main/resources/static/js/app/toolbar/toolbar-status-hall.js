@@ -28,11 +28,13 @@ define(function (require) {
         },
         events: {
             'click #search': 'searchClicked',
-            'Change #admissionNm': 'admissionNmChanged',
-            'Change #typeNm': 'typeNmChanged',
-            'Change #headNm': 'headNmChanged',
-            'Change #bldgNm': 'bldgNmChanged',
-            'Change #hallNm': 'hallNmChanged',
+            'change #admissionNm': 'admissionNmChanged',
+            'change #typeNm': 'typeNmChanged',
+            'change #attendDate': 'attendDateChanged',
+            'change #attendTime': 'attendTimeChanged',
+            'change #headNm': 'headNmChanged',
+            'change #bldgNm': 'bldgNmChanged',
+            'change #hallNm': 'hallNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
