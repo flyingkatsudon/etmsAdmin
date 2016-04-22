@@ -35,7 +35,7 @@ public class ModelController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Observable<Response<List<StatusDto>>> observable = restApi.statusToolbar(ObjectConvert.asMap(statusDto));
+        Observable<Response<List<StatusDto>>> observable = restApi.toolbar(ObjectConvert.asMap(statusDto));
         return exportService.toResponseEntity(observable);
     }
 }

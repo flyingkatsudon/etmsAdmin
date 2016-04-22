@@ -1,7 +1,7 @@
 package com.humane.admin.etms.controller;
 
 import com.humane.admin.etms.api.RestApi;
-import com.humane.admin.etms.dto.StatusDto;
+import com.humane.admin.etms.dto.ExamineeDto;
 import com.humane.admin.etms.service.ExportService;
 import com.humane.util.ObjectConvert;
 import com.humane.util.jqgrid.JqgridPager;
@@ -26,8 +26,8 @@ public class DataController {
     private final ExportService exportService;
 
     @RequestMapping(value = "examinee")
-    public ResponseEntity examinee(StatusDto statusDto, JqgridPager pager) {
-        Observable<Response<PageResponse<StatusDto>>> observable = restApi.statusExaminee(
+    public ResponseEntity examinee(ExamineeDto statusDto, JqgridPager pager) {
+        Observable<Response<PageResponse<ExamineeDto>>> observable = restApi.examinee(
                 ObjectConvert.asMap(statusDto),
                 pager.getPage() - 1,
                 pager.getRows(),

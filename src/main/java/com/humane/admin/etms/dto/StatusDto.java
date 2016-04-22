@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,8 +33,6 @@ public class StatusDto implements Serializable {
     private String headNm;
     private String bldgNm;
     private String hallNm;
-    private String examineeCd;
-    private String examineeNm;
     private Long examineeCnt;
     private Long attendCnt;
     private Long absentCnt;
@@ -43,15 +40,6 @@ public class StatusDto implements Serializable {
     private BigDecimal attendPer;
     @JsonSerialize(using = PercentSerializer.class)
     private BigDecimal absentPer;
-    private Boolean isAttend;
     private String groupNm;
-    private String attendHeadNm;
-    private String attendBldgNm;
-    private String attendHallNm;
-    private Boolean isEtc;
     private Boolean isSend;
-    private Boolean isOtherHall;
-    private String paperCd;
-
-    private BufferedImage examineeImage;
 }

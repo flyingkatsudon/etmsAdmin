@@ -1,18 +1,21 @@
 package com.humane.admin.etms.controller;
 
+import com.humane.admin.etms.dto.ExamineeDto;
 import com.humane.admin.etms.dto.StatusDto;
-import com.humane.admin.etms.service.ReportService;
-import com.humane.admin.etms.service.ImageService;
 import com.humane.admin.etms.service.ExportService;
+import com.humane.admin.etms.service.ImageService;
+import com.humane.admin.etms.service.ReportService;
 import com.humane.util.ObjectConvert;
 import com.humane.util.jqgrid.JqgridPager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import rx.Observable;
 
 import javax.imageio.ImageIO;
@@ -21,7 +24,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -93,12 +95,11 @@ public class ReportController {
         exportService.toXlsx(response, builder, "수험생 별 응시현황");
     }
 
-    @RequestMapping("examineeId")
-    public void examineeId(StatusDto statusDto, HttpServletResponse response) {
-        Observable<ArrayList<StatusDto>> observable = reportService.getAllExaminee(ObjectConvert.asMap(statusDto));
+    @RequestMapping("examineeId/{type}")
+    public ModelAndView examineeId(@PathVariable String type, ExamineeDto statusDto, ModelMap modelMap) {
+        Observable<ArrayList<ExamineeDto>> observable = reportService.getAllExaminee(ObjectConvert.asMap(statusDto));
 
-        List<StatusDto> list = observable.toBlocking().first();
-
+        List<ExamineeDto> list = observable.toBlocking().first();
         list.forEach(item -> {
             try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
                 BufferedImage image = ImageIO.read(is);
@@ -108,7 +109,8 @@ public class ReportController {
             }
         });
 
-        JasperPrint jasperPrint = reportService.getPrint("jrxml/examinee-id-card.jrxml", new HashMap<>(), list);
-        exportService.toPdf(response, jasperPrint, "수험표");
+        modelMap.put("datasource", list);
+        modelMap.put("format", type);
+        return new ModelAndView("examinee-id-card.jrxml", modelMap);
     }
 }

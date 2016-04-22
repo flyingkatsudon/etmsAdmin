@@ -1,7 +1,7 @@
 package com.humane.admin.etms.service;
 
 import com.humane.admin.etms.api.RestApi;
-import com.humane.admin.etms.dto.StatusDto;
+import com.humane.admin.etms.dto.ExamineeDto;
 import lombok.RequiredArgsConstructor;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -31,7 +31,7 @@ public class ReportService {
 
     public Observable<ArrayList<Object>> allAttend(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusAttend(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.attend(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -57,7 +57,7 @@ public class ReportService {
 
     public Observable<ArrayList<Object>> allDept(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusDept(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.dept(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -84,7 +84,7 @@ public class ReportService {
 
     public Observable<ArrayList<Object>> allHall(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusHall(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.hall(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -113,7 +113,7 @@ public class ReportService {
 
     public Observable<ArrayList<Object>> allGroup(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusGroup(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.group(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -141,9 +141,9 @@ public class ReportService {
                 );
     }
 
-    public Observable<ArrayList<StatusDto>> getAllExaminee(Map<String, String> query, String... sort) {
+    public Observable<ArrayList<ExamineeDto>> getAllExaminee(Map<String, String> query, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
-                .concatMap(currentPage -> restApi.statusExaminee(query, currentPage, Integer.MAX_VALUE, sort))
+                .concatMap(currentPage -> restApi.examinee(query, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());
@@ -168,7 +168,7 @@ public class ReportService {
     }
 
 
-    public JasperPrint getPrint(String path, HashMap<String, Object> param, List<StatusDto> list) {
+    public <T> JasperPrint getPrint(String path, HashMap<String, Object> param, List<T> list) {
 
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
             JasperDesign jasperDesign = JRXmlLoader.load(inputStream);

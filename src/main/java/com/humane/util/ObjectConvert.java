@@ -15,6 +15,7 @@ public class ObjectConvert {
     public static Map<String, String> asMap(Object object, boolean useEmpty) {
         try {
             Map<String, String> map = BeanUtils.describe(object);
+            map.remove("class");
 
             if (!useEmpty) {
                 Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
