@@ -27,7 +27,6 @@ public class DataController {
 
     @RequestMapping(value = "examinee")
     public ResponseEntity examinee(StatusDto statusDto, JqgridPager pager) {
-
         Observable<Response<PageResponse<StatusDto>>> observable = restApi.statusExaminee(
                 ObjectConvert.asMap(statusDto),
                 pager.getPage() - 1,

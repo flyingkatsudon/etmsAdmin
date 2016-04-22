@@ -25,7 +25,6 @@ import retrofit2.Response;
 import rx.Observable;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -33,6 +32,22 @@ import java.util.List;
 @Slf4j
 @Component
 public class ExportService {
+    private void addHeaderXlsx(HttpServletResponse response, String fileName) {
+        response.setHeader("Content-Disposition", FileNameEncoder.encode(fileName) + ".xlsx");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        response.setHeader("X-Frame-Options", " SAMEORIGIN");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    }
+
+    private void addHeaderPdf(HttpServletResponse response, String title) {
+        response.setHeader("Content-Disposition", "inline;attachment; filename=" + FileNameEncoder.encode(title) + ".pdf");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        response.setHeader("X-Frame-Options", " SAMEORIGIN");
+        response.setContentType("application/pdf");
+    }
+
     public <T> ResponseEntity toJqgrid(Observable<Response<PageResponse<T>>> observable) {
         try {
             Response<PageResponse<T>> res = observable.toBlocking().first();
@@ -64,6 +79,7 @@ public class ExportService {
     }
 
     public ResponseEntity<ChartJsDto> toChart(Observable<Response<PageResponse<StatusDto>>> observable, String typeNm) {
+
         try {
             Response<PageResponse<StatusDto>> res = observable.toBlocking().first();
             if (res.isSuccessful()) return ResponseEntity.ok(toChart(typeNm, res.body().getContent()));
@@ -103,24 +119,10 @@ public class ExportService {
     }
 
     public void toPdf(HttpServletResponse response, JasperPrint jasperPrint, String title) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
-            JasperExportManager.exportReportToPdfStream(jasperPrint, out);
-        } catch (JRException e) {
-            e.printStackTrace();
-        }
-
-        byte[] data = out.toByteArray();
-        response.setHeader("Content-Disposition", "inline;attachment; filename=" + FileNameEncoder.encode(title) + ".pdf");
-        response.setHeader("Content-Transfer-Encoding", "binary");
-        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-        response.setHeader("X-Frame-Options", " SAMEORIGIN");
-        response.setContentLength(data.length);
-        response.setContentType("application/pdf");
-        try {
-            response.getOutputStream().write(data);
-            response.getOutputStream().flush();
-        } catch (IOException e) {
+        addHeaderPdf(response, title);
+        try (OutputStream os = response.getOutputStream()) {
+            JasperExportManager.exportReportToPdfStream(jasperPrint, os);
+        } catch (IOException | JRException e) {
             e.printStackTrace();
         }
     }
@@ -132,11 +134,7 @@ public class ExportService {
                 .addProperty(JasperProperty.EXPORT_XLS_SHEET_NAMES_PREFIX, title);
 
         try (OutputStream out = response.getOutputStream()) {
-            response.setHeader("Content-Disposition", FileNameEncoder.encode(title) + ".xlsx");
-            response.setHeader("Content-Transfer-Encoding", "binary");
-            response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-            response.setHeader("X-Frame-Options", " SAMEORIGIN");
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            addHeaderXlsx(response, title);
             report.toXlsx(out);
         } catch (IOException | DRException e) {
             e.printStackTrace();
@@ -144,22 +142,16 @@ public class ExportService {
     }
 
     public void toXlsx(HttpServletResponse response, JasperPrint jasperPrint, String title) {
-        try {
+        try (OutputStream os = response.getOutputStream()) {
             JRXlsxExporter exporter = new JRXlsxExporter();
             exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(response.getOutputStream()));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
 
             SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
             exporter.setConfiguration(configuration);
 
-            response.setHeader("Content-Disposition", FileNameEncoder.encode(title) + ".xlsx");
-            response.setHeader("Content-Transfer-Encoding", "binary");
-            response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-            response.setHeader("X-Frame-Options", " SAMEORIGIN");
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
+            addHeaderXlsx(response, title);
             exporter.exportReport();
-            response.getOutputStream().flush();
         } catch (JRException | IOException e) {
             e.printStackTrace();
         }

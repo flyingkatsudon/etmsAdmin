@@ -19,7 +19,7 @@ public class JqgridPager {
     }
 
     public int getRows() {
-        return rows == null ? 30 : rows;
+        return rows == null ? 1000 : rows;
     }
 
     public void setRows(int rows) {
