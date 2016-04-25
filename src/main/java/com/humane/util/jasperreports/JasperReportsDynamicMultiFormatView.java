@@ -1,19 +1,31 @@
-package com.humane.util;
+package com.humane.util.jasperreports;
 
 import com.humane.util.file.FileNameEncoder;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JasperReport;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Properties;
 
+/**
+ * example
+ * @Bean public JasperReportsViewResolver jasperReportsViewResolver() {
+ * JasperReportsViewResolver resolver = new JasperReportsViewResolver();
+ * resolver.setPrefix("classpath:jrxml/");
+ * resolver.setReportDataKey("datasource");
+ * resolver.setViewNames("*.jrxml");
+ * Properties headers = new Properties();
+ * headers.put("Set-Cookie", "fileDownload=true; path=/");
+ * headers.put("Content-Transfer-Encoding", "binary");
+ * headers.put("X-Frame-Options", " SAMEORIGIN");
+ * resolver.setHeaders(headers);
+ * resolver.setViewClass(JasperReportsDynamicMultiFormatView.class);
+ * resolver.setOrder(0);
+ * return resolver;
+ * }
+ */
 @Slf4j
-public class DynamicJasperReportsMultiFormatView extends JasperReportsMultiFormatView {
-
-    private static final String DATE_FORMAT = "MM-dd-yyyy";
+public class JasperReportsDynamicMultiFormatView extends JasperReportsMultiFormatView {
 
     private static final String FILE_EXT_CSV = "csv";
     private static final String FILE_EXT_XLS = "xls";
@@ -78,10 +90,8 @@ public class DynamicJasperReportsMultiFormatView extends JasperReportsMultiForma
      * This will configure the content disposition mapping with the report name.
      */
     protected void setContentDispositionHeader(String reportName) {
+        String contentDisp = FileNameEncoder.encode(reportName) + ".";
         Properties mappings = new Properties();
-        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
-        String reportDate = df.format(Calendar.getInstance().getTime());
-        String contentDisp = "inline; filename=" + FileNameEncoder.encode(reportName) + "_" + reportDate + ".";
         mappings.put(FILE_EXT_CSV, contentDisp + FILE_EXT_CSV);
         mappings.put(FILE_EXT_HTML, contentDisp + FILE_EXT_HTML);
         mappings.put(FILE_EXT_PDF, contentDisp + FILE_EXT_PDF);

@@ -4,7 +4,6 @@ import com.humane.admin.etms.dto.ExamineeDto;
 import com.humane.admin.etms.dto.StatusDto;
 import com.humane.util.spring.PageResponse;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

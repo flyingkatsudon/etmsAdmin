@@ -68,7 +68,7 @@ dependencies {
     compile('net.sourceforge.dynamicreports:dynamicreports-core:4.1.0')
 
     compile('commons-io:commons-io:2.4')
-    compile('com.humane:util-common:0.0.11')
+    compile('com.humane:util-common:0.0.12')
 }
 
 eclipse {

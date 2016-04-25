@@ -2,7 +2,6 @@ package com.humane.admin.etms.controller;
 
 import com.humane.admin.etms.api.RestApi;
 import com.humane.admin.etms.dto.StatusDto;
-import com.humane.admin.etms.service.ExportService;
 import com.humane.util.ObjectConvert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ModelController {
     private final RestApi restApi;
-    private final ExportService exportService;
 
     /**
      * 툴바 데이터를 전송
@@ -36,6 +34,8 @@ public class ModelController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         Observable<Response<List<StatusDto>>> observable = restApi.toolbar(ObjectConvert.asMap(statusDto));
-        return exportService.toResponseEntity(observable);
+
+        Response<List<StatusDto>> list = observable.toBlocking().first();
+        return ResponseEntity.ok(list);
     }
 }
