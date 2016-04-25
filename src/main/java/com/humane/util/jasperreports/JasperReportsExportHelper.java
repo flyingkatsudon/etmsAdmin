@@ -145,7 +145,7 @@ public class JasperReportsExportHelper {
         headers.set("Content-Transfer-Encoding", "binary");
         headers.set("Set-Cookie", "fileDownload=true; path=/");
         headers.set("X-Frame-Options", " SAMEORIGIN");
-        headers.set("Content-Disposition", FileNameEncoder.encode(fileName) + extension);
+        headers.set("Content-Disposition", FileNameEncoder.encode(fileName) + "." + extension);
         return headers;
     }
 }
