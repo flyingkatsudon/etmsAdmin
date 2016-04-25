@@ -39,22 +39,22 @@ public class JasperReportsExportHelper {
         instance = new JasperReportsExportHelper();
     }
 
-    public static ResponseEntity toResponseEntity(String fileName, String format, List<?> content) {
+    public static ResponseEntity toResponseEntity(String viewName, String format, List<?> content) {
         try {
             switch (format) {
                 case EXT_PDF:
-                    return instance.toPdf(fileName, content);
+                    return instance.toPdf(viewName, content);
                 case EXT_XLS:
-                    return instance.toXls(fileName, content);
+                    return instance.toXls(viewName, content);
                 case EXT_XLSX:
-                    return instance.toXlsx(fileName, content);
+                    return instance.toXlsx(viewName, content);
                 default:
+                    return null;
             }
         } catch (JRException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return null;
     }
 
     private ResponseEntity<byte[]> toXlsx(String viewName, Collection<?> collection) throws JRException {
@@ -79,9 +79,7 @@ public class JasperReportsExportHelper {
 
         byte[] ba = baos.toByteArray();
 
-        String fileName = FileNameEncoder.encode(jasperPrint.getName()) + "." + EXT_XLSX;
-
-        HttpHeaders headers = getHeaders(XLSX, fileName);
+        HttpHeaders headers = getHeaders(XLSX, jasperPrint.getName(), EXT_XLSX);
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
@@ -109,9 +107,7 @@ public class JasperReportsExportHelper {
 
         byte[] ba = baos.toByteArray();
 
-        String fileName = FileNameEncoder.encode(jasperPrint.getName()) + "." + EXT_XLS;
-
-        HttpHeaders headers = getHeaders(XLS, fileName);
+        HttpHeaders headers = getHeaders(XLS, jasperPrint.getName(), EXT_XLS);
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
@@ -129,9 +125,7 @@ public class JasperReportsExportHelper {
         JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
         byte[] ba = baos.toByteArray();
 
-        String fileName = FileNameEncoder.encode(jasperPrint.getName()) + "." + EXT_PDF;
-
-        HttpHeaders headers = getHeaders(PDF, fileName);
+        HttpHeaders headers = getHeaders(PDF, jasperPrint.getName(), EXT_PDF);
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
@@ -145,13 +139,13 @@ public class JasperReportsExportHelper {
         return null;
     }
 
-    private HttpHeaders getHeaders(String contentType, String fileName) {
+    private HttpHeaders getHeaders(String contentType, String fileName, String extension) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(contentType));
         headers.set("Content-Transfer-Encoding", "binary");
         headers.set("Set-Cookie", "fileDownload=true; path=/");
         headers.set("X-Frame-Options", " SAMEORIGIN");
-        headers.set("Content-Disposition", fileName);
+        headers.set("Content-Disposition", FileNameEncoder.encode(fileName) + extension);
         return headers;
     }
 }
