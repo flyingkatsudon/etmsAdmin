@@ -153,4 +153,36 @@ public class DataController {
                 list
         );
     }
+
+    @RequestMapping(value = "recheck/list")
+    public ResponseEntity recheck(ExamineeDto examineeDto, JqgridPager pager) {
+        examineeDto.setIsRecheck(true);
+
+        Observable<Response<PageResponse<ExamineeDto>>> observable = apiService.examinee(
+                ObjectConvert.asMap(examineeDto),
+                pager.getPage() - 1,
+                pager.getRows(),
+                pager.getSort());
+
+        Response<PageResponse<ExamineeDto>> response = observable.toBlocking().first();
+
+        return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
+    }
+
+    @RequestMapping(value = "recheck/{format:pdf|xls|xlsx}")
+    public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager) {
+        examineeDto.setIsRecheck(true);
+
+        Observable<List<ExamineeDto>> observable = apiService.examinee(
+                ObjectConvert.asMap(examineeDto),
+                pager.getSort()
+        );
+        List<ExamineeDto> list = observable.toBlocking().first();
+
+        return JasperReportsExportHelper.toResponseEntity(
+                "jrxml/data-noIdCard.jrxml",
+                format,
+                list
+        );
+    }
 }

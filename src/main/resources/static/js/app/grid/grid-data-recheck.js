@@ -29,7 +29,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'data/recheck',
+                    url: 'data/recheck/list',
                     colModel: colModel
                 }
             }, options);

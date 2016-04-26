@@ -23,6 +23,7 @@ public class ExamineeDto extends StatusDto {
     private String attendHallNm;
     private Boolean isOtherHall;
     private String birth;
+    private Boolean isRecheck;
 
     // 검색용
     private String fromExamineeCd;
