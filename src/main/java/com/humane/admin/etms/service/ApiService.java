@@ -20,7 +20,7 @@ public class ApiService {
     private final RestApi restApi;
 
     public Observable<Response<PageResponse<StatusDto>>> attend(
-            Map<String, String> params,
+            Map<String, Object> params,
             int page,
             int rows,
             String... sort) {
@@ -28,7 +28,7 @@ public class ApiService {
     }
 
     public Observable<List<StatusDto>> attend(
-            Map<String, String> params,
+            Map<String, Object> params,
             String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> restApi.attend(params, currentPage, Integer.MAX_VALUE, sort))
@@ -40,7 +40,7 @@ public class ApiService {
     }
 
     public Observable<Response<PageResponse<StatusDto>>> dept(
-            Map<String, String> params,
+            Map<String, Object> params,
             int page,
             int rows,
             String... sort
@@ -49,7 +49,7 @@ public class ApiService {
     }
 
     public Observable<List<StatusDto>> dept(
-            Map<String, String> params,
+            Map<String, Object> params,
             String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> restApi.dept(params, currentPage, Integer.MAX_VALUE, sort))
@@ -61,7 +61,7 @@ public class ApiService {
     }
 
     public Observable<Response<PageResponse<StatusDto>>> hall(
-            Map<String, String> params,
+            Map<String, Object> params,
             int page,
             int rows,
             String... sort
@@ -70,7 +70,7 @@ public class ApiService {
     }
 
     public Observable<List<StatusDto>> hall(
-            Map<String, String> params, String... sort) {
+            Map<String, Object> params, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> restApi.hall(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
@@ -82,7 +82,7 @@ public class ApiService {
     }
 
     public Observable<Response<PageResponse<StatusDto>>> group(
-            Map<String, String> params,
+            Map<String, Object> params,
             int page,
             int rows,
             String... sort
@@ -91,7 +91,7 @@ public class ApiService {
     }
 
     public Observable<List<StatusDto>> group(
-            Map<String, String> params, String... sort) {
+            Map<String, Object> params, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> restApi.group(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
@@ -102,7 +102,7 @@ public class ApiService {
     }
 
     public Observable<Response<PageResponse<ExamineeDto>>> examinee(
-            Map<String, String> params,
+            Map<String, Object> params,
             int page,
             int rows,
             String... sort
@@ -111,7 +111,7 @@ public class ApiService {
     }
 
     public Observable<List<ExamineeDto>> examinee(
-            Map<String, String> params, String... sort) {
+            Map<String, Object> params, String... sort) {
         return Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> restApi.examinee(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())

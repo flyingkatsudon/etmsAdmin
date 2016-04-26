@@ -26,7 +26,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/dept',
+                    url: 'status/dept/list',
                     colModel: colModel
                 }
             }, options);
@@ -35,7 +35,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('report/dept');
+            this.addExcel('status/dept/xlsx');
             return this;
         }
     });

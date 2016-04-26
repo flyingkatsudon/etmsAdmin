@@ -1,34 +1,32 @@
 package com.humane.util;
 
-import org.apache.commons.beanutils.BeanUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Map;
 
 public class ObjectConvert {
 
-    public static Map<String, String> asMap(Object object) {
+    public static Map<String, Object> asMap(Object object) {
         return asMap(object, false);
     }
 
-    public static Map<String, String> asMap(Object object, boolean useEmpty) {
-        try {
-            Map<String, String> map = BeanUtils.describe(object);
-            map.remove("class");
+    public static Map<String, Object> asMap(Object object, boolean useEmpty) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+        Map<String, Object> map = objectMapper.convertValue(object, new TypeReference<Map>() {
+        });
 
-            if (!useEmpty) {
-                Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry<String, String> entry = iterator.next();
-                    String value = entry.getValue();
-                    if (value == null || value.equals("")) iterator.remove();
-                }
+        if (!useEmpty) {
+            Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Object> entry = iterator.next();
+                Object value = entry.getValue();
+                if (value == null || value.equals("")) iterator.remove();
             }
-            return map;
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
         }
-        return null;
+        return map;
     }
 }

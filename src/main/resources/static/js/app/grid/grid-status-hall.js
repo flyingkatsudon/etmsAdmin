@@ -17,6 +17,7 @@ define(function (require) {
                 {name: 'hallNm', label: '고사실'},
                 {name: 'examineeCnt', label: '지원자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
                 {name: 'attendCnt', label: '응시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
+                {name: 'otherHallCnt', label: '타응시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
                 {name: 'attendPer', label: '응시율', formatter: 'number', formatoptions: {suffix: '%'}},
                 {name: 'absentCnt', label: '결시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
                 {name: 'absentPer', label: '결시율', formatter: 'number', formatoptions: {suffix: '%'}}
@@ -28,7 +29,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/hall',
+                    url: 'status/hall/list',
                     colModel: colModel
                 }
             }, options);
@@ -37,7 +38,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('export/hall?type=xlsx');
+            this.addExcel('status/hall/xlsx');
             return this;
         }
     });

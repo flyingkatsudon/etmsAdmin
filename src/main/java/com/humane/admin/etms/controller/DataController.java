@@ -64,8 +64,8 @@ public class DataController {
         );
     }
 
-    @RequestMapping(value = "examinee/id")
-    public ResponseEntity examineeId(ExamineeDto examineeDto, JqgridPager pager) {
+    @RequestMapping(value = "examineeId/{format:pdf}")
+    public ResponseEntity examineeId(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager) {
         Observable<List<ExamineeDto>> observable = apiService.examinee(
                 ObjectConvert.asMap(examineeDto),
                 pager.getSort()
@@ -84,13 +84,28 @@ public class DataController {
 
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/examinee-id-card.jrxml",
-                JasperReportsExportHelper.EXT_PDF,
+                format,
                 list
         );
     }
 
+    @RequestMapping(value = "otherHall/list")
+    public ResponseEntity otherHall(ExamineeDto examineeDto, JqgridPager pager) {
+        examineeDto.setIsOtherHall(true);
+
+        Observable<Response<PageResponse<ExamineeDto>>> observable = apiService.examinee(
+                ObjectConvert.asMap(examineeDto),
+                pager.getPage() - 1,
+                pager.getRows(),
+                pager.getSort());
+
+        Response<PageResponse<ExamineeDto>> response = observable.toBlocking().first();
+
+        return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
+    }
+
     @RequestMapping(value = "otherHall/{format:pdf|xls|xlsx}")
-    public ResponseEntity noIdCard(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager) {
+    public ResponseEntity otherHall(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager) {
 
         examineeDto.setIsOtherHall(true);
 
@@ -102,6 +117,38 @@ public class DataController {
 
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/data-otherHall.jrxml",
+                format,
+                list
+        );
+    }
+
+    @RequestMapping(value = "noIdCard/list")
+    public ResponseEntity noIdCard(ExamineeDto examineeDto, JqgridPager pager) {
+        examineeDto.setIsNoIdCard(true);
+
+        Observable<Response<PageResponse<ExamineeDto>>> observable = apiService.examinee(
+                ObjectConvert.asMap(examineeDto),
+                pager.getPage() - 1,
+                pager.getRows(),
+                pager.getSort());
+
+        Response<PageResponse<ExamineeDto>> response = observable.toBlocking().first();
+
+        return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
+    }
+
+    @RequestMapping(value = "noIdCard/{format:pdf|xls|xlsx}")
+    public ResponseEntity noIdCard(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager) {
+        examineeDto.setIsNoIdCard(true);
+
+        Observable<List<ExamineeDto>> observable = apiService.examinee(
+                ObjectConvert.asMap(examineeDto),
+                pager.getSort()
+        );
+        List<ExamineeDto> list = observable.toBlocking().first();
+
+        return JasperReportsExportHelper.toResponseEntity(
+                "jrxml/data-noIdCard.jrxml",
                 format,
                 list
         );

@@ -34,6 +34,7 @@ public class StatusDto implements Serializable {
     private String bldgNm;
     private String hallNm;
     private Long examineeCnt;
+    private Long otherHallCnt;
     private Long attendCnt;
     private Long absentCnt;
     @JsonSerialize(using = PercentSerializer.class)
@@ -42,4 +43,5 @@ public class StatusDto implements Serializable {
     private BigDecimal absentPer;
     private String groupNm;
     private Boolean isSend;
+    private Boolean isEtc;
 }

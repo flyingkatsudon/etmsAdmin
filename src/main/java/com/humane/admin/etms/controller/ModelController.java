@@ -35,7 +35,7 @@ public class ModelController {
 
         Observable<Response<List<StatusDto>>> observable = restApi.toolbar(ObjectConvert.asMap(statusDto));
 
-        Response<List<StatusDto>> list = observable.toBlocking().first();
-        return ResponseEntity.ok(list);
+        Response<List<StatusDto>> response = observable.toBlocking().first();
+        return ResponseEntity.ok(response.body());
     }
 }

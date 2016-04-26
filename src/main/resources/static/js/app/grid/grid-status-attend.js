@@ -25,7 +25,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/attend',
+                    url: 'status/attend/list',
                     colModel: colModel
                 }
             }, options);
@@ -34,7 +34,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('report/attend');
+            this.addExcel('status/attend/xlsx');
             return this;
         }
     });

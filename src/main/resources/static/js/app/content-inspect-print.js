@@ -149,7 +149,7 @@ define(function (require) {
         },
 
         openPrintWindow: function (param) {
-            new DlgPdf({url: 'report/examineeId?' + $.param(param)}).render();
+            new DlgPdf({url: 'data/examineeId/pdf?' + $.param(param)}).render();
         }
     });
 });

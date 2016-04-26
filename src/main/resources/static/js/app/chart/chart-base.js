@@ -47,7 +47,6 @@ define(function (require) {
                     }
                 }, _this.options);
                 this.chart = new Chart(ctx, chartData);
-                console.log(this.chart);
             }
             return this;
         },

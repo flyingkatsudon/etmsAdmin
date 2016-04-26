@@ -3,14 +3,14 @@ define(function (require) {
     var Chart = require('./chart-base.js');
 
     return Chart.extend({
-        url: 'chart/hall',
+        url: 'status/hall/chart',
         options: {
             type: 'bar',
             data: {
                 datasets: [
-                    {type: 'bar', backgroundColor: 'MediumBlue'},
-                    {type: 'line', backgroundColor: 'Gray', fill: false, borderColor: 'Gray'},
-                    {type: 'bar', backgroundColor: 'Tomato'},
+                    {type: 'bar', backgroundColor: '#0000CD'},
+                    {type: 'line', backgroundColor: 'gray', fill: false, borderColor: 'gray'},
+                    {type: 'bar', backgroundColor: 'tomato'},
                     {type: 'line', fill: false}
                 ]
             },

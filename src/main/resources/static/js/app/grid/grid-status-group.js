@@ -28,7 +28,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/group',
+                    url: 'status/group/list',
                     colModel: colModel
                 }
             }, options);
@@ -37,7 +37,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('report/group?type=xlsx');
+            this.addExcel('status/group/xlsx');
             return this;
         }
     });

@@ -16,12 +16,12 @@ public class ExamineeDto extends StatusDto {
     private String examineeNm;
     private String paperCd;
     private Boolean isAttend;
+    private Boolean isNoIdCard;
     private Boolean isChangePaper;
     private String attendHeadNm;
     private String attendBldgNm;
     private String attendHallNm;
     private Boolean isOtherHall;
-    private Boolean isEtc;
     private String birth;
 
     // 검색용

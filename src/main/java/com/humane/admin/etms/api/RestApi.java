@@ -17,22 +17,22 @@ import java.util.Map;
 public interface RestApi {
 
     @GET("status/attend")
-    Observable<Response<PageResponse<StatusDto>>> attend(@QueryMap Map<String, String> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> attend(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("status/dept")
-    Observable<Response<PageResponse<StatusDto>>> dept(@QueryMap Map<String, String> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> dept(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("status/hall")
-    Observable<Response<PageResponse<StatusDto>>> hall(@QueryMap Map<String, String> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> hall(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("status/group")
-    Observable<Response<PageResponse<StatusDto>>> group(@QueryMap Map<String, String> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<StatusDto>>> group(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("status/examinee")
-    Observable<Response<PageResponse<ExamineeDto>>> examinee(@QueryMap Map<String, String> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+    Observable<Response<PageResponse<ExamineeDto>>> examinee(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("status/toolbar")
-    Observable<Response<List<StatusDto>>> toolbar(@QueryMap Map<String, String> parameterMap);
+    Observable<Response<List<StatusDto>>> toolbar(@QueryMap Map<String, Object> parameterMap);
 
     @GET("image/examinee/{fileName}")
     Observable<Response<ResponseBody>> imageExaminee(@Path("fileName") String fileName);
