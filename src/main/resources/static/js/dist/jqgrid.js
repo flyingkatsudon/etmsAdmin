@@ -78,9 +78,8 @@ define(function (require) {
             this.$grid = $(document.createElement('table')).attr('id', uuid.uuid());
             this.$pager = $(document.createElement('div')).attr('id', uuid.uuid());
             var _this = this;
-            $(window).bind('resize.jqGrid' + this.cid, function () {
+            $(window).bind('resizeEnd.jqGrid' + this.cid, function () {
                 _this.$grid.jqGrid('setGridWidth', _this.$el.width());
-                _this.$grid.parents('div.ui-jqgrid-bdiv').css('min-height', '100px');
             });
         }, render: function () {
             this.$el.empty().append(this.$grid, this.$pager);
@@ -88,6 +87,9 @@ define(function (require) {
             this.$grid.jqGrid(this.options.defaults);
             this.$grid.jqGrid('navGrid', this.$grid.getGridParam('pager'), this.options.nav, this.options.edit, this.options.add, this.options.del, this.options.search, this.options.view);
             this.$('.ui-jqgrid .ui-jqgrid-bdiv').css('overflow-x', 'hidden');
+            this.$grid.parents('div.ui-jqgrid-bdiv').css('min-height', '100px');
+
+            this.$grid.jqGrid('setGridWidth', this.$el.width());
 
             if (this.options.defaults.url) this.$grid.jqGrid('setGridParam', {datatype: 'json'}).trigger('reloadGrid');
             return this;
@@ -111,7 +113,7 @@ define(function (require) {
             this.$grid.trigger('reloadGrid', [{page: 1, current: true}]);
         }, close: function () {
             $('#alertmod_' + this.$grid[0].p.id).remove();
-            $(window).unbind('resize.jqGrid' + this.cid);
+            $(window).unbind('resizeEnd.jqGrid' + this.cid);
             this.unbind();
             this.remove();
         }

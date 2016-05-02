@@ -9,13 +9,23 @@ define(function (require) {
         render: function () {
             this.chart = Morris.Bar({
                 element: this.el.id,
-                xkey: 'typeNm',
+                data: [
+                    {name: '', attendCnt: 0, absentCnt: 0}
+                ],
+                xkey: 'name',
                 ykeys: ['attendCnt', 'absentCnt'],
-                labels: ['응시자수', '결시자수'],
-                //resize: true
+                labels: ['응시자수', '결시자수']
             });
             this.search();
+            this.resize();
             return this;
+        }, resize: function () {
+            var _this = this;
+            $(window).bind('resizeEnd.Morris' + this.cid, function () {
+                _this.chart.redraw();
+            });
+        }, close: function () {
+            $(window).unbind('resizeEnd.Morris' + this.cid);
         }, search: function (o) {
             var _this = this;
             $.ajax({
@@ -26,7 +36,7 @@ define(function (require) {
 
                 for (var i = 0; i < response.length; i++) {
                     data.push({
-                        typeNm: response[i].typeNm,
+                        name: response[i].typeNm,
                         attendCnt: response[i].attendCnt,
                         absentCnt: response[i].absentCnt
                     });

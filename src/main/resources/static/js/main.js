@@ -27,7 +27,7 @@ define(function (require) {
                             $view[prop].remove();
                         }
                     }
-                    if(this.view.close) this.view.close();
+                    if (this.view.close) this.view.close();
                     this.view.remove();
 
                     $('body #wrapper').append('<div id="page-wrapper"></div>');
@@ -48,6 +48,13 @@ define(function (require) {
         if (hash && hash != '')
             router.navigate(this.hash, {trigger: true});
         return false;
+    });
+
+    $(window).bind('resize', function () {
+        if (this.resizeTo) clearTimeout(this.resizeTo);
+        this.resizeTo = setTimeout(function () {
+            $(this).trigger('resizeEnd');
+        }, 100);
     });
 
     var router = new Router();

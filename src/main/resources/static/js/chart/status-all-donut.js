@@ -13,13 +13,20 @@ define(function (require) {
                     {label: '응시율', value: 0.00},
                     {label: '결시율', value: 100.00}
                 ],
-                //resize: true,
                 formatter: function (y, data) {
                     return y + '%'
                 }
             });
             this.search();
+            this.resize();
             return this;
+        }, resize: function () {
+            var _this = this;
+            $(window).bind('resizeEnd.Morris' + this.cid, function () {
+                _this.chart.redraw();
+            });
+        }, close: function () {
+            $(window).unbind('resizeEnd.Morris' + this.cid);
         }, search: function (o) {
             var _this = this;
             $.ajax({

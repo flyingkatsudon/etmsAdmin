@@ -7,7 +7,7 @@ define(function (require) {
 
     return Backbone.View.extend({
         render: function () {
-            Morris.Bar({
+            this.chart = Morris.Bar({
                 element: this.el.id,
                 data: [
                     {name: '테스트', attendCnt: 0, absentCnt: 654},
@@ -16,10 +16,20 @@ define(function (require) {
                 ],
                 xkey: 'name',
                 ykeys: ['attendCnt', 'absentCnt'],
-                labels: ['응시자수', '결시자수'],
-                //resize: true
+                labels: ['응시자수', '결시자수']
             });
+            this.search();
+            this.resize();
             return this;
+        }, resize: function () {
+            var _this = this;
+            $(window).bind('resizeEnd.Morris' + this.cid, function () {
+                _this.chart.redraw();
+            });
+        }, close: function () {
+            $(window).unbind('resizeEnd.Morris' + this.cid);
+        }, search: function (o) {
+
         }
     });
 });
