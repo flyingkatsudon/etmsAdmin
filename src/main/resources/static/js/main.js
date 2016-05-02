@@ -1,49 +1,55 @@
 define(function (require) {
     "use strict";
 
-    require('jqueryui');
-    require('layout');
-    require('layout.tab');
+    require('bootstrap');
+    require('sb-admin-2');
 
-    var Menu = require('./main.menu');
-    var Tabs = require('./main.tabs');
+    var Backbone = require('backbone');
 
-    $.extend(true, $.layout.defaults, {
-        panes: {
-            resizeable: false,
-            closeable: false,
-            spacing_open: 0,
-            spacing_closed: 0
+    var Router = Backbone.Router.extend({
+        routes: {
+            '': 'home',
+            '*actions': 'defaultRoute'
+        }, loadView: function (view) {
+            this.view = view;
+            this.view.render();
+        }, home: function () {
+            this.defaultRoute('home');
+        }, defaultRoute: function (actions) {
+            if (actions) {
+                if (this.view) {
+                    var prop;
+                    var $view = this.view;
+
+                    for (prop in $view) {
+                        if ($view[prop] instanceof Backbone.View) {
+                            if ($view[prop].close) $view[prop].close();
+                            $view[prop].remove();
+                        }
+                    }
+                    if(this.view.close) this.view.close();
+                    this.view.remove();
+
+                    $('body #wrapper').append('<div id="page-wrapper"></div>');
+                }
+                var _this = this;
+                require(['js/app/' + actions], function (View) {
+                    var view = new View({el: '#page-wrapper'});
+                    _this.loadView(view);
+                }, function (e) {
+                    console.log(e);
+                });
+            }
         }
     });
 
-    window.layout = $('body').layout({
-        north__paneSelector: '.header',
-        center__paneSelector: '#tabs',
-        west__paneSelector: '#left-menu',
-        west__size: 250,
-        center__childOptions: {
-            north__paneSelector: '#tab-button',
-            center__paneSelector: '#tab-panels',
-            center__onresize: $.layout.callbacks.resizeTabLayout
-        }
+    $('#side-menu.nav li a').click(function () {
+        var hash = this.hash;
+        if (hash && hash != '')
+            router.navigate(this.hash, {trigger: true});
+        return false;
     });
 
-    var tabs = new Tabs({el: '#tabs'}).render();
-    var menu = new Menu({el: '#left-menu', tab: tabs}).render();
-
-    $(window).bind('resize', function () {
-        if (this.resizeTo) clearTimeout(this.resizeTo);
-        this.resizeTo = setTimeout(function () {
-            $(this).trigger('resizeEnd');
-        }, 100);
-    });
-
-    $('body .header .user-info input[type="submit"]').button();
-
-    $(window).on('resizeEnd', function () {
-        layout.resizeAll();
-    });
-
-    $(window).trigger('resize');
+    var router = new Router();
+    Backbone.history.start();
 });

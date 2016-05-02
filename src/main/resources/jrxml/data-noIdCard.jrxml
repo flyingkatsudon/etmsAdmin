@@ -11,12 +11,12 @@
 	<field name="attendTime" class="java.util.Date"/>
 	<field name="examineeCd" class="java.lang.String"/>
 	<field name="examineeNm" class="java.lang.String"/>
-	<field name="birth" class="java.util.Date"/>
+	<field name="birth" class="java.lang.String"/>
 	<field name="deptNm" class="java.lang.String"/>
 	<field name="attendBldgNm" class="java.lang.String"/>
 	<field name="attendHallNm" class="java.lang.String"/>
 	<field name="memo" class="java.lang.String"/>
-	<field name="checkTime" class="java.lang.String"/>
+	<field name="checkTime" class="java.util.Date"/>
 	<title>
 		<band height="68" splitType="Stretch">
 			<staticText>

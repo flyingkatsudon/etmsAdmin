@@ -12,23 +12,21 @@ import com.humane.util.spring.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import retrofit2.Response;
-import rx.Observable;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "data", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "data")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DataController {
@@ -37,27 +35,17 @@ public class DataController {
 
     @RequestMapping(value = "examinee/list")
     public ResponseEntity examinee(ExamineeDto statusDto, JqgridPager pager) {
-        Observable<Response<PageResponse<ExamineeDto>>> observable = apiService.examinee(
-                ObjectConvert.asMap(statusDto),
-                pager.getPage() - 1,
-                pager.getRows(),
-                pager.getSort());
-
-        Response<PageResponse<ExamineeDto>> response = observable.toBlocking().first();
+        Response<PageResponse<ExamineeDto>> response = apiService.examinee(ObjectConvert.asMap(statusDto), pager.getPage() - 1, pager.getRows(), pager.getSort());
 
         return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
     }
 
     @RequestMapping(value = "examinee/{format:pdf|xls|xlsx}")
-    public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, JqgridPager pager) {
-        Observable<List<ExamineeDto>> observable = apiService.examinee(
-                ObjectConvert.asMap(statusDto),
-                pager.getSort()
-        );
-
-        List<ExamineeDto> list = observable.toBlocking().first();
+    public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+        List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(statusDto), pager.getSort());
 
         return JasperReportsExportHelper.toResponseEntity(
+                response,
                 "jrxml/data-examinee.jrxml",
                 format,
                 list
@@ -65,13 +53,8 @@ public class DataController {
     }
 
     @RequestMapping(value = "examineeId/{format:pdf}")
-    public ResponseEntity examineeId(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager) {
-        Observable<List<ExamineeDto>> observable = apiService.examinee(
-                ObjectConvert.asMap(examineeDto),
-                pager.getSort()
-        );
-
-        List<ExamineeDto> list = observable.toBlocking().first();
+    public ResponseEntity examineeId(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
+        List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
 
         list.forEach(item -> {
             try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
@@ -83,6 +66,7 @@ public class DataController {
         });
 
         return JasperReportsExportHelper.toResponseEntity(
+                response,
                 "jrxml/examinee-id-card.jrxml",
                 format,
                 list
@@ -93,29 +77,20 @@ public class DataController {
     public ResponseEntity otherHall(ExamineeDto examineeDto, JqgridPager pager) {
         examineeDto.setIsOtherHall(true);
 
-        Observable<Response<PageResponse<ExamineeDto>>> observable = apiService.examinee(
-                ObjectConvert.asMap(examineeDto),
-                pager.getPage() - 1,
-                pager.getRows(),
-                pager.getSort());
-
-        Response<PageResponse<ExamineeDto>> response = observable.toBlocking().first();
+        Response<PageResponse<ExamineeDto>> response = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getPage() - 1, pager.getRows(), pager.getSort());
 
         return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
     }
 
     @RequestMapping(value = "otherHall/{format:pdf|xls|xlsx}")
-    public ResponseEntity otherHall(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager) {
+    public ResponseEntity otherHall(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
 
         examineeDto.setIsOtherHall(true);
 
-        Observable<List<ExamineeDto>> observable = apiService.examinee(
-                ObjectConvert.asMap(examineeDto),
-                pager.getSort()
-        );
-        List<ExamineeDto> list = observable.toBlocking().first();
+        List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
 
         return JasperReportsExportHelper.toResponseEntity(
+                response,
                 "jrxml/data-otherHall.jrxml",
                 format,
                 list
@@ -126,28 +101,19 @@ public class DataController {
     public ResponseEntity noIdCard(ExamineeDto examineeDto, JqgridPager pager) {
         examineeDto.setIsNoIdCard(true);
 
-        Observable<Response<PageResponse<ExamineeDto>>> observable = apiService.examinee(
-                ObjectConvert.asMap(examineeDto),
-                pager.getPage() - 1,
-                pager.getRows(),
-                pager.getSort());
-
-        Response<PageResponse<ExamineeDto>> response = observable.toBlocking().first();
+        Response<PageResponse<ExamineeDto>> response = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getPage() - 1, pager.getRows(), pager.getSort());
 
         return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
     }
 
     @RequestMapping(value = "noIdCard/{format:pdf|xls|xlsx}")
-    public ResponseEntity noIdCard(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager) {
+    public ResponseEntity noIdCard(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
         examineeDto.setIsNoIdCard(true);
 
-        Observable<List<ExamineeDto>> observable = apiService.examinee(
-                ObjectConvert.asMap(examineeDto),
-                pager.getSort()
-        );
-        List<ExamineeDto> list = observable.toBlocking().first();
+        List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
 
         return JasperReportsExportHelper.toResponseEntity(
+                response,
                 "jrxml/data-noIdCard.jrxml",
                 format,
                 list
@@ -158,28 +124,19 @@ public class DataController {
     public ResponseEntity recheck(ExamineeDto examineeDto, JqgridPager pager) {
         examineeDto.setIsRecheck(true);
 
-        Observable<Response<PageResponse<ExamineeDto>>> observable = apiService.examinee(
-                ObjectConvert.asMap(examineeDto),
-                pager.getPage() - 1,
-                pager.getRows(),
-                pager.getSort());
-
-        Response<PageResponse<ExamineeDto>> response = observable.toBlocking().first();
+        Response<PageResponse<ExamineeDto>> response = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getPage() - 1, pager.getRows(), pager.getSort());
 
         return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
     }
 
     @RequestMapping(value = "recheck/{format:pdf|xls|xlsx}")
-    public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager) {
+    public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
         examineeDto.setIsRecheck(true);
 
-        Observable<List<ExamineeDto>> observable = apiService.examinee(
-                ObjectConvert.asMap(examineeDto),
-                pager.getSort()
-        );
-        List<ExamineeDto> list = observable.toBlocking().first();
+        List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
 
         return JasperReportsExportHelper.toResponseEntity(
+                response,
                 "jrxml/data-noIdCard.jrxml",
                 format,
                 list

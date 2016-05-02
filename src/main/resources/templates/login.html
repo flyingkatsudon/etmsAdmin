@@ -1,18 +1,37 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" layout:decorator="layout/public">
 <head>
-    <title>Humane System ::: 실기채점 관리 시스템</title>
-    <link rel="stylesheet" type="text/css" href="css/login.css"/>
+    <title>EtmsAdmin Login</title>
 </head>
 <body>
-<div th:if="${param.error}">
-    <script type="text/javascript">alert('Invalid username and password.');</script>
+<div class="container" layout:fragment="content">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Etms 관리자 로그인</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" th:action="@{/login}" method="POST">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="ID를 입력하세요" name="username" type="text"
+                                       required="required"
+                                       autofocus="autofocus"/>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="암호를 입력하세요" name="password" type="password"
+                                       required="required"
+                                       value=""/>
+                            </div>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button class="btn btn-lg btn-success btn-block" type="submit">로그인</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<form class="login-box" th:action="@{/login}" method="post">
-    <span class="id-f"><input name="username" type="text" placeholder="ID를 입력하세요"/></span>
-    <span class="pw-f"><input name="password" type="password" placeholder="암호를 입력하세요"/></span>
-    <span class="login-bt"><input type="submit" value=""/></span>
-</form>
-<div class="footer"><img src="images/footer.png"/></div>
 </body>
 </html>

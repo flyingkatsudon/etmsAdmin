@@ -1,24 +1,17 @@
 define(function (require) {
     "use strict";
-
-    require('layout');
-
     var Backbone = require('backbone');
-    var Toolbar = require('./toolbar/toolbar-data-recheck.js');
-    var List = require('./grid/grid-data-recheck.js');
 
-    var layout;
+    var List = require('../grid/data-recheck.js');
+    var Toolbar = require('../toolbar/data-recheck.js');
+    var Template = require('text!/tpl/data-recheck.html');
 
     return Backbone.View.extend({
         render: function () {
-            layout = this.$el.layout();
-            this.list = new List({el: layout.center.pane}).render();
-            this.toolbar = new Toolbar({el: layout.north.pane, parent: this}).render();
-
-            $(window).trigger('resize');
-        },
-        search: function (o){
-            console.log(o);
+            this.$el.html(Template);
+            this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
+            this.list = new List({el: '.hm-ui-grid'}).render();
+        }, search: function (o) {
             this.list.search(o);
         }
     });

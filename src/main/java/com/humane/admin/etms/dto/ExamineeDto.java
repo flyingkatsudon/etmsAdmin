@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.awt.image.BufferedImage;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -28,6 +29,8 @@ public class ExamineeDto extends StatusDto {
     // 검색용
     private String fromExamineeCd;
     private String toExamineeCd;
+    private String memo;
+    private Date checkTime;
 
     private BufferedImage examineeImage;
 }

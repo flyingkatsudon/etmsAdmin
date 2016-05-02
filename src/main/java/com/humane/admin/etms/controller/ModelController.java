@@ -1,7 +1,7 @@
 package com.humane.admin.etms.controller;
 
-import com.humane.admin.etms.api.RestApi;
 import com.humane.admin.etms.dto.StatusDto;
+import com.humane.admin.etms.service.ApiService;
 import com.humane.util.ObjectConvert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import retrofit2.Response;
-import rx.Observable;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ModelController {
-    private final RestApi restApi;
+    private final ApiService apiService;
 
     /**
      * 툴바 데이터를 전송
@@ -33,9 +32,7 @@ public class ModelController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Observable<Response<List<StatusDto>>> observable = restApi.toolbar(ObjectConvert.asMap(statusDto));
-
-        Response<List<StatusDto>> response = observable.toBlocking().first();
+        Response<List<StatusDto>> response = apiService.toolbar(ObjectConvert.asMap(statusDto));
         return ResponseEntity.ok(response.body());
     }
 }

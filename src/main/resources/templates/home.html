@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>ETMS</title>
-    <script>
-      location.href = 'main';
+    <meta http-equiv="refresh" content="0;url=main"/>
+    <title>ETMS ADMIN</title>
+    <script language="Javascript">
+        window.location.href = "main";
     </script>
 </head>
+<body>
+Go to <a th:href="@{main}">main</a>
+</body>
 </html>

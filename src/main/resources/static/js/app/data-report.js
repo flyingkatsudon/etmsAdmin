@@ -1,23 +1,23 @@
-/**
- *
- */
-define(function(require) {
+define(function (require) {
     "use strict";
 
-    require('layout');
-
     var Backbone = require('backbone');
-    var Grid = require('./grid/grid-data-report.js');
+    var Template = require('text!tpl/data-report.html');
+    var DlgDownload = require('../dist/dlg-download.js');
 
-    var layout;
-    var view = Backbone.View.extend({
-        render : function() {
-            layout = this.$el.layout();
-            this.grid = new Grid({el: layout.center.pane}).render();
-
-            $(window).trigger('resize');
+    return Backbone.View.extend({
+        initialize: function (o) {
+            this.el = o.el;
+            this.parent = o.parent;
+            this.dlgDownload = new DlgDownload();
+        }, render: function () {
+            this.$el.html(Template);
+        }, events: {
+            'click .btn': 'buttonClicked'
+        }, buttonClicked: function (e) {
+            var url = e.currentTarget.form.action;
+            this.dlgDownload.render({url: url});
+            return false;
         }
     });
-
-    return view;
 });

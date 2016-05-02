@@ -1,29 +1,29 @@
 {
-  "name": "etmsAdmin",
+  "name": "untitled",
+  "authors": [
+    "MuzEye <muzeye@gmail.com>"
+  ],
   "description": "",
   "main": "",
-  "moduleType": [],
   "license": "MIT",
   "homepage": "",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
-    "src/main/resources/static/components",
+    "src/main/resources/static/bower_components",
     "test",
     "tests"
   ],
   "dependencies": {
-    "requirejs": "^2.1.22",
-    "backbone": "^1.3.2",
-    "jqGrid": "jqgrid#^5.1.0",
-    "jquery-ui-layout": "jquery-ui-layout-bower#^1.4.4",
-    "text": "requirejs-text#^2.0.14",
+    "startbootstrap-sb-admin-2": "^1.0.8",
+    "backbone": "^1.3.3",
+    "requirejs": "^2.2.0",
     "require-css": "^0.1.8",
+    "jqGrid": "jqgrid#^5.1.0",
+    "text": "^2.0.15",
     "lil-uuid": "^0.1.1",
     "jquery-file-download": "^1.4.4",
-    "Chart.js": "^2.0.0",
-    "multiline": "^1.0.2",
-    "moment": "^2.12.0"
+    "bootstrap3-dialog": "^1.35.1"
   }
 }

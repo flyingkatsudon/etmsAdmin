@@ -16,6 +16,9 @@ import java.util.Map;
 
 public interface RestApi {
 
+    @GET("status/all")
+    Observable<Response<StatusDto>> all(@QueryMap Map<String, Object> params, @Query("page") String... sort);
+
     @GET("status/attend")
     Observable<Response<PageResponse<StatusDto>>> attend(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 

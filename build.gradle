@@ -65,7 +65,7 @@ dependencies {
 
     compile('org.apache.commons:commons-lang3:3.4')
     compile('commons-io:commons-io:2.4')
-    compile('com.humane:util-common:0.0.12')
+    compile('com.humane:util-common:0.0.14')
 }
 
 eclipse {
