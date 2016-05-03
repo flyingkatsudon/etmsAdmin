@@ -24,7 +24,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "data")
@@ -122,7 +121,7 @@ public class DataController {
         }
     }
 
-    @RequestMapping(value = "recheck/{format:pdf|xls|xlsx}")
+    @RequestMapping(value = "recheck/{format:list|pdf|xls|xlsx}")
     public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
         examineeDto.setIsRecheck(true);
         switch (format) {
@@ -144,18 +143,20 @@ public class DataController {
         }
     }
 
-    @RequestMapping(value = "signature/{format:list|xlsx")
+    @RequestMapping(value = "signature/{format:list|xlsx}")
     public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-
-        Map<String, Object> params = ObjectConvert.asMap(statusDto);
-        String[] sort = pager.getSort();
 
         switch (format) {
             case LIST:
-                Response<PageResponse<StatusDto>> pageResponse = apiService.signature(params, pager.getPage() - 1, pager.getRows(), sort);
+                Response<PageResponse<StatusDto>> pageResponse = apiService.signature(
+                        ObjectConvert.asMap(statusDto),
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort()
+                );
                 return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             default:
-                List<StatusDto> list = apiService.signature(params, sort);
+                List<StatusDto> list = apiService.signature(ObjectConvert.asMap(statusDto), pager.getSort());
                 return JasperReportsExportHelper.toResponseEntity(
                         response,
                         "jrxml/data-noIdCard.jrxml",
