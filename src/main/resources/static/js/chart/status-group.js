@@ -9,7 +9,7 @@ define(function (require) {
         render: function () {
             this.chart = Morris.Bar({
                 element: this.el.id,
-                data: [],
+                data: [{name: '', attendCnt: 0, absentCnt: 0}],
                 xkey: 'name',
                 ykeys: ['attendCnt', 'absentCnt'],
                 labels: ['응시자수', '결시자수']

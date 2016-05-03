@@ -9,10 +9,7 @@ define(function (require) {
         render: function () {
             this.chart = Morris.Donut({
                 element: this.el.id,
-                data: [
-                    {label: '응시율', value: 0.00},
-                    {label: '결시율', value: 100.00}
-                ],
+                data: [{label: '응시율', value: 0.00}, {label: '결시율', value: 100.00}],
                 formatter: function (y, data) {
                     return y + '%'
                 }
