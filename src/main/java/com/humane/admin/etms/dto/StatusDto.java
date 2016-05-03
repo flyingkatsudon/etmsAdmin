@@ -44,4 +44,6 @@ public class StatusDto implements Serializable {
     private String groupNm;
     private Boolean isSend;
     private Boolean isEtc;
+    private Boolean isSign;
+    private Long deviceNo;
 }

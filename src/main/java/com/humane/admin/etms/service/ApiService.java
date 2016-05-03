@@ -110,4 +110,20 @@ public class ApiService {
 
         return observable.toBlocking().first();
     }
+
+    public Response<PageResponse<StatusDto>> signature(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<StatusDto>>> observable = restApi.signature(params, page, rows, sort);
+        return observable.toBlocking().first();
+    }
+
+    public List<StatusDto> signature(Map<String, Object> params, String... sort) {
+        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.signature(params, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                });
+        return observable.toBlocking().first();
+    }
 }

@@ -39,4 +39,8 @@ public interface RestApi {
 
     @GET("image/examinee/{fileName}")
     Observable<Response<ResponseBody>> imageExaminee(@Path("fileName") String fileName);
+
+    @GET("status/signature")
+    Observable<Response<PageResponse<StatusDto>>> signature(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+
 }

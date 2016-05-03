@@ -10,7 +10,6 @@ import com.humane.util.spring.PageResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import retrofit2.Response;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "status")
@@ -26,6 +24,7 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class StatusController {
     private static final String CHART = "chart";
+    private static final String LIST = "list";
 
     private final ApiService apiService;
 
@@ -35,83 +34,93 @@ public class StatusController {
         return ResponseEntity.ok(response.body());
     }
 
-    @RequestMapping(value = "attend/list")
-    public ResponseEntity attend(StatusDto statusDto, JqgridPager pager) {
-        Response<PageResponse<StatusDto>> response = apiService.attend(ObjectConvert.asMap(statusDto), pager.getPage() - 1, pager.getRows(), pager.getSort());
-
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-    }
-
-    @RequestMapping(value = "attend/{format:chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "attend/{format:list|chart|pdf|xls|xlsx}")
     public ResponseEntity attend(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-        List<StatusDto> list = apiService.attend(ObjectConvert.asMap(statusDto), pager.getSort());
 
         switch (format) {
+            case LIST:
+                Response<PageResponse<StatusDto>> pageResponse = apiService.attend(
+                        ObjectConvert.asMap(statusDto),
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort()
+                );
+                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             case CHART:
-                return ResponseEntity.ok(list);
+                return ResponseEntity.ok(apiService.attend(ObjectConvert.asMap(statusDto), pager.getSort()));
             default:
-                return JasperReportsExportHelper.toResponseEntity(response, "jrxml/status-attend.jrxml", format, list);
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/status-attend.jrxml",
+                        format,
+                        apiService.attend(ObjectConvert.asMap(statusDto), pager.getSort())
+                );
         }
     }
 
-    @RequestMapping(value = "dept/list")
-    public ResponseEntity dept(StatusDto statusDto, JqgridPager pager) {
-        Response<PageResponse<StatusDto>> response = apiService.dept(ObjectConvert.asMap(statusDto), pager.getPage() - 1, pager.getRows(), pager.getSort());
-
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-    }
-
-    @RequestMapping(value = "dept/{format:chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "dept/{format:list|chart|pdf|xls|xlsx}")
     public ResponseEntity dept(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-        List<StatusDto> list = apiService.dept(ObjectConvert.asMap(statusDto), pager.getSort());
 
         switch (format) {
+            case LIST:
+                Response<PageResponse<StatusDto>> pageResponse = apiService.dept(
+                        ObjectConvert.asMap(statusDto),
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort()
+                );
+                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             case CHART:
-                return ResponseEntity.ok(list);
+                return ResponseEntity.ok(apiService.dept(ObjectConvert.asMap(statusDto), pager.getSort()));
             default:
-                return JasperReportsExportHelper.toResponseEntity(response, "jrxml/status-dept.jrxml", format, list);
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/status-dept.jrxml",
+                        format,
+                        apiService.dept(ObjectConvert.asMap(statusDto), pager.getSort())
+                );
         }
     }
 
-    @RequestMapping(value = "hall/list")
-    public ResponseEntity hall(StatusDto statusDto, JqgridPager pager) {
-        Response<PageResponse<StatusDto>> response = apiService.hall(ObjectConvert.asMap(statusDto), pager.getPage() - 1, pager.getRows(), pager.getSort());
-
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-    }
-
-    @RequestMapping(value = "hall/{format:chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "hall/{format:list|chart|pdf|xls|xlsx}")
     public ResponseEntity hall(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-        List<StatusDto> list = apiService.hall(ObjectConvert.asMap(statusDto), pager.getSort());
-
         switch (format) {
+            case LIST:
+                Response<PageResponse<StatusDto>> pageResponse = apiService.hall(
+                        ObjectConvert.asMap(statusDto),
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort()
+                );
+                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             case CHART:
-                return ResponseEntity.ok(list);
+                return ResponseEntity.ok(apiService.hall(ObjectConvert.asMap(statusDto), pager.getSort()));
             default:
-                return JasperReportsExportHelper.toResponseEntity(response, "jrxml/status-hall.jrxml", format, list);
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/status-hall.jrxml",
+                        format,
+                        apiService.hall(ObjectConvert.asMap(statusDto), pager.getSort())
+                );
         }
     }
 
-    @RequestMapping(value = "group/list")
-    public ResponseEntity group(StatusDto statusDto, JqgridPager pager) {
-        Response<PageResponse<StatusDto>> response = apiService.group(ObjectConvert.asMap(statusDto), pager.getPage() - 1, pager.getRows(), pager.getSort());
-
-        if (response.isSuccessful()) return ResponseEntity.ok(JqgridMapper.getResponse(response.body()));
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-    }
-
-    @RequestMapping(value = "group/{format:chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "group/{format:list|chart|pdf|xls|xlsx}")
     public ResponseEntity group(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-        List<StatusDto> list = apiService.group(ObjectConvert.asMap(statusDto), pager.getSort());
-
         switch (format) {
+            case LIST:
+                Response<PageResponse<StatusDto>> pageResponse = apiService.group(
+                        ObjectConvert.asMap(statusDto),
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort()
+                );
+                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
             case CHART:
-                return ResponseEntity.ok(list);
+                return ResponseEntity.ok(apiService.group(ObjectConvert.asMap(statusDto), pager.getSort()));
             default:
-                return JasperReportsExportHelper.toResponseEntity(response, "jrxml/status-group.jrxml", format, list);
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/status-hall.jrxml",
+                        format,
+                        apiService.group(ObjectConvert.asMap(statusDto), pager.getSort())
+                );
         }
     }
 }
