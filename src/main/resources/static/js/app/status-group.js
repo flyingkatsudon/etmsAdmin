@@ -19,6 +19,7 @@ define(function (require) {
             this.chart3 = new Chart3({el: '#hm-ui-chart-all-2'}).render();
         }, search: function (o) {
             this.list.search(o);
+            this.chart1.search(o);
         }
     });
 });

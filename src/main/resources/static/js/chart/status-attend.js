@@ -28,12 +28,12 @@ define(function (require) {
             $(window).unbind('resizeEnd.Morris' + this.cid);
         }, search: function (o) {
             var _this = this;
+
             $.ajax({
                 url: 'status/attend/chart',
                 data: o
             }).done(function (response) {
                 var data = [];
-
                 for (var i = 0; i < response.length; i++) {
                     data.push({
                         name: response[i].typeNm,
