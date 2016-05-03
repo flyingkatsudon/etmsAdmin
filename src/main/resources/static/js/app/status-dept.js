@@ -9,7 +9,6 @@ define(function (require) {
     var Toolbar = require('../toolbar/status-dept.js');
     var Template = require('text!/tpl/status-dept.html');
 
-
     return Backbone.View.extend({
         render: function () {
             this.$el.html(Template);
@@ -20,6 +19,7 @@ define(function (require) {
             this.chart3 = new Chart3({el: '#hm-ui-chart-all-2'}).render();
         }, search: function (o) {
             this.list.search(o);
+            this.chart1.search(o);
         }
     });
 });
