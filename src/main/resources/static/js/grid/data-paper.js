@@ -15,10 +15,10 @@ define(function (require) {
                 {name: 'birth', label: '생년월일'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'paperCnt', label: '답안지 매수'},
-                {name: 'originalPaper', label: '원답안지'},
-                {name: 'finalPaper', label: '최종답안지'},
+                {name: 'firstPaperCd', label: '원답안지'},
+                {name: 'lastPaperCd', label: '최종답안지'},
                 {name: 'paperList', label: '교체이력'},
-                {name: 'changeTime', label: '최종교체시간'}
+                {name: 'lastDttm', label: '최종교체시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
