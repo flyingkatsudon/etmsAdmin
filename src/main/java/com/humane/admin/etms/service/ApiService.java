@@ -126,4 +126,20 @@ public class ApiService {
                 });
         return observable.toBlocking().first();
     }
+
+    public Response<PageResponse<ExamineeDto>> paper(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<ExamineeDto>>> observable = restApi.paper(params, page, rows, sort);
+        return observable.toBlocking().first();
+    }
+
+    public List<ExamineeDto> paper(Map<String, Object> params, String... sort) {
+        Observable<List<ExamineeDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.paper(params, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                });
+        return observable.toBlocking().first();
+    }
 }

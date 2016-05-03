@@ -43,4 +43,7 @@ public interface RestApi {
     @GET("status/signature")
     Observable<Response<PageResponse<StatusDto>>> signature(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
+    @GET("status/paper")
+    Observable<Response<PageResponse<ExamineeDto>>> paper(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+
 }

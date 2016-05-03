@@ -165,4 +165,27 @@ public class DataController {
                 );
         }
     }
+
+    @RequestMapping(value = "paper/{format:list|xlsx}")
+    public ResponseEntity paper(@PathVariable String format, ExamineeDto statusDto, JqgridPager pager, HttpServletResponse response) {
+
+        switch (format) {
+            case LIST:
+                Response<PageResponse<ExamineeDto>> pageResponse = apiService.paper(
+                        ObjectConvert.asMap(statusDto),
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort()
+                );
+                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+            default:
+                List<ExamineeDto> list = apiService.paper(ObjectConvert.asMap(statusDto), pager.getSort());
+                return JasperReportsExportHelper.toResponseEntity(
+                        response,
+                        "jrxml/data-paper.jrxml",
+                        format,
+                        list
+                );
+        }
+    }
 }
