@@ -30,6 +30,7 @@ public class ExamineeDto extends StatusDto {
 
     private String firstPaperCd;
     private String lastPaperCd;
+    private Long paperCnt;
     private String paperList;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
