@@ -17,9 +17,9 @@ define(function (require) {
             this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate()));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime()));
-            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm()));
-            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm()));
+            this.$('#attendHeadNm').html(this.getOptions(ToolbarModel.getAttendHeadNm()));
+            this.$('#attendBldgNm').html(this.getOptions(ToolbarModel.getAttendBldgNm()));
+            this.$('#attendHallNm').html(this.getOptions(ToolbarModel.getAttendHallNm()));
 
             return this;
         },
@@ -29,9 +29,9 @@ define(function (require) {
             'change #typeNm': 'typeNmChanged',
             'change #attendDate': 'attendDateChanged',
             'change #attendTime': 'attendTimeChanged',
-            'change #headNm': 'headNmChanged',
-            'change #bldgNm': 'bldgNmChanged',
-            'change #hallNm': 'hallNmChanged'
+            'change #attendHeadNm': 'attendHeadNmChanged',
+            'change #attendBldgNm': 'attendBldgNmChanged',
+            'change #attendHallNm': 'attendHallNmChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -43,9 +43,9 @@ define(function (require) {
                     typeNm : _this.$('#typeNm').val(),
                     attendDate : _this.$('#attendDate').val(),
                     attendTime : _this.$('#attendTime').val(),
-                    headNm : _this.$('#headNm').val(),
-                    bldgNm : _this.$('#bldgNm').val(),
-                    hallNm : _this.$('#hallNm').val(),
+                    attendHeadNm : _this.$('#attendHeadNm').val(),
+                    attendBldgNm : _this.$('#attendBldgNm').val(),
+                    attendHallNm : _this.$('#attendHallNm').val(),
                     examineeCd : _this.$('#examineeCd').val(),
                     examineeNm : _this.$('#examineeNm').val()
                 });
@@ -59,9 +59,9 @@ define(function (require) {
             this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
-            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#attendHeadNm').html(this.getOptions(ToolbarModel.getAttendHeadNm(param)));
+            this.$('#attendBldgNm').html(this.getOptions(ToolbarModel.getAttendBldgNm(param)));
+            this.$('#attendHallNm').html(this.getOptions(ToolbarModel.getAttendHallNm(param)));
         },
 
         typeNmChanged: function (e){
@@ -71,9 +71,9 @@ define(function (require) {
             };
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
-            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#attendHeadNm').html(this.getOptions(ToolbarModel.getAttendHeadNm(param)));
+            this.$('#attendBldgNm').html(this.getOptions(ToolbarModel.getAttendBldgNm(param)));
+            this.$('#attendHallNm').html(this.getOptions(ToolbarModel.getAttendHallNm(param)));
         },
 
         attendDateChanged: function (e){
@@ -83,9 +83,9 @@ define(function (require) {
                 attendDate: e.currentTarget.value
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
-            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#attendHeadNm').html(this.getOptions(ToolbarModel.getAttendHeadNm(param)));
+            this.$('#attendBldgNm').html(this.getOptions(ToolbarModel.getAttendBldgNm(param)));
+            this.$('#attendHallNm').html(this.getOptions(ToolbarModel.getAttendHallNm(param)));
         },
 
         attendTimeChanged: function (e){
@@ -95,33 +95,33 @@ define(function (require) {
                 attendDate: this.$('#attendDate').val(),
                 attendTime: e.currentTarget.value
             };
-            this.$('#headNm').html(this.getOptions(ToolbarModel.getHeadNm(param)));
-            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#attendHeadNm').html(this.getOptions(ToolbarModel.getAttendHeadNm(param)));
+            this.$('#attendBldgNm').html(this.getOptions(ToolbarModel.getAttendBldgNm(param)));
+            this.$('#attendHallNm').html(this.getOptions(ToolbarModel.getAttendHallNm(param)));
         },
 
-        headNmChanged: function (e){
+        attendHeadNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 typeNm: this.$('#typeNm').val(),
                 attendDate: this.$('#attendDate').val(),
                 attendTime: this.$('#attendTime').val(),
-                headNm: e.currentTarget.value
+                attendHeadNm: e.currentTarget.value
             };
-            this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm(param)));
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#attendBldgNm').html(this.getOptions(ToolbarModel.getAttendBldgNm(param)));
+            this.$('#attendHallNm').html(this.getOptions(ToolbarModel.getAttendHallNm(param)));
         },
 
-        bldgNmChanged: function (e){
+        attendBldgNmChanged: function (e){
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 typeNm: this.$('#typeNm').val(),
                 attendDate: this.$('#attendDate').val(),
                 attendTime: this.$('#attendTime').val(),
-                headNm: this.$('#headNm').val(),
-                bldgNm: e.currentTarget.value
+                attendHeadNm: this.$('#attendHeadNm').val(),
+                attendBldgNm: e.currentTarget.value
             };
-            this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
+            this.$('#attendHallNm').html(this.getOptions(ToolbarModel.getAttendHallNm(param)));
         }
     });
 });

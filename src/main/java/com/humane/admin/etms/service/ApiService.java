@@ -111,6 +111,15 @@ public class ApiService {
         return observable.toBlocking().first();
     }
 
+    /**
+     * 감독관 서명 정보를 요청하는 부분
+     *
+     * @param params 컨트롤러에서 변환해서 넘겨준 map
+     * @param page
+     * @param rows
+     * @param sort
+     * @return
+     */
     public Response<PageResponse<StatusDto>> signature(Map<String, Object> params, int page, int rows, String... sort) {
         Observable<Response<PageResponse<StatusDto>>> observable = restApi.signature(params, page, rows, sort);
         return observable.toBlocking().first();
@@ -135,6 +144,37 @@ public class ApiService {
     public List<ExamineeDto> paper(Map<String, Object> params, String... sort) {
         Observable<List<ExamineeDto>> observable = Observable.range(0, Integer.MAX_VALUE)
                 .concatMap(currentPage -> restApi.paper(params, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                });
+        return observable.toBlocking().first();
+    }
+
+    public Response<PageResponse<StatusDto>> send(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<StatusDto>>> observable = restApi.send(params, page, rows, sort);
+        return observable.toBlocking().first();
+    }
+
+    public List<StatusDto> send(Map<String, Object> params, String... sort) {
+        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.send(params, currentPage, Integer.MAX_VALUE, sort))
+                .takeUntil(pageResponse -> pageResponse.body().isLast())
+                .reduce(new ArrayList<>(), (list, pageResponse) -> {
+                    list.addAll(pageResponse.body().getContent());
+                    return list;
+                });
+        return observable.toBlocking().first();
+    }
+
+    public Response<PageResponse<StatusDto>> device(Map<String, Object> params, int page, int rows, String... sort) {
+        Observable<Response<PageResponse<StatusDto>>> observable = restApi.device(params, page, rows, sort);
+        return observable.toBlocking().first();
+    }
+    public List<StatusDto> device(Map<String, Object> params, String... sort) {
+        Observable<List<StatusDto>> observable = Observable.range(0, Integer.MAX_VALUE)
+                .concatMap(currentPage -> restApi.device(params, currentPage, Integer.MAX_VALUE, sort))
                 .takeUntil(pageResponse -> pageResponse.body().isLast())
                 .reduce(new ArrayList<>(), (list, pageResponse) -> {
                     list.addAll(pageResponse.body().getContent());

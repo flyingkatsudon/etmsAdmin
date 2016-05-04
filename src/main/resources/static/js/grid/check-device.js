@@ -31,7 +31,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/examinee/xlsx');
+            this.addExcel('check/device/xlsx');
             return this;
         }
     });

@@ -7,7 +7,6 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
-                {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
                 {name: 'headNm', label: '고사본부'},
@@ -32,7 +31,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/signature/xlsx');
+            this.addExcel('check/signature/xlsx');
             return this;
         }
     });

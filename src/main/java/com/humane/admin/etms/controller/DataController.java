@@ -143,11 +143,21 @@ public class DataController {
         }
     }
 
+    /**
+     *  감독관 서명 정보를 불러오기 위한 부분
+     *
+     * @param format 요청할 형태
+     * @param statusDto 상태 정보
+     * @param pager
+     * @param response 정보가 저장됨
+     * @return
+     */
     @RequestMapping(value = "signature/{format:list|xlsx}")
     public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
 
         switch (format) {
             case LIST:
+                // 감독관 서명 정보를 요청함
                 Response<PageResponse<StatusDto>> pageResponse = apiService.signature(
                         ObjectConvert.asMap(statusDto),
                         pager.getPage() - 1,

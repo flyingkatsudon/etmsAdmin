@@ -40,10 +40,18 @@ public interface RestApi {
     @GET("image/examinee/{fileName}")
     Observable<Response<ResponseBody>> imageExaminee(@Path("fileName") String fileName);
 
+    /**
+     * 넘겨받은 파라미터들로 쿼리를 작성해 감독관 서명 정보를 요청한 후 값을 저장함
+     */
     @GET("status/signature")
     Observable<Response<PageResponse<StatusDto>>> signature(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
     @GET("status/paper")
     Observable<Response<PageResponse<ExamineeDto>>> paper(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 
+    @GET("status/send")
+    Observable<Response<PageResponse<StatusDto>>> send(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
+
+    @GET("status/device")
+    Observable<Response<PageResponse<StatusDto>>> device(@QueryMap Map<String, Object> parameterMap, @Query("page") int page, @Query("size") int size, @Query("sort") String... sort);
 }

@@ -14,6 +14,7 @@ define(function (require) {
                 {name: 'examineeNm', label: '수험생명'},
                 {name: 'birth', label: '생년월일'},
                 {name: 'deptNm', label: '모집단위'},
+                {name: 'attendHeadNm', label: '응시고사본부'},
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
                 {name: 'memo', label: '메모'},

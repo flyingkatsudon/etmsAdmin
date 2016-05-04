@@ -28,16 +28,44 @@ public class CheckController {
 
     private final ApiService apiService;
 
-    @RequestMapping(value = "send/{format:list|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "send/{format:list|xls|xlsx}")
     public ResponseEntity send(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-
-        return null;
+        switch (format) {
+            case LIST:
+                Response<PageResponse<StatusDto>> pageResponse = apiService.send(
+                        ObjectConvert.asMap(statusDto),
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort()
+                );
+                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+            default:
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/check-send.jrxml",
+                        format,
+                        apiService.send(ObjectConvert.asMap(statusDto), pager.getSort())
+                );
+        }
     }
 
-    @RequestMapping(value = "device/{format:list|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "device/{format:list|xls|xlsx}")
     public ResponseEntity device(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-
-        return null;
+        switch (format) {
+            case LIST:
+                Response<PageResponse<StatusDto>> pageResponse = apiService.device(
+                        ObjectConvert.asMap(statusDto),
+                        pager.getPage() - 1,
+                        pager.getRows(),
+                        pager.getSort()
+                );
+                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+            default:
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/check-device.jrxml",
+                        format,
+                        apiService.device(ObjectConvert.asMap(statusDto), pager.getSort())
+                );
+        }
     }
 
     @RequestMapping(value = "detect/{format:list|chart|pdf|xls|xlsx}")
@@ -46,7 +74,7 @@ public class CheckController {
         return null;
     }
 
-    @RequestMapping(value = "signature/{format:list|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "signature/{format:list|xls|xlsx}")
     public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
         statusDto.setIsSign(false);
         switch (format) {
@@ -58,8 +86,6 @@ public class CheckController {
                         pager.getSort()
                 );
                 return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
-            case CHART:
-                return ResponseEntity.ok(apiService.signature(ObjectConvert.asMap(statusDto), pager.getSort()));
             default:
                 return JasperReportsExportHelper.toResponseEntity(response,
                         "jrxml/check-signature.jrxml",
