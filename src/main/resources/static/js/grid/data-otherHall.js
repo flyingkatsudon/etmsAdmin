@@ -19,7 +19,7 @@ define(function (require) {
                 {name: 'hallNm', label: '고사실'},
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
-                {name: 'isEtc', label: '예비고사장여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}}
+                {name: 'isEtc', label: '예비고사장여부', formatter: 'select', editoptions: {value: {true: '예비고사장', false: '-'}}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

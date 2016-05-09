@@ -44,6 +44,16 @@ public class StatusDto implements Serializable {
     private String groupNm;
     private Boolean isSend;
     private Boolean isEtc;
-    private Boolean isSign;
+    private Boolean isSignature;
     private Long deviceNo;
+
+    private String uuid;
+    private String phoneNo;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date regDttm;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date sendDttm;
 }

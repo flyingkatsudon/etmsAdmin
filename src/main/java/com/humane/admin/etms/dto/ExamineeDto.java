@@ -26,7 +26,7 @@ public class ExamineeDto extends StatusDto {
     private String attendHallNm;
     private Boolean isOtherHall;
     private String birth;
-    private Boolean isRecheck;
+    private Boolean isCheck;
 
     private String firstPaperCd;
     private String lastPaperCd;
@@ -40,6 +40,8 @@ public class ExamineeDto extends StatusDto {
     private String fromExamineeCd;
     private String toExamineeCd;
     private String memo;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date checkTime;
 
     private BufferedImage examineeImage;

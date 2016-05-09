@@ -14,7 +14,7 @@ define(function (require) {
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
                 {name: 'deviceNo', label: '단말기번호'},
-                {name: 'isSend', label: '전송여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}}
+                {name: 'isSend', label: '전송여부', formatter: 'select', editoptions: {value: {true: '전송', false: '미전송'}}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

@@ -76,7 +76,7 @@ public class CheckController {
 
     @RequestMapping(value = "signature/{format:list|xls|xlsx}")
     public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
-        statusDto.setIsSign(false);
+        statusDto.setIsSignature(false);
         switch (format) {
             case LIST:
                 Response<PageResponse<StatusDto>> pageResponse = apiService.signature(

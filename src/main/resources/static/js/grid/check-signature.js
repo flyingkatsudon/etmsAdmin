@@ -13,7 +13,8 @@ define(function (require) {
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
                 {name: 'deviceNo', label: '단말기번호'},
-                {name: 'isSignature', label: '서명여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}}
+                {name: 'phoneNo', label: '전화번호'},
+                {name: 'isSignature', label: '서명여부', formatter: 'select', editoptions: {value: {true: '서명', false: '미서명'}}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

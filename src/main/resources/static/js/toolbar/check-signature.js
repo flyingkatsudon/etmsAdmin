@@ -42,7 +42,8 @@ define(function (require) {
                     headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm : _this.$('#hallNm').val(),
-                    isSignature : _this.$('#isSignature').val()
+                    deviceNo : _this.$('#deviceNo').val(),
+                    phoneNo : _this.$('#phoneNo').val()
                 });
             }
         },

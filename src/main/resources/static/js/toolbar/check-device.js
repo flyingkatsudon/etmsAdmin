@@ -44,7 +44,8 @@ define(function (require) {
                     attendTime : _this.$('#attendTime').val(),
                     headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
-                    hallNm : _this.$('#hallNm').val()
+                    hallNm : _this.$('#hallNm').val(),
+                    deviceNo : _this.$('#deviceNo').val()
                 });
             }
         },

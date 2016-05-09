@@ -18,9 +18,7 @@ define(function (require) {
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
                 {name: 'memo', label: '메모'},
-                {
-                    name: 'isCheck', label: '확인', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}
-                }
+                {name: 'isCheck', label: '확인', formatter: 'select', editoptions: {value: {true: '확인', false: '미확인'}}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

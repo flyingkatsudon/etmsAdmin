@@ -123,7 +123,7 @@ public class DataController {
 
     @RequestMapping(value = "recheck/{format:list|pdf|xls|xlsx}")
     public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
-        examineeDto.setIsRecheck(true);
+        examineeDto.setIsCheck(true);
         switch (format) {
             case LIST:
                 Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
@@ -169,7 +169,7 @@ public class DataController {
                 List<StatusDto> list = apiService.signature(ObjectConvert.asMap(statusDto), pager.getSort());
                 return JasperReportsExportHelper.toResponseEntity(
                         response,
-                        "jrxml/data-noIdCard.jrxml",
+                        "jrxml/data-signature.jrxml",
                         format,
                         list
                 );

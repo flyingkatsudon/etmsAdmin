@@ -43,6 +43,7 @@ define(function (require) {
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm : _this.$('#hallNm').val(),
                     deviceNo : _this.$('#deviceNo').val(),
+                    phoneNo : _this.$('#phoneNo').val(),
                     isSignature : _this.$('#isSignature').val()
                 });
             }

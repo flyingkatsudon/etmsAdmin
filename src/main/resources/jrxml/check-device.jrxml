@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-05-09T15:30:40 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="타고사실 및 예비고사실 응시자" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
+<!-- 2016-05-09T15:02:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="디바이스 리스트" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="93c9f1f1-96e6-404a-b86c-ad0429331365">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="admissionNm" class="java.lang.String"/>
-	<field name="typeNm" class="java.lang.String"/>
 	<field name="attendDate" class="java.util.Date"/>
 	<field name="attendTime" class="java.util.Date"/>
-	<field name="examineeCd" class="java.lang.String"/>
-	<field name="examineeNm" class="java.lang.String"/>
-	<field name="birth" class="java.lang.String"/>
-	<field name="deptNm" class="java.lang.String"/>
-	<field name="majorNm" class="java.lang.String"/>
+	<field name="deviceNo" class="java.lang.Long"/>
+	<field name="uuid" class="java.lang.String"/>
+	<field name="phoneNo" class="java.lang.String"/>
 	<field name="headNm" class="java.lang.String"/>
 	<field name="bldgNm" class="java.lang.String"/>
 	<field name="hallNm" class="java.lang.String"/>
-	<field name="attendHeadNm" class="java.lang.String"/>
-	<field name="attendBldgNm" class="java.lang.String"/>
-	<field name="attendHallNm" class="java.lang.String"/>
-	<field name="isEtc" class="java.lang.Boolean"/>
+	<field name="regDttm" class="java.util.Date"/>
+	<field name="sendDttm" class="java.util.Date"/>
 	<title>
-		<band height="68" splitType="Stretch">
+		<band height="67" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="802" height="53" uuid="f1d8a4f9-15d4-4929-a7a7-d9e06f85b15d"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="19" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[타고사실 및 예비고사실 응시자]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="53" width="20" height="15" uuid="26280e62-7e84-4328-8ea9-62b4245f0ca6"/>
+				<reportElement x="0" y="51" width="30" height="16" uuid="121dafb9-4da7-41d0-aaad-7151387f229d"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -44,20 +41,14 @@
 				<text><![CDATA[번호]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="20" y="53" width="63" height="15" uuid="1a0ce928-67e6-4a7a-a2db-9cc2b2fbcd90"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
+				<reportElement x="0" y="0" width="802" height="51" uuid="eb06a15e-082f-4f63-ba36-68ca82cce71c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+					<font size="19" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[전형]]></text>
+				<text><![CDATA[디바이스 리스트]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="83" y="53" width="47" height="15" uuid="d1c12a07-5a3f-44d2-9d0c-73fa5ef3249a"/>
+				<reportElement x="100" y="51" width="70" height="16" uuid="1fc68164-1ee8-4879-974f-7d9248866b89"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -70,7 +61,7 @@
 				<text><![CDATA[계열]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="238" y="53" width="53" height="15" uuid="586872ec-6f4b-4058-a5ba-28967f7124e4"/>
+				<reportElement x="30" y="51" width="70" height="16" uuid="e7eacffd-561b-4092-b822-b78cdc92268d"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -78,12 +69,12 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[수험번호]]></text>
+				<text><![CDATA[전형]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="53" width="55" height="15" uuid="80905ff2-0b40-4f4b-a954-333fe29a225d"/>
+				<reportElement x="170" y="51" width="66" height="16" uuid="19f393ee-c438-43b1-914a-1ced65dc8c92"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -96,7 +87,7 @@
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="185" y="53" width="53" height="15" uuid="77691305-0b41-4de8-9be4-3c2988dccab9"/>
+				<reportElement x="236" y="51" width="64" height="16" uuid="d4aecc4a-e47b-4bb8-aa1e-8b17c41c2822"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -109,7 +100,7 @@
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="393" y="53" width="54" height="15" uuid="6d62d8b7-6e4f-4b6b-b509-1391175d8275"/>
+				<reportElement x="476" y="51" width="64" height="16" uuid="32817c87-ffb2-426d-bda0-189d08ad69be"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -118,115 +109,11 @@
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[모집단위]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="650" y="53" width="50" height="15" uuid="4d1a8eff-b6f2-43de-b9b5-088053e76efb"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[응시고사건물]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="700" y="53" width="60" height="15" uuid="91870afa-c0fa-414c-aa2a-0a8a84b5c108"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[응시고사실]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="760" y="53" width="41" height="15" uuid="34f6c501-42a5-4792-998d-8d562f821b77"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[예비고사장여부]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="344" y="53" width="49" height="15" uuid="abc04541-54d4-4ec9-927e-2f927eb8db86"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[생년월일]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="291" y="53" width="53" height="15" uuid="c77b6fa2-6c54-4653-8d5e-663ea1696060"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[수험생명]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="592" y="53" width="58" height="15" uuid="bad13de4-34d7-4b29-a2ee-70841700cfa4"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[고사실]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="542" y="53" width="50" height="15" uuid="ee667c84-fa3b-45c3-8c13-492b6aa0bfd3"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[고사건물]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="496" y="53" width="46" height="15" uuid="cc36f9f0-bd88-4cca-9949-c2dcd0eca371"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[고사본부]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="447" y="53" width="49" height="15" uuid="551715af-6538-483b-95cf-a520a0923245"/>
+				<reportElement x="540" y="51" width="62" height="16" uuid="c00dcd02-e124-4d08-b8c4-57abb701800e"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -234,133 +121,94 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[전공]]></text>
+				<text><![CDATA[고사건물]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="51" width="59" height="16" uuid="7d842cf7-fb52-4b0a-95a6-91b76eabcd0d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[고사실]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="51" width="50" height="16" uuid="e49992b5-9112-4350-a545-815e95be25c4"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[단말기번호]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="661" y="51" width="69" height="16" uuid="66da019c-fc51-47c2-97bf-37f212f6944c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[등록시간]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="730" y="51" width="72" height="16" uuid="8c2a3464-0001-4dbc-b65e-f5c716616625"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[전송시간]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="51" width="66" height="16" uuid="86ac3478-bf12-4eab-b7e8-3aa577d50e84"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[UUID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="51" width="60" height="16" uuid="ecf070c8-b95b-449d-b7d2-f6a1eb89f298"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[전화번호]]></text>
 			</staticText>
 		</band>
 	</title>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="83" y="0" width="47" height="20" uuid="e8fb8d17-9635-455d-a253-a4d894f5e47e"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{typeNm}]]></textFieldExpression>
-			</textField>
-			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="130" y="0" width="55" height="20" uuid="3e7bb625-0b58-4cb2-8e97-a76e99c0c33b"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{attendDate}]]></textFieldExpression>
-			</textField>
-			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
-				<reportElement x="185" y="0" width="53" height="20" uuid="c5bc91a1-df6d-4581-9628-e470178468a0"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{attendTime}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="393" y="0" width="54" height="20" uuid="9485e219-77f5-4ae3-a397-9389d0a60838"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{deptNm}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="650" y="0" width="50" height="20" uuid="30e82c14-2649-48cd-bfbf-ba8b95cd44d8"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{attendBldgNm}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="700" y="0" width="60" height="20" uuid="b0f16c6b-5a55-467a-b65a-3e3ee01691dd"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{attendHallNm}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="760" y="0" width="41" height="20" uuid="89f5f327-0538-42a6-a161-8fc671fb87d3"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{isEtc})?"예비고사장" :"-"]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="0" width="63" height="20" uuid="d757d96f-ffea-43fe-82e0-e58e79e7527b"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="238" y="0" width="53" height="20" uuid="2a2b5dff-9f02-4eff-965f-46aed9509075"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{examineeCd}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="20" height="20" uuid="0ab37e4f-f8d9-4d7d-a6a4-0297c114c463"/>
+				<reportElement x="0" y="0" width="30" height="20" uuid="13759559-370c-4336-83b8-b35c9683aa1b"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -373,7 +221,7 @@
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="344" y="0" width="49" height="20" uuid="fac277f0-d0c9-479d-8721-b3ea309aff34"/>
+				<reportElement x="30" y="0" width="70" height="20" uuid="3d2026d7-7926-4870-96f4-be34b2bf1673"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -383,10 +231,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{birth}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="291" y="0" width="53" height="20" uuid="48596d10-b438-47f6-89b6-65e4b942df56"/>
+				<reportElement x="100" y="0" width="70" height="20" uuid="5557ffd4-97fa-4fe5-bd35-15417b490804"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -396,10 +244,35 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{examineeNm}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="170" y="0" width="66" height="20" uuid="933b41d5-d94a-4d02-ab45-bb8b834b8938"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{attendDate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="236" y="0" width="64" height="20" uuid="5324d85f-a9b1-4218-bc97-496e0d4c8892"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{attendTime}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="496" y="0" width="46" height="20" uuid="ee8252d0-c0fd-432d-b686-b1b8a84b5841"/>
+				<reportElement x="476" y="0" width="64" height="20" uuid="fd07376b-a850-4fb0-aee1-05cf1098816f"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -412,7 +285,7 @@
 				<textFieldExpression><![CDATA[$F{headNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="542" y="0" width="50" height="20" uuid="6be35386-8e82-4ad0-b212-6f7fc223528b"/>
+				<reportElement x="540" y="0" width="62" height="20" uuid="482929d9-2a5b-4bd8-a8de-3e27d345971c"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -425,7 +298,7 @@
 				<textFieldExpression><![CDATA[$F{bldgNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="592" y="0" width="58" height="20" uuid="af4c30e6-85be-42a0-b90d-3f6d349f5694"/>
+				<reportElement x="602" y="0" width="59" height="20" uuid="fb4aa41a-ab8f-4257-8384-8c2948ebaae5"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -438,7 +311,7 @@
 				<textFieldExpression><![CDATA[$F{hallNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="447" y="0" width="49" height="20" uuid="b38c2648-3fe3-4d7b-802c-b02a62b0b54f"/>
+				<reportElement x="300" y="0" width="50" height="20" uuid="34cf9ef8-f5af-4663-8da2-be44ea8a0c23"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -448,7 +321,59 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{majorNm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{deviceNo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="661" y="0" width="69" height="20" uuid="04604e38-0b61-4014-b78a-e6a47e461010"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{regDttm}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="730" y="0" width="72" height="20" uuid="aad12785-90e1-4cb1-a652-b7d64b070064"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sendDttm}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="350" y="0" width="66" height="20" uuid="d4f1c1d6-de3a-48b1-acf4-9d43e1b98abd"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{uuid}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="416" y="0" width="60" height="20" uuid="cb0f3722-570c-44b7-8fea-5f6bc36fc32f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{phoneNo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
