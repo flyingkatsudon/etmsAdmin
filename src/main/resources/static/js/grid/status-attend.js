@@ -7,7 +7,7 @@ define(function (require) {
         initialize: function (options) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
-                {name: 'typeNm', label: '계열'},
+                /*{name: 'attendNm', label: '시험명'},*/
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
                 {name: 'examineeCnt', label: '지원자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},

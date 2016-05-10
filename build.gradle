@@ -90,3 +90,11 @@ launch4j {
     mainClassName = 'com.humane.admin.etms.Application'
     headerType = 'console'
 }
+
+idea {
+    project {
+        jdkName = '1.8'
+        languageLevel = '1.8'
+        vcs = 'Git'
+    }
+}

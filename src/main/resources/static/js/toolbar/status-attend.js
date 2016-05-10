@@ -14,7 +14,7 @@ define(function (require) {
         },
         render: function () {
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
+            /*this.$('#attendNm').html(this.getOptions(ToolbarModel.getAttendNm()));*/
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate()));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime()));
             return this;
@@ -22,7 +22,7 @@ define(function (require) {
         events: {
             'click #search': 'searchClicked',
             'change #admissionNm': 'admissionNmChanged',
-            'change #typeNm': 'typeNmChanged',
+            'change #attendNm': 'attendNmChanged',
             'change #attendDate': 'attendDateChanged'
         },
         searchClicked: function (e) {
@@ -32,7 +32,7 @@ define(function (require) {
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    typeNm: _this.$('#typeNm').val(),
+                    attendNm: _this.$('#attendNm').val(),
                     attendDate: _this.$('#attendDate').val(),
                     attendTime: _this.$('#attendTime').val()
                 });
@@ -42,14 +42,14 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
+            this.$('#attendNm').html(this.getOptions(ToolbarModel.getAttendNm(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
-        typeNmChanged: function (e) {
+        attendNmChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
-                typeNm: e.currentTarget.value
+                attendNm: e.currentTarget.value
             };
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
@@ -57,7 +57,7 @@ define(function (require) {
         attendDateChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
-                typeNm: this.$('#typeNm').val(),
+                attendNm: this.$('#attendNm').val(),
                 attendDate: e.currentTarget.value
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));

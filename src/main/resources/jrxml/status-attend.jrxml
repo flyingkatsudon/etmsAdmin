@@ -15,7 +15,7 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="admissionNm" class="java.lang.String"/>
-	<field name="typeNm" class="java.lang.String"/>
+	<field name="attendNm" class="java.lang.String"/>
 	<field name="attendDate" class="java.util.Date"/>
 	<field name="attendTime" class="java.util.Date"/>
 	<field name="examineeCnt" class="java.lang.Long"/>
@@ -56,7 +56,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[계열]]></text>
+				<text><![CDATA[시험명]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="30" y="51" width="90" height="16" uuid="e7eacffd-561b-4092-b822-b78cdc92268d"/>
@@ -196,7 +196,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{typeNm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{attendNm}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd">
 				<reportElement x="216" y="0" width="96" height="20" uuid="933b41d5-d94a-4d02-ab45-bb8b834b8938"/>

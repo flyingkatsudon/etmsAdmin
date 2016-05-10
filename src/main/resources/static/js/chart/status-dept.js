@@ -35,7 +35,7 @@ define(function (require) {
                 var data = [];
                 for (var i = 0; i < response.length; i++) {
                     data.push({
-                        name: response[i].deptNm,
+                        name: response[i].deptNm + '\n' + response[i].attendDate + '\n' + response[i].attendTime,
                         attendCnt: response[i].attendCnt,
                         absentCnt: response[i].absentCnt
                     });

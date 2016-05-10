@@ -60,16 +60,12 @@ define(function (require) {
             return this.getObjectList(obj, 'attendBldgNm', 'attendBldgNm');
         }, getAttendHallNm: function (obj) {
             return this.getObjectList(obj, 'attendHallNm', 'attendHallNm');
+        }, getAttendNm: function (obj) {
+            return this.getObjectList(obj, 'attendNm', 'attendNm');
         }, getAttendDate: function (obj) {
             return this.getObjectList(obj, 'attendDate', 'attendDate');
         }, getAttendTime: function (obj) {
             return this.getObjectList(obj, 'attendTime', 'attendTime');
-        }, getScorerNm: function (obj) {
-            return this.getObjectList(obj, 'scorerNm', 'scorerNm');
-        }, getIsSend: function (obj) {
-            return this.getObjectList(obj, 'isSend', 'isSend');
-        }, getIsAttend: function (obj) {
-            return this.getObjectList(obj, 'isAttend', 'isAttend');
         }
     });
     return new Collection();
