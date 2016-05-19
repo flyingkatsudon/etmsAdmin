@@ -2,12 +2,11 @@ package com.humane.admin.etms.controller;
 
 import com.humane.admin.etms.dto.ExamineeDto;
 import com.humane.admin.etms.dto.StatusDto;
+import com.humane.util.spring.PageRequest;
 import com.humane.admin.etms.service.ApiService;
 import com.humane.admin.etms.service.ImageService;
 import com.humane.util.ObjectConvert;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
-import com.humane.util.jqgrid.JqgridMapper;
-import com.humane.util.jqgrid.JqgridPager;
 import com.humane.util.spring.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,17 +34,17 @@ public class DataController {
     private static final String LIST = "list";
 
     @RequestMapping(value = "examinee/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, PageRequest page, HttpServletResponse response) {
         switch (format) {
             case LIST:
-                Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
-                        ObjectConvert.asMap(statusDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
-                        pager.getSort());
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(
+                        apiService.examinee(
+                                ObjectConvert.asMap(statusDto),
+                                page.getPage(),
+                                page.getSize(),
+                                page.getSort()).body());
             default:
-                List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(statusDto), pager.getSort());
+                List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(statusDto), page.getSort());
                 return JasperReportsExportHelper.toResponseEntity(
                         response,
                         "jrxml/data-examinee.jrxml",
@@ -56,8 +55,8 @@ public class DataController {
     }
 
     @RequestMapping(value = "examineeId/{format:pdf}")
-    public ResponseEntity examineeId(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
-        List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
+    public ResponseEntity examineeId(@PathVariable String format, ExamineeDto examineeDto,  PageRequest page, HttpServletResponse response) {
+        List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), page.getSort());
 
         list.forEach(item -> {
             try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
@@ -77,17 +76,17 @@ public class DataController {
     }
 
     @RequestMapping(value = "otherHall/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity otherHall(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity otherHall(@PathVariable String format, ExamineeDto examineeDto,  PageRequest pager,  HttpServletResponse response) {
         examineeDto.setIsOtherHall(true);
 
         switch (format) {
             case LIST:
                 Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
                         ObjectConvert.asMap(examineeDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
+                        pager.getPage(),
+                        pager.getSize(),
                         pager.getSort());
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(pageResponse.body());
             default:
                 List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
                 return JasperReportsExportHelper.toResponseEntity(
@@ -100,16 +99,16 @@ public class DataController {
     }
 
     @RequestMapping(value = "noIdCard/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity noIdCard(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity noIdCard(@PathVariable String format, ExamineeDto examineeDto,  PageRequest pager,  HttpServletResponse response) {
         examineeDto.setIsNoIdCard(true);
         switch (format) {
             case LIST:
                 Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
                         ObjectConvert.asMap(examineeDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
+                        pager.getPage(),
+                        pager.getSize(),
                         pager.getSort());
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(pageResponse.body());
             default:
                 List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
                 return JasperReportsExportHelper.toResponseEntity(
@@ -122,16 +121,16 @@ public class DataController {
     }
 
     @RequestMapping(value = "recheck/{format:list|pdf|xls|xlsx}")
-    public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto,  PageRequest pager, HttpServletResponse response) {
         examineeDto.setIsCheck(true);
         switch (format) {
             case LIST:
                 Response<PageResponse<ExamineeDto>> pageResponse = apiService.examinee(
                         ObjectConvert.asMap(examineeDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
+                        pager.getPage(),
+                        pager.getSize(),
                         pager.getSort());
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(pageResponse.body());
             default:
                 List<ExamineeDto> list = apiService.examinee(ObjectConvert.asMap(examineeDto), pager.getSort());
                 return JasperReportsExportHelper.toResponseEntity(
@@ -144,16 +143,16 @@ public class DataController {
     }
 
     /**
-     *  감독관 서명 정보를 불러오기 위한 부분
+     * 감독관 서명 정보를 불러오기 위한 부분
      *
-     * @param format 요청할 형태
+     * @param format    요청할 형태
      * @param statusDto 상태 정보
      * @param pager
-     * @param response 정보가 저장됨
+     * @param response  정보가 저장됨
      * @return
      */
     @RequestMapping(value = "signature/{format:list|xlsx}")
-    public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity signature(@PathVariable String format, StatusDto statusDto,  PageRequest pager, HttpServletResponse response) {
 
         switch (format) {
             case LIST:
@@ -161,10 +160,10 @@ public class DataController {
                 Response<PageResponse<StatusDto>> pageResponse = apiService.signature(
                         ObjectConvert.asMap(statusDto),
                         pager.getPage() - 1,
-                        pager.getRows(),
+                        pager.getSize(),
                         pager.getSort()
                 );
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(pageResponse.body());
             default:
                 List<StatusDto> list = apiService.signature(ObjectConvert.asMap(statusDto), pager.getSort());
                 return JasperReportsExportHelper.toResponseEntity(
@@ -177,17 +176,17 @@ public class DataController {
     }
 
     @RequestMapping(value = "paper/{format:list|xlsx}")
-    public ResponseEntity paper(@PathVariable String format, ExamineeDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity paper(@PathVariable String format, ExamineeDto statusDto,  PageRequest pager, HttpServletResponse response) {
 
         switch (format) {
             case LIST:
                 Response<PageResponse<ExamineeDto>> pageResponse = apiService.paper(
                         ObjectConvert.asMap(statusDto),
                         pager.getPage() - 1,
-                        pager.getRows(),
+                        pager.getSize(),
                         pager.getSort()
                 );
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(pageResponse.body());
             default:
                 List<ExamineeDto> list = apiService.paper(ObjectConvert.asMap(statusDto), pager.getSort());
                 return JasperReportsExportHelper.toResponseEntity(

@@ -1,11 +1,10 @@
 package com.humane.admin.etms.controller;
 
 import com.humane.admin.etms.dto.StatusDto;
+import com.humane.util.spring.PageRequest;
 import com.humane.admin.etms.service.ApiService;
 import com.humane.util.ObjectConvert;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
-import com.humane.util.jqgrid.JqgridMapper;
-import com.humane.util.jqgrid.JqgridPager;
 import com.humane.util.spring.PageResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,23 +28,23 @@ public class StatusController {
     private final ApiService apiService;
 
     @RequestMapping(value = "all/{format:chart}")
-    public ResponseEntity all(@PathVariable String format, StatusDto statusDto, JqgridPager pager) {
+    public ResponseEntity all(@PathVariable String format, StatusDto statusDto, PageRequest pager) {
         Response<StatusDto> response = apiService.all(ObjectConvert.asMap(statusDto), pager.getSort());
         return ResponseEntity.ok(response.body());
     }
 
     @RequestMapping(value = "attend/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity attend(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity attend(@PathVariable String format, StatusDto statusDto, PageRequest pager, HttpServletResponse response) {
 
         switch (format) {
             case LIST:
                 Response<PageResponse<StatusDto>> pageResponse = apiService.attend(
                         ObjectConvert.asMap(statusDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
+                        pager.getPage(),
+                        pager.getSize(),
                         pager.getSort()
                 );
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(pageResponse.body());
             case CHART:
                 return ResponseEntity.ok(apiService.attend(ObjectConvert.asMap(statusDto), pager.getSort()));
             default:
@@ -58,17 +57,17 @@ public class StatusController {
     }
 
     @RequestMapping(value = "dept/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity dept(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity dept(@PathVariable String format, StatusDto statusDto, PageRequest pager, HttpServletResponse response) {
 
         switch (format) {
             case LIST:
                 Response<PageResponse<StatusDto>> pageResponse = apiService.dept(
                         ObjectConvert.asMap(statusDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
+                        pager.getPage(),
+                        pager.getSize(),
                         pager.getSort()
                 );
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(pageResponse.body());
             case CHART:
                 return ResponseEntity.ok(apiService.dept(ObjectConvert.asMap(statusDto), pager.getSort()));
             default:
@@ -81,16 +80,16 @@ public class StatusController {
     }
 
     @RequestMapping(value = "hall/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity hall(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity hall(@PathVariable String format, StatusDto statusDto, PageRequest pager, HttpServletResponse response) {
         switch (format) {
             case LIST:
                 Response<PageResponse<StatusDto>> pageResponse = apiService.hall(
                         ObjectConvert.asMap(statusDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
+                        pager.getPage(),
+                        pager.getSize(),
                         pager.getSort()
                 );
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(pageResponse.body());
             case CHART:
                 return ResponseEntity.ok(apiService.hall(ObjectConvert.asMap(statusDto), pager.getSort()));
             default:
@@ -103,16 +102,16 @@ public class StatusController {
     }
 
     @RequestMapping(value = "group/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity group(@PathVariable String format, StatusDto statusDto, JqgridPager pager, HttpServletResponse response) {
+    public ResponseEntity group(@PathVariable String format, StatusDto statusDto, PageRequest pager, HttpServletResponse response) {
         switch (format) {
             case LIST:
                 Response<PageResponse<StatusDto>> pageResponse = apiService.group(
                         ObjectConvert.asMap(statusDto),
-                        pager.getPage() - 1,
-                        pager.getRows(),
+                        pager.getPage(),
+                        pager.getSize(),
                         pager.getSort()
                 );
-                return ResponseEntity.ok(JqgridMapper.getResponse(pageResponse.body()));
+                return ResponseEntity.ok(pageResponse.body());
             case CHART:
                 return ResponseEntity.ok(apiService.group(ObjectConvert.asMap(statusDto), pager.getSort()));
             default:
