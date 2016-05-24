@@ -1,0 +1,97 @@
+package com.humane.etms.controller.admin;
+
+import com.humane.etms.dto.StatusDto;
+import com.humane.etms.mapper.StatusMapper;
+import com.humane.util.jasperreports.JasperReportsExportHelper;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+
+@RestController
+@RequestMapping(value = "status")
+@Slf4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+public class StatusController {
+    private static final String CHART = "chart";
+    private static final String LIST = "list";
+
+    private final StatusMapper mapper;
+
+    @RequestMapping(value = "all/{format:chart}")
+    public ResponseEntity all(@PathVariable String format, StatusDto statusDto) {
+        return ResponseEntity.ok(mapper.all(statusDto));
+    }
+
+    @RequestMapping(value = "attend/{format:list|chart|pdf|xls|xlsx}")
+    public ResponseEntity attend(@PathVariable String format, StatusDto statusDto, Pageable pageable, HttpServletResponse response) {
+
+        switch (format) {
+            case LIST:
+                return ResponseEntity.ok(mapper.attend(statusDto, pageable));
+            case CHART:
+                return ResponseEntity.ok(mapper.attend(statusDto, pageable).getContent());
+            default:
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/status-attend.jrxml",
+                        format,
+                        mapper.attend(statusDto, pageable).getContent()
+                );
+        }
+    }
+
+    @RequestMapping(value = "dept/{format:list|chart|pdf|xls|xlsx}")
+    public ResponseEntity dept(@PathVariable String format, StatusDto statusDto, Pageable pageable, HttpServletResponse response) {
+
+        switch (format) {
+            case LIST:
+                return ResponseEntity.ok(mapper.dept(statusDto, pageable));
+            case CHART:
+                return ResponseEntity.ok(mapper.dept(statusDto, pageable).getContent());
+            default:
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/status-dept.jrxml",
+                        format,
+                        mapper.dept(statusDto, pageable).getContent()
+                );
+        }
+    }
+
+    @RequestMapping(value = "hall/{format:list|chart|pdf|xls|xlsx}")
+    public ResponseEntity hall(@PathVariable String format, StatusDto statusDto, Pageable pageable, HttpServletResponse response) {
+        switch (format) {
+            case LIST:
+                return ResponseEntity.ok(mapper.hall(statusDto, pageable));
+            case CHART:
+                return ResponseEntity.ok(mapper.hall(statusDto, pageable).getContent());
+            default:
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/status-hall.jrxml",
+                        format,
+                        mapper.hall(statusDto, pageable).getContent()
+                );
+        }
+    }
+
+    @RequestMapping(value = "group/{format:list|chart|pdf|xls|xlsx}")
+    public ResponseEntity group(@PathVariable String format, StatusDto statusDto, Pageable pageable, HttpServletResponse response) {
+        switch (format) {
+            case LIST:
+                return ResponseEntity.ok(mapper.group(statusDto, pageable).getContent());
+            case CHART:
+                return ResponseEntity.ok(mapper.group(statusDto, pageable).getContent());
+            default:
+                return JasperReportsExportHelper.toResponseEntity(response,
+                        "jrxml/status-hall.jrxml",
+                        format,
+                        mapper.group(statusDto, pageable).getContent()
+                );
+        }
+    }
+}
