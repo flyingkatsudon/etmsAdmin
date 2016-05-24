@@ -1,7 +1,9 @@
 package com.humane.etms.controller;
 
 import com.humane.etms.model.AttendHall;
+import com.humane.etms.model.QAttendHall;
 import com.humane.etms.repository.AttendHallRepository;
+import com.humane.util.spring.data.JoinDescriptor;
 import com.mysema.query.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,13 @@ public class AttendHallController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttendHall> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
-        return repository.findAll(predicate, pageable);
+        QAttendHall attendHall = QAttendHall.attendHall;
+        return repository.findAll(
+                predicate,
+                pageable,
+                JoinDescriptor.innerJoin(attendHall.hall),
+                JoinDescriptor.innerJoin(attendHall.attend)
+        );
     }
 
     @RequestMapping(method = RequestMethod.POST)

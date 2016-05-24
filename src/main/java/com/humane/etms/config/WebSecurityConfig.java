@@ -12,6 +12,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        http.csrf().disable();
+
         http.authorizeRequests()
                 .antMatchers("/", "/login", "/bower_components/**", "/dist/**").permitAll()
                 .anyRequest().authenticated()
@@ -22,7 +24,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/main", true)
                 .and()
                 .logout()
-                .logoutSuccessUrl("/login?logout");
+                .logoutSuccessUrl("/login?logout")
+                .and()
+                .httpBasic();
     }
 
     @Override

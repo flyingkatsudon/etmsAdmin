@@ -1,7 +1,9 @@
 package com.humane.etms.controller;
 
 import com.humane.etms.model.AttendMap;
+import com.humane.etms.model.QAttendMap;
 import com.humane.etms.repository.AttendMapRepository;
+import com.humane.util.spring.data.JoinDescriptor;
 import com.mysema.query.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,14 @@ public class AttendMapController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttendMap> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
-        return repository.findAll(predicate, pageable);
+        QAttendMap attendMap = QAttendMap.attendMap;
+        return repository.findAll(
+                predicate,
+                pageable,
+                JoinDescriptor.innerJoin(attendMap.examinee),
+                JoinDescriptor.innerJoin(attendMap.hall),
+                JoinDescriptor.innerJoin(attendMap.attend)
+        );
     }
 
     @RequestMapping(method = RequestMethod.POST)
