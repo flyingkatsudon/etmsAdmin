@@ -1,4 +1,4 @@
-package com.humane.etms.controller;
+package com.humane.etms.controller.api;
 
 import com.humane.etms.model.AttendMap;
 import com.humane.etms.model.QAttendMap;

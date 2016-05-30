@@ -1,7 +1,7 @@
-package com.humane.etms.controller;
+package com.humane.etms.controller.api;
 
-import com.humane.etms.model.Attend;
-import com.humane.etms.repository.AttendRepository;
+import com.humane.etms.model.Examinee;
+import com.humane.etms.repository.ExamineeRepository;
 import com.mysema.query.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +18,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "api/attend", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+@RequestMapping(value = "api/examinee", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class AttendController {
-    private final AttendRepository repository;
+public class ExamineeController {
+    private final ExamineeRepository repository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<Attend> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
+    public Page<Examinee> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
         return repository.findAll(predicate, pageable);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Attend> merge(@RequestBody Attend attend) {
-        Attend rtn = repository.save(attend);
+    public ResponseEntity<Examinee> merge(@RequestBody Examinee examinee) {
+        Examinee rtn = repository.save(examinee);
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ResponseEntity<Iterable<Attend>> merge(@RequestBody Iterable<Attend> attends) {
-        Iterable<Attend> rtn = repository.save(attends);
+    public ResponseEntity<Iterable<Examinee>> merge(@RequestBody Iterable<Examinee> examinees) {
+        Iterable<Examinee> rtn = repository.save(examinees);
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 }

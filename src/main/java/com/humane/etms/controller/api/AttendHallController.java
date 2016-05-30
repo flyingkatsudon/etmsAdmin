@@ -1,7 +1,9 @@
-package com.humane.etms.controller;
+package com.humane.etms.controller.api;
 
-import com.humane.etms.model.Admission;
-import com.humane.etms.repository.AdmissionRepository;
+import com.humane.etms.model.AttendHall;
+import com.humane.etms.model.QAttendHall;
+import com.humane.etms.repository.AttendHallRepository;
+import com.humane.util.spring.data.JoinDescriptor;
 import com.mysema.query.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +20,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "api/admission", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+@RequestMapping(value = "api/attendHall", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class AdmissionController {
-    private final AdmissionRepository repository;
+public class AttendHallController {
+    private final AttendHallRepository repository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<Admission> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
-        return repository.findAll(predicate, pageable);
+    public Page<AttendHall> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
+        QAttendHall attendHall = QAttendHall.attendHall;
+        return repository.findAll(
+                predicate,
+                pageable,
+                JoinDescriptor.innerJoin(attendHall.hall),
+                JoinDescriptor.innerJoin(attendHall.attend)
+        );
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Admission> merge(@RequestBody Admission admission) {
-        Admission rtn = repository.save(admission);
+    public ResponseEntity<AttendHall> merge(@RequestBody AttendHall attend) {
+        AttendHall rtn = repository.save(attend);
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ResponseEntity<Iterable<Admission>> merge(@RequestBody Iterable<Admission> admissions) {
-        Iterable<Admission> rtn = repository.save(admissions);
+    public ResponseEntity<Iterable<AttendHall>> merge(@RequestBody Iterable<AttendHall> attends) {
+        Iterable<AttendHall> rtn = repository.save(attends);
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 }

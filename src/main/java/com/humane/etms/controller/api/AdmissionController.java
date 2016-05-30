@@ -1,7 +1,7 @@
-package com.humane.etms.controller;
+package com.humane.etms.controller.api;
 
-import com.humane.etms.model.Hall;
-import com.humane.etms.repository.HallRepository;
+import com.humane.etms.model.Admission;
+import com.humane.etms.repository.AdmissionRepository;
 import com.mysema.query.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +18,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "api/hall", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+@RequestMapping(value = "api/admission", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class HallController {
-    private final HallRepository repository;
+public class AdmissionController {
+    private final AdmissionRepository repository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<Hall> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
+    public Page<Admission> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
         return repository.findAll(predicate, pageable);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Hall> merge(@RequestBody Hall hall) {
-        Hall rtn = repository.save(hall);
+    public ResponseEntity<Admission> merge(@RequestBody Admission admission) {
+        Admission rtn = repository.save(admission);
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ResponseEntity<Iterable<Hall>> merge(@RequestBody Iterable<Hall> halls) {
-        Iterable<Hall> rtn = repository.save(halls);
+    public ResponseEntity<Iterable<Admission>> merge(@RequestBody Iterable<Admission> admissions) {
+        Iterable<Admission> rtn = repository.save(admissions);
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 }
