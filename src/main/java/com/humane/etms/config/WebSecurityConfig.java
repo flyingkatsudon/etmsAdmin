@@ -25,8 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login?logout")
-                .and()
-                .httpBasic();
+                .and().httpBasic();
     }
 
     @Override
@@ -35,6 +34,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password("humane12!").roles("USER")
                 .and()
                 .withUser("api").password("humane12!").roles("USER");
-
     }
 }
