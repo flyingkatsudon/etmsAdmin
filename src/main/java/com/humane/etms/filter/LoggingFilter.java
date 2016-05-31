@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 
 @Slf4j
@@ -26,12 +25,19 @@ public class LoggingFilter implements Filter {
         RequestWrapper requestWrapper = RequestWrapper.of(request);
 
         String uri = requestWrapper.getRequestUri();
+        //Map<String, String> headerMap = requestWrapper.headerMap();
         Map<String, String> parameterMap = requestWrapper.parameterMap();
 
         String body = requestWrapper.getBody();
-
-        if (uri.matches("^(/)(chart|data|export|image|info|menu|model|status)(/).*$"))
+        if (uri.matches("^(/)(api|score|check|data|model|setting|status)(/).*$"))
             log.info("uri : {}, parameter : {}, body : {}", uri, parameterMap, body);
+
+        /*log.info("uri : {}, parameter : {}, body : {}",
+                requestWrapper.getRequestUri(),
+                //requestWrapper.headerMap(),
+                requestWrapper.parameterMap(),
+                requestWrapper.getBody());*/
+
         chain.doFilter(request, response);
     }
 
