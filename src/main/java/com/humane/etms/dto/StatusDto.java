@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.humane.util.jackson.PercentSerializer;
+import com.humane.util.jackson.TimeSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,7 +29,7 @@ public class StatusDto implements Serializable {
     private Date attendDate;
 
     @DateTimeFormat(pattern = "HH:mm:ss")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
+    @JsonSerialize(using = TimeSerializer.class)
     private Date attendTime;
     private String hallCd;
     private String headNm;
