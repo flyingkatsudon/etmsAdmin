@@ -26,7 +26,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'check/device/list',
+                    url: 'check/device.json',
                     colModel: colModel
                 }
             }, options);
@@ -35,7 +35,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('check/device/xlsx');
+            this.addExcel('check/device.xlsx');
             return this;
         }
     });

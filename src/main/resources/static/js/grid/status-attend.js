@@ -23,7 +23,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/attend/list',
+                    url: 'status/attend.json',
                     colModel: colModel
                 }
             }, options);
@@ -32,7 +32,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('status/attend/xlsx');
+            this.addExcel('status/attend.xlsx');
             return this;
         }
     });

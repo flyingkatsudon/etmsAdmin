@@ -12,24 +12,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping(value = "check")
 @Slf4j
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CheckController {
-    private static final String LIST = "list";
+    private static final String JSON = "json";
 
     private final CheckMapper mapper;
 
-    @RequestMapping(value = "send/{format:list|xls|xlsx}")
-    public ResponseEntity send(@PathVariable String format, StatusDto statusDto, Pageable pageable, HttpServletResponse response) {
+    @RequestMapping(value = "send.{format:json|xls|xlsx}")
+    public ResponseEntity send(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
         switch (format) {
-            case LIST:
+            case JSON:
                 return ResponseEntity.ok(mapper.send(statusDto, pageable));
             default:
-                return JasperReportsExportHelper.toResponseEntity(response,
+                return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-send.jrxml",
                         format,
                         mapper.send(statusDto, pageable).getContent()
@@ -37,13 +35,13 @@ public class CheckController {
         }
     }
 
-    @RequestMapping(value = "device/{format:list|xls|xlsx}")
-    public ResponseEntity device(@PathVariable String format, StatusDto statusDto, Pageable pageable, HttpServletResponse response) {
+    @RequestMapping(value = "device.{format:json|xls|xlsx}")
+    public ResponseEntity device(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
         switch (format) {
-            case LIST:
+            case JSON:
                 return ResponseEntity.ok(mapper.device(statusDto, pageable));
             default:
-                return JasperReportsExportHelper.toResponseEntity(response,
+                return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-device.jrxml",
                         format,
                         mapper.device(statusDto, pageable).getContent()
@@ -51,19 +49,19 @@ public class CheckController {
         }
     }
 
-    @RequestMapping(value = "detect/{format:list|chart|pdf|xls|xlsx}")
-    public ResponseEntity detect(@PathVariable String format, StatusDto statusDto, Pageable pageable, HttpServletResponse response) {
+    @RequestMapping(value = "detect.{format:json|chart|pdf|xls|xlsx}")
+    public ResponseEntity detect(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
         return null;
     }
 
-    @RequestMapping(value = "signature/{format:list|xls|xlsx}")
-    public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, Pageable pageable, HttpServletResponse response) {
+    @RequestMapping(value = "signature.{format:json|xls|xlsx}")
+    public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
         statusDto.setIsSignature(false);
         switch (format) {
-            case LIST:
+            case JSON:
                 return ResponseEntity.ok(mapper.signature(statusDto, pageable));
             default:
-                return JasperReportsExportHelper.toResponseEntity(response,
+                return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-signature.jrxml",
                         format,
                         mapper.signature(statusDto, pageable).getContent()

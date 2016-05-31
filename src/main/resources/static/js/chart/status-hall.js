@@ -29,7 +29,7 @@ define(function (require) {
             var _this = this;
 
             $.ajax({
-                url: 'status/hall/chart',
+                url: 'status/hall.chart',
                 data: o
             }).done(function (response) {
                 var data = [];

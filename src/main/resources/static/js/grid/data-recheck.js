@@ -27,7 +27,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/recheck/list',
+                    url: 'data/recheck.json',
                     colModel: colModel
                 }
             }, options);
@@ -36,7 +36,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/recheck/xlsx');
+            this.addExcel('data/recheck.xlsx');
             return this;
         }
     });

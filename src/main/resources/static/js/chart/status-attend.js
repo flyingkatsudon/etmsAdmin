@@ -28,7 +28,7 @@ define(function (require) {
             var _this = this;
 
             $.ajax({
-                url: 'status/attend/chart',
+                url: 'status/attend.chart',
                 data: o
             }).done(function (response) {
                 var data = [];

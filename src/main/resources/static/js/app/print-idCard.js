@@ -124,7 +124,7 @@ define(function (require) {
             if (param.examineeCd || param.examineeNm) this.openPrintWindow(param);
 
         }, openPrintWindow: function (param) {
-            this.dlgView.setUrl('data/examineeId/pdf?' + $.param(param)).render();
+            this.dlgView.setUrl('data/examineeId.pdf?' + $.param(param)).render();
         }
     });
 });

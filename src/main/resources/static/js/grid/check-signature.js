@@ -23,7 +23,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'check/signature/list',
+                    url: 'check/signature.json',
                     colModel: colModel
                 }
             }, options);
@@ -32,7 +32,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('check/signature/xlsx');
+            this.addExcel('check/signature.xlsx');
             return this;
         }
     });

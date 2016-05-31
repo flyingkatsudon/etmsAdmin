@@ -28,7 +28,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/otherHall/list',
+                    url: 'data/otherHall.json',
                     colModel: colModel
                 }
             }, options);
@@ -37,7 +37,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/otherHall/xlsx');
+            this.addExcel('data/otherHall.xlsx');
             return this;
         }
     });

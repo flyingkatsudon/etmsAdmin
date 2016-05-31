@@ -27,7 +27,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/paper/list',
+                    url: 'data/paper.json',
                     colModel: colModel
                 }
             }, options);
@@ -36,7 +36,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('data/paper/xlsx');
+            this.addExcel('data/paper.xlsx');
             return this;
         }
     });

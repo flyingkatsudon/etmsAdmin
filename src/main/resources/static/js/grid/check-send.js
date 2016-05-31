@@ -23,7 +23,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'check/send/list',
+                    url: 'check/send.json',
                     colModel: colModel
                 }
             }, options);
@@ -32,7 +32,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('check/send/xlsx');
+            this.addExcel('check/send.xlsx');
             return this;
         }
     });
