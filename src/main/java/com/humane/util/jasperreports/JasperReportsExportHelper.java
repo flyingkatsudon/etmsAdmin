@@ -1,25 +1,23 @@
 package com.humane.util.jasperreports;
 
-import com.humane.util.file.FileNameEncoder;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
+import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
@@ -49,105 +47,131 @@ public class JasperReportsExportHelper {
         instance = new JasperReportsExportHelper();
     }
 
-    public static ResponseEntity<byte[]> toResponseEntity(String viewName, String format, List<?> content) {
+    public static ResponseEntity toResponseEntity(String viewName, String format, List<?> content) {
         JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
-        try {
-            switch (format) {
-                case EXT_PDF:
-                    return instance.toPdf(viewName, dataSource);
-                case EXT_XLS:
-                    return instance.toXls(viewName, dataSource);
-                case EXT_XLSX:
-                    return instance.toXlsx(viewName, dataSource);
-                default:
-                    return null;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            JasperPrint jasperPrint = instance.getJasperPrint(viewName, dataSource);
+
+            if (format.equals(EXT_PDF)) {
+                instance.exportReportToPdf(jasperPrint, baos);
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Set-Cookie", "fileDownload=true; path=/");
+                headers.setContentType(MediaType.parseMediaType(PDF));
+                headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
+                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+            } else if (format.equals(EXT_XLS)) {
+                instance.exportReportToXls(jasperPrint, baos);
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Set-Cookie", "fileDownload=true; path=/");
+                headers.setContentType(MediaType.parseMediaType(XLS));
+                headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + XLS));
+                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+            } else if (format.equals(EXT_XLSX)) {
+                instance.exportReportToXlsx(jasperPrint, baos);
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Set-Cookie", "fileDownload=true; path=/");
+                headers.setContentType(MediaType.parseMediaType(XLSX));
+                headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_XLSX));
+                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
             }
-        } catch (JRException e) {
+        } catch (JRException | IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
-    private ResponseEntity<byte[]> toXlsx(String viewName, JRRewindableDataSource dataSource) throws JRException {
-        return toXlsx(viewName, new LinkedHashMap<>(), dataSource);
+    public static File toXlsxFile(String viewName, List<?> content) {
+        return toFile((File) null, viewName, EXT_XLSX, content);
     }
 
-    private ResponseEntity<byte[]> toXlsx(String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
-        JasperReport jasperReport = loadReport(viewName);
-        if (jasperReport == null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+    public static File toXlsFile(String viewName, List<?> content) {
+        return toFile((File) null, viewName, EXT_XLS, content);
+    }
 
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+    public static File toPdfFile(String viewName, List<?> content) {
+        return toFile((File) null, viewName, EXT_PDF, content);
+    }
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    public static File toFile(String viewName, String format, List<?> content) {
+        return toFile((File) null, viewName, format, content);
+    }
+
+    public static File toFile(String path, String viewName, String format, List<?> content) {
+        return toFile(new File(path), viewName, format, content);
+    }
+
+    public static File toFile(File path, String viewName, String format, List<?> content) {
+        JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
+
+        FileOutputStream fos = null;
+        File file = null;
+        try {
+            JasperPrint jasperPrint = instance.getJasperPrint(viewName, dataSource);
+            if (jasperPrint == null) return null;
+
+            if (path != null) {
+                path.mkdirs();
+                file = new File(path, jasperPrint.getName() + "." + format);
+            } else {
+                file = new File(jasperPrint.getName() + "." + format);
+            }
+
+            fos = new FileOutputStream(file);
+
+            if (format.equals(EXT_PDF)) {
+                instance.exportReportToPdf(jasperPrint, fos);
+            } else if (format.equals(EXT_XLS)) {
+                instance.exportReportToXls(jasperPrint, fos);
+            } else if (format.equals(EXT_XLSX)) {
+                instance.exportReportToXlsx(jasperPrint, fos);
+            }
+        } catch (JRException | FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(fos);
+        }
+        return file;
+    }
+
+    private void exportReportToPdf(JasperPrint jasperPrint, OutputStream outputStream) throws JRException {
+        JRPdfExporter exporter = new JRPdfExporter(DefaultJasperReportsContext.getInstance());
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+        exporter.exportReport();
+    }
+
+    private void exportReportToXlsx(JasperPrint jasperPrint, OutputStream outputStream) throws JRException {
         JRXlsxExporter exporter = new JRXlsxExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
 
         SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
         exporter.setConfiguration(configuration);
 
         exporter.exportReport();
-
-        byte[] ba = baos.toByteArray();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Set-Cookie", "fileDownload=true; path=/");
-        headers.setContentLength(ba.length);
-        headers.setContentType(MediaType.parseMediaType(XLSX));
-        headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_XLSX));
-        return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
-    private ResponseEntity<byte[]> toXls(String viewName, JRRewindableDataSource dataSource) throws JRException {
-        return toXls(viewName, new LinkedHashMap<>(), dataSource);
-    }
-
-    private ResponseEntity<byte[]> toXls(String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
-        JasperReport jasperReport = loadReport(viewName);
-        if (jasperReport == null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-
-        if (params == null) params = new LinkedHashMap<>();
-
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    private void exportReportToXls(JasperPrint jasperPrint, OutputStream outputStream) throws JRException {
         JRXlsExporter exporter = new JRXlsExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
 
         SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
         exporter.setConfiguration(configuration);
 
         exporter.exportReport();
-
-        byte[] ba = baos.toByteArray();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Set-Cookie", "fileDownload=true; path=/");
-        headers.setContentLength(ba.length);
-        headers.setContentType(MediaType.parseMediaType(XLS));
-        headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + XLS));
-        return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 
-    private ResponseEntity<byte[]> toPdf(String viewName, JRRewindableDataSource dataSource) throws JRException {
-        return toPdf(viewName, new LinkedHashMap<>(), dataSource);
+    private JasperPrint getJasperPrint(String viewName, JRRewindableDataSource dataSource) throws JRException {
+        return getJasperPrint(viewName, new LinkedHashMap<>(), dataSource);
     }
 
-    private ResponseEntity<byte[]> toPdf(String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
+    private JasperPrint getJasperPrint(String viewName, Map<String, Object> params, JRRewindableDataSource dataSource) throws JRException {
         JasperReport jasperReport = loadReport(viewName);
-        if (jasperReport == null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+        if (jasperReport == null) return null;
 
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
-
-        byte[] ba = JasperExportManager.exportReportToPdf(jasperPrint);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Set-Cookie", "fileDownload=true; path=/");
-        headers.setContentLength(ba.length);
-        headers.setContentType(MediaType.parseMediaType(PDF));
-        headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
-        return new ResponseEntity<>(ba, headers, HttpStatus.OK);
+        return JasperFillManager.fillReport(jasperReport, params, dataSource);
     }
 
     private JasperReport loadReport(String viewName) {
@@ -160,28 +184,7 @@ public class JasperReportsExportHelper {
         return null;
     }
 
-
-    private void setResponseHeaders(HttpServletResponse response, String contentType, String fileName, String extension) {
-        response.setContentType(contentType);
-        response.setHeader("Content-Transfer-Encoding", "binary");
-        response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-        response.setHeader("X-Frame-Options", " SAMEORIGIN");
-        response.setCharacterEncoding("UTF-8");
-        response.setHeader("Content-Disposition", FileNameEncoder.encode(fileName) + "." + extension);
-    }
-
-    private HttpHeaders httpHeaders(String contentType, String fileName, String extension) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(contentType));
-        headers.set("Content-Transfer-Encoding", "binary");
-        headers.set("Set-Cookie", "fileDownload=true; path=/");
-        headers.set("X-Frame-Options", " SAMEORIGIN");
-        String enc = FileNameEncoder.encode(fileName);
-        headers.set("Content-Disposition", contentType.equals(PDF) ? enc.replace("attachment", "inline") : enc + "." + extension);
-        return headers;
-    }
-
-    public String encode(String type, String filename) {
+    public static String encode(String type, String filename) {
         StringBuilder contentDisposition = new StringBuilder(type);
         CharsetEncoder enc = StandardCharsets.US_ASCII.newEncoder();
         boolean canEncode = enc.canEncode(filename);
