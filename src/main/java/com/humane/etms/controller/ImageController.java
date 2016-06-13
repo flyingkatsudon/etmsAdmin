@@ -1,17 +1,19 @@
 package com.humane.etms.controller;
 
 import com.humane.etms.service.ImageService;
+import com.humane.util.file.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
@@ -19,11 +21,48 @@ import java.io.InputStream;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ImageController {
+
+    @Value("${path.image.recheck:C:/api/image/recheck}") String pathRecheck;
+    @Value("${path.image.noIdCard:C:/api/image/noIdCard}") String pathNoIdCard;
     private final ImageService imageService;
 
     @RequestMapping(value = "examinee/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> examinee(@PathVariable("fileName") String fileName) {
-        InputStream inputStream = imageService.getImageExaminee(fileName);
+        InputStream inputStream = imageService.getExaminee(fileName);
+        return ResponseEntity.ok(new InputStreamResource(inputStream));
+    }
+
+    @RequestMapping(value = "noIdCard", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> noIdCard(@RequestParam("file") MultipartFile file) {
+        try {
+            FileUtils.saveFile(pathNoIdCard, file, false);
+            return ResponseEntity.ok(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    @RequestMapping(value = "noIdCard/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> noIdCard(@PathVariable("fileName") String fileName) {
+        InputStream inputStream = imageService.getNoIdCard(fileName);
+        return ResponseEntity.ok(new InputStreamResource(inputStream));
+    }
+
+    @RequestMapping(value = "recheck", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> recheck(@RequestParam("file") MultipartFile file) {
+        try {
+            FileUtils.saveFile(pathRecheck, file, false);
+            return ResponseEntity.ok(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    @RequestMapping(value = "recheck/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> recheck(@PathVariable("fileName") String fileName) {
+        InputStream inputStream = imageService.getRecheck(fileName);
         return ResponseEntity.ok(new InputStreamResource(inputStream));
     }
 }

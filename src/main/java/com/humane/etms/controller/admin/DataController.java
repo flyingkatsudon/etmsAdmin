@@ -48,7 +48,7 @@ public class DataController {
         List<ExamineeDto> list = mapper.examinee(examineeDto, pageable).getContent();
 
         list.forEach(item -> {
-            try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
+            try (InputStream is = imageService.getExaminee(item.getExamineeCd() + ".jpg")) {
                 BufferedImage image = ImageIO.read(is);
                 item.setExamineeImage(image);
             } catch (IOException e) {

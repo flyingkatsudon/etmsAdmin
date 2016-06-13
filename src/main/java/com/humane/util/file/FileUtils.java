@@ -1,37 +1,38 @@
 package com.humane.util.file;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FileUtils {
+    public static File saveFile(String path, MultipartFile multipartFile, boolean isTime) throws IOException {
+        return saveFile(new File(path), multipartFile, isTime);
+    }
+
     public static File saveFile(String path, MultipartFile multipartFile) throws IOException {
-        return saveFile(new File(path), multipartFile);
+        return saveFile(new File(path), multipartFile, true);
     }
 
     public static File saveFile(File path, MultipartFile multipartFile) throws IOException {
-        if (!path.exists()) path.mkdirs();
-
-        String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        File file = new File(path, currentTime + "_" + multipartFile.getOriginalFilename());
-        multipartFile.transferTo(file);
-        return file;
+        return saveFile(path, multipartFile, true);
     }
 
-    public static byte[] getByteArray(File file) {
-        // 압축파일 내보내기
-        try (FileInputStream fis = new FileInputStream(file)) {
-            return IOUtils.toByteArray(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            file.delete();
+    public static File saveFile(File path, MultipartFile multipartFile, boolean isTime) throws IOException {
+        if (!path.exists()) path.mkdirs();
+
+        String fileName = null;
+        if (isTime) {
+            String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            fileName = currentTime + "_" + multipartFile.getOriginalFilename();
+        } else {
+            fileName = multipartFile.getOriginalFilename();
         }
-        return null;
+
+        File file = new File(path, fileName);
+        multipartFile.transferTo(file);
+        return file;
     }
 }

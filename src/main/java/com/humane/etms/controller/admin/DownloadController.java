@@ -1,15 +1,16 @@
 package com.humane.etms.controller.admin;
 
-import com.humane.etms.dto.*;
+import com.humane.etms.dto.ExamineeDto;
+import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.DataMapper;
 import com.humane.etms.mapper.StatusMapper;
 import com.humane.util.file.FileNameEncoder;
-import com.humane.util.file.FileUtils;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import com.humane.util.zip4j.ZipFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.exception.ZipException;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -138,8 +140,16 @@ public class DownloadController {
         zipFile.addFile(dataPath, otherHall);
         otherHall.delete();
 
-        //
-        byte[] ba = FileUtils.getByteArray(zipFile.getFile());
+        byte[] ba = null;
+
+        // 압축파일 내보내기
+        try (FileInputStream fis = new FileInputStream(file)) {
+            ba = IOUtils.toByteArray(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            file.delete();
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Set-Cookie", "fileDownload=true; path=/");

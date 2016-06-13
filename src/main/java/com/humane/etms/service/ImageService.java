@@ -11,17 +11,31 @@ import java.io.InputStream;
 @Service
 public class ImageService {
 
-    @Value("${path.image.examinee:C:/api/image/examinee}") String pathImageExaminee;
+    @Value("${path.image.pathExaminee:C:/api/image/examinee}") String pathExaminee;
+    @Value("${path.image.pathExaminee:C:/api/image/noIdCard}") String pathNoIdCard;
+    @Value("${path.image.pathExaminee:C:/api/image/recheck}") String pathRecheck;
 
-    public InputStream getImageExaminee(String fileName) {
+    public InputStream getExaminee(String fileName) {
+        return getFile(pathExaminee, fileName);
+    }
+
+    public InputStream getNoIdCard(String fileName) {
+        return getFile(pathNoIdCard, fileName);
+    }
+
+    public InputStream getRecheck(String fileName) {
+        return getFile(pathRecheck, fileName);
+    }
+
+    private InputStream getFile(String filePath, String fileName) {
         try {
-            File path = new File(pathImageExaminee);
+            File path = new File(filePath);
             if (!path.exists()) path.mkdirs();
-            File file = new File(pathImageExaminee + "/" + fileName);
+            File file = new File(path, fileName);
             if (file.exists()) {
                 return new FileInputStream(file);
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
 
         }
         return null;
