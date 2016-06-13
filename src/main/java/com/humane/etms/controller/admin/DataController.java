@@ -45,7 +45,7 @@ public class DataController {
 
     @RequestMapping(value = "examineeId.pdf")
     public ResponseEntity examineeId(ExamineeDto examineeDto, Pageable pageable) {
-        List<StatusDto> list = mapper.examinee(examineeDto, pageable).getContent();
+        List<ExamineeDto> list = mapper.examinee(examineeDto, pageable).getContent();
 
         list.forEach(item -> {
             try (InputStream is = imageService.getImageExaminee(item.getExamineeCd() + ".jpg")) {
@@ -61,22 +61,6 @@ public class DataController {
                 JasperReportsExportHelper.EXT_PDF,
                 list
         );
-    }
-
-    @RequestMapping(value = "otherHall.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity otherHall(@PathVariable String format, ExamineeDto examineeDto, Pageable pageable) {
-        examineeDto.setIsOtherHall(true);
-
-        switch (format) {
-            case JSON:
-                return ResponseEntity.ok(mapper.examinee(examineeDto, pageable));
-            default:
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/data-otherHall.jrxml",
-                        format,
-                        mapper.examinee(examineeDto, pageable).getContent()
-                );
-        }
     }
 
     @RequestMapping(value = "noIdCard.{format:json|pdf|xls|xlsx}")
@@ -109,6 +93,21 @@ public class DataController {
         }
     }
 
+    @RequestMapping(value = "otherHall.{format:json|pdf|xls|xlsx}")
+    public ResponseEntity otherHall(@PathVariable String format, ExamineeDto examineeDto, Pageable pageable) {
+        examineeDto.setIsOtherHall(true);
+
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(mapper.examinee(examineeDto, pageable));
+            default:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/data-otherHall.jrxml",
+                        format,
+                        mapper.examinee(examineeDto, pageable).getContent()
+                );
+        }
+    }
     /**
      * 감독관 서명 정보를 불러오기 위한 부분
      *

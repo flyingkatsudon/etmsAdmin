@@ -3,6 +3,73 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.etms.mapper.CheckMapper">
+
+    <select id="send" resultType="com.humane.etms.dto.StatusDto">
+        SELECT admission.admission_nm
+        , attend.attend_nm
+        , attend.attend_date
+        , attend.attend_time
+        , hall.head_nm
+        , hall.bldg_nm
+        , hall.hall_nm
+        , attend_device.device_no
+        , CASE WHEN attend_device.send_dttm IS NULL THEN FALSE ELSE TRUE END AS is_send
+        FROM attend_hall
+        INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
+        INNER JOIN hall ON attend_hall.hall_cd = hall.hall_cd
+        INNER JOIN admission ON attend.admission_cd = admission.admission_cd
+        LEFT JOIN attend_device ON attend_hall.hall_cd = attend_device.hall_cd AND attend.attend_cd = attend_device.attend_cd
+        <where>
+            <if test="param != null">
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
+                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
+                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                <if test="param.attendNm != null"> AND attend.attend_nm LIKE '%' #{param.attendNm} '%'</if>
+                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.deviceNo != null">AND attend_device.device_no = #{param.deviceNo}</if>
+                <if test="param.isSend != null">
+                    <if test="param.isSend == true"> AND attend_device.send_dttm IS NOT NULL</if>
+                    <if test="param.isSend == false"> AND attend_device.send_dttm IS NULL</if>
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="device" resultType="com.humane.etms.dto.StatusDto">
+        SELECT admission.admission_nm
+        , attend.attend_nm
+        , attend.attend_date
+        , attend.attend_time
+        , attend_device.device_no
+        , device.uuid
+        , device.phone_no
+        , hall.head_nm
+        , hall.bldg_nm
+        , hall.hall_nm
+        , device.reg_dttm
+        , attend_device.send_dttm
+        FROM attend
+        INNER JOIN attend_device ON attend_device.attend_cd = attend.attend_cd AND attend.attend_cd = attend_device.attend_cd
+        INNER JOIN admission ON attend.admission_cd = admission.admission_cd
+        INNER JOIN hall ON attend_device.hall_cd = hall.hall_cd
+        INNER JOIN device ON attend_device.device_no = device.device_no
+        <where>
+            <if test="param != null">
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
+                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
+                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
+                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.deviceNo != null">AND attend_device.device_no = #{param.deviceNo}</if>
+            </if>
+        </where>
+    </select>
+
     <select id="signature" resultType="com.humane.etms.dto.StatusDto">
         SELECT admission.admission_nm
                 , attend.attend_date
@@ -37,68 +104,4 @@
               </where>
     </select>
 
-    <select id="send" resultType="com.humane.etms.dto.StatusDto">
-        SELECT admission.admission_nm
-              , attend.attend_nm
-              , attend.attend_date
-              , attend.attend_time
-              , hall.head_nm
-              , hall.bldg_nm
-              , hall.hall_nm
-              , attend_device.device_no
-              , CASE WHEN attend_device.send_dttm IS NULL THEN FALSE ELSE TRUE END AS is_send
-          FROM attend_hall
-         INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
-         INNER JOIN hall ON attend_hall.hall_cd = hall.hall_cd
-         INNER JOIN admission ON attend.admission_cd = admission.admission_cd
-         LEFT JOIN attend_device ON attend_hall.hall_cd = attend_device.hall_cd AND attend.attend_cd = attend_device.attend_cd
-        <where>
-            <if test="param != null">
-                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
-                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
-                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
-                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
-                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
-                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
-                <if test="param.deviceNo != null">AND attend_device.device_no = #{param.deviceNo}</if>
-                <if test="param.isSend != null">
-                    <if test="param.isSend == true"> AND attend_device.send_dttm IS NOT NULL</if>
-                    <if test="param.isSend == false"> AND attend_device.send_dttm IS NULL</if>
-                </if>
-            </if>
-        </where>
-    </select>
-
-    <select id="device" resultType="com.humane.etms.dto.StatusDto">
-        SELECT admission.admission_nm
-            , attend.attend_nm
-            , attend.attend_date
-            , attend.attend_time
-            , attend_device.device_no
-            , device.uuid
-            , device.phone_no
-            , hall.head_nm
-            , hall.bldg_nm
-            , hall.hall_nm
-            , device.reg_dttm
-            , attend_device.send_dttm
-        FROM attend
-            INNER JOIN attend_device ON attend_device.attend_cd = attend.attend_cd AND attend.attend_cd = attend_device.attend_cd
-            INNER JOIN admission ON attend.admission_cd = admission.admission_cd
-            INNER JOIN hall ON attend_device.hall_cd = hall.hall_cd
-            INNER JOIN device ON attend_device.device_no = device.device_no
-        <where>
-            <if test="param != null">
-                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
-                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
-                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
-                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
-                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
-                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
-                <if test="param.deviceNo != null">AND attend_device.device_no = #{param.deviceNo}</if>
-            </if>
-        </where>
-    </select>
 </mapper>

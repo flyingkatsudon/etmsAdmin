@@ -42,6 +42,7 @@ define(function (require) {
                     typeNm : _this.$('#typeNm').val(),
                     attendDate : _this.$('#attendDate').val(),
                     attendTime : _this.$('#attendTime').val(),
+                    attendNm : _this.$('#attendNm').val(),
                     headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm : _this.$('#hallNm').val(),

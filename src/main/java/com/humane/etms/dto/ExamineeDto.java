@@ -37,12 +37,14 @@ public class ExamineeDto extends StatusDto {
     private Date lastDttm;
 
     // 검색용
+    private String headNm;
+    private String deptNm;
+    private String majorNm;
     private String fromExamineeCd;
     private String toExamineeCd;
-    private String memo;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Date checkTime;
+    private Date attendDttm;
 
     private BufferedImage examineeImage;
 }
