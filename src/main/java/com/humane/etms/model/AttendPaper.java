@@ -23,6 +23,4 @@ public class AttendPaper implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date regDttm;
-
-    @ManyToOne @JoinColumn(name = "deviceNo") private Device device;
 }

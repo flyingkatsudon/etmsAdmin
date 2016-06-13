@@ -25,6 +25,9 @@ public class AttendMap {
 
     private String groupNm;
     @ManyToOne @JoinColumn(name = "deviceNo") private Device device;
+    @Column(columnDefinition = "bit" ) private Boolean isMidOut;
     @Column(columnDefinition = "bit") private Boolean isNoIdCard;
     @Column(columnDefinition = "bit") private Boolean isCheck;
+    @Column(columnDefinition = "bit") private Boolean isCheat;
+    private String memo;
 }
