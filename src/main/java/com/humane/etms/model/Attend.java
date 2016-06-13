@@ -22,11 +22,11 @@ public class Attend {
     @Column(columnDefinition = "int default 5") private int paperLen;  // 답안지 자리수.
     @Column(columnDefinition = "bit default 1") private boolean isPaperChange;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Temporal(TemporalType.DATE)
     private Date attendDate; // 출결일자
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
     @Temporal(TemporalType.TIME)
     private Date attendTime; // 출결시간
 }
