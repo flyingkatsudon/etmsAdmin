@@ -14,6 +14,8 @@ public interface StatusMapper {
 
     Page<StatusDto> dept(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
+    Page<StatusDto> major(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
+
     Page<StatusDto> hall(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
     Page<StatusDto> group(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);

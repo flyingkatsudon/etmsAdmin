@@ -12,8 +12,7 @@ define(function (require) {
                 data: [{name: '', attendCnt: 0, absentCnt: 0}],
                 xkey: 'name',
                 ykeys: ['attendCnt', 'absentCnt'],
-                labels: ['응시자수', '결시자수'],
-                stacked: true
+                labels: ['응시자수', '결시자수']
             });
             this.search();
             this.resize();
@@ -29,19 +28,19 @@ define(function (require) {
             var _this = this;
 
             $.ajax({
-                url: 'status/hall.chart',
+                url: 'status/major.chart',
                 data: o
             }).done(function (response) {
                 var data = [];
                 for (var i = 0; i < response.length; i++) {
                     data.push({
-                        name: response[i].bldgNm + "\n" + response[i].hallNm,
+                        name: response[i].deptNm + "\n" + response[i].majorNm,
                         attendCnt: response[i].attendCnt,
                         absentCnt: response[i].absentCnt
                     })
                 }
                 _this.chart.setData(data);
-            })
+            });
         }
     });
 });

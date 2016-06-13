@@ -62,6 +62,23 @@ public class StatusController {
         }
     }
 
+    @RequestMapping(value = "major.{format:json|chart|pdf|xls|xlsx}")
+    public ResponseEntity major(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
+
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(mapper.major(statusDto, pageable));
+            case CHART:
+                return ResponseEntity.ok(mapper.major(statusDto, pageable).getContent());
+            default:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/status-major.jrxml",
+                        format,
+                        mapper.dept(statusDto, pageable).getContent()
+                );
+        }
+    }
+
     @RequestMapping(value = "hall.{format:json|chart|pdf|xls|xlsx}")
     public ResponseEntity hall(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
         switch (format) {
@@ -87,7 +104,7 @@ public class StatusController {
                 return ResponseEntity.ok(mapper.group(statusDto, pageable).getContent());
             default:
                 return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/status-hall.jrxml",
+                        "jrxml/status-group.jrxml",
                         format,
                         mapper.group(statusDto, pageable).getContent()
                 );

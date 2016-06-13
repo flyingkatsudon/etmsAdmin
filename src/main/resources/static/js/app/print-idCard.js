@@ -39,7 +39,8 @@ define(function (require) {
             'click #printDept': 'printDeptClicked',
             'click #printExamineeList': 'printExamineeListClicked',
             'click #printExaminee': 'printExamineeClicked'
-        }, headNmChanged: function (e) {
+        },
+        headNmChanged: function (e) {
             var param = {
                 headNm: e.currentTarget.value
             };
@@ -47,7 +48,8 @@ define(function (require) {
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        }, bldgNmChanged: function (e) {
+        },
+        bldgNmChanged: function (e) {
             var param = {
                 headNm: this.$('#headNm').val(),
                 bldgNm: e.currentTarget.value
@@ -55,7 +57,8 @@ define(function (require) {
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm(param)));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        }, hallNmChanged: function (e) {
+        },
+        hallNmChanged: function (e) {
             var param = {
                 headNm: this.$('#headNm').val(),
                 bldgNm: this.$('#bldgNm').val(),
@@ -63,7 +66,8 @@ define(function (require) {
             };
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        }, attendDateChanged: function (e) {
+        },
+        attendDateChanged: function (e) {
             var param = {
                 headNm: this.$('#headNm').val(),
                 bldgNm: this.$('#bldgNm').val(),
@@ -71,19 +75,22 @@ define(function (require) {
                 attendDate: e.currentTarget.value
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        }, typeNmChanged: function (e) {
+        },
+        typeNmChanged: function (e) {
             var param = {
                 typeNm: e.currentTarget.value
             };
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
-        }, deptNmChanged: function (e) {
+        },
+        deptNmChanged: function (e) {
             var param = {
                 typeNm: this.$('#typeNm').val(),
                 deptNm: e.currentTarget.value
             };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
-        }, printHallClicked: function (e) {
+        },
+        printHallClicked: function (e) {
             e.preventDefault();
 
             var param = {
@@ -94,7 +101,8 @@ define(function (require) {
                 attendTime: this.$('#attendTime').val()
             };
             this.openPrintWindow(param);
-        }, printDeptClicked: function (e) {
+        },
+        printDeptClicked: function (e) {
             e.preventDefault();
 
             var param = {
@@ -103,17 +111,19 @@ define(function (require) {
                 majorNm: this.$('#majorNm').val()
             };
             this.openPrintWindow(param);
-        }, printExamineeListClicked: function (e) {
+        },
+        printExamineeListClicked: function (e) {
             e.preventDefault();
 
             var param = {
-                firstExamineeCd: this.$('#firstExamineeCd').val(),
-                lastExamineeCd: this.$('#lastExamineeCd').val()
+                fromExamineeCd: this.$('#fromExamineeCd').val(),
+                toExamineeCd: this.$('#toExamineeCd').val()
             };
 
-            if (param.firstExamineeCd || param.lastExamineeCd) this.openPrintWindow(param);
+            if (param.fromExamineeCd || param.toExamineeCd) this.openPrintWindow(param);
 
-        }, printExamineeClicked: function (e) {
+        },
+        printExamineeClicked: function (e) {
             e.preventDefault();
 
             var param = {
@@ -123,7 +133,8 @@ define(function (require) {
 
             if (param.examineeCd || param.examineeNm) this.openPrintWindow(param);
 
-        }, openPrintWindow: function (param) {
+        },
+        openPrintWindow: function (param) {
             this.dlgView.setUrl('data/examineeId.pdf?' + $.param(param)).render();
         }
     });

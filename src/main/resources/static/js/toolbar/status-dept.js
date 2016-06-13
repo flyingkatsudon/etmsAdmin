@@ -14,20 +14,16 @@ define(function (require) {
         },
         render: function () {
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
-            //this.$('#attendNm').html(this.getOptions(ToolbarModel.getAttendNm()));
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
-            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate()));
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime()));
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             return this;
         },
         events: {
             'click #search': 'searchClicked',
             'change #admissionNm': 'admissionNmChanged',
-            'change #attendNm': 'attendNmChanged',
-            'change #typeNm': 'typeNmChanged',
-            'change #deptNm': 'deptNmChanged',
-            'change #attendDate': 'attendDateChanged'
+            'change #attendDate': 'attendDateChanged',
+            'change #attendTime': 'attendTimechanged',
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -36,11 +32,9 @@ define(function (require) {
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    attendNm: _this.$('#attendNm').val(),
-                    typeNm: _this.$('#typeNm').val(),
-                    deptNm: _this.$('#deptNm').val(),
                     attendDate: _this.$('#attendDate').val(),
-                    attendTime: _this.$('#attendTime').val()
+                    attendTime: _this.$('#attendTime').val(),
+                    deptNm: _this.$('#deptNm').val()
                 });
             }
         },
@@ -48,51 +42,25 @@ define(function (require) {
             var param = {
                 admissionNm: e.currentTarget.value
             };
-            this.$('#attendNm').html(this.getOptions(ToolbarModel.getAttendNm(param)));
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
+            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
+            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        },
-        attendNmChanged: function (e) {
-            var param = {
-                admissionNm: this.$('#admissionNm').val(),
-                attendNm: e.currentTarget.value
-            };
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
-            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        },
-        typeNmChanged: function (e) {
-            var param = {
-                admissionNm: this.$('#admissionNm').val(),
-                attendNm: this.$('#attendNm').val(),
-                typeNm: e.currentTarget.value
-            };
-            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        },
-        deptNmChanged: function (e) {
-            var param = {
-                admissionNm: this.$('#admissionNm').val(),
-                attendNm: this.$('#attendNm').val(),
-                typeNm: this.$('#typeNm').val(),
-                deptNm: e.currentTarget.value
-            };
-            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
-            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
         attendDateChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
-                attendNm: this.$('#attendNm').val(),
-                typeNm: this.$('#typeNm').val(),
-                deptNm: this.$('#deptNm').val(),
                 attendDate: e.currentTarget.value
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
+        },
+        attendTimeChanged: function (e) {
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                attendDate: this.$('#attendDate').val(),
+                attendTime: e.currentTarget.value
+            };
+            this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
         }
     });
 });

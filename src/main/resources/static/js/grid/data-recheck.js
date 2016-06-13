@@ -10,15 +10,15 @@ define(function (require) {
                 {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
+                {name: 'deptNm', label: '모집단위'},
+                {name: 'majorNm', label: '전공'},
                 {name: 'examineeCd', label: '수험번호'},
                 {name: 'examineeNm', label: '수험생명'},
                 {name: 'birth', label: '생년월일'},
-                {name: 'deptNm', label: '모집단위'},
                 {name: 'attendHeadNm', label: '응시고사본부'},
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
-                {name: 'memo', label: '메모'},
-                {name: 'isCheck', label: '확인', formatter: 'select', editoptions: {value: {true: '확인', false: '미확인'}}}
+                {name: 'isCheck', label: '확인', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
