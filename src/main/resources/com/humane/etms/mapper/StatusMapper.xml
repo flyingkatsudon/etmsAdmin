@@ -82,7 +82,6 @@
     <select id="major" resultType="com.humane.etms.dto.StatusDto">
         SELECT
         admission.admission_nm,
-        examinee.dept_nm, examinee.major_nm,
         attend.attend_nm, attend.attend_date, attend.attend_time,
         COUNT(*) AS examinee_cnt,
         COUNT (attend_map.attend_hall_cd) AS attend_cnt,
@@ -128,7 +127,6 @@
         INNER JOIN admission ON admission.admission_cd = attend.admission_cd
         INNER JOIN hall ON hall.hall_cd = attend_hall.hall_cd
         LEFT JOIN attend_map ON attend_map.attend_cd = attend_hall.attend_cd AND attend_map.hall_cd = hall.hall_cd
-        LEFT JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
