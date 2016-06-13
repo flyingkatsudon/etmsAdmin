@@ -2,6 +2,7 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
+    var BootstrapDialog = require('bootstrap-dialog');
 
     return GridBase.extend({
         initialize: function (options) {
@@ -29,7 +30,25 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'data/noIdCard.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    onSelectRow : function(rowid, status, e){
+                        var rowdata = $(this).jqGrid('getRowData', rowid);
+                        var url1 = 'image/examinee/' + rowdata.examineeCd + '.jpg'; // 원본
+                        var url2 = 'image/noIdCard/' + rowdata.examineeCd + '.jpg'; // 대조본
+                        BootstrapDialog.show({
+                            title : rowdata.examineeCd + '::' + rowdata.examineeNm,
+                            message: '<image src="' + url1 + '"><image src="' + url2 + '">',
+                            size: 'size-wide',
+                            closable: false,
+                            buttons: [{
+                                label: '닫기',
+                                action: function (dialog) {
+                                    dialog.close();
+                                }
+                            }]
+                        });
+
+                    }
                 }
             }, options);
 
