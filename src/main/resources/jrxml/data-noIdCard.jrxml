@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-06-08T18:23:17 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="신분증 미소지자" pageWidth="1500" pageHeight="80" orientation="Landscape" columnWidth="1500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
+<!-- 2016-06-13T10:06:57 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="신분증 미소지자" pageWidth="1500" pageHeight="80" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -35,7 +43,7 @@
 		<band height="15">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<staticText>
-				<reportElement x="0" y="0" width="100" height="15" uuid="2a75d243-8c28-4b27-ae47-70d7003754ba">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="15" uuid="2a75d243-8c28-4b27-ae47-70d7003754ba">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -48,7 +56,7 @@
 				<text><![CDATA[번호]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="100" height="15" uuid="a4788b51-5d63-4c3d-bdf0-adfedc508d6a"/>
+				<reportElement stretchType="RelativeToBandHeight" x="100" y="0" width="100" height="15" uuid="a4788b51-5d63-4c3d-bdf0-adfedc508d6a"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -59,7 +67,7 @@
 				<text><![CDATA[전형]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="0" width="100" height="15" uuid="0a6642ca-c4e1-4f8f-88ff-c85147ca9b0d"/>
+				<reportElement stretchType="RelativeToBandHeight" x="200" y="0" width="100" height="15" uuid="0a6642ca-c4e1-4f8f-88ff-c85147ca9b0d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -70,7 +78,7 @@
 				<text><![CDATA[계열]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="100" height="15" uuid="b4de6c9d-ea98-4dfa-abbe-15e3ece881e1"/>
+				<reportElement stretchType="RelativeToBandHeight" x="300" y="0" width="100" height="15" uuid="b4de6c9d-ea98-4dfa-abbe-15e3ece881e1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -81,7 +89,7 @@
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="0" width="100" height="15" uuid="d0164306-417e-4c9b-8f6b-f09346a0fe8b"/>
+				<reportElement stretchType="RelativeToBandHeight" x="400" y="0" width="100" height="15" uuid="d0164306-417e-4c9b-8f6b-f09346a0fe8b"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -92,7 +100,7 @@
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="500" y="0" width="100" height="15" uuid="d2384d99-01ba-4c3c-a14c-256176b435c7"/>
+				<reportElement stretchType="RelativeToBandHeight" x="500" y="0" width="100" height="15" uuid="d2384d99-01ba-4c3c-a14c-256176b435c7"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -103,7 +111,7 @@
 				<text><![CDATA[모집단위]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="600" y="0" width="100" height="15" uuid="69717f07-c8bb-46dd-be21-42e174b95126"/>
+				<reportElement stretchType="RelativeToBandHeight" x="600" y="0" width="100" height="15" uuid="69717f07-c8bb-46dd-be21-42e174b95126"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -114,7 +122,7 @@
 				<text><![CDATA[전공]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="700" y="0" width="100" height="15" uuid="6d7d38f9-7ad8-4d4b-965d-0f681b8e7d8d"/>
+				<reportElement stretchType="RelativeToBandHeight" x="700" y="0" width="100" height="15" uuid="6d7d38f9-7ad8-4d4b-965d-0f681b8e7d8d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -125,7 +133,7 @@
 				<text><![CDATA[수험번호]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="800" y="0" width="100" height="15" uuid="6193ad4c-21e3-4313-b2c8-29aa738cb948"/>
+				<reportElement stretchType="RelativeToBandHeight" x="800" y="0" width="100" height="15" uuid="6193ad4c-21e3-4313-b2c8-29aa738cb948"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -136,7 +144,7 @@
 				<text><![CDATA[수험생명]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="900" y="0" width="100" height="15" uuid="f265b986-9460-4ff8-a59f-db434149ec73"/>
+				<reportElement stretchType="RelativeToBandHeight" x="900" y="0" width="100" height="15" uuid="f265b986-9460-4ff8-a59f-db434149ec73"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -147,7 +155,7 @@
 				<text><![CDATA[생년월일]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1000" y="0" width="100" height="15" uuid="806f8b2b-3dc7-45c9-b767-c42dfd7d9275"/>
+				<reportElement stretchType="RelativeToBandHeight" x="1000" y="0" width="100" height="15" uuid="806f8b2b-3dc7-45c9-b767-c42dfd7d9275"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -158,7 +166,7 @@
 				<text><![CDATA[응시고사본부]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1100" y="0" width="100" height="15" uuid="59df3845-8ec6-4b1f-b430-ed55d0b63254"/>
+				<reportElement stretchType="RelativeToBandHeight" x="1100" y="0" width="100" height="15" uuid="59df3845-8ec6-4b1f-b430-ed55d0b63254"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -169,7 +177,7 @@
 				<text><![CDATA[응시고사건물]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1200" y="0" width="100" height="15" uuid="729dfe6b-1670-4b5a-863b-87359e92476c"/>
+				<reportElement stretchType="RelativeToBandHeight" x="1200" y="0" width="100" height="15" uuid="729dfe6b-1670-4b5a-863b-87359e92476c"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -180,7 +188,7 @@
 				<text><![CDATA[응시고사실]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1300" y="0" width="100" height="15" uuid="c822b188-716d-4468-a1bc-826d46b9b3ca"/>
+				<reportElement stretchType="RelativeToBandHeight" x="1300" y="0" width="100" height="15" uuid="c822b188-716d-4468-a1bc-826d46b9b3ca"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -191,7 +199,7 @@
 				<text><![CDATA[타고사실여부]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1400" y="0" width="100" height="15" uuid="2ef36062-5929-4d9d-bd5f-26ae71083d15"/>
+				<reportElement stretchType="RelativeToBandHeight" x="1400" y="0" width="100" height="15" uuid="2ef36062-5929-4d9d-bd5f-26ae71083d15"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>

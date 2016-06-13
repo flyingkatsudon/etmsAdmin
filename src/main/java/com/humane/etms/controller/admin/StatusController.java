@@ -74,7 +74,7 @@ public class StatusController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-major.jrxml",
                         format,
-                        mapper.dept(statusDto, pageable).getContent()
+                        mapper.major(statusDto, pageable).getContent()
                 );
         }
     }

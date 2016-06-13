@@ -82,7 +82,7 @@
     <select id="major" resultType="com.humane.etms.dto.StatusDto">
         SELECT
         admission.admission_nm,
-        examinee.type_nm, examinee.dept_nm, examinee.major_nm,
+        examinee.dept_nm, examinee.major_nm,
         attend.attend_nm, attend.attend_date, attend.attend_time,
         COUNT(*) AS examinee_cnt,
         COUNT (attend_map.attend_hall_cd) AS attend_cnt,
@@ -109,6 +109,7 @@
         attend.attend_nm, attend.attend_date, attend.attend_time,
         examinee.dept_nm, examinee.major_nm
     </select>
+
     <select id="hall" resultType="com.humane.etms.dto.StatusDto">
         SELECT admission.admission_nm
         , attend.attend_date

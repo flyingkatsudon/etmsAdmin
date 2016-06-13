@@ -19,7 +19,7 @@ define(function (require) {
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
                 {name: 'finalPaper', label: '답안지번호'},
-                {name: 'isOtherHall', label: '타고사실여부', formatter: 'select', editoptions: {value: {true: '타고사실', false: '-'}}},
+                {name: 'isOtherHall', label: '타고사실여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
                 {name: 'isChangePaper', label: '답안지교체여부', formatter: 'select', editoptions: {value: {true: '교체', false: '미교체'}}},
                 {name: 'isAttend', label: '응시여부', formatter: 'select', editoptions: {value: {true: '응시', false: '미응시'}}}
             ];
