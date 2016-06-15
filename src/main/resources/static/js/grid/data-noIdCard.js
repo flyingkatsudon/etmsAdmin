@@ -47,7 +47,6 @@ define(function (require) {
                                 }
                             }]
                         });
-
                     }
                 }
             }, options);

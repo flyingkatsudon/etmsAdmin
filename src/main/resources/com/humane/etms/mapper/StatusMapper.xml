@@ -43,12 +43,6 @@
             attend.attend_date, attend.attend_time
     </select>
 
-    <sql id="ColumnDept">
-        admission.admission_nm,
-        examinee.type_nm, examinee.dept_nm,
-        attend.attend_date, attend.attend_time
-    </sql>
-
     <select id="dept" resultType="com.humane.etms.dto.StatusDto">
         SELECT
             admission.admission_nm,

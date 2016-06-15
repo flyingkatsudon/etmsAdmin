@@ -122,7 +122,7 @@ public class UploadController {
                         .and(QAttendMap.attendMap.examinee.examineeCd.eq(attendMap.getExaminee().getExamineeCd()))
                 );
 
-                if (tmp != null) attendMap.setAttendMapSeq(tmp.getAttendMapSeq());
+                if (tmp != null) attendMap.set_id(tmp.get_id());
 
                 // 3.1 수험생정보 저장
                 attendMapRepository.save(attendMap);
