@@ -10,16 +10,16 @@ import java.util.Date;
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"paperCd"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"attendCd", "paperCd"})})
 @Data
 public class AttendPaper implements Serializable {
     @Id @GeneratedValue private long _id;
 
-    @Column(columnDefinition = "int default 1", nullable = false) private int paperNo;
+    @ManyToOne @JoinColumn(name = "attendCd", nullable = false) private Attend attend;
     @Column(nullable = false) private String paperCd;
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "attendMapSeq", nullable = false)
-    private AttendMap attendMap;
+    @Column(columnDefinition = "int default 1", nullable = false) private int paperNo;
+    @ManyToOne @JoinColumn(name = "examineeCd", nullable = false) private Examinee examinee;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date regDttm;

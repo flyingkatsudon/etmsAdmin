@@ -3,7 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.etms.mapper.StatusMapper">
-
     <select id="all" resultType="com.humane.etms.dto.StatusDto">
         SELECT
             COUNT(*)                                                       AS examinee_cnt,
@@ -83,6 +82,7 @@
         SELECT
         admission.admission_nm,
         attend.attend_nm, attend.attend_date, attend.attend_time,
+        examinee.dept_nm, examinee.major_nm,
         COUNT(*) AS examinee_cnt,
         COUNT (attend_map.attend_hall_cd) AS attend_cnt,
         COUNT (attend_map.attend_hall_cd) * 100 / COUNT (*) AS attend_per,
@@ -187,54 +187,5 @@
             hall.head_nm,
             hall.bldg_nm,
             hall.hall_nm
-    </select>
-
-    <select id="findToolbar" resultType="com.humane.etms.dto.StatusDto">
-        SELECT admission.admission_nm
-            , examinee.type_nm
-            , examinee.major_nm
-            , examinee.dept_nm
-            , attend_map.group_nm
-            , attend.attend_nm
-            , attend.attend_date
-            , attend.attend_time
-            , hall.head_nm
-            , hall.bldg_nm
-            , hall.hall_nm
-            , hall.is_etc
-        FROM attend_hall
-            INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
-            INNER JOIN admission ON admission.admission_cd = attend.admission_cd
-            INNER JOIN hall ON hall.hall_cd = attend_hall.hall_cd
-            LEFT JOIN attend_map ON attend_map.attend_cd = attend_hall.attend_cd AND attend_map.hall_cd = hall.hall_cd
-            LEFT JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
-        <where>
-            <if test="param != null">
-                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
-                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
-                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
-                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
-                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
-                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
-                <if test="param.attendNm != null">AND attend.attend_nm = #{param.attendNm}</if>
-                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
-                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
-                <if test="param.isEtc != null">AND hall.is_etc = #{param.isEtc}</if>
-            </if>
-        </where>
-        GROUP BY admission.admission_nm
-            , examinee.type_nm
-            , examinee.major_nm
-            , examinee.dept_nm
-            , attend_map.group_nm
-            , attend.attend_nm
-            , attend.attend_date
-            , attend.attend_time
-            , hall.hall_cd
-            , hall.head_nm
-            , hall.bldg_nm
-            , hall.hall_nm
-            , hall.is_etc
     </select>
 </mapper>

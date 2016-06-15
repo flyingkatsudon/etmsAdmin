@@ -107,11 +107,11 @@
             examinee.examinee_nm,
             examinee.birth,
             examinee.dept_nm,
-            (SELECT COUNT(*) FROM attend_paper WHERE attend_map.attend_map_seq = attend_paper.attend_map_seq) AS paper_cnt,
-            (SELECT paper_cd FROM attend_paper WHERE attend_map.attend_map_seq = attend_paper.attend_map_seq ORDER BY scan_dttm ASC LIMIT 1) AS first_paper_cd,
-            (SELECT paper_cd FROM attend_paper WHERE attend_map.attend_map_seq = attend_paper.attend_map_seq ORDER BY scan_dttm DESC LIMIT 1) AS last_paper_cd,
-            (SELECT GROUP_CONCAT(paper_cd ORDER BY scan_dttm SEPARATOR ', ')  FROM attend_paper WHERE attend_map.attend_map_seq = attend_paper.attend_map_seq) AS paper_list,
-            (SELECT MAX(scan_dttm) FROM attend_paper WHERE attend_map.attend_map_seq = attend_paper.attend_map_seq) AS last_dttm
+            (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS paper_cnt,
+            (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm ASC LIMIT 1) AS first_paper_cd,
+            (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1) AS last_paper_cd,
+            (SELECT GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ', ')  FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS paper_list,
+            (SELECT MAX(reg_dttm) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS last_dttm
         FROM attend_map
             INNER JOIN attend ON attend_map.attend_cd = attend.attend_cd
             INNER JOIN admission ON admission.admission_cd = attend.admission_cd
