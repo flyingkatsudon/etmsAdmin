@@ -21,6 +21,7 @@ public class Attend {
     @Column(columnDefinition = "int default 0") private int paperCnt;
     @Column(columnDefinition = "int default 5") private int paperLen;  // 답안지 자리수.
     @Column(columnDefinition = "bit default 1") private boolean isPaperChange;
+    @Column String paperHeader;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Temporal(TemporalType.DATE)
