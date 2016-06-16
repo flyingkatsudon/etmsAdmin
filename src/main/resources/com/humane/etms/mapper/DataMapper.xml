@@ -107,6 +107,7 @@
             examinee.examinee_nm,
             examinee.birth,
             examinee.dept_nm,
+            examinee.major_nm,
             (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS paper_cnt,
             (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm ASC LIMIT 1) AS first_paper_cd,
             (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1) AS last_paper_cd,
@@ -116,38 +117,41 @@
             INNER JOIN attend ON attend_map.attend_cd = attend.attend_cd
             INNER JOIN admission ON admission.admission_cd = attend.admission_cd
             INNER JOIN examinee ON attend_map.examinee_cd = examinee.examinee_cd
-    </select>
-
-    <select id="findSend" resultType="com.humane.etms.dto.StatusDto">
-        SELECT admission.admission_nm
-              , attend.attend_nm
-              , attend.attend_date
-              , attend.attend_time
-              , hall.head_nm
-              , hall.bldg_nm
-              , hall.hall_nm
-              , attend_device.device_no
-              , CASE WHEN attend_device.send_dttm IS NULL THEN FALSE ELSE TRUE END AS is_send
-          FROM attend_hall
-         INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
-         INNER JOIN hall ON attend_hall.hall_cd = hall.hall_cd
-         INNER JOIN admission ON attend.admission_cd = admission.admission_cd
-         LEFT JOIN attend_device ON attend_hall.hall_cd = attend_device.hall_cd AND attend.attend_cd = attend_device.attend_cd
+            INNER JOIN attend_paper ON attend_paper.attend_cd = attend.attend_cd
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
-                <if test="param.deviceNo != null">AND attend_device.device_no = #{param.deviceNo}</if>
-                <if test="param.isSend != null">
-                    <if test="param.isSend == true"> AND attend_device.send_dttm IS NOT NULL</if>
-                    <if test="param.isSend == false"> AND attend_device.send_dttm IS NULL</if>
+                <if test="param.examineeCd != null">AND examinee.examinee_cd = #{param.examineeCd}</if>
+                <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
+                <if test="param.paperCd != null">AND
+                    (
+                        SELECT GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ', ')
+                        FROM attend_paper
+                        WHERE attend_paper.attend_cd = attend_map.attend_cd
+                        and attend_paper.examinee_cd = attend_map.examinee_cd
+                        and attend_paper.paper_no = 1
+                    )
+                      LIKE '%'#{param.paperCd}'%'
                 </if>
             </if>
         </where>
+        GROUP BY
+            admission.admission_nm,
+            examinee.type_nm,
+            attend.attend_date,
+            attend.attend_time,
+            examinee.examinee_cd,
+            examinee.examinee_nm,
+            examinee.birth,
+            examinee.dept_nm,
+            examinee.major_nm
     </select>
 </mapper>

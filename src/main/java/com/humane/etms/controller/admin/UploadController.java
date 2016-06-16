@@ -69,6 +69,7 @@ public class UploadController {
                 // 4. 응시고사실 확인
                 AttendHall tmp = attendHallRepository.findOne(new BooleanBuilder()
                         .and(QAttendHall.attendHall.attend.attendCd.eq(attendHall.getAttend().getAttendCd()))
+                        .and(QAttendHall.attendHall.hall.hallCd.eq(hall.getHallCd()))
                 );
 
                 if (tmp != null) attendHall.set_id(tmp.get_id());
@@ -78,6 +79,7 @@ public class UploadController {
                 attendHallRepository.save(attendHall);
             });
         } catch (Throwable throwable) {
+            throwable.printStackTrace();
             log.error("{}", throwable.getMessage());
         } finally {
             file.delete();

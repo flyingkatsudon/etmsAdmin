@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-05-09T15:29:02 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="감독관 서명 리스트" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="93c9f1f1-96e6-404a-b86c-ad0429331365">
+<!-- 2016-06-15T14:53:37 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="감독관 서명 리스트" pageWidth="1000" pageHeight="800" orientation="Landscape" columnWidth="1000" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="93c9f1f1-96e6-404a-b86c-ad0429331365">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -24,252 +24,246 @@
 	<field name="phoneNo" class="java.lang.String"/>
 	<field name="isSignature" class="java.lang.Boolean"/>
 	<title>
-		<band height="67" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="802" height="51" uuid="eb06a15e-082f-4f63-ba36-68ca82cce71c"/>
+				<reportElement x="0" y="0" width="1000" height="50" uuid="eb06a15e-082f-4f63-ba36-68ca82cce71c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="19" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+					<font size="16" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[감독관 서명 리스트]]></text>
 			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="15">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<staticText>
-				<reportElement x="120" y="51" width="96" height="16" uuid="1fc68164-1ee8-4879-974f-7d9248866b89"/>
+				<reportElement x="0" y="0" width="100" height="15" uuid="8a31ff5d-5af3-4193-83a6-3b424399a58e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[시험일자]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="30" y="51" width="90" height="16" uuid="e7eacffd-561b-4092-b822-b78cdc92268d"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[전형]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="216" y="51" width="96" height="16" uuid="19f393ee-c438-43b1-914a-1ced65dc8c92"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[시험시간]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="312" y="51" width="94" height="16" uuid="d4aecc4a-e47b-4bb8-aa1e-8b17c41c2822"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[고사본부]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="406" y="51" width="75" height="16" uuid="32817c87-ffb2-426d-bda0-189d08ad69be"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[고사건물]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="481" y="51" width="81" height="16" uuid="c00dcd02-e124-4d08-b8c4-57abb701800e"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[고사실]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="562" y="51" width="81" height="16" uuid="e49992b5-9112-4350-a545-815e95be25c4"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[단말기번호]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="724" y="51" width="77" height="16" uuid="65ce78b1-e045-4e51-8b14-01d63b244a08"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[서명여부]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="51" width="30" height="16" uuid="121dafb9-4da7-41d0-aaad-7151387f229d"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[번호]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="643" y="51" width="81" height="16" uuid="015f6b72-038e-4e33-9c8a-421428d090a1"/>
+				<reportElement x="100" y="0" width="100" height="15" uuid="afeb73ce-67e3-4dcd-8d51-b3b28831c630"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10"/>
-				</textElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[전형]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="15" uuid="6dd4bfa5-6ccc-4562-82eb-0d57f42ff36f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[시험일자]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="100" height="15" uuid="5738dcc7-7004-4f81-bca4-134f3e7833e3"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[시험시간]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="100" height="15" uuid="29c5fa02-4485-493c-9157-2e02580b5dad"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[고사본부]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="0" width="100" height="15" uuid="1455a566-5603-451a-aa02-1ac9a7e652d7"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[고사건물]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="600" y="0" width="100" height="15" uuid="e327b4ea-e019-4ebb-ba3e-558470ff8966"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[고사실]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="700" y="0" width="100" height="15" uuid="8eacdbde-9443-46e7-8c58-b83db18b0c9f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[단말기번호]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="800" y="0" width="100" height="15" uuid="746c6e9a-b8ce-4efb-8397-08fdfb2e4a65"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[전화번호]]></text>
 			</staticText>
-		</band>
-	</title>
-	<detail>
-		<band height="20" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="30" height="20" uuid="13759559-370c-4336-83b8-b35c9683aa1b"/>
+			<staticText>
+				<reportElement x="900" y="0" width="100" height="15" uuid="28bf96af-531a-4f8f-9320-f7740f5b0a4d"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[서명여부]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="100" height="15" uuid="44a671c4-3152-44c3-9a3e-9eef8e54f656">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="30" y="0" width="90" height="20" uuid="3d2026d7-7926-4870-96f4-be34b2bf1673"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="0" width="100" height="15" uuid="fafffa6b-dd39-4345-bb7d-27cdd71d4b3f"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
 			</textField>
-			<textField pattern="yyyy-MM-dd">
-				<reportElement x="120" y="0" width="96" height="20" uuid="5557ffd4-97fa-4fe5-bd35-15417b490804"/>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="200" y="0" width="100" height="15" uuid="f8a84489-6627-479f-928f-cb4f9a4766d7"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{attendDate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="HH:mm:ss">
-				<reportElement x="216" y="0" width="96" height="20" uuid="933b41d5-d94a-4d02-ab45-bb8b834b8938"/>
+			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="100" height="15" uuid="4bd4d11b-a957-4d19-b061-582e22e5efb4"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{attendTime}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="312" y="0" width="94" height="20" uuid="5324d85f-a9b1-4218-bc97-496e0d4c8892"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="100" height="15" uuid="601e848f-78b9-4a1c-b203-f6005c3f1a54"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{headNm}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="406" y="0" width="75" height="20" uuid="fd07376b-a850-4fb0-aee1-05cf1098816f"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="500" y="0" width="100" height="15" uuid="0f84fc99-55d0-408b-8ab2-f6f2e5d26d00"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{bldgNm}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="481" y="0" width="81" height="20" uuid="482929d9-2a5b-4bd8-a8de-3e27d345971c"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="600" y="0" width="100" height="15" uuid="2925aefd-7798-4634-87cc-55f4d6c0a0d0"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{hallNm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="562" y="0" width="81" height="20" uuid="34cf9ef8-f5af-4663-8da2-be44ea8a0c23"/>
+				<reportElement x="700" y="0" width="100" height="15" uuid="1a7b51d7-e160-4464-96f9-a8ea08322e4c"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{deviceNo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="643" y="0" width="81" height="20" uuid="e54a59a3-1051-4f52-b427-946ca6d8a084"/>
+				<reportElement x="800" y="0" width="100" height="15" uuid="3fe83e66-ec0a-439b-b4e2-7bb15fc73045"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{phoneNo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="724" y="0" width="77" height="20" uuid="95747409-e149-4ca9-be32-8aeb1ae93460"/>
+				<reportElement x="900" y="0" width="100" height="15" uuid="23f65f08-f4b6-4494-be86-d1d522d681b0"/>
 				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[($F{isSignature}) ? "서명" : "미서명"]]></textFieldExpression>

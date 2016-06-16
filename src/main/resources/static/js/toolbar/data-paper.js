@@ -51,9 +51,9 @@ define(function (require) {
                     headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm : _this.$('#hallNm').val(),
+                    paperCd : _this.$('#paperCd').val(),
                     examineeCd : _this.$('#examineeCd').val(),
-                    examineeNm : _this.$('#examineeNm').val(),
-                    isAttend : _this.$('#isAttend').val()
+                    examineeNm : _this.$('#examineeNm').val()
                 });
             }
         },
