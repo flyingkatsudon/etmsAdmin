@@ -20,6 +20,7 @@ public class AttendPaper implements Serializable {
 
     @Column(columnDefinition = "int default 1", nullable = false) private int paperNo;
     @ManyToOne @JoinColumn(name = "examineeCd", nullable = false) private Examinee examinee;
+    @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date regDttm;
