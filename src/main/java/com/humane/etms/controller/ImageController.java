@@ -24,6 +24,8 @@ public class ImageController {
 
     @Value("${path.image.recheck:C:/api/image/recheck}") String pathRecheck;
     @Value("${path.image.noIdCard:C:/api/image/noIdCard}") String pathNoIdCard;
+    @Value("${path.image.noIdCard:C:/api/image/signature}") String pathSignature;
+
     private final ImageService imageService;
 
     @RequestMapping(value = "examinee/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
@@ -63,6 +65,23 @@ public class ImageController {
     @RequestMapping(value = "recheck/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> recheck(@PathVariable("fileName") String fileName) {
         InputStream inputStream = imageService.getRecheck(fileName);
+        return ResponseEntity.ok(new InputStreamResource(inputStream));
+    }
+
+    @RequestMapping(value = "signature", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> signature(@RequestParam("file") MultipartFile file) {
+        try {
+            FileUtils.saveFile(pathSignature, file, false);
+            return ResponseEntity.ok(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    @RequestMapping(value = "signature/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> signature(@PathVariable("fileName") String fileName) {
+        InputStream inputStream = imageService.getSignature(fileName);
         return ResponseEntity.ok(new InputStreamResource(inputStream));
     }
 }

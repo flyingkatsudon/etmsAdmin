@@ -118,7 +118,7 @@ public class DownloadController {
                 "jrxml/data-noIdCard.jrxml"
                 , dataMapper.examinee(dto, pageable).getContent()
         );
-        dto.setIsNoIdCard(false);
+        dto.setIsNoIdCard(null);
         zipFile.addFile(dataPath, noIdCard);
         noIdCard.delete();
 
@@ -127,7 +127,7 @@ public class DownloadController {
                 "jrxml/data-recheck.jrxml"
                 , dataMapper.examinee(dto, pageable).getContent()
         );
-        dto.setIsCheck(false);
+        dto.setIsCheck(null);
         zipFile.addFile(dataPath, recheck);
         recheck.delete();
 

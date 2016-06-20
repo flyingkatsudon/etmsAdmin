@@ -14,6 +14,7 @@ public class ImageService {
     @Value("${path.image.pathExaminee:C:/api/image/examinee}") String pathExaminee;
     @Value("${path.image.pathExaminee:C:/api/image/noIdCard}") String pathNoIdCard;
     @Value("${path.image.pathExaminee:C:/api/image/recheck}") String pathRecheck;
+    @Value("${path.image.pathExaminee:C:/api/image/signature}") String pathSignature;
 
     public InputStream getExaminee(String fileName) {
         return getFile(pathExaminee, fileName);
@@ -26,6 +27,8 @@ public class ImageService {
     public InputStream getRecheck(String fileName) {
         return getFile(pathRecheck, fileName);
     }
+
+    public InputStream getSignature(String fileName) {return getFile(pathSignature, fileName);}
 
     private InputStream getFile(String filePath, String fileName) {
         try {

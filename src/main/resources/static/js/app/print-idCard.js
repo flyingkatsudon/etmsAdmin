@@ -21,7 +21,7 @@ define(function (require) {
             this.$('#bldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
             this.$('#hallNm').html(this.getOptions(ToolbarModel.getHallNm()));
 
-            this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm()));
+            this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
         }, events: {
@@ -31,7 +31,7 @@ define(function (require) {
             'change #attendDate': 'attendDateChanged',
             'change #attendTime': 'attendTimeChanged',
 
-            'change #typeNm': 'typeNmChanged',
+            'change #admissionNm': 'admissionNmChanged',
             'change #deptNm': 'deptNmChanged',
             'change #majorNm': 'majorNmChanged',
 
@@ -76,16 +76,16 @@ define(function (require) {
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
-        typeNmChanged: function (e) {
+        admissionNmChanged: function (e) {
             var param = {
-                typeNm: e.currentTarget.value
+                admissionNm: e.currentTarget.value
             };
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm(param)));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
         },
         deptNmChanged: function (e) {
             var param = {
-                typeNm: this.$('#typeNm').val(),
+                admissionNm: this.$('#admissionNm').val(),
                 deptNm: e.currentTarget.value
             };
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm(param)));
@@ -106,7 +106,7 @@ define(function (require) {
             e.preventDefault();
 
             var param = {
-                typeNm: this.$('#typeNm').val(),
+                admissionNm: this.$('#admissionNm').val(),
                 deptNm: this.$('#deptNm').val(),
                 majorNm: this.$('#majorNm').val()
             };

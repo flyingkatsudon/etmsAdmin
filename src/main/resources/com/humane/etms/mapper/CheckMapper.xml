@@ -6,7 +6,6 @@
 
     <select id="send" resultType="com.humane.etms.dto.StatusDto">
         SELECT admission.admission_nm
-        , (SELECT DISTINCT examinee.type_nm FROM examinee INNER JOIN attend_map ON attend_map.examinee_cd = examinee.examinee_cd) AS type_nm
         , attend.attend_nm
         , attend.attend_date
         , attend.attend_time
@@ -23,7 +22,6 @@
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.attendNm != null"> AND attend.attend_nm LIKE '%' #{param.attendNm} '%'</if>
@@ -41,7 +39,6 @@
 
     <select id="device" resultType="com.humane.etms.dto.StatusDto">
         SELECT admission.admission_nm
-        , (SELECT DISTINCT examinee.type_nm FROM examinee INNER JOIN attend_map ON attend_map.examinee_cd = examinee.examinee_cd) AS type_nm
         , attend.attend_nm
         , attend.attend_date
         , attend.attend_time
@@ -61,7 +58,6 @@
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
@@ -105,5 +101,4 @@
             </if>
         </where>
     </select>
-
 </mapper>

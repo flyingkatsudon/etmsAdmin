@@ -103,6 +103,9 @@
             examinee.type_nm,
             attend.attend_date,
             attend.attend_time,
+            hall.head_nm,
+            hall.bldg_nm,
+            hall.hall_nm,
             examinee.examinee_cd,
             examinee.examinee_nm,
             examinee.birth,
@@ -118,6 +121,7 @@
             INNER JOIN admission ON admission.admission_cd = attend.admission_cd
             INNER JOIN examinee ON attend_map.examinee_cd = examinee.examinee_cd
             INNER JOIN attend_paper ON attend_paper.attend_cd = attend.attend_cd
+            INNER JOIN hall ON hall.hall_cd = attend_map.hall_cd
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
@@ -132,14 +136,12 @@
                 <if test="param.examineeCd != null">AND examinee.examinee_cd = #{param.examineeCd}</if>
                 <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
                 <if test="param.paperCd != null">AND
-                    (
-                        SELECT GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ', ')
+                    ( SELECT GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ', ')
                         FROM attend_paper
-                        WHERE attend_paper.attend_cd = attend_map.attend_cd
-                        and attend_paper.examinee_cd = attend_map.examinee_cd
-                        and attend_paper.paper_no = 1
-                    )
-                      LIKE '%'#{param.paperCd}'%'
+                        WHERE  attend_paper.attend_cd = attend_map.attend_cd
+                           and attend_paper.examinee_cd = attend_map.examinee_cd
+                           and attend_paper.paper_no = 1
+                    ) LIKE '%' #{param.paperCd} '%'
                 </if>
             </if>
         </where>

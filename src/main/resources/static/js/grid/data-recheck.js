@@ -35,7 +35,7 @@ define(function (require) {
                         var url1 = 'image/examinee/' + rowdata.examineeCd + '.jpg'; // 원본
                         var url2 = 'image/recheck/' + rowdata.examineeCd + '.jpg'; // 대조본
                         BootstrapDialog.show({
-                            title : rowdata.examineeCd + '::' + rowdata.examineeNm,
+                            title: rowdata.examineeCd + '::' + rowdata.examineeNm,
                             message: '<image src="' + url1 + '"><image src="' + url2 + '">',
                             size: 'size-wide',
                             closable: false,

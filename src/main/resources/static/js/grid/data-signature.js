@@ -2,6 +2,7 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
+    var BootstrapDialog = require('bootstrap-dialog');
 
     return GridBase.extend({
         initialize: function (options) {
@@ -24,7 +25,24 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'data/signature.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    onSelectRow : function(rowid, status, e){
+                        var rowdata = $(this).jqGrid('getRowData', rowid);
+                        console.log(rowdata);
+                        var url = 'image/signature/' + rowdata.deviceNo + '.jpg';
+                        BootstrapDialog.show({
+                            title : rowdata.attendDate + ' ' + rowdata.attendTime + ' ' + rowdata.bldgNm + ' ' + rowdata.hallNm,
+                            message: '<image src="' + url + '">',
+                            size: 'size-wide',
+                            closable: false,
+                            buttons: [{
+                                label: '닫기',
+                                action: function (dialog) {
+                                    dialog.close();
+                                }
+                            }]
+                        });
+                    }
                 }
             }, options);
 
