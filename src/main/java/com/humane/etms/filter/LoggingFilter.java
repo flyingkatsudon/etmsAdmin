@@ -25,12 +25,13 @@ public class LoggingFilter implements Filter {
         RequestWrapper requestWrapper = RequestWrapper.of(request);
 
         String uri = requestWrapper.getRequestUri();
-        //Map<String, String> headerMap = requestWrapper.headerMap();
+        Map<String, String> headerMap = requestWrapper.headerMap();
         Map<String, String> parameterMap = requestWrapper.parameterMap();
 
         String body = requestWrapper.getBody();
-        if (uri.matches("^(/)(api|score|check|data|model|setting|status)(/).*$"))
-            log.info("uri : {}, parameter : {}, body : {}", uri, parameterMap, body);
+        if (uri.matches("^(/)(api|score|check|data|model|setting|status)(/).*$")){
+            log.info("uri : {}, header: {}, parameter : {}, body : {}", uri, headerMap, parameterMap, body);
+        }
 
         /*log.info("uri : {}, parameter : {}, body : {}",
                 requestWrapper.getRequestUri(),
