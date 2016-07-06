@@ -55,9 +55,18 @@ public class StatusDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date lastDttm;
 
+    private Long paperCnt2;
+    private String firstPaperCd2;
+    private String lastPaperCd2;
+    private String paperList2;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date lastDttm2;
+
     // examinee
     private String examineeCd;
     private String examineeNm;
+    private String paperNo;
     private String paperCd;
     private Boolean isAttend;
     private Boolean isNoIdCard;

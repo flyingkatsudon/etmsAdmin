@@ -19,7 +19,7 @@ define(function (require) {
                 {name: 'attendHeadNm', label: '응시고사본부'},
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
-                {name: 'isCheck', label: '확인', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}}
+                {name: 'attendDttm', label: '등록시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -34,18 +34,52 @@ define(function (require) {
                         var rowdata = $(this).jqGrid('getRowData', rowid); // 선택된 row의 데이터 가져오기
                         var url1 = 'image/examinee/' + rowdata.examineeCd + '.jpg'; // 원본
                         var url2 = 'image/recheck/' + rowdata.examineeCd + '.jpg'; // 대조본
-                        BootstrapDialog.show({
-                            title: rowdata.examineeCd + '::' + rowdata.examineeNm,
-                            message: '<image src="' + url1 + '"><image src="' + url2 + '">',
-                            size: 'size-wide',
-                            closable: false,
-                            buttons: [{
-                                label: '닫기',
-                                action: function (dialog) {
-                                    dialog.close();
-                                }
-                            }]
-                        });
+
+                        var img = new Image();
+                        img.src = url1;
+                        img.onerror = function () {
+                            BootstrapDialog.show({
+                                title: '재확인 대상자',
+                                message: '촬영한 사진이 업로드 전입니다. 관리자에게 문의하세요.',
+                                closable: true,
+                                buttons: [{
+                                    label: '닫기',
+                                    action: function (dialog) {
+                                        dialog.close();
+                                    }
+                                }]
+                            });
+                        }
+                        img.onload = function () {
+                            img.src = url2;
+                            img.onerror = function () {
+                                BootstrapDialog.show({
+                                    title: '재확인 대상자',
+                                    message: '촬영한 사진이 업로드 전 입니다. 잠시 후 다시 시도하세요.',
+                                    closable: true,
+                                    buttons: [{
+                                        label: '닫기',
+                                        action: function (dialog) {
+                                            dialog.close();
+                                        }
+                                    }]
+                                });
+                            }
+                            img.onload = function () {
+                                BootstrapDialog.show({
+                                    title: rowdata.examineeCd + '::' + rowdata.examineeNm,
+                                    message: '<image src="' + url1 + '"><image src="' + url2 + '">',
+                                    size: 'size-wide',
+                                    closable: true,
+                                    buttons: [{
+                                        label: '닫기',
+                                        action: function (dialog) {
+                                            dialog.close();
+                                        }
+                                    }]
+                                });
+                            }
+                        }
                     }
                 }
             }, options);

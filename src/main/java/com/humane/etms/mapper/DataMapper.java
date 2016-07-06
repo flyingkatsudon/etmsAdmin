@@ -15,4 +15,6 @@ public interface DataMapper {
 
     Page<StatusDto> paper(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
+    Page<StatusDto> detail(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
+
 }

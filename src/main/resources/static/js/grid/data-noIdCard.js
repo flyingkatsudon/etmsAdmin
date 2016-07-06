@@ -19,7 +19,12 @@ define(function (require) {
                 {name: 'attendHeadNm', label: '응시고사본부'},
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
-                {name: 'isOtherHall', label: '타고사실여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
+                {
+                    name: 'isOtherHall',
+                    label: '타고사실여부',
+                    formatter: 'select',
+                    editoptions: {value: {true: 'Y', false: 'N'}}
+                },
                 {name: 'attendDttm', label: '등록시간'}
             ];
 
@@ -31,22 +36,58 @@ define(function (require) {
                 defaults: {
                     url: 'data/noIdCard.json',
                     colModel: colModel,
-                    onSelectRow : function(rowid, status, e){
+                    onSelectRow: function (rowid, status, e) {
                         var rowdata = $(this).jqGrid('getRowData', rowid);
                         var url1 = 'image/examinee/' + rowdata.examineeCd + '.jpg'; // 원본
                         var url2 = 'image/noIdCard/' + rowdata.examineeCd + '.jpg'; // 대조본
-                        BootstrapDialog.show({
-                            title : rowdata.examineeCd + '::' + rowdata.examineeNm,
-                            message: '<image src="' + url1 + '"><image src="' + url2 + '">',
-                            size: 'size-wide',
-                            closable: false,
-                            buttons: [{
-                                label: '닫기',
-                                action: function (dialog) {
-                                    dialog.close();
-                                }
-                            }]
-                        });
+
+                        var img = new Image();
+                        img.src = url1;
+                        // 원본사진 없는 경우
+                        img.onerror = function () {
+                            BootstrapDialog.show({
+                                title: '신분증 미소지자',
+                                message: '촬영한 사진이 업로드 전 입니다. 관리자에게 문의하세요.',
+                                closable: true,
+                                buttons: [{
+                                    label: '닫기',
+                                    action: function (dialog) {
+                                        dialog.close();
+                                    }
+                                }]
+                            });
+                        }
+                        // 대조본이 없는 경우
+                        img.onload = function () {
+                            img.src = url2;
+                            img.onerror = function () {
+                                BootstrapDialog.show({
+                                    title: '신분증 미소지자',
+                                    message: '촬영한 사진이 업로드 전 입니다. 잠시 후 다시 시도하세요.',
+                                    closable: true,
+                                    buttons: [{
+                                        label: '닫기',
+                                        action: function (dialog) {
+                                            dialog.close();
+                                        }
+                                    }]
+                                });
+                            }
+                            img.onload = function () {
+                                BootstrapDialog.show({
+                                    title: rowdata.examineeCd + '::' + rowdata.examineeNm,
+                                    message: '<image src="' + url1 + '"><image src="' + url2 + '">',
+                                    size: 'size-wide',
+                                    closable: true,
+                                    buttons: [{
+                                        label: '닫기',
+                                        action: function (dialog) {
+                                            dialog.close();
+                                        }
+                                    }]
+                                });
+                            }
+                        }
                     }
                 }
             }, options);

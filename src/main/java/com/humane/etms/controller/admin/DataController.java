@@ -28,6 +28,7 @@ public class DataController {
     private final DataMapper mapper;
     private final ImageService imageService;
     private static final String JSON = "json";
+    private static final String PDF = "pdf";
 
     @RequestMapping(value = "examinee.{format:json|pdf|xls|xlsx}")
     public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, Pageable page) {
@@ -144,6 +145,22 @@ public class DataController {
                         format,
                         mapper.paper(statusDto, pageable).getContent()
                 );
+        }
+    }
+
+    @RequestMapping(value = "detail.{format:json|pdf}")
+    public ResponseEntity detail(@PathVariable String format, StatusDto param, Pageable pageable){
+        switch(format) {
+            case JSON:
+                return ResponseEntity.ok(mapper.detail(param, pageable));
+            case PDF:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/data-detail.jrxml"
+                        , format
+                        , mapper.detail(param, pageable).getContent()
+                );
+            default:
+                return null;
         }
     }
 }

@@ -18,10 +18,7 @@ define(function (require) {
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'finalPaper', label: '답안지번호'},
-                {name: 'isOtherHall', label: '타고사실여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
-                {name: 'isChangePaper', label: '답안지교체여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}},
-                {name: 'isAttend', label: '응시여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}}
+                {name: 'attendDttm', label: '등록시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

@@ -5,6 +5,7 @@ define(function (require) {
 
     var Backbone = require('backbone');
     var Template = require('text!tpl/setting-data.html');
+    var BootstrapDialog = require('bootstrap-dialog');
 
     return Backbone.View.extend({
         initialize: function (o) {
@@ -16,16 +17,51 @@ define(function (require) {
             this.initForm('#frmUploadExaminee');
         }, initForm: function (id) {
             this.$(id).ajaxForm({
-                beforeSubmit : function(arr){
-                    for(var i in arr){
-                        if(arr[i].name =='file' && arr[i].value == ''){
+                loading: function () {
+                    BootstrapDialog.show({
+                        title: '파일 업로드',
+                        message: '업로드 중입니다. 잠시만 기다려주십시오.',
+                        closable: false
+                    })
+                },
+                failed: function () {
+                    BootstrapDialog.show({
+                        title: '파일 업로드',
+                        message: '파일을 선택하세요.',
+                        closable: true,
+                        buttons: [{
+                            label: '확인',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }]
+                    })
+                },
+                uploadSuccess: function () {
+                    BootstrapDialog.closeAll();
+                    BootstrapDialog.show({
+                        title: '파일 업로드',
+                        message: '업로드가 완료되었습니다.',
+                        closable: true,
+                        buttons: [{
+                            label: '확인',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }]
+                    })
+                },
+                beforeSubmit: function (arr) {
+                    for (var i in arr) {
+                        if (arr[i].name == 'file' && arr[i].value == '') {
+                            this.failed();
                             return false;
                         }
+                        this.loading();
                     }
                 },
-                success : function(data){
-                    console.log(data);
-                    console.log('데이터 전송 완료!');
+                success: function () {
+                    this.uploadSuccess();
                 }
             });
         }

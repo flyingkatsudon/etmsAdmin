@@ -14,6 +14,7 @@
         , hall.hall_nm
         , attend_device.device_no
         , CASE WHEN attend_device.send_dttm IS NULL THEN FALSE ELSE TRUE END AS is_send
+        , attend_device.send_dttm
         FROM attend_hall
         INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
         INNER JOIN hall ON attend_hall.hall_cd = hall.hall_cd

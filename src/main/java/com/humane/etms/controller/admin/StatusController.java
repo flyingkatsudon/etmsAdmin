@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class StatusController {
 
-    private static final String CHART = "chart";
     private static final String JSON = "json";
 
     private final StatusMapper mapper;
@@ -28,14 +27,12 @@ public class StatusController {
         return ResponseEntity.ok(mapper.all(statusDto));
     }
 
-    @RequestMapping(value = "attend.{format:json|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "attend.{format:json|pdf|xls|xlsx}")
     public ResponseEntity attend(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
 
         switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.attend(statusDto, pageable));
-            case CHART:
-                return ResponseEntity.ok(mapper.attend(statusDto, pageable).getContent());
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-attend.jrxml",
@@ -51,8 +48,6 @@ public class StatusController {
         switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.dept(statusDto, pageable));
-            case CHART:
-                return ResponseEntity.ok(mapper.dept(statusDto, pageable).getContent());
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-dept.jrxml",
@@ -62,14 +57,12 @@ public class StatusController {
         }
     }
 
-    @RequestMapping(value = "major.{format:json|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "major.{format:json|pdf|xls|xlsx}")
     public ResponseEntity major(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
 
         switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.major(statusDto, pageable));
-            case CHART:
-                return ResponseEntity.ok(mapper.major(statusDto, pageable).getContent());
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-major.jrxml",
@@ -84,8 +77,6 @@ public class StatusController {
         switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.hall(statusDto, pageable));
-            case CHART:
-                return ResponseEntity.ok(mapper.hall(statusDto, pageable).getContent());
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-hall.jrxml",
@@ -95,13 +86,11 @@ public class StatusController {
         }
     }
 
-    @RequestMapping(value = "group.{format:json|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "group.{format:json|pdf|xls|xlsx}")
     public ResponseEntity group(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
         switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.group(statusDto, pageable));
-            case CHART:
-                return ResponseEntity.ok(mapper.group(statusDto, pageable).getContent());
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-group.jrxml",

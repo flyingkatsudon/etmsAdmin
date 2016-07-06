@@ -2,6 +2,7 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
+    var DlgPdf = require('../dist/dlg-pdf.js');
 
     return GridBase.extend({
         initialize: function (options) {
@@ -19,7 +20,12 @@ define(function (require) {
                 {name: 'firstPaperCd', label: '원답안지'},
                 {name: 'lastPaperCd', label: '최종답안지'},
                 {name: 'paperList', label: '교체이력'},
-                {name: 'lastDttm', label: '최종교체시간'}
+                {name: 'lastDttm', label: '최종교체시간'},
+                {name: 'paperCnt2', label: '답안지 매수'},
+                {name: 'firstPaperCd2', label: '원답안지'},
+                {name: 'lastPaperCd2', label: '최종답안지'},
+                {name: 'paperList2', label: '교체이력'},
+                {name: 'lastDttm2', label: '최종교체시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -29,7 +35,11 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'data/paper.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    onSelectRow : function(rowid, status, e){
+                        var param = $(this).jqGrid('getRowData', rowid);
+                        new DlgPdf().setUrl('data/detail.pdf?' + $.param(param)).render();
+                    }
                 }
             }, options);
 

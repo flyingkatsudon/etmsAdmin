@@ -56,11 +56,21 @@
                     <if test="param.isOtherHall == true">AND (attend_map.attend_hall_cd IS NOT NULL AND attend_map.attend_hall_cd != attend_map.hall_cd)</if>
                     <if test="param.isOtherHall == false">AND (attend_map.attend_hall_cd IS NOT NULL AND attend_map.attend_hall_cd = attend_map.hall_cd)</if>
                 </if>
-                <if test="param.fromExamineeCd != null and param.toExamineeCd != null">AND attend_map.examinee_cd BETWEEN #{param.fromExamineeCd} AND #{param.toExamineeCd}</if>
+                <if test="param.fromExamineeCd != null and param.toExamineeCd == null">AND attend_map.examinee_cd = #{param.fromExamineeCd}</if>
+                <if test="param.fromExamineeCd == null and param.toExamineeCd != null">AND attend_map.examinee_cd = #{param.toExamineeCd}</if>
+                <if test="param.fromExamineeCd != null and param.toExamineeCd != null">
+                    AND examinee.examinee_cd BETWEEN #{param.fromExamineeCd} AND #{param.toExamineeCd}
+                </if>
                 <if test="param.isNoIdCard != null">AND attend_map.is_no_id_card = #{param.isNoIdCard}</if>
                 <if test="param.isCheck != null">AND attend_map.is_check = #{param.isCheck}</if>
             </if>
         </where>
+        GROUP BY
+            admission.admission_nm, attend.attend_date, attend.attend_time,
+            examinee.type_nm, examinee.examinee_cd, examinee.examinee_nm, examinee.birth, examinee.major_nm, examinee.dept_nm,
+            is_attend, hall.head_nm, hall.bldg_nm, hall.hall_nm,
+            attend_head_nm, attend_bldg_nm, attend_hall_nm,
+            attend_hall.is_etc, attend_map.is_check, is_other_hall, attend_map.attend_dttm
     </select>
 
     <select id="signature" resultType="com.humane.etms.dto.StatusDto">
@@ -115,7 +125,13 @@
             (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm ASC LIMIT 1) AS first_paper_cd,
             (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1) AS last_paper_cd,
             (SELECT GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ', ')  FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS paper_list,
-            (SELECT MAX(reg_dttm) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS last_dttm
+            (SELECT MAX(reg_dttm) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS last_dttm,
+
+        (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 2) AS paper_cnt2,
+        (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 2 ORDER BY reg_dttm ASC LIMIT 1) AS first_paper_cd2,
+        (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 2 ORDER BY reg_dttm DESC LIMIT 1) AS last_paper_cd2,
+        (SELECT GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ', ')  FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 2) AS paper_list2,
+        (SELECT MAX(reg_dttm) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 2) AS last_dttm2
         FROM attend_map
             INNER JOIN attend ON attend_map.attend_cd = attend.attend_cd
             INNER JOIN admission ON admission.admission_cd = attend.admission_cd
@@ -155,5 +171,30 @@
             examinee.birth,
             examinee.dept_nm,
             examinee.major_nm
+    </select>
+
+    <select id="detail" resultType="com.humane.etms.dto.StatusDto">
+        SELECT
+            examinee.dept_nm,
+            examinee.major_nm,
+            examinee.examinee_cd,
+            examinee.examinee_nm,
+            attend_paper.paper_no,
+            (SELECT COUNT(*) FROM attend_paper A WHERE A.attend_cd = attend_paper.attend_cd and A.examinee_cd = examinee.examinee_cd and A.paper_no = attend_paper.paper_no) AS paper_cnt,
+            attend_paper.paper_cd,
+            attend_paper.reg_dttm
+        FROM attend_paper
+        JOIN examinee ON examinee.examinee_cd = attend_paper.examinee_cd
+        <where>
+            <if test="param!=null">
+                <if test="param.examineeCd != null">examinee.examinee_cd = #{param.examineeCd}</if>
+            </if>
+        </where>
+        GROUP BY
+            examinee.dept_nm,
+            examinee.major_nm,
+            examinee.examinee_cd,
+            attend_paper.paper_no,
+            attend_paper.paper_cd
     </select>
 </mapper>
