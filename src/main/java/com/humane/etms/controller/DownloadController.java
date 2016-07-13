@@ -1,4 +1,4 @@
-package com.humane.etms.controller.admin;
+package com.humane.etms.controller;
 
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
@@ -35,6 +35,10 @@ import java.util.Date;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DownloadController {
 
+    @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
+    private final StatusMapper statusMapper;
+    private final DataMapper dataMapper;
+
     @RequestMapping(value = "hall.xlsx", method = RequestMethod.GET)
     public ResponseEntity hall(){
         return JasperReportsExportHelper.toResponseEntity(
@@ -52,10 +56,6 @@ public class DownloadController {
                 null
         );
     }
-
-    @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
-    private final StatusMapper statusMapper;
-    private final DataMapper dataMapper;
 
     @RequestMapping(value = "allData.zip", method = RequestMethod.GET)
     public ResponseEntity allData() throws IOException, ZipException {

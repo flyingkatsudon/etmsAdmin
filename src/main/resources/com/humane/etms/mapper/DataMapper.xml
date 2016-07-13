@@ -5,9 +5,9 @@
 <mapper namespace="com.humane.etms.mapper.DataMapper">
     <select id="examinee" resultType="com.humane.etms.dto.ExamineeDto">
         SELECT
-            admission.admission_nm,
+            admission.admission_nm, attend_map.type_nm,
             attend.attend_date, attend.attend_time,
-            examinee.type_nm, examinee.examinee_cd, examinee.examinee_nm, examinee.birth, examinee.major_nm, examinee.dept_nm,
+            examinee.examinee_cd, examinee.examinee_nm, examinee.birth, examinee.major_nm, examinee.dept_nm,
             CASE WHEN attend_hall.hall_cd IS NULL THEN false
                   ELSE true
              END AS is_attend,
@@ -32,7 +32,7 @@
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
+                <if test="param.typeNm != null">AND attend_map.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.examineeCd != null">AND examinee.examinee_cd = #{param.examineeCd}</if>
@@ -66,8 +66,8 @@
             </if>
         </where>
         GROUP BY
-            admission.admission_nm, attend.attend_date, attend.attend_time,
-            examinee.type_nm, examinee.examinee_cd, examinee.examinee_nm, examinee.birth, examinee.major_nm, examinee.dept_nm,
+            admission.admission_nm, attend_map.type_nm, attend.attend_date, attend.attend_time,
+            examinee.examinee_cd, examinee.examinee_nm, examinee.birth, examinee.major_nm, examinee.dept_nm,
             is_attend, hall.head_nm, hall.bldg_nm, hall.hall_nm,
             attend_head_nm, attend_bldg_nm, attend_hall_nm,
             attend_hall.is_etc, attend_map.is_check, is_other_hall, attend_map.attend_dttm

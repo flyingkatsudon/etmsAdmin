@@ -1,4 +1,4 @@
-package com.humane.etms.controller.admin;
+package com.humane.etms.controller;
 
 import com.blogspot.na5cent.exom.ExOM;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -81,8 +81,6 @@ public class UploadController {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             log.error("{}", throwable.getMessage());
-        } finally {
-            file.delete();
         }
     }
 
@@ -109,10 +107,12 @@ public class UploadController {
                         .and(hall.bldgNm.eq(vo.getBldgNm()))
                         .and(hall.hallNm.eq(vo.getHallNm()))
                 );
-                
+
                 // 3. 수험생정보 생성
                 Examinee examinee = mapper.convertValue(vo, Examinee.class);
                 examineeRepository.save(examinee);
+
+                log.debug("{}", examinee);
 
                 AttendMap attendMap = mapper.convertValue(vo, AttendMap.class);
                 attendMap.setAttend(attendHall.getAttend());
@@ -132,8 +132,6 @@ public class UploadController {
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
-        } finally {
-            file.delete();
         }
     }
 }

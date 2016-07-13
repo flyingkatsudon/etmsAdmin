@@ -18,6 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StatusDto implements Serializable {
+    private String admissionCd;
     private String admissionNm;
     private String attendNm;
     private String majorNm;

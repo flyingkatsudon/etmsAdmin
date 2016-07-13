@@ -30,4 +30,6 @@ public class AttendMap {
     @Column(columnDefinition = "bit") private Boolean isCheck;
     @Column(columnDefinition = "bit") private Boolean isCheat;
     private String memo;
+
+    private String typeNm;
 }

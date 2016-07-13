@@ -122,6 +122,7 @@
         LEFT JOIN attend_map ON attend_map.attend_cd = attend_hall.attend_cd AND attend_map.hall_cd = hall.hall_cd
         <where>
             <if test="param != null">
+                <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>

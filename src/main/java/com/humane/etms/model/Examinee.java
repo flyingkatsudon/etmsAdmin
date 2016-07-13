@@ -13,7 +13,6 @@ public class Examinee {
     @Id private String examineeCd;
     private String examineeNm;
     private String collegeNm;
-    private String typeNm;
     private String deptNm;
     private String majorNm;
     private String birth;

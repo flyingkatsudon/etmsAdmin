@@ -17,6 +17,7 @@ import java.util.Date;
 public class ExamineeDto extends StatusDto {
     private String examineeCd;
     private String examineeNm;
+    private String typeNm;
     private String paperCd;
     private Boolean isAttend;
     private Boolean isNoIdCard;
