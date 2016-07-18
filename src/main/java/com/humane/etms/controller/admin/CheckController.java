@@ -49,9 +49,18 @@ public class CheckController {
         }
     }
 
-    @RequestMapping(value = "detect.{format:json|chart|pdf|xls|xlsx}")
+    @RequestMapping(value = "detect.{format:json|xls|xlsx}")
     public ResponseEntity detect(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
-        return null;
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(mapper.device(statusDto, pageable));
+            default:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/check-detect.jrxml",
+                        format,
+                        mapper.device(statusDto, pageable).getContent()
+                );
+        }
     }
 
     @RequestMapping(value = "signature.{format:json|xls|xlsx}")

@@ -30,4 +30,5 @@ public class Attend {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
     @Temporal(TemporalType.TIME)
     private Date attendTime; // 출결시간
+    private String typeNm;
 }

@@ -9,6 +9,7 @@ define(function (require) {
             var _this = this;
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
+                {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
                 {name: 'majorNm', label: '전공'},

@@ -3,10 +3,14 @@ package com.humane.etms.controller.admin;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.DataMapper;
+import com.humane.etms.service.DataService;
 import com.humane.etms.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +30,12 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DataController {
     private final DataMapper mapper;
+    private final DataService dataService;
     private final ImageService imageService;
     private static final String JSON = "json";
     private static final String PDF = "pdf";
+    private static final String COLMODEL = "colmodel";
+/*
 
     @RequestMapping(value = "examinee.{format:json|pdf|xls|xlsx}")
     public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, Pageable page) {
@@ -41,6 +48,25 @@ public class DataController {
                         format,
                         mapper.examinee(statusDto, page).getContent()
                 );
+        }
+    }
+*/
+
+    @RequestMapping(value = "examinee.{format:colmodel|json|pdf|xls|xlsx}")
+    public ResponseEntity examinee(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
+        switch (format) {
+            case COLMODEL:
+                return ResponseEntity.ok(dataService.getExamineeModel());
+            case JSON:
+                return ResponseEntity.ok(mapper.examinee(param, pageable));
+            default:
+                JasperReportBuilder report = dataService.getExamineeReport();
+                report.setDataSource(mapper.examinee(param, pageable).getContent());
+
+                JasperPrint jasperPrint = report.toJasperPrint();
+                jasperPrint.setName("수험생 별 종합");
+
+                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }
     }
 

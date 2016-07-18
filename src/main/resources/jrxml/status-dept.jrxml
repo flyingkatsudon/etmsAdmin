@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-06-08T15:19:51 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="모집단위 별 통계표" pageWidth="1000" pageHeight="95" orientation="Landscape" columnWidth="1000" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="1d8d5473-da75-420c-b65d-d70368d197b8">
+<!-- 2016-07-16T23:06:35 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="모집단위 별 응시율" pageWidth="880" pageHeight="75" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="880" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" isIgnorePagination="true" uuid="1d8d5473-da75-420c-b65d-d70368d197b8">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="admissionNm" class="java.lang.String"/>
-	<field name="attendTime" class="java.util.Date"/>
-	<field name="attendDate" class="java.util.Date"/>
+	<field name="typeNm" class="java.lang.String"/>
 	<field name="deptNm" class="java.lang.String"/>
+	<field name="attendDate" class="java.util.Date"/>
+	<field name="attendTime" class="java.util.Date"/>
 	<field name="examineeCnt" class="java.lang.Long"/>
-	<field name="attendCnt" class="java.lang.Long"/>
 	<field name="attendPer" class="java.math.BigDecimal"/>
 	<field name="absentCnt" class="java.lang.Long"/>
 	<field name="absentPer" class="java.math.BigDecimal"/>
+	<field name="attendCnt" class="java.lang.Long"/>
 	<variable name="sumExamineeCnt" class="java.lang.Long" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{examineeCnt}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
@@ -26,15 +27,15 @@
 		<variableExpression><![CDATA[$F{absentCnt}]]></variableExpression>
 	</variable>
 	<title>
-		<band height="50" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="1000" height="50" uuid="faad725d-eec3-4365-a8e5-3cf39c6ce5b6">
+				<reportElement x="0" y="0" width="880" height="25" uuid="faad725d-eec3-4365-a8e5-3cf39c6ce5b6">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+					<font size="10" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[모집단위 별 통계표]]></text>
+				<text><![CDATA[모집단위 별 응시율]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -42,131 +43,142 @@
 		<band height="15">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<staticText>
-				<reportElement x="0" y="0" width="100" height="15" uuid="af96b6cc-6c3b-4e5a-aee0-204543c1ee5a"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="af96b6cc-6c3b-4e5a-aee0-204543c1ee5a"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[번호]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="100" height="15" uuid="0b6d4cbe-cf2c-4616-b70a-f73706d2415e"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="80" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="0b6d4cbe-cf2c-4616-b70a-f73706d2415e"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[전형]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="0" width="100" height="15" uuid="5e56fc09-20cf-4986-828a-c22bceface5e"/>
+				<reportElement mode="Opaque" x="160" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="8b7407cc-d16e-42e2-8fe3-50545369f690"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[계열]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="240" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="5e56fc09-20cf-4986-828a-c22bceface5e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="100" height="15" uuid="eaa5dedc-2e62-4dbb-a0bb-c0473a6be7ab"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="320" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="eaa5dedc-2e62-4dbb-a0bb-c0473a6be7ab"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="0" width="100" height="15" uuid="aa78b04c-6716-4a37-8de9-02bf3b50b3d1"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="400" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="aa78b04c-6716-4a37-8de9-02bf3b50b3d1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[모집단위]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="500" y="0" width="100" height="15" uuid="c91e6210-c77f-4c36-8d9b-66783d3406c4"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="480" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="c91e6210-c77f-4c36-8d9b-66783d3406c4"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[지원자수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="600" y="0" width="100" height="15" uuid="5675c9f0-e73e-4aa5-b024-944df84ef68d"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="560" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="5675c9f0-e73e-4aa5-b024-944df84ef68d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[응시자수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="700" y="0" width="100" height="15" uuid="54424786-7c4d-42d2-8e79-317e0b303520"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="640" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="54424786-7c4d-42d2-8e79-317e0b303520"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[응시율]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="800" y="0" width="100" height="15" uuid="0c2f3b8e-2e08-40cc-a13a-75dadc77d2c0"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="720" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="0c2f3b8e-2e08-40cc-a13a-75dadc77d2c0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[결시자수]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="900" y="0" width="100" height="15" uuid="9dc407b2-a687-4660-b3be-aec3db829f52"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="800" y="0" width="80" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="9dc407b2-a687-4660-b3be-aec3db829f52"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[결시율]]></text>
@@ -176,133 +188,144 @@
 	<detail>
 		<band height="15" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
-			<textField>
-				<reportElement x="0" y="0" width="100" height="15" uuid="6f5b85b0-6dbc-4fb9-98ba-403d8ff644ea"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="80" height="15" uuid="6f5b85b0-6dbc-4fb9-98ba-403d8ff644ea"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="100" y="0" width="100" height="15" uuid="33498fd4-795a-4076-bb32-853c632eebd1"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="80" height="15" uuid="33498fd4-795a-4076-bb32-853c632eebd1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
 			</textField>
-			<textField pattern="yyyy-MM-dd">
-				<reportElement x="200" y="0" width="100" height="15" uuid="6e54c11f-72a7-4b73-ba1d-30f919eff387"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="0" width="80" height="15" uuid="281bfa81-9fbe-4642-93d0-6c7111abcd6a"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{typeNm}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="240" y="0" width="80" height="15" uuid="6e54c11f-72a7-4b73-ba1d-30f919eff387"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{attendDate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="HH:mm:ss">
-				<reportElement x="300" y="0" width="100" height="15" uuid="c5eef54c-4455-4053-a45f-b99786d86714"/>
+			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="80" height="15" uuid="c5eef54c-4455-4053-a45f-b99786d86714"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{attendTime}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="400" y="0" width="100" height="15" uuid="b59b7640-762b-4b7f-8603-d470a89e7917"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="80" height="15" uuid="b59b7640-762b-4b7f-8603-d470a89e7917"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{deptNm}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="500" y="0" width="100" height="15" uuid="b065981f-82a9-4c04-bcdb-64e4104a61cd"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="0" width="80" height="15" uuid="b065981f-82a9-4c04-bcdb-64e4104a61cd"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{examineeCnt}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="600" y="0" width="100" height="15" uuid="83b173ca-b312-4ea0-a0c9-7cdd9d837bcc"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="80" height="15" uuid="83b173ca-b312-4ea0-a0c9-7cdd9d837bcc"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{attendCnt}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{attendCnt} != null) ? $F{attendCnt} : 0]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="700" y="0" width="100" height="15" uuid="7362579b-bb7b-4756-b169-70ca178cbbe8"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="640" y="0" width="80" height="15" uuid="7362579b-bb7b-4756-b169-70ca178cbbe8"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{attendPer}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="800" y="0" width="100" height="15" uuid="ef54592d-3a7c-4653-a464-30ac2f313d59"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="720" y="0" width="80" height="15" uuid="ef54592d-3a7c-4653-a464-30ac2f313d59"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{absentCnt}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{absentCnt} != null) ? $F{absentCnt} : 0]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="900" y="0" width="100" height="15" uuid="4bec3dff-6dd8-4f1e-9c80-21d462c74e2d"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="800" y="0" width="80" height="15" uuid="4bec3dff-6dd8-4f1e-9c80-21d462c74e2d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{absentPer}]]></textFieldExpression>
 			</textField>
@@ -312,111 +335,146 @@
 		<band height="15" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<staticText>
-				<reportElement x="0" y="0" width="100" height="15" uuid="8ce64120-7f25-4bc2-a4ee-641edbc59c55"/>
+				<reportElement x="0" y="0" width="80" height="15" uuid="8ce64120-7f25-4bc2-a4ee-641edbc59c55"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[합계]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="100" height="15" uuid="b0ee7a05-a04f-469e-80a0-073cfbc89b50"/>
+				<reportElement x="80" y="0" width="80" height="15" uuid="b0ee7a05-a04f-469e-80a0-073cfbc89b50"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="0" width="100" height="15" uuid="3088c2e4-ef4b-434d-8881-d97d2d5a11d7"/>
+				<reportElement x="160" y="0" width="80" height="15" uuid="3088c2e4-ef4b-434d-8881-d97d2d5a11d7"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="100" height="15" uuid="c240a1be-0348-4c7c-beaa-f3413bb4c846"/>
+				<reportElement x="240" y="0" width="80" height="15" uuid="c240a1be-0348-4c7c-beaa-f3413bb4c846"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="0" width="100" height="15" uuid="21ca43f3-715e-4847-a11e-fa869f7c9e3d"/>
+				<reportElement x="320" y="0" width="80" height="15" uuid="21ca43f3-715e-4847-a11e-fa869f7c9e3d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="500" y="0" width="100" height="15" uuid="e9ae27f0-04ad-4bc3-8678-3559c2fba952"/>
+			<staticText>
+				<reportElement x="400" y="0" width="80" height="15" uuid="917a7b55-bfd8-4513-8ad4-c0c636be2105"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="0" width="80" height="15" uuid="e9ae27f0-04ad-4bc3-8678-3559c2fba952"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{sumExamineeCnt}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="600" y="0" width="100" height="15" uuid="eb4c81d8-a60f-433e-9861-cfa09dc1446b"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="80" height="15" uuid="eb4c81d8-a60f-433e-9861-cfa09dc1446b"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{sumAttendCnt}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="700" y="0" width="100" height="15" uuid="556140bc-cb8e-4b30-9866-b3215ea976ad"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="640" y="0" width="80" height="15" uuid="556140bc-cb8e-4b30-9866-b3215ea976ad"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{sumAttendCnt}.floatValue()*100/$V{sumExamineeCnt}.floatValue()]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="800" y="0" width="100" height="15" uuid="44b1837d-47e2-43c0-9243-3d23d6b3a79b"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="720" y="0" width="80" height="15" uuid="44b1837d-47e2-43c0-9243-3d23d6b3a79b"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{sumAbsentCnt}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="900" y="0" width="100" height="15" uuid="10c6aebe-11a4-4bb8-b460-1e738e58fafa"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="800" y="0" width="80" height="15" uuid="10c6aebe-11a4-4bb8-b460-1e738e58fafa"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{sumAbsentCnt}.floatValue()*100/$V{sumExamineeCnt}.floatValue()]]></textFieldExpression>
 			</textField>
 		</band>

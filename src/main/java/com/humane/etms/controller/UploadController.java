@@ -96,7 +96,7 @@ public class UploadController {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
             examineeList.forEach(vo -> {
 
-                // 1. ExamHall 에서 고사실 및 시험정보를 가져온다.
+                // 1. AttendHall 에서 고사실 및 시험정보를 가져온다.
                 QAttend attend = QAttendHall.attendHall.attend;
                 QHall hall = QAttendHall.attendHall.hall;
 

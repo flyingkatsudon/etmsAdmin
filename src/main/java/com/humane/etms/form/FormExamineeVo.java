@@ -10,6 +10,7 @@ public class FormExamineeVo {
     @Column(name = "일련번호") private String evalCd;
     @Column(name = "생년월일") private String birth;
     @Column(name = "전형코드") private String admissionCd;
+    @Column(name = "시험코드") private String attendCd;
     @Column(name = "단과대학") private String collegeNm;
     @Column(name = "계열") private String typeNm;
     @Column(name = "모집단위(학과)") private String deptNm;

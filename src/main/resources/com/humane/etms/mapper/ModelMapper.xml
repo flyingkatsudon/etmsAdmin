@@ -6,7 +6,7 @@
 
     <select id="toolbar" resultType="com.humane.etms.dto.StatusDto">
         SELECT admission.admission_nm
-            , attend_map.type_nm
+            , attend.type_nm
             , examinee.major_nm
             , examinee.dept_nm
             , attend_map.group_nm
@@ -20,16 +20,16 @@
             , (SELECT hall.head_nm FROM hall WHERE hall.hall_cd = attend_map.attend_hall_cd) AS attend_head_nm
             , (SELECT hall.bldg_nm FROM hall WHERE hall.hall_cd = attend_map.attend_hall_cd) AS attend_bldg_nm
             , (SELECT hall.hall_nm FROM hall WHERE hall.hall_cd = attend_map.attend_hall_cd) AS attend_hall_nm
-        FROM attend_hall
-            INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
+        FROM attend
             INNER JOIN admission ON admission.admission_cd = attend.admission_cd
-            INNER JOIN hall ON hall.hall_cd = attend_hall.hall_cd
+            LEFT JOIN attend_hall ON attend.attend_cd = attend_hall.attend_cd
+            LEFT JOIN hall ON hall.hall_cd = attend_hall.hall_cd
             LEFT JOIN attend_map ON attend_map.attend_cd = attend_hall.attend_cd AND attend_map.hall_cd = hall.hall_cd
             LEFT JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.typeNm != null">AND attend_map.type_nm = #{param.typeNm}</if>
+                <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
@@ -42,7 +42,7 @@
             </if>
         </where>
         GROUP BY admission.admission_nm
-            , attend_map.type_nm
+            , attend.type_nm
             , examinee.major_nm
             , examinee.dept_nm
             , attend_map.group_nm

@@ -16,8 +16,39 @@
     <select id="attend" resultType="com.humane.etms.dto.StatusDto">
         SELECT
         admission.admission_nm,
+        attend.type_nm,
         attend.attend_date,
         attend.attend_time,
+        COUNT(*) AS examinee_cnt,
+        COUNT (attend_map.attend_hall_cd) AS attend_cnt,
+        COUNT (attend_map.attend_hall_cd) * 100 / COUNT (*) AS attend_per,
+        COUNT (*) - COUNT (attend_map.attend_hall_cd) AS absent_cnt,
+        ( COUNT (*) - COUNT (attend_map.attend_hall_cd)) * 100 / COUNT (*) AS absent_per
+        FROM
+        attend_map
+        INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
+        INNER JOIN admission ON admission.admission_cd = attend.admission_cd
+        <where>
+            <if test="param != null">
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
+                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
+                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+            </if>
+        </where>
+        GROUP BY
+        admission.admission_nm,
+        attend.type_nm,
+        attend.attend_date, attend.attend_time
+    </select>
+
+    <select id="dept" resultType="com.humane.etms.dto.StatusDto">
+        SELECT
+        admission.admission_nm,
+        attend.type_nm,
+        attend.attend_date,
+        attend.attend_time,
+        examinee.dept_nm,
         COUNT(*) AS examinee_cnt,
         COUNT (attend_map.attend_hall_cd) AS attend_cnt,
         COUNT (attend_map.attend_hall_cd) * 100 / COUNT (*) AS attend_per,
@@ -31,90 +62,62 @@
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                <if test="param.attendNm != null">AND attend.attend_nm = #{param.attendNm}</if>
-                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
-                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
-            </if>
-        </where>
-        GROUP BY
-        admission.admission_nm,
-        attend.attend_date, attend.attend_time
-    </select>
-
-    <select id="dept" resultType="com.humane.etms.dto.StatusDto">
-        SELECT
-            admission.admission_nm,
-            attend.attend_date,
-            attend.attend_time,
-            examinee.dept_nm,
-            COUNT(*) AS examinee_cnt,
-            COUNT (attend_map.attend_hall_cd) AS attend_cnt,
-            COUNT (attend_map.attend_hall_cd) * 100 / COUNT (*) AS attend_per,
-            COUNT (*) - COUNT (attend_map.attend_hall_cd) AS absent_cnt,
-            ( COUNT (*) - COUNT (attend_map.attend_hall_cd)) * 100 / COUNT (*) AS absent_per
-        FROM
-            attend_map
-            INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
-            INNER JOIN admission ON admission.admission_cd = attend.admission_cd
-            INNER JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
-        <where>
-            <if test="param != null">
-                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
             </if>
         </where>
         GROUP BY
-            admission.admission_nm,
-            attend.attend_date,
-            attend.attend_time,
-            examinee.dept_nm
+        admission.admission_nm,
+        attend.type_nm,
+        attend.attend_date,
+        attend.attend_time,
+        examinee.dept_nm
     </select>
 
     <select id="major" resultType="com.humane.etms.dto.StatusDto">
         SELECT
-            admission.admission_nm,
-            attend.attend_date, attend.attend_time,
-            examinee.dept_nm, examinee.major_nm,
-            COUNT(*) AS examinee_cnt,
-            COUNT (attend_map.attend_hall_cd) AS attend_cnt,
-            COUNT (attend_map.attend_hall_cd) * 100 / COUNT (*) AS attend_per,
-            COUNT (*) - COUNT (attend_map.attend_hall_cd) AS absent_cnt,
-            ( COUNT (*) - COUNT (attend_map.attend_hall_cd)) * 100 / COUNT (*) AS absent_per
-            FROM
-            attend_map
-            INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
-            INNER JOIN admission ON admission.admission_cd = attend.admission_cd
-            INNER JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
-            <where>
-                <if test="param != null">
-                    <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                    <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
-                    <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
-                    <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
-                    <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
-                </if>
-            </where>
-            GROUP BY
-            admission.admission_nm,
-            attend.attend_date, attend.attend_time,
-            examinee.dept_nm, examinee.major_nm
+        admission.admission_nm,
+        attend.type_nm, attend.attend_date, attend.attend_time,
+        examinee.dept_nm, examinee.major_nm,
+        COUNT(*) AS examinee_cnt,
+        COUNT (attend_map.attend_hall_cd) AS attend_cnt,
+        COUNT (attend_map.attend_hall_cd) * 100 / COUNT (*) AS attend_per,
+        COUNT (*) - COUNT (attend_map.attend_hall_cd) AS absent_cnt,
+        ( COUNT (*) - COUNT (attend_map.attend_hall_cd)) * 100 / COUNT (*) AS absent_per
+        FROM
+        attend_map
+        INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
+        INNER JOIN admission ON admission.admission_cd = attend.admission_cd
+        INNER JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
+        <where>
+            <if test="param != null">
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
+                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
+                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+            </if>
+        </where>
+        GROUP BY
+        admission.admission_nm,
+        attend.type_nm, attend.attend_date, attend.attend_time,
+        examinee.dept_nm, examinee.major_nm
     </select>
 
     <select id="hall" resultType="com.humane.etms.dto.StatusDto">
-        SELECT admission.admission_nm
-        , attend.attend_date
-        , attend.attend_time
-        , hall.head_nm
-        , hall.bldg_nm
-        , hall.hall_nm
-        , COUNT(attend_map.hall_cd) AS examinee_cnt
-        , COUNT(attend_map.attend_hall_cd) AS attend_cnt
-        , SUM(CASE WHEN hall.is_etc = TRUE THEN 1 WHEN attend_map.hall_cd != attend_map.attend_hall_cd THEN 1 ELSE 0 END) AS other_hall_cnt
-        , COUNT(attend_map.hall_cd) - COUNT(attend_map.attend_hall_cd) AS absent_cnt
-        , COUNT(attend_map.attend_hall_cd) * 100 / COUNT(attend_map.hall_cd) AS attend_per
-        , (COUNT(attend_map.hall_cd) - COUNT(attend_map.attend_hall_cd)) * 100 / COUNT(attend_map.hall_cd) AS absent_per
+        SELECT admission.admission_nm,
+        attend.type_nm, attend.attend_date, attend.attend_time,
+        hall.head_nm, hall.bldg_nm, hall.hall_nm,
+        COUNT(attend_map.hall_cd) AS examinee_cnt,
+        COUNT(attend_map.attend_hall_cd) AS attend_cnt,
+        SUM(CASE WHEN hall.is_etc = TRUE THEN 1 WHEN attend_map.hall_cd != attend_map.attend_hall_cd THEN 1 ELSE 0
+        END) AS other_hall_cnt,
+        COUNT(attend_map.hall_cd) - COUNT(attend_map.attend_hall_cd) AS absent_cnt,
+        COUNT(attend_map.attend_hall_cd) * 100 / COUNT(attend_map.hall_cd) AS attend_per,
+        (COUNT(attend_map.hall_cd) - COUNT(attend_map.attend_hall_cd)) * 100 / COUNT(attend_map.hall_cd) AS absent_per
         FROM attend_hall
         INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
         INNER JOIN admission ON admission.admission_cd = attend.admission_cd
@@ -122,8 +125,8 @@
         LEFT JOIN attend_map ON attend_map.attend_cd = attend_hall.attend_cd AND attend_map.hall_cd = hall.hall_cd
         <where>
             <if test="param != null">
-                <if test="param.admissionCd != null">AND admission.admission_cd = #{param.admissionCd}</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
@@ -131,38 +134,41 @@
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
             </if>
         </where>
-        GROUP BY admission.admission_nm
-        , attend.attend_date
-        , attend.attend_time
-        , hall.head_nm
-        , hall.bldg_nm
-        , hall.hall_nm
+        GROUP BY admission.admission_nm,
+        attend.type_nm,
+        attend.attend_date,
+        attend.attend_time,
+        hall.head_nm,
+        hall.bldg_nm,
+        hall.hall_nm
     </select>
 
     <select id="group" resultType="com.humane.etms.dto.StatusDto">
         SELECT
-            admission.admission_nm,
-            attend.attend_date,
-            attend.attend_time,
-            examinee.major_nm,
-            attend_map.group_nm,
-            hall.head_nm,
-            hall.bldg_nm,
-            hall.hall_nm,
-            COUNT(*) AS examinee_cnt,
-            COUNT (attend_map.attend_hall_cd) AS attend_cnt,
-            COUNT (attend_map.attend_hall_cd) * 100 / COUNT (*) AS attend_per,
-            COUNT (*) - COUNT (attend_map.attend_hall_cd) AS absent_cnt,
-            ( COUNT (*) - COUNT (attend_map.attend_hall_cd)) * 100 / COUNT (*) AS absent_per
+        admission.admission_nm,
+        attend.type_nm,
+        attend.attend_date,
+        attend.attend_time,
+        examinee.major_nm,
+        attend_map.group_nm,
+        hall.head_nm,
+        hall.bldg_nm,
+        hall.hall_nm,
+        COUNT(*) AS examinee_cnt,
+        COUNT (attend_map.attend_hall_cd) AS attend_cnt,
+        COUNT (attend_map.attend_hall_cd) * 100 / COUNT (*) AS attend_per,
+        COUNT (*) - COUNT (attend_map.attend_hall_cd) AS absent_cnt,
+        ( COUNT (*) - COUNT (attend_map.attend_hall_cd)) * 100 / COUNT (*) AS absent_per
         FROM
-            attend_map
-            INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
-            INNER JOIN admission ON admission.admission_cd = attend.admission_cd
-            INNER JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
-            INNER JOIN hall ON hall.hall_cd = attend_map.hall_cd
+        attend_map
+        INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
+        INNER JOIN admission ON admission.admission_cd = attend.admission_cd
+        INNER JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
+        INNER JOIN hall ON hall.hall_cd = attend_map.hall_cd
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
@@ -173,13 +179,14 @@
             </if>
         </where>
         GROUP BY
-            admission.admission_nm,
-            attend.attend_date,
-            attend.attend_time,
-            examinee.major_nm,
-            attend_map.group_nm,
-            hall.head_nm,
-            hall.bldg_nm,
-            hall.hall_nm
+        admission.admission_nm,
+        attend.type_nm,
+        attend.attend_date,
+        attend.attend_time,
+        examinee.major_nm,
+        attend_map.group_nm,
+        hall.head_nm,
+        hall.bldg_nm,
+        hall.hall_nm
     </select>
 </mapper>

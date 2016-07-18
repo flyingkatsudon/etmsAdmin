@@ -28,6 +28,19 @@ define(function (require) {
                 colModel[i].label = colModel[i].label === undefined ? colModel[i].name : colModel[i].label;
             }
 
+/*
+
+            var colModel = [];
+
+            $.ajax({
+                url: 'data/examinee.colmodel',
+                async: false,
+                success: function (data) {
+                    colModel = data;
+                }
+            });
+*/
+
             var opt = $.extend(true, {
                 defaults: {
                     url: 'data/examinee.json',

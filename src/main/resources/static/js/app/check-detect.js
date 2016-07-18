@@ -2,9 +2,9 @@ define(function (require) {
     "use strict";
     var Backbone = require('backbone');
 
-    var List = require('../grid/check-compare.js');
-    var Toolbar = require('../toolbar/check-compare.js');
-    var Template = require('text!/tpl/check-compare.html');
+    var List = require('../grid/check-detect.js');
+    var Toolbar = require('../toolbar/check-detect.js');
+    var Template = require('text!/tpl/check-detect.html');
 
     return Backbone.View.extend({
         render: function () {
