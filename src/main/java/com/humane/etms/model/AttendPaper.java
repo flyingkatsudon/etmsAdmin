@@ -24,4 +24,6 @@ public class AttendPaper implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date regDttm;
+
+    private String oldPaperCd;
 }
