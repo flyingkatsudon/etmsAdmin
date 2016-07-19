@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-14T17:32:14 -->
+<!-- 2016-07-19T14:44:17 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="재확인 대상자" pageWidth="1120" pageHeight="80" orientation="Landscape" columnWidth="1120" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<queryString>
@@ -18,7 +18,7 @@
 	<field name="attendHeadNm" class="java.lang.String"/>
 	<field name="attendBldgNm" class="java.lang.String"/>
 	<field name="attendHallNm" class="java.lang.String"/>
-	<field name="isCheck" class="java.lang.Boolean"/>
+	<field name="attendDttm" class="java.util.Date"/>
 	<title>
 		<band height="25" splitType="Stretch">
 			<staticText>
@@ -216,7 +216,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<text><![CDATA[확인]]></text>
+				<text><![CDATA[등록시간]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -395,7 +395,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{attendHallNm}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
 				<reportElement x="1040" y="0" width="80" height="15" uuid="89f5f327-0538-42a6-a161-8fc671fb87d3"/>
 				<box>
 					<topPen lineWidth="0.5"/>
@@ -406,7 +406,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{isCheck}) ? "Y" : "N"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{attendDttm}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

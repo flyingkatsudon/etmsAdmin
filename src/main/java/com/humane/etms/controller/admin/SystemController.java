@@ -19,10 +19,8 @@ public class SystemController {
         return ResponseEntity.ok("준비 중입니다.");
     }
 
-    private static final String PHOTO = "photo";
-
     @RequestMapping(value = "reset")
     public void reset(@RequestParam(defaultValue = "false") boolean photo) {
-                systemService.resetData(photo);
+        systemService.resetData(photo);
     }
 }

@@ -23,7 +23,7 @@ define(function (require) {
                     name: 'isOtherHall',
                     label: '타고사실여부',
                     formatter: 'select',
-                    editoptions: {value: {true: 'Y', false: 'N'}}
+                    editoptions: {value: {true: '예', false: '아니오'}}
                 },
                 {name: 'attendDttm', label: '등록시간'}
             ];

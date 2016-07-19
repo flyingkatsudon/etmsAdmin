@@ -218,27 +218,24 @@
 
     <select id="detail" resultType="com.humane.etms.dto.StatusDto">
         SELECT
-        examinee.dept_nm,
-        examinee.major_nm,
         examinee.examinee_cd,
         examinee.examinee_nm,
-        attend_paper.paper_no,
-        (SELECT COUNT(*) FROM attend_paper A WHERE A.attend_cd = attend_paper.attend_cd and A.examinee_cd =
-        examinee.examinee_cd and A.paper_no = attend_paper.paper_no) AS paper_cnt,
+        examinee.dept_nm,
+        hall.bldg_nm,
+        hall.hall_nm,
         attend_paper.paper_cd,
+        attend_paper.paper_no,
+        concat(attend.attend_date,' ',attend.attend_time) as attendDttm,
         attend_paper.reg_dttm
         FROM attend_paper
-        JOIN examinee ON examinee.examinee_cd = attend_paper.examinee_cd
+        INNER JOIN attend ON attend.attend_cd = attend_paper.attend_cd
+        INNER JOIN attend_map ON attend_map.examinee_cd = attend_paper.examinee_cd
+        INNER JOIN hall ON hall.hall_cd = attend_map.attend_hall_cd
+        INNER JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
         <where>
             <if test="param!=null">
                 <if test="param.examineeCd != null">examinee.examinee_cd = #{param.examineeCd}</if>
             </if>
         </where>
-        GROUP BY
-        examinee.dept_nm,
-        examinee.major_nm,
-        examinee.examinee_cd,
-        attend_paper.paper_no,
-        attend_paper.paper_cd
     </select>
 </mapper>
