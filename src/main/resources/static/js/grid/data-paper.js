@@ -19,13 +19,7 @@ define(function (require) {
                 {name: 'paperCnt', label: '답안지 매수'},
                 {name: 'firstPaperCd', label: '원답안지'},
                 {name: 'lastPaperCd', label: '최종답안지'},
-                {name: 'paperList', label: '교체이력'},
-                {name: 'lastDttm', label: '최종교체시간'},
-                {name: 'paperCnt2', label: '답안지 매수'},
-                {name: 'firstPaperCd2', label: '원답안지'},
-                {name: 'lastPaperCd2', label: '최종답안지'},
-                {name: 'paperList2', label: '교체이력'},
-                {name: 'lastDttm2', label: '최종교체시간'}
+                {name: 'paperList', label: '교체이력'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

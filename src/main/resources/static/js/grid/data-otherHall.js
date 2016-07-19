@@ -20,7 +20,7 @@ define(function (require) {
                 {name: 'attendHeadNm', label: '응시고사본부'},
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
-                {name: 'isEtc', label: '예비고사실여부', formatter: 'select', editoptions: {value: {true: 'Y', false: 'N'}}}
+                {name: 'isEtc', label: '예비고사실여부', formatter: 'select', editoptions: {value: {true: '예', false: '아니오'}}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

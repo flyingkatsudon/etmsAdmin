@@ -34,8 +34,6 @@ public class DataController {
     private final ImageService imageService;
     private static final String JSON = "json";
     private static final String PDF = "pdf";
-    private static final String COLMODEL = "colmodel";
-/*
 
     @RequestMapping(value = "examinee.{format:json|pdf|xls|xlsx}")
     public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, Pageable page) {
@@ -48,25 +46,6 @@ public class DataController {
                         format,
                         mapper.examinee(statusDto, page).getContent()
                 );
-        }
-    }
-*/
-
-    @RequestMapping(value = "examinee.{format:colmodel|json|pdf|xls|xlsx}")
-    public ResponseEntity examinee(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
-        switch (format) {
-            case COLMODEL:
-                return ResponseEntity.ok(dataService.getExamineeModel());
-            case JSON:
-                return ResponseEntity.ok(mapper.examinee(param, pageable));
-            default:
-                JasperReportBuilder report = dataService.getExamineeReport();
-                report.setDataSource(mapper.examinee(param, pageable).getContent());
-
-                JasperPrint jasperPrint = report.toJasperPrint();
-                jasperPrint.setName("수험생 별 종합");
-
-                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }
     }
 

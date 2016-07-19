@@ -67,6 +67,7 @@ define(function (require) {
         }, events: {
             'click #reset': 'resetClicked'
         }, resetClicked: function (e) {
+            var _this = this;
             BootstrapDialog.show({
                 title: '서버 데이터 관리',
                 message: '삭제 하시겠습니까?',
@@ -82,23 +83,7 @@ define(function (require) {
                                 message: '진행 중입니다. 잠시만 기다려주세요.',
                                 closable: false
                             });
-                            $.ajax({
-                                url: 'system/reset.photo',
-                                success: function (data) {
-                                    BootstrapDialog.closeAll();
-                                    BootstrapDialog.show({
-                                        title: '서버 데이터 관리',
-                                        message: '완료되었습니다.',
-                                        closable: true,
-                                        buttons: [{
-                                            label: '확인',
-                                            action: function (dialog) {
-                                                dialog.close();
-                                            }
-                                        }]
-                                    });
-                                }
-                            });
+                            _this.reset(true);
                         }
                     },
                     {
@@ -110,23 +95,7 @@ define(function (require) {
                                 message: '진행 중입니다. 잠시만 기다려주세요.',
                                 closable: false
                             });
-                            $.ajax({
-                                url: 'system/reset.none',
-                                success: function (data) {
-                                    BootstrapDialog.closeAll();
-                                    BootstrapDialog.show({
-                                        title: '서버 데이터 관리',
-                                        message: '완료되었습니다.',
-                                        closable: true,
-                                        buttons: [{
-                                            label: '확인',
-                                            action: function (dialog) {
-                                                dialog.close();
-                                            }
-                                        }]
-                                    });
-                                }
-                            });
+                            _this.reset(false);
                         }
                     },
                     {
@@ -136,6 +105,28 @@ define(function (require) {
                         }
                     }
                 ]
+            });
+        },
+        reset : function(o){
+            $.ajax({
+                url: 'system/reset',
+                data : {
+                    photo : o
+                },
+                success: function (data) {
+                    BootstrapDialog.closeAll();
+                    BootstrapDialog.show({
+                        title: '서버 데이터 관리',
+                        message: '완료되었습니다.',
+                        closable: true,
+                        buttons: [{
+                            label: '확인',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }]
+                    });
+                }
             });
         }
     });

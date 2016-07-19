@@ -11,10 +11,10 @@ import java.io.InputStream;
 @Service
 public class ImageService {
 
-    @Value("${path.image.pathExaminee:C:/api/image/examinee}") String pathExaminee;
-    @Value("${path.image.pathExaminee:C:/api/image/noIdCard}") String pathNoIdCard;
-    @Value("${path.image.pathExaminee:C:/api/image/recheck}") String pathRecheck;
-    @Value("${path.image.pathExaminee:C:/api/image/signature}") String pathSignature;
+    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
+    @Value("${path.image.noIdCard:C:/api/image/noIdCard}") String pathNoIdCard;
+    @Value("${path.image.recheck:C:/api/image/recheck}") String pathRecheck;
+    @Value("${path.image.signature:C:/api/image/signature}") String pathSignature;
 
     public InputStream getExaminee(String fileName) {
         return getFile(pathExaminee, fileName);
@@ -28,7 +28,9 @@ public class ImageService {
         return getFile(pathRecheck, fileName);
     }
 
-    public InputStream getSignature(String fileName) {return getFile(pathSignature, fileName);}
+    public InputStream getSignature(String fileName) {
+        return getFile(pathSignature, fileName);
+    }
 
     private InputStream getFile(String filePath, String fileName) {
         try {
@@ -44,17 +46,13 @@ public class ImageService {
         return null;
     }
 
-    public void deleteImageExaminee(String fileName) throws IOException {
-        File examinee = new File("C:/api/image/examinee/" + fileName + ".jpg");
-        examinee.delete();
-
-        File noIdCard = new File("C:/api/image/noIdCard/" + fileName + ".jpg");
-        noIdCard.delete();
-
-        File recheck = new File("C:/api/image/recheck/" + fileName + ".jpg");
-        recheck.delete();
-
-        File signature = new File("C:/api/image/signature/" + fileName + ".jpg");
-        signature.delete();
+    public void deleteImage(String... path) {
+        for (String p : path) {
+            File examineePath = new File(p);
+            File[] a = examineePath.listFiles();
+            for (File file : a) {
+                file.delete();
+            }
+        }
     }
 }

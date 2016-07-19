@@ -21,7 +21,12 @@
         WHEN attend_map.attend_hall_cd != attend_map.hall_cd THEN true
         ELSE false
         END AS is_other_hall,
-        attend_map.attend_dttm
+        attend_map.attend_dttm,
+        (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
+        attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1)
+        AS last_paper_cd,
+        CASE WHEN (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
+        attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) > 1 THEN 1 ELSE 0 END AS is_change_paper
         FROM
         attend_map
         INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
@@ -132,7 +137,7 @@
     <select id="paper" resultType="com.humane.etms.dto.StatusDto">
         SELECT
         admission.admission_nm,
-        examinee.type_nm,
+        attend.type_nm,
         attend.attend_date,
         attend.attend_time,
         hall.head_nm,
@@ -201,7 +206,7 @@
         </where>
         GROUP BY
         admission.admission_nm,
-        examinee.type_nm,
+        attend.type_nm,
         attend.attend_date,
         attend.attend_time,
         examinee.examinee_cd,
