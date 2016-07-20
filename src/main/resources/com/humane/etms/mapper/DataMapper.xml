@@ -7,6 +7,7 @@
         SELECT
         admission.admission_nm, attend.type_nm,
         attend.attend_date, attend.attend_time,
+        examinee.college_nm,
         examinee.examinee_cd, examinee.examinee_nm, examinee.birth, examinee.major_nm, examinee.dept_nm,
         CASE WHEN attend_hall.hall_cd IS NULL THEN false
         ELSE true
@@ -26,7 +27,8 @@
         attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1)
         AS last_paper_cd,
         CASE WHEN (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
-        attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) > 1 THEN 1 ELSE 0 END AS is_change_paper
+        attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) > 1 THEN 1 ELSE 0 END AS is_change_paper,
+        now() AS print_dttm
         FROM
         attend_map
         INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd

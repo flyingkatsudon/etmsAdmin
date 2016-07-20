@@ -48,4 +48,9 @@ public class ExamineeDto extends StatusDto {
     private Date attendDttm;
 
     private BufferedImage examineeImage;
+    private String collegeNm;
+
+    @DateTimeFormat(pattern = "yyyy년 MM월 dd일 HH시 mm분 ss초")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일 HH시 mm분 ss초", timezone = "Asia/Seoul")
+    private Date printDttm;
 }

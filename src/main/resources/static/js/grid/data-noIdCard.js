@@ -76,7 +76,7 @@ define(function (require) {
                             img.onload = function () {
                                 BootstrapDialog.show({
                                     title: rowdata.examineeCd + '::' + rowdata.examineeNm,
-                                    message: '<image src="' + url1 + '"><image src="' + url2 + '">',
+                                    message: '<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">',
                                     size: 'size-wide',
                                     closable: true,
                                     buttons: [{
