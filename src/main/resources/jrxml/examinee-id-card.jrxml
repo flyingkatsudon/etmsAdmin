@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-20T17:25:52 -->
+<!-- 2016-07-21T11:48:27 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="examinee-id-card" pageWidth="595" pageHeight="841" columnWidth="369" leftMargin="113" rightMargin="113" topMargin="56" bottomMargin="42" uuid="3c7d4f36-0838-46cc-ab8d-49673d9f8876">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -243,6 +243,16 @@
 						</textElement>
 						<textFieldExpression><![CDATA[$F{printDttm}]]></textFieldExpression>
 					</textField>
+					<componentElement>
+						<reportElement x="84" y="11" width="159" height="39" uuid="6630043a-9560-40f4-9705-60b76e996eac">
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.barWidth" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.barHeight" value="pixel"/>
+						</reportElement>
+						<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
+							<jr:codeExpression><![CDATA[$F{examineeCd}]]></jr:codeExpression>
+						</jr:barbecue>
+					</componentElement>
 				</frame>
 				<staticText>
 					<reportElement x="30" y="0" width="310" height="49" uuid="cd6025fb-15b7-48ab-91ef-6718fcb8fd16"/>
