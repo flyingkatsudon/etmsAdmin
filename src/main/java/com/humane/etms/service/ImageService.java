@@ -15,9 +15,14 @@ public class ImageService {
     @Value("${path.image.noIdCard:C:/api/image/noIdCard}") String pathNoIdCard;
     @Value("${path.image.recheck:C:/api/image/recheck}") String pathRecheck;
     @Value("${path.image.signature:C:/api/image/signature}") String pathSignature;
+    @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
 
     public InputStream getExaminee(String fileName) {
         return getFile(pathExaminee, fileName);
+    }
+
+    public InputStream getUnivLogo(String fileName){
+        return getFile(pathUnivLogo, fileName);
     }
 
     public InputStream getNoIdCard(String fileName) {

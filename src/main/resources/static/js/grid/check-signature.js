@@ -2,6 +2,7 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
+    var BootstrapDialog = require('bootstrap-dialog');
 
     return GridBase.extend({
         initialize: function (options) {
@@ -25,7 +26,42 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     url: 'check/signature.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    onSelectRow: function (rowid, status, e) {
+                        var rowdata = $(this).jqGrid('getRowData', rowid);
+                        var url = 'image/signature/' + rowdata.deviceNo + '.jpg';
+
+                        if(!rowdata.deviceNo){
+                            BootstrapDialog.show({
+                                title: '감독관 서명',
+                                message: '단말기가 배정되지 않은 고사실입니다.',
+                                closable: true,
+                                buttons: [{
+                                    label: '닫기',
+                                    action: function (dialog) {
+                                        dialog.close();
+                                    }
+                                }]
+                            });
+                            return false;
+                        }
+
+                        var img = new Image();
+                        img.src = url;
+                        img.onerror = function () {
+                            BootstrapDialog.show({
+                                title: '감독관 서명',
+                                message: '서명이 완료되지 않았습니다. 감독관에게 문의하세요.',
+                                closable: true,
+                                buttons: [{
+                                    label: '닫기',
+                                    action: function (dialog) {
+                                        dialog.close();
+                                    }
+                                }]
+                            });
+                        }
+                    }
                 }
             }, options);
 

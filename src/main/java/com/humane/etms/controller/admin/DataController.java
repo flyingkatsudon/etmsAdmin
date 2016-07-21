@@ -60,6 +60,13 @@ public class DataController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            try (InputStream is = imageService.getUnivLogo("symbol_03.jpg")) {
+                BufferedImage image = ImageIO.read(is);
+                item.setUnivLogo(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         return JasperReportsExportHelper.toResponseEntity(

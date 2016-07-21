@@ -39,7 +39,7 @@ define(function (require) {
                         if(!rowdata.deviceNo){
                             BootstrapDialog.show({
                                 title: '감독관 서명',
-                                message: '시험에 배정되지 않은 단말기 입니다.',
+                                message: '단말기가 배정되지 않은 고사실입니다.',
                                 closable: true,
                                 buttons: [{
                                     label: '닫기',
@@ -56,7 +56,7 @@ define(function (require) {
                         img.onerror = function () {
                             BootstrapDialog.show({
                                 title: '감독관 서명',
-                                message: '서명 전 입니다. 감독관에게 문의하세요.',
+                                message: '서명이 완료되지 않았습니다. 감독관에게 문의하세요.',
                                 closable: true,
                                 buttons: [{
                                     label: '닫기',
@@ -68,7 +68,7 @@ define(function (require) {
                         }
                         img.onload = function () {
                             BootstrapDialog.show({
-                                title : rowdata.attendDate + ' ' + rowdata.attendTime + ' ' + rowdata.bldgNm + ' ' + rowdata.hallNm,
+                                title : rowdata.bldgNm + ' ' + rowdata.hallNm,
                                 message: '<image src="' + url + '">',
                                 size: 'size-wide',
                                 closable: true,
