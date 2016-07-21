@@ -74,6 +74,24 @@ public class AttendMapController {
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "mgr/list", method = RequestMethod.POST)
+    public ResponseEntity mgrList(@RequestBody Iterable<AttendMap> attendMaps) {
+        // 중간관리자는 중간관리자의 내용만 손대야한다.
+        QAttendMap qAttendMap = QAttendMap.attendMap;
+        attendMaps.forEach(attendMap -> {
+            AttendMap find = repository.findOne(new BooleanBuilder()
+                    .and(qAttendMap.attend.eq(attendMap.getAttend()))
+                    .and(qAttendMap.examinee.eq(attendMap.getExaminee()))
+                    .and(qAttendMap.hall.eq(attendMap.getHall()))
+            );
+            if (find != null) {
+                find.setIsNoIdCard(attendMap.getIsNoIdCard());
+                repository.save(find);
+            }
+        });
+        return ResponseEntity.ok(null);
+    }
+
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseEntity<Iterable<AttendMap>> merge(@RequestBody Iterable<AttendMap> attendMaps) {
         Iterable<AttendMap> rtn = repository.save(attendMaps);
