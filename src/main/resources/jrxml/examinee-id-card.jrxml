@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-21T11:48:27 -->
+<!-- 2016-07-21T15:54:50 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="examinee-id-card" pageWidth="595" pageHeight="841" columnWidth="369" leftMargin="113" rightMargin="113" topMargin="56" bottomMargin="42" uuid="3c7d4f36-0838-46cc-ab8d-49673d9f8876">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -33,10 +33,10 @@
 			<frame>
 				<reportElement x="0" y="0" width="369" height="586" uuid="c4a8fb96-ca78-4e7e-91fb-946547d3fddd"/>
 				<box>
-					<topPen lineWidth="0.5" lineStyle="Dashed"/>
-					<leftPen lineWidth="0.5" lineStyle="Dashed"/>
-					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-					<rightPen lineWidth="0.5" lineStyle="Dashed"/>
+					<topPen lineWidth="0.8" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.8" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.8" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.8" lineStyle="Dashed"/>
 				</box>
 				<frame>
 					<reportElement positionType="FixRelativeToBottom" x="30" y="60" width="310" height="270" uuid="9fd2424a-4788-4e9b-8a0b-9d701f32b958"/>
@@ -269,10 +269,10 @@
 			<staticText>
 				<reportElement x="0" y="-4" width="369" height="156" uuid="bf6c0029-c3e0-43d0-894b-8747818bce1f"/>
 				<box>
-					<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
+					<topPen lineWidth="0.8" lineStyle="Dashed" lineColor="#000000"/>
+					<leftPen lineWidth="0.8" lineStyle="Dashed" lineColor="#000000"/>
+					<bottomPen lineWidth="0.8" lineStyle="Dashed" lineColor="#000000"/>
+					<rightPen lineWidth="0.8" lineStyle="Dashed" lineColor="#000000"/>
 				</box>
 				<textElement>
 					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
