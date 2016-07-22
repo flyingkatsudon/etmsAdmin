@@ -37,6 +37,7 @@ public class StatusDto implements Serializable {
     private String bldgNm;
     private String hallNm;
     private Long examineeCnt;
+    private Long currentCnt;
     private Long attendCnt;
     private Long otherHallCnt;
     private Long absentCnt;

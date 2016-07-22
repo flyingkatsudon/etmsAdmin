@@ -108,11 +108,14 @@
     </select>
 
     <select id="hall" resultType="com.humane.etms.dto.StatusDto">
-        SELECT admission.admission_nm,
+    SELECT *,
+        examinee_cnt - attend_cnt AS current_cnt
+    FROM
+        (SELECT admission.admission_nm,
         attend.type_nm, attend.attend_date, attend.attend_time,
         hall.head_nm, hall.bldg_nm, hall.hall_nm,
         COUNT(attend_map.hall_cd) AS examinee_cnt,
-        COUNT(attend_map.attend_hall_cd) AS attend_cnt,
+        SUM(CASE WHEN attend_map.attend_hall_cd IS NOT NULL AND attend_map.attend_hall_cd = attend_map.hall_cd THEN 1 ELSE 0 END) AS attend_cnt,
         SUM(CASE WHEN hall.is_etc = TRUE THEN 1 WHEN attend_map.hall_cd != attend_map.attend_hall_cd THEN 1 ELSE 0
         END) AS other_hall_cnt,
         COUNT(attend_map.hall_cd) - COUNT(attend_map.attend_hall_cd) AS absent_cnt,
@@ -141,6 +144,7 @@
         hall.head_nm,
         hall.bldg_nm,
         hall.hall_nm
+        ) AS result
     </select>
 
     <select id="group" resultType="com.humane.etms.dto.StatusDto">
