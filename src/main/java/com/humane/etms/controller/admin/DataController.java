@@ -121,6 +121,7 @@ public class DataController {
                 );
         }
     }
+
     /**
      * 감독관 서명 정보를 불러오기 위한 부분
      *
@@ -161,8 +162,8 @@ public class DataController {
     }
 
     @RequestMapping(value = "detail.{format:json|pdf}")
-    public ResponseEntity detail(@PathVariable String format, StatusDto param, Pageable pageable){
-        switch(format) {
+    public ResponseEntity detail(@PathVariable String format, StatusDto param, Pageable pageable) {
+        switch (format) {
             case JSON:
                 return ResponseEntity.ok(mapper.detail(param, pageable));
             case PDF:
@@ -174,5 +175,10 @@ public class DataController {
             default:
                 return null;
         }
+    }
+    @RequestMapping(value = "checkIdCard")
+    public void checkIdCard(String examineeCd) {
+        log.debug("{}", examineeCd);
+        mapper.checkIdCard(examineeCd);
     }
 }

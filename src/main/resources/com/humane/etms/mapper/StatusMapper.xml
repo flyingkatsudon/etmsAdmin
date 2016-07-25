@@ -108,19 +108,19 @@
     </select>
 
     <select id="hall" resultType="com.humane.etms.dto.StatusDto">
-    SELECT *,
-        examinee_cnt - attend_cnt AS current_cnt
-    FROM
+        SELECT *,
+        examinee_cnt - other_hall_cnt AS current_cnt
+        , attend_cnt * 100 / examinee_cnt AS attend_per
+        , examinee_cnt - attend_cnt - other_hall_cnt AS absent_cnt
+        , (examinee_cnt - attend_cnt - other_hall_cnt) * 100 / examinee_cnt AS absent_per
+        FROM
         (SELECT admission.admission_nm,
         attend.type_nm, attend.attend_date, attend.attend_time,
         hall.head_nm, hall.bldg_nm, hall.hall_nm,
         COUNT(attend_map.hall_cd) AS examinee_cnt,
         SUM(CASE WHEN attend_map.attend_hall_cd IS NOT NULL AND attend_map.attend_hall_cd = attend_map.hall_cd THEN 1 ELSE 0 END) AS attend_cnt,
         SUM(CASE WHEN hall.is_etc = TRUE THEN 1 WHEN attend_map.hall_cd != attend_map.attend_hall_cd THEN 1 ELSE 0
-        END) AS other_hall_cnt,
-        COUNT(attend_map.hall_cd) - COUNT(attend_map.attend_hall_cd) AS absent_cnt,
-        COUNT(attend_map.attend_hall_cd) * 100 / COUNT(attend_map.hall_cd) AS attend_per,
-        (COUNT(attend_map.hall_cd) - COUNT(attend_map.attend_hall_cd)) * 100 / COUNT(attend_map.hall_cd) AS absent_per
+        END) AS other_hall_cnt
         FROM attend_hall
         INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
         INNER JOIN admission ON admission.admission_cd = attend.admission_cd
@@ -187,10 +187,10 @@
         attend.type_nm,
         attend.attend_date,
         attend.attend_time,
-        examinee.major_nm,
         attend_map.group_nm,
         hall.head_nm,
         hall.bldg_nm,
-        hall.hall_nm
+        hall.hall_nm,
+        examinee.major_nm
     </select>
 </mapper>

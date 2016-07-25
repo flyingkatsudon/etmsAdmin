@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-16T23:06:24 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="고사실 별 응시율" pageWidth="1120" pageHeight="75" orientation="Landscape" columnWidth="1120" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty" isIgnorePagination="true" uuid="cc2bfb46-5ff5-4c3f-97f9-6a81bb71a4cc">
+<!-- 2016-07-24T21:13:24 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="고사실별 응시율" pageWidth="1120" pageHeight="75" orientation="Landscape" columnWidth="1120" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty" isIgnorePagination="true" uuid="cc2bfb46-5ff5-4c3f-97f9-6a81bb71a4cc">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<queryString>
 		<![CDATA[]]>
@@ -39,7 +39,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[고사실 별 응시율]]></text>
+				<text><![CDATA[고사실별 응시율]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -373,7 +373,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{otherHallCnt}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
 				<reportElement x="880" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="cca940f6-7308-497b-8473-a4f5c3a08a8d"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -399,7 +399,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{absentCnt}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
 				<reportElement x="1040" y="0" width="80" height="15" backcolor="#D3D3D3" uuid="88ce1ebc-6170-4c7a-8246-523a94a96713"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -561,7 +561,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{sumOtherHallCnt}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
 				<reportElement x="880" y="0" width="80" height="15" uuid="98e81ee0-7167-4200-bef7-768de8487725"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -587,7 +587,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumAbsentCnt}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0.00&apos;%&apos;" isBlankWhenNull="true">
 				<reportElement x="1040" y="0" width="80" height="15" uuid="518467b2-ba09-4350-b972-3d4c3fc0cdad"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>

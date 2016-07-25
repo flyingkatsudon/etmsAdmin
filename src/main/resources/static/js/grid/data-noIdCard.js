@@ -25,7 +25,7 @@ define(function (require) {
                     formatter: 'select',
                     editoptions: {value: {true: '예', false: '아니오'}}
                 },
-                {name: 'attendDttm', label: '등록시간'}
+                {name: 'idCheckDttm', label: '신원확인시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -56,7 +56,7 @@ define(function (require) {
                                     }
                                 }]
                             });
-                        }
+                        };
                         // 대조본이 없는 경우
                         img.onload = function () {
                             img.src = url2;
@@ -72,14 +72,31 @@ define(function (require) {
                                         }
                                     }]
                                 });
-                            }
+                            };
                             img.onload = function () {
                                 BootstrapDialog.show({
                                     title: rowdata.examineeCd + '::' + rowdata.examineeNm,
                                     message: '<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">',
                                     size: 'size-wide',
                                     closable: true,
+                                    onshow: function (dialog) {
+                                        if (rowdata.idCheckDttm != "") {
+                                            dialog.getButton('check').disable();
+                                        }
+                                    },
                                     buttons: [{
+                                        id: 'check',
+                                        label: '신원 확인',
+                                        cssClass: 'btn-primary',
+                                        action: function (dialog) {
+                                            $.ajax({
+                                                url: 'data/checkIdCard?examineeCd=' + rowdata.examineeCd,
+                                                success: function () {
+                                                    dialog.close();
+                                                }
+                                            });
+                                        }
+                                    }, {
                                         label: '닫기',
                                         action: function (dialog) {
                                             dialog.close();

@@ -23,6 +23,7 @@
         ELSE false
         END AS is_other_hall,
         attend_map.attend_dttm,
+        attend_map.id_check_dttm,
         (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
         attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1)
         AS last_paper_cd,
@@ -142,14 +143,11 @@
         attend.type_nm,
         attend.attend_date,
         attend.attend_time,
-        hall.head_nm,
-        hall.bldg_nm,
-        hall.hall_nm,
+        examinee.dept_nm,
+        examinee.major_nm,
         examinee.examinee_cd,
         examinee.examinee_nm,
         examinee.birth,
-        examinee.dept_nm,
-        examinee.major_nm,
         (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
         attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS paper_cnt,
         (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
@@ -191,9 +189,6 @@
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
-                <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
-                <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
-                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
                 <if test="param.examineeCd != null">AND examinee.examinee_cd = #{param.examineeCd}</if>
                 <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
                 <if test="param.paperCd != null">AND
@@ -211,11 +206,11 @@
         attend.type_nm,
         attend.attend_date,
         attend.attend_time,
+        examinee.dept_nm,
+        examinee.major_nm,
         examinee.examinee_cd,
         examinee.examinee_nm,
-        examinee.birth,
-        examinee.dept_nm,
-        examinee.major_nm
+        examinee.birth
     </select>
 
     <select id="detail" resultType="com.humane.etms.dto.StatusDto">
@@ -240,4 +235,8 @@
             </if>
         </where>
     </select>
+
+    <update id="checkIdCard" parameterType="java.lang.String">
+        UPDATE attend_map SET id_check_dttm = NOW() WHERE examinee_cd = #{param}
+    </update>
 </mapper>

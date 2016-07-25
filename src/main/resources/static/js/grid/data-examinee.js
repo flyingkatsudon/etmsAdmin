@@ -15,13 +15,16 @@ define(function (require) {
                 {name: 'examineeCd', label: '수험번호'},
                 {name: 'examineeNm', label: '수험생명'},
                 {name: 'birth', label: '생년월일'},
-                {name: 'headNm', label: '고사본부'},
-                {name: 'bldgNm', label: '고사건물'},
-                {name: 'hallNm', label: '고사실'},
-                {name: 'lastPaperCd', label: '답안지번호'},
-                {name: 'isOtherHall', label: '타고사실여부', formatter: 'select', editoptions: {value: {true: '예', false: '아니오'}}},
+                {name: 'headNm', label: '배정고사본부'},
+                {name: 'bldgNm', label: '배정고사건물'},
+                {name: 'hallNm', label: '배정고사실'},
+                {name: 'attendHeadNm', label: '응시고사본부'},
+                {name: 'attendBldgNm', label: '응시고사건물'},
+                {name: 'attendHallNm', label: '응시고사실'},
+                {name: 'isAttend', label: '응시여부', formatter: 'select', editoptions: {value: {true: '응시', false: '미응시'}}},
                 {name: 'isChangePaper', label: '답안지교체여부', formatter: 'select', editoptions: {value: {true: '교체', false: '미교체'}}},
-                {name: 'isAttend', label: '응시여부', formatter: 'select', editoptions: {value: {true: '응시', false: '미응시'}}}
+                {name: 'lastPaperCd', label: '답안지번호'},
+                {name: 'isOtherHall', label: '타고사실여부', formatter: 'select', editoptions: {value: {true: '예', false: '아니오'}}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

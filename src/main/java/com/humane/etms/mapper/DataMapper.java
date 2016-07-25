@@ -17,4 +17,5 @@ public interface DataMapper {
 
     Page<StatusDto> detail(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
+    void checkIdCard(@Param("param") String param);
 }

@@ -39,7 +39,7 @@ define(function (require) {
                         if(!rowdata.deviceNo){
                             BootstrapDialog.show({
                                 title: '감독관 서명',
-                                message: '단말기가 배정되지 않은 고사실입니다.',
+                                message: '단말기가 배정되지 않은 고사실입니다. 관리자에게 문의하세요.',
                                 closable: true,
                                 buttons: [{
                                     label: '닫기',
