@@ -36,6 +36,7 @@ import java.util.Date;
 public class DownloadController {
 
     @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
+    @Value("${path.image:C:/api/image}") String jpgRoot;
     private final StatusMapper statusMapper;
     private final DataMapper dataMapper;
 
@@ -140,6 +141,22 @@ public class DownloadController {
         zipFile.addFile(dataPath, otherHall);
         otherHall.delete();
 
+        File noIdCardFolder = new File(jpgRoot + "/noIdCard");
+        File[] noIdCardList = noIdCardFolder.listFiles();
+
+        for(File f : noIdCardList){
+            if(f.isFile())
+                zipFile.addFile(dataPath + "/신분증 미소지자 사진", f);
+        }
+
+        File recheckFolder = new File(jpgRoot + "/recheck");
+        File[] recheckList = recheckFolder.listFiles();
+
+        for(File f : recheckList){
+            if(f.isFile())
+                zipFile.addFile(dataPath + "/재확인 대상자 사진", f);
+        }
+
         byte[] ba = null;
 
         // 압축파일 내보내기
@@ -155,7 +172,7 @@ public class DownloadController {
         headers.set("Set-Cookie", "fileDownload=true; path=/");
         headers.setContentType(MediaType.parseMediaType("application/zip"));
         headers.setContentLength(ba.length);
-        headers.add("Content-Disposition", FileNameEncoder.encode("최종 산출물_ETMS.zip"));
+        headers.add("Content-Disposition", FileNameEncoder.encode("최종 산출물_출결.zip"));
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
     }
 

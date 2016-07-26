@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-07-25T10:33:46 -->
+<!-- 2016-07-26T11:37:12 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="답안지 리스트" pageWidth="700" pageHeight="800" orientation="Landscape" columnWidth="660" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="62eb88b7-cea7-4234-abea-be680b9402b9">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -30,7 +30,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[답안지 이력]]></text>
+				<text><![CDATA[답안지 교체 이력]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -38,7 +38,7 @@
 		<band height="40">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="660" height="15" uuid="edde7702-cfe4-4513-bf23-29638a2f5134">
+				<reportElement x="0" y="0" width="330" height="15" uuid="edde7702-cfe4-4513-bf23-29638a2f5134">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Top">
@@ -54,20 +54,27 @@
 				<textFieldExpression><![CDATA["시험시간: "]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="330" y="15" width="330" height="25" uuid="81cacb5d-3279-49fb-877b-bd571da00631">
+				<reportElement x="540" y="15" width="120" height="25" uuid="81cacb5d-3279-49fb-877b-bd571da00631">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Top">
+				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 					<paragraph rightIndent="0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{examineeCd} + " "+ $F{examineeNm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["수험생명: " + $F{examineeNm}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd HH:mm:ss">
 				<reportElement x="50" y="15" width="280" height="25" uuid="595c9ef2-4054-4ec9-a8fc-6947668b6d0c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{attendDttm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="540" y="0" width="120" height="15" uuid="ffc958eb-e576-4e12-b902-4058850aab2a"/>
+				<textElement>
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["수험번호: " + $F{examineeCd}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -162,6 +169,18 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="50"/>
+		<band height="50">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<textField>
+				<reportElement x="0" y="0" width="330" height="50" uuid="e5664349-2672-4819-ba5f-c29ca4d2f048"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="330" y="0" width="330" height="50" uuid="bf0cda48-f9b1-4e6d-be37-2f1f19b5e497"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</columnFooter>
 </jasperReport>

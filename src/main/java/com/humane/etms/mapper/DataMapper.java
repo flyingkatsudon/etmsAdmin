@@ -19,5 +19,5 @@ public interface DataMapper {
 
     void checkIdCard(@Param("param") String param);
 
-    void reCheck(@Param("param") String param);
+    void recheck(@Param("param") String param);
 }

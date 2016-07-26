@@ -182,6 +182,6 @@ public class DataController {
     }
     @RequestMapping(value = "reCheck")
     public void reCheck(String examineeCd) {
-        mapper.reCheck(examineeCd);
+        mapper.recheck(examineeCd);
     }
 }

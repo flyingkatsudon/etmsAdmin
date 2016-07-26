@@ -53,7 +53,7 @@ public class ExamineeDto extends StatusDto {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Date reCheckDttm;
+    private Date recheckDttm;
 
     private BufferedImage examineeImage;
     private String collegeNm;

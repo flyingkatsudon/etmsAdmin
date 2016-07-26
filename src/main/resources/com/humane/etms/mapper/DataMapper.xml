@@ -24,7 +24,7 @@
         END AS is_other_hall,
         attend_map.attend_dttm,
         attend_map.id_check_dttm,
-        attend_map.re_check_dttm,
+        attend_map.recheck_dttm,
         (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
         attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1)
         AS last_paper_cd,
@@ -138,7 +138,7 @@
         device.phone_no
     </select>
 
-    <select id="paper" resultType="com.humane.etms.dto.StatusDto">
+    <!--<select id="paper" resultType="com.humane.etms.dto.StatusDto">
         SELECT
         admission.admission_nm,
         attend.type_nm,
@@ -212,6 +212,68 @@
         examinee.examinee_cd,
         examinee.examinee_nm,
         examinee.birth
+    </select>-->
+    <select id="paper" resultType="com.humane.etms.dto.StatusDto">
+        SELECT *
+        FROM
+            (SELECT admission.admission_nm
+            , attend.type_nm
+            , attend.attend_date
+            , attend.attend_time
+            , examinee.dept_nm
+            , examinee.major_nm
+            , examinee.examinee_cd
+            , examinee.examinee_nm
+            , examinee.birth
+            , (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
+            attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS paper_cnt
+            , (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
+            attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm ASC LIMIT 1)
+            AS first_paper_cd
+            , (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
+            attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1)
+            AS last_paper_cd
+            , (SELECT GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ', ') FROM attend_paper WHERE attend_paper.attend_cd =
+            attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS
+            paper_list
+            , (SELECT MAX(reg_dttm) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
+            attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS last_dttm
+            FROM attend_paper
+            INNER JOIN attend ON attend.attend_cd = attend_paper.attend_cd
+            INNER JOIN attend_map ON attend_map.attend_cd = attend_paper.attend_cd AND attend_map.examinee_cd = attend_paper.examinee_cd
+            INNER JOIN admission ON admission.admission_cd = attend.admission_cd
+            INNER JOIN examinee ON examinee.examinee_cd = attend_paper.examinee_cd
+            <where>
+                <if test="param != null">
+                    <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                    <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
+                    <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
+                    <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                    <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                    <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                    <if test="param.examineeCd != null">AND examinee.examinee_cd = #{param.examineeCd}</if>
+                    <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
+                    <if test="param.paperCd != null">AND
+                        ( SELECT GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ', ')
+                        FROM attend_paper
+                        WHERE attend_paper.attend_cd = attend_map.attend_cd
+                        and attend_paper.examinee_cd = attend_map.examinee_cd
+                        and attend_paper.paper_no = 1
+                        ) LIKE '%' #{param.paperCd} '%'
+                    </if>
+                </if>
+            </where>
+            GROUP BY
+            attend.type_nm
+            , attend.attend_date
+            , attend.attend_time
+            , examinee.dept_nm
+            , examinee.major_nm
+            , examinee.examinee_cd
+            , examinee.examinee_nm
+            , examinee.birth
+            ) AS result
+            WHERE paper_cnt > 1
     </select>
 
     <select id="detail" resultType="com.humane.etms.dto.StatusDto">
@@ -240,8 +302,8 @@
     <update id="checkIdCard" parameterType="java.lang.String">
         UPDATE attend_map SET id_check_dttm = NOW() WHERE examinee_cd = #{param}
     </update>
-    <update id="reCheck" parameterType="java.lang.String">
-        UPDATE attend_map SET re_check_dttm = NOW() WHERE examinee_cd = #{param}
+    <update id="recheck" parameterType="java.lang.String">
+        UPDATE attend_map SET recheck_dttm = NOW() WHERE examinee_cd = #{param}
     </update>
 
 </mapper>

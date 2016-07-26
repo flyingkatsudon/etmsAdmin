@@ -19,7 +19,7 @@ define(function (require) {
                 {name: 'attendHeadNm', label: '응시고사본부'},
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
-                {name: 'reCheckDttm', label: '신원확인시간'}
+                {name: 'recheckDttm', label: '신원확인시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -72,12 +72,12 @@ define(function (require) {
                                     size: 'size-wide',
                                     closable: true,
                                     onshow: function (dialog) {
-                                        if (rowdata.reCheckDttm != "") {
-                                            dialog.getButton('reCheck').disable();
+                                        if (rowdata.recheckDttm != "") {
+                                            dialog.getButton('recheck').disable();
                                         }
                                     },
                                     buttons: [{
-                                        id: 'reCheck',
+                                        id: 'recheck',
                                         label: '신원 확인',
                                         cssClass: 'btn-primary',
                                         action: function (dialog) {
