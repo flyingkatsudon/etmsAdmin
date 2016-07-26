@@ -69,6 +69,7 @@ public class DownloadController {
 
         String statusPath = "응시율 통계";
         String dataPath = "특이사항 리스트";
+        String signPath = "감독관 서명";
 
         // entry 생성
         File fileAttend = JasperReportsExportHelper.toXlsxFile(
@@ -155,6 +156,14 @@ public class DownloadController {
         for(File f : recheckList){
             if(f.isFile())
                 zipFile.addFile(dataPath + "/재확인 대상자 사진", f);
+        }
+
+        File signFolder = new File(signPath);
+        File[] signList = signFolder.listFiles();
+
+        for(File f : signList){
+            if(f.isFile())
+                zipFile.addFile(signPath, f);
         }
 
         byte[] ba = null;
