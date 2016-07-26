@@ -81,11 +81,11 @@ define(function (require) {
                                     closable: true,
                                     onshow: function (dialog) {
                                         if (rowdata.idCheckDttm != "") {
-                                            dialog.getButton('check').disable();
+                                            dialog.getButton('idCheck').disable();
                                         }
                                     },
                                     buttons: [{
-                                        id: 'check',
+                                        id: 'idCheck',
                                         label: '신원 확인',
                                         cssClass: 'btn-primary',
                                         action: function (dialog) {

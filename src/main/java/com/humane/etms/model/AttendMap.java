@@ -28,6 +28,9 @@ public class AttendMap {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date idCheckDttm;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date reCheckDttm;
+
     private String groupNm;
     @ManyToOne @JoinColumn(name = "deviceNo") private Device device;
     @Column(columnDefinition = "bit" ) private Boolean isMidOut;

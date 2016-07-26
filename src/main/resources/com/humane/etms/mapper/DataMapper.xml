@@ -24,6 +24,7 @@
         END AS is_other_hall,
         attend_map.attend_dttm,
         attend_map.id_check_dttm,
+        attend_map.re_check_dttm,
         (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
         attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1)
         AS last_paper_cd,
@@ -239,4 +240,8 @@
     <update id="checkIdCard" parameterType="java.lang.String">
         UPDATE attend_map SET id_check_dttm = NOW() WHERE examinee_cd = #{param}
     </update>
+    <update id="reCheck" parameterType="java.lang.String">
+        UPDATE attend_map SET re_check_dttm = NOW() WHERE examinee_cd = #{param}
+    </update>
+
 </mapper>

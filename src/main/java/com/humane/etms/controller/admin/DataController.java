@@ -178,7 +178,10 @@ public class DataController {
     }
     @RequestMapping(value = "checkIdCard")
     public void checkIdCard(String examineeCd) {
-        log.debug("{}", examineeCd);
         mapper.checkIdCard(examineeCd);
+    }
+    @RequestMapping(value = "reCheck")
+    public void reCheck(String examineeCd) {
+        mapper.reCheck(examineeCd);
     }
 }
