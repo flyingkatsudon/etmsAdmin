@@ -1,7 +1,13 @@
 package com.humane.etms.controller;
 
+import com.humane.etms.model.AttendHall;
+import com.humane.etms.model.QAttendHall;
+import com.humane.etms.repository.AttendHallRepository;
+import com.humane.etms.repository.AttendRepository;
+import com.humane.etms.repository.HallRepository;
 import com.humane.etms.service.ImageService;
 import com.humane.util.file.FileUtils;
+import com.mysema.query.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 @RestController
 @RequestMapping(value = "image", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -27,6 +34,7 @@ public class ImageController {
     @Value("${path.image.noIdCard:C:/api/image/signature}") String pathSignature;
 
     private final ImageService imageService;
+    private final AttendHallRepository attendHallRepository;
 
     @RequestMapping(value = "examinee/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> examinee(@PathVariable("fileName") String fileName) {
@@ -69,9 +77,22 @@ public class ImageController {
     }
 
     @RequestMapping(value = "signature", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<InputStreamResource> signature(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<InputStreamResource> signature(@RequestHeader("attendCd") String attendCd, @RequestHeader("hallCd") String hallCd, @RequestParam("file") MultipartFile file) {
         try {
             FileUtils.saveFile(pathSignature, file, false);
+
+            QAttendHall qAttendHall = QAttendHall.attendHall;
+
+            AttendHall attendHall = attendHallRepository.findOne(
+                    new BooleanBuilder()
+                            .and(qAttendHall.attend.attendCd.eq(attendCd))
+                            .and(qAttendHall.hall.hallCd.eq(hallCd)));
+
+            if(attendHall != null){
+                attendHall.setSignDttm(new Date());
+                attendHallRepository.save(attendHall);
+            }
+
             return ResponseEntity.ok(null);
         } catch (IOException e) {
             e.printStackTrace();
