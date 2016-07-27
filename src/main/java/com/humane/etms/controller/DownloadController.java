@@ -160,7 +160,7 @@ public class DownloadController {
                 zipFile.addFile(dataPath + "/재확인 대상자 사진", f);
         }
 
-        File signFolder = new File(signPath);
+        File signFolder = new File(jpgRoot + "/signature");
         File[] signList = signFolder.listFiles();
 
         for(File f : signList){
