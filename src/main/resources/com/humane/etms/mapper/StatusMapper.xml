@@ -126,7 +126,6 @@
         INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
         INNER JOIN admission ON admission.admission_cd = attend.admission_cd
         INNER JOIN hall ON hall.hall_cd = attend_hall.hall_cd
-        ) AS result
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
@@ -138,6 +137,7 @@
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
             </if>
         </where>
+        ) AS result
     </select>
 
     <select id="group" resultType="com.humane.etms.dto.StatusDto">
