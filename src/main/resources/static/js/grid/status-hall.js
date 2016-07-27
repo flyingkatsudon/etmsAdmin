@@ -18,7 +18,8 @@ define(function (require) {
                 {name: 'examineeCnt', label: '배정인원', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
                 {name: 'currentCnt', label: '지원자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
                 {name: 'attendCnt', label: '응시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
-                {name: 'otherHallCnt', label: '타응시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
+                {name: 'toOtherCnt', label: '전출', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
+                {name: 'fromOtherCnt', label: '전입', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
                 {name: 'attendPer', label: '응시율', formatter: 'number', formatoptions: {suffix: '%'}},
                 {name: 'absentCnt', label: '결시자수', formatter: 'integer', formatoptions: {thousandsSeparator: ','}},
                 {name: 'absentPer', label: '결시율', formatter: 'number', formatoptions: {suffix: '%'}}

@@ -108,28 +108,25 @@
     </select>
 
     <select id="hall" resultType="com.humane.etms.dto.StatusDto">
+
         SELECT *
-            , attend_cnt + other_hall_cnt AS current_cnt
-            , attend_cnt * 100 / examinee_cnt AS attend_per
-            , examinee_cnt - attend_cnt AS absent_cnt
-            , (examinee_cnt - attend_cnt) * 100 / examinee_cnt AS absent_per
+        , examinee_cnt - to_other_cnt + from_other_cnt AS current_cnt
+        , (attend_cnt * 100) / examinee_cnt AS attend_per
+        , examinee_cnt - attend_cnt AS absent_cnt
+        , (examinee_cnt - attend_cnt) * 100 / examinee_cnt AS absent_per
         FROM
-            (SELECT admission.admission_nm,
-            attend.type_nm, attend.attend_date, attend.attend_time,
-            hall.head_nm, hall.bldg_nm, hall.hall_nm,
-            COUNT(attend_map.hall_cd) AS examinee_cnt,
-            SUM(CASE WHEN attend_map.attend_hall_cd IS NOT NULL AND attend_map.attend_hall_cd = attend_map.hall_cd THEN 1 ELSE 0 END) AS attend_cnt,
-            (SELECT COUNT(*)
-            FROM attend_hall, attend_map
-            WHERE attend_hall.hall_cd = attend_map.attend_hall_cd
-            AND attend_map.attend_hall_cd = hall.hall_cd
-            AND attend_map.hall_cd != attend_map.attend_hall_cd
-            ) AS other_hall_cnt
+        (SELECT admission.admission_nm
+        , attend.type_nm, attend.attend_date, attend.attend_time
+        , hall.head_nm, hall.bldg_nm, hall.hall_nm
+        , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd) AS examinee_cnt
+        , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd AND attend_map.hall_cd = attend_map.attend_hall_cd) AS attend_cnt
+        , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.attend_hall_cd = hall.hall_cd AND attend_map.hall_cd != attend_map.attend_hall_cd) AS from_other_cnt
+        , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd AND attend_map.hall_cd != attend_map.attend_hall_cd) AS to_other_cnt
         FROM attend_hall
         INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
         INNER JOIN admission ON admission.admission_cd = attend.admission_cd
         INNER JOIN hall ON hall.hall_cd = attend_hall.hall_cd
-        LEFT JOIN attend_map ON attend_map.attend_cd = attend_hall.attend_cd AND attend_map.hall_cd = hall.hall_cd
+        ) AS result
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
@@ -141,15 +138,6 @@
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
             </if>
         </where>
-        GROUP BY
-            admission.admission_nm,
-            attend.type_nm,
-            attend.attend_date,
-            attend.attend_time,
-            hall.head_nm,
-            hall.bldg_nm,
-            hall.hall_nm
-        ) AS result
     </select>
 
     <select id="group" resultType="com.humane.etms.dto.StatusDto">

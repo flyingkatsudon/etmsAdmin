@@ -40,6 +40,8 @@ public class StatusDto implements Serializable {
     private Long currentCnt;
     private Long attendCnt;
     private Long otherHallCnt;
+    private Long fromOtherCnt;
+    private Long toOtherCnt;
     private Long absentCnt;
     @JsonSerialize(using = PercentSerializer.class)
     private BigDecimal attendPer;

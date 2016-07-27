@@ -132,6 +132,7 @@ public class DownloadController {
         dto.setIsCheck(null);
         zipFile.addFile(dataPath, recheck);
         recheck.delete();
+/*
 
         dto.setIsOtherHall(true);
         File otherHall = JasperReportsExportHelper.toXlsxFile(
@@ -141,6 +142,7 @@ public class DownloadController {
         dto.setIsOtherHall(false);
         zipFile.addFile(dataPath, otherHall);
         otherHall.delete();
+*/
 
         File noIdCardFolder = new File(jpgRoot + "/noIdCard");
         File[] noIdCardList = noIdCardFolder.listFiles();
