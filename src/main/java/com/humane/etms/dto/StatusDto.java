@@ -49,6 +49,7 @@ public class StatusDto implements Serializable {
     private BigDecimal absentPer;
     private String groupNm;
     private Boolean isSend;
+    private String attendCd;
 
     private Long deviceNo;
     private Long paperCnt;
@@ -58,6 +59,10 @@ public class StatusDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date lastDttm;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date signDttm;
 
     private Long paperCnt2;
     private String firstPaperCd2;

@@ -14,7 +14,6 @@ define(function (require) {
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'deviceNo', label: '단말기번호'},
                 {name: 'isSend', label: '전송여부', formatter: 'select', editoptions: {value: {true: '전송', false: '미전송'}}},
                 {name: 'sendDttm', label: '전송시간'}
             ];
