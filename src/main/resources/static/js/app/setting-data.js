@@ -65,7 +65,42 @@ define(function (require) {
                 }
             });
         }, events: {
-            'click #reset': 'resetClicked'
+            'click #reset': 'resetClicked',
+            'click #init': 'initClicked'
+        }, initClicked: function (e) {
+            BootstrapDialog.show({
+                title: '데이터 초기화',
+                message: '서버의 데이터를 초기상태로 돌리시겠습니까?.',
+                closable: true,
+                buttons: [{
+                    label: '확인',
+                    action: function (dialog) {
+                        $.ajax({
+                            url: 'system/init',
+                            success: function (data) {
+                                BootstrapDialog.closeAll();
+                                BootstrapDialog.show({
+                                    title: '서버 데이터 관리',
+                                    message: '완료되었습니다.',
+                                    closable: true,
+                                    buttons: [{
+                                        label: '확인',
+                                        action: function (dialog) {
+                                            dialog.close();
+                                        }
+                                    }]
+                                });
+                            }
+                        });
+                        dialog.close();
+                    }
+                }, {
+                    label: '취소',
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
         }, resetClicked: function (e) {
             var _this = this;
             BootstrapDialog.show({
@@ -107,11 +142,11 @@ define(function (require) {
                 ]
             });
         },
-        reset : function(o){
+        reset: function (o) {
             $.ajax({
                 url: 'system/reset',
-                data : {
-                    photo : o
+                data: {
+                    photo: o
                 },
                 success: function (data) {
                     BootstrapDialog.closeAll();

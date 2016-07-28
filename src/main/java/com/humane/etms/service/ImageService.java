@@ -21,7 +21,7 @@ public class ImageService {
         return getFile(pathExaminee, fileName);
     }
 
-    public InputStream getUnivLogo(String fileName){
+    public InputStream getUnivLogo(String fileName) {
         return getFile(pathUnivLogo, fileName);
     }
 
@@ -51,12 +51,16 @@ public class ImageService {
         return null;
     }
 
-    public void deleteImage(String... path) {
-        for (String p : path) {
-            File examineePath = new File(p);
-            File[] a = examineePath.listFiles();
-            for (File file : a) {
-                file.delete();
+    public void deleteImage(String... paths) {
+        for (String path : paths) {
+            File filePath = new File(path);
+            if (filePath.exists()) {
+                File[] listFiles = filePath.listFiles();
+                if (listFiles != null) {
+                    for (File file : listFiles) {
+                        file.delete();
+                    }
+                }
             }
         }
     }

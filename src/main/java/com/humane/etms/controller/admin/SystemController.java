@@ -23,4 +23,9 @@ public class SystemController {
     public void reset(@RequestParam(defaultValue = "false") boolean photo) {
         systemService.resetData(photo);
     }
+
+    @RequestMapping(value = "init")
+    public void init(@RequestParam(defaultValue = "true") boolean photo) {
+        systemService.initData(photo);
+    }
 }

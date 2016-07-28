@@ -3,6 +3,7 @@ package com.humane.etms.service;
 import com.humane.etms.model.*;
 import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
+import com.mysema.query.jpa.hibernate.HibernateUpdateClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,12 +12,12 @@ import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.File;
 import java.util.List;
 
 @Service
@@ -76,5 +77,34 @@ public class SystemService {
         if(photo){
             imageService.deleteImage(pathExaminee, pathNoIdCard, pathRecheck, pathSignature);
         }
+    }
+
+    @Transactional
+    public ResponseEntity<String> initData(boolean photo) {
+
+        QAttendMap attendMap = QAttendMap.attendMap;
+        new HibernateUpdateClause(entityManager.unwrap(Session.class), attendMap)
+                .setNull(attendMap.attendDttm)
+                .setNull(attendMap.idCheckDttm)
+                .setNull(attendMap.isCheat)
+                .setNull(attendMap.isMidOut)
+                .setNull(attendMap.isNoIdCard)
+                .setNull(attendMap.memo)
+                .setNull(attendMap.recheckDttm)
+                .setNull(attendMap.attendHall)
+                .execute();
+
+        new HibernateDeleteClause(entityManager.unwrap(Session.class), QAttendPaper.attendPaper).execute();
+
+        QAttendHall attendHall = QAttendHall.attendHall;
+        new HibernateUpdateClause(entityManager.unwrap(Session.class), attendHall)
+                .setNull(attendHall.signDttm)
+                .execute();
+
+        if(photo){
+            imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
+        }
+
+        return ResponseEntity.ok("OK");
     }
 }
