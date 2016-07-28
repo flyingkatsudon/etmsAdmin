@@ -87,6 +87,7 @@ public class SystemService {
                 .setNull(attendMap.attendDttm)
                 .setNull(attendMap.idCheckDttm)
                 .setNull(attendMap.isCheat)
+                .setNull(attendMap.isCheck)
                 .setNull(attendMap.isMidOut)
                 .setNull(attendMap.isNoIdCard)
                 .setNull(attendMap.memo)
