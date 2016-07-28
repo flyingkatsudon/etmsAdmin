@@ -53,7 +53,12 @@
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
-                <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <!--<if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>-->
+                <if test="param.hallNm != null">
+                    AND
+                        (hall.hall_nm = #{param.hallNm} OR attend_hall.hall_nm = #{param.hallNm})
+                        AND(attend_hall.hall_nm IS NULL OR attend_hall.hall_nm = #{param.hallNm})
+                </if>
                 <if test="param.attendNm != null">AND attend.attend_nm = #{param.attendNm}</if>
                 <if test="param.isEtc != null">AND attend_hall.is_etc = #{param.isEtc}</if>
                 <if test="param.groupNm != null">AND attend_map.group_nm = #{param.groupNm}</if>
@@ -83,10 +88,11 @@
             </if>
         </where>
         GROUP BY
+        examinee.examinee_cd, examinee.examinee_nm, examinee.birth,
         admission.admission_nm, attend.type_nm, attend.attend_date, attend.attend_time,
-        examinee.examinee_cd, examinee.examinee_nm, examinee.birth, examinee.major_nm, examinee.dept_nm,
-        is_attend, hall.head_nm, hall.bldg_nm, hall.hall_nm,
-        attend_head_nm, attend_bldg_nm, attend_hall_nm,
+        examinee.major_nm, examinee.dept_nm,
+        hall.head_nm, hall.bldg_nm, hall.hall_nm,
+        attend_head_nm, attend_bldg_nm, attend_hall_nm, is_attend,
         attend_hall.is_etc, attend_map.is_check, is_other_hall, attend_map.attend_dttm
     </select>
 
@@ -278,11 +284,15 @@
         </where>
     </select>
 
-    <update id="checkIdCard" parameterType="java.lang.String">
-        UPDATE attend_map SET id_check_dttm = NOW() WHERE examinee_cd = #{param}
+    <update id="checkIdCard">
+        UPDATE attend_map
+           SET id_check_dttm = #{idCheckDttm}
+         WHERE examinee_cd = #{examineeCd}
     </update>
-    <update id="recheck" parameterType="java.lang.String">
-        UPDATE attend_map SET recheck_dttm = NOW() WHERE examinee_cd = #{param}
+    <update id="recheck">
+        UPDATE attend_map
+        SET recheck_dttm = #{recheckDttm}
+        WHERE examinee_cd = #{examineeCd}
     </update>
 
 </mapper>

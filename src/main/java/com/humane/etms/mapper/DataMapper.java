@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Date;
+
 @Mapper
 public interface DataMapper {
     Page<ExamineeDto> examinee(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
@@ -17,7 +19,7 @@ public interface DataMapper {
 
     Page<StatusDto> detail(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
-    void checkIdCard(@Param("param") String param);
+    void checkIdCard(@Param("examineeCd") String examineeCd, @Param("idCheckDttm") Date idCheckDttm);
 
-    void recheck(@Param("param") String param);
+    void recheck(@Param("examineeCd") String examineeCd, @Param("recheckDttm") Date recheckDttm);
 }

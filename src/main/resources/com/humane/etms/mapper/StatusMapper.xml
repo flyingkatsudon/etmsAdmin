@@ -110,16 +110,17 @@
     <select id="hall" resultType="com.humane.etms.dto.StatusDto">
 
         SELECT *
-        , examinee_cnt - to_other_cnt + from_other_cnt AS current_cnt
-        , (attend_cnt * 100) / examinee_cnt AS attend_per
-        , examinee_cnt - attend_cnt AS absent_cnt
-        , (examinee_cnt - attend_cnt) * 100 / examinee_cnt AS absent_per
+        , (examinee_cnt - to_other_cnt + from_other_cnt) AS current_cnt
+        , (A + from_other_cnt) AS attend_cnt
+        , (A + from_other_cnt) * 100 / (examinee_cnt - to_other_cnt + from_other_cnt)  AS attend_per
+        , (examinee_cnt - to_other_cnt + from_other_cnt) - (A + from_other_cnt) AS absent_cnt
+        , ((examinee_cnt - A + from_other_cnt) - (A + from_other_cnt)) * 100 / (examinee_cnt - to_other_cnt + from_other_cnt) AS absent_per
         FROM
         (SELECT admission.admission_nm
         , attend.type_nm, attend.attend_date, attend.attend_time
         , hall.head_nm, hall.bldg_nm, hall.hall_nm
         , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd) AS examinee_cnt
-        , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd AND attend_map.hall_cd = attend_map.attend_hall_cd) AS attend_cnt
+        , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd AND attend_map.hall_cd = attend_map.attend_hall_cd) AS A
         , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.attend_hall_cd = hall.hall_cd AND attend_map.hall_cd != attend_map.attend_hall_cd) AS from_other_cnt
         , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd AND attend_map.hall_cd != attend_map.attend_hall_cd) AS to_other_cnt
         FROM attend_hall
