@@ -260,6 +260,15 @@
             </properties>
         </profile>
         <profile>
+            <id>product</id>
+            <properties>
+                <springboot-profile>product</springboot-profile>
+                <tomcat-url>http://etms.humanesystem.com:8000/manager/text</tomcat-url>
+                <tomcat-username>etms</tomcat-username>
+                <tomcat-password>etms!@</tomcat-password>
+            </properties>
+        </profile>
+        <profile>
             <id>dbtest</id>
             <properties>
                 <springboot-profile>dbtest</springboot-profile>
