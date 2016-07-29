@@ -10,6 +10,7 @@ import com.humane.util.zip4j.ZipFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.exception.ZipException;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +42,7 @@ public class DownloadController {
     private final DataMapper dataMapper;
 
     @RequestMapping(value = "hall.xlsx", method = RequestMethod.GET)
-    public ResponseEntity hall(){
+    public ResponseEntity hall() {
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/upload-hall.jrxml",
                 "xlsx",
@@ -50,7 +51,7 @@ public class DownloadController {
     }
 
     @RequestMapping(value = "examinee.xlsx", method = RequestMethod.GET)
-    public ResponseEntity examinee(){
+    public ResponseEntity examinee() {
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/upload-examinee.jrxml",
                 "xlsx",
@@ -74,7 +75,7 @@ public class DownloadController {
         // entry 생성
         File fileAttend = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/status-attend.jrxml"
-                ,statusMapper.attend(new StatusDto(), pageable).getContent());
+                , statusMapper.attend(new StatusDto(), pageable).getContent());
         zipFile.addFile(statusPath, fileAttend);
         fileAttend.delete();
 
@@ -160,31 +161,37 @@ public class DownloadController {
 */
 
         File noIdCardFolder = new File(jpgRoot + "/noIdCard");
-        File[] noIdCardList = noIdCardFolder.listFiles();
-
-        for(File f : noIdCardList){
-            if(f.isFile()) {
-                File renamed = new File(f.getName().substring(0,9) + "_1.jpg");
-                zipFile.addFile(dataPath + "/신분증 미소지자 사진", renamed);
+        File[] noIdCardList = noIdCardFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg"));
+        if (noIdCardList != null) {
+            for (File f : noIdCardList) {
+                if (f.isFile()) {
+                    File renamed = new File(FilenameUtils.getBaseName(f.getName()) + "_1.jpg");
+                    zipFile.addFile(dataPath + "/신분증 미소지자 사진", renamed);
+                }
             }
         }
 
-        File recheckFolder = new File(jpgRoot + "/recheck");
-        File[] recheckList = recheckFolder.listFiles();
 
-        for(File f : recheckList){
-            if(f.isFile()) {
-                File renamed = new File(f.getName().substring(0, 9) + "_2.jpg");
-                zipFile.addFile(dataPath + "/재확인 대상자 사진", renamed);
+        File recheckFolder = new File(jpgRoot + "/recheck");
+        File[] recheckList = recheckFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg"));
+
+        if (recheckList != null){
+            for (File f : recheckList) {
+                if (f.isFile()) {
+                    File renamed = new File(FilenameUtils.getBaseName(f.getName()) + "_2.jpg");
+                    zipFile.addFile(dataPath + "/재확인 대상자 사진", renamed);
+                }
             }
         }
 
         File signFolder = new File(jpgRoot + "/signature");
-        File[] signList = signFolder.listFiles();
+        File[] signList = signFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg"));
 
-        for(File f : signList){
-            if(f.isFile())
-                zipFile.addFile(signPath, f);
+        if(signList != null){
+            for (File f : signList) {
+                if (f.isFile())
+                    zipFile.addFile(signPath, f);
+            }
         }
 
         byte[] ba = null;
