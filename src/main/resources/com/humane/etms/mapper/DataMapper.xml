@@ -274,9 +274,8 @@
         attend_paper.reg_dttm
         FROM attend_paper
         INNER JOIN attend ON attend.attend_cd = attend_paper.attend_cd
-        INNER JOIN attend_map ON attend_map.examinee_cd = attend_paper.examinee_cd
-        INNER JOIN hall ON hall.hall_cd = attend_map.attend_hall_cd
-        INNER JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
+        INNER JOIN hall ON hall.hall_cd = attend_paper.hall_cd
+        INNER JOIN examinee ON examinee.examinee_cd = attend_paper.examinee_cd
         <where>
             <if test="param!=null">
                 <if test="param.examineeCd != null">examinee.examinee_cd = #{param.examineeCd}</if>

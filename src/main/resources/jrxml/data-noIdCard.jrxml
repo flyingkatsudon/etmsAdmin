@@ -210,7 +210,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[등록시간]]></text>
+				<text><![CDATA[신원확인시간]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

@@ -19,9 +19,9 @@ define(function (require) {
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime()));
             this.$('#deptNm').html(this.getOptions(ToolbarModel.getDeptNm()));
             this.$('#majorNm').html(this.getOptions(ToolbarModel.getMajorNm()));
-            this.$('#attendHeadNm').html(this.getOptions(ToolbarModel.getAttendHeadNm()));
-            this.$('#attendBldgNm').html(this.getOptions(ToolbarModel.getAttendBldgNm()));
-            this.$('#attendHallNm').html(this.getOptions(ToolbarModel.getAttendHallNm()));
+            this.$('#attendHeadNm').html(this.getOptions(ToolbarModel.getHeadNm()));
+            this.$('#attendBldgNm').html(this.getOptions(ToolbarModel.getBldgNm()));
+            this.$('#attendHallNm').html(this.getOptions(ToolbarModel.getHallNm()));
 
             return this;
         },

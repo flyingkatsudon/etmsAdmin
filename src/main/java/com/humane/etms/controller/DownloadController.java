@@ -69,7 +69,7 @@ public class DownloadController {
 
         String statusPath = "응시율 통계";
         String dataPath = "특이사항 리스트";
-        String signPath = "감독관 서명";
+        String signPath = "감독관 서명 사진";
 
         // entry 생성
         File fileAttend = JasperReportsExportHelper.toXlsxFile(
@@ -132,6 +132,21 @@ public class DownloadController {
         dto.setIsCheck(null);
         zipFile.addFile(dataPath, recheck);
         recheck.delete();
+
+        StatusDto statusDto = new StatusDto();
+        File paper = JasperReportsExportHelper.toXlsxFile(
+                "jrxml/data-paper.jrxml"
+                , dataMapper.paper(statusDto, pageable).getContent()
+        );
+        zipFile.addFile(paper);
+        paper.delete();
+
+        File signature = JasperReportsExportHelper.toXlsxFile(
+                "jrxml/data-signature.jrxml"
+                , dataMapper.signature(statusDto, pageable).getContent()
+        );
+        zipFile.addFile(signature);
+        signature.delete();
 /*
 
         dto.setIsOtherHall(true);
@@ -148,16 +163,20 @@ public class DownloadController {
         File[] noIdCardList = noIdCardFolder.listFiles();
 
         for(File f : noIdCardList){
-            if(f.isFile())
-                zipFile.addFile(dataPath + "/신분증 미소지자 사진", f);
+            if(f.isFile()) {
+                File renamed = new File(f.getName().substring(0,9) + "_1.jpg");
+                zipFile.addFile(dataPath + "/신분증 미소지자 사진", renamed);
+            }
         }
 
         File recheckFolder = new File(jpgRoot + "/recheck");
         File[] recheckList = recheckFolder.listFiles();
 
         for(File f : recheckList){
-            if(f.isFile())
-                zipFile.addFile(dataPath + "/재확인 대상자 사진", f);
+            if(f.isFile()) {
+                File renamed = new File(f.getName().substring(0, 9) + "_2.jpg");
+                zipFile.addFile(dataPath + "/재확인 대상자 사진", renamed);
+            }
         }
 
         File signFolder = new File(jpgRoot + "/signature");
