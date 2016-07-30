@@ -108,13 +108,12 @@
     </select>
 
     <select id="hall" resultType="com.humane.etms.dto.StatusDto">
-
         SELECT *
         , (examinee_cnt - to_other_cnt + from_other_cnt) AS current_cnt
         , (A + from_other_cnt) AS attend_cnt
         , (A + from_other_cnt) * 100 / (examinee_cnt - to_other_cnt + from_other_cnt)  AS attend_per
         , (examinee_cnt - to_other_cnt + from_other_cnt) - (A + from_other_cnt) AS absent_cnt
-        , ((examinee_cnt - A + from_other_cnt) - (A + from_other_cnt)) * 100 / (examinee_cnt - to_other_cnt + from_other_cnt) AS absent_per
+        , 100 - ((A + from_other_cnt) * 100 / (examinee_cnt - to_other_cnt + from_other_cnt)) AS absent_per
         FROM
         (SELECT admission.admission_nm
         , attend.type_nm, attend.attend_date, attend.attend_time
