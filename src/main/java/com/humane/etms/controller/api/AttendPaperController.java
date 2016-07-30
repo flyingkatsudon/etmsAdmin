@@ -63,12 +63,22 @@ public class AttendPaperController {
                     .and(qAttendPaper.paperCd.eq(attendPaper.getPaperCd()))
             );
 
+
             if (find != null) {
                 attendPaper.set_id(find.get_id());
                 if (find.getOldPaperCd() != null) attendPaper.setOldPaperCd(find.getOldPaperCd());
+                list.add(repository.save(attendPaper));
+            }else{
+                AttendPaper save = new AttendPaper();
+                save.setAttend(attendPaper.getAttend());
+                save.setPaperCd(attendPaper.getPaperCd());
+                save.setPaperNo(attendPaper.getPaperNo());
+                save.setExaminee(attendPaper.getExaminee());
+                save.setHall(attendPaper.getHall());
+                save.setRegDttm(attendPaper.getRegDttm());
+                save.setOldPaperCd(attendPaper.getOldPaperCd());
+                list.add(repository.save(save));
             }
-
-            list.add(repository.save(attendPaper));
         });
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

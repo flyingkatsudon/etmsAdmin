@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping(value = "api/attendMap", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -94,7 +96,21 @@ public class AttendMapController {
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseEntity<Iterable<AttendMap>> merge(@RequestBody Iterable<AttendMap> attendMaps) {
-        Iterable<AttendMap> rtn = repository.save(attendMaps);
+        QAttendMap qAttendMap = QAttendMap.attendMap;
+        // 채점자는 채점자의 내용만 손대야 한다.
+        ArrayList<AttendMap> rtn = new ArrayList<AttendMap>();
+        attendMaps.forEach(attendMap -> {
+            AttendMap find = repository.findOne(new BooleanBuilder()
+                    .and(qAttendMap.attend.eq(attendMap.getAttend()))
+                    .and(qAttendMap.examinee.eq(attendMap.getExaminee()))
+                    .and(qAttendMap.hall.eq(attendMap.getHall()))
+            );
+            if (find != null) {
+                attendMap.setIsNoIdCard(find.getIsNoIdCard());
+                rtn.add(repository.save(attendMap));
+            }
+        });
+
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 }
