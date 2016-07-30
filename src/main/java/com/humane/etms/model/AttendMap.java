@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"examineeCd", "attendCd"}))
 @Data
 public class AttendMap {
-    @Id @GeneratedValue private long _id;
+    @Id @GeneratedValue private Long _id;
 
     @ManyToOne @JoinColumn(name = "attendCd", nullable = false) private Attend attend;
     @ManyToOne @JoinColumn(name = "examineeCd", nullable = false) private Examinee examinee;

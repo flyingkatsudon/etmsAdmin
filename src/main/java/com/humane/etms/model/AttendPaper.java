@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"attendCd", "paperCd"})})
 @Data
 public class AttendPaper implements Serializable {
-    @Id @GeneratedValue private long _id;
+    @Id @GeneratedValue private Long _id;
 
     @ManyToOne @JoinColumn(name = "attendCd", nullable = false) private Attend attend;
     @Column(nullable = false) private String paperCd;
