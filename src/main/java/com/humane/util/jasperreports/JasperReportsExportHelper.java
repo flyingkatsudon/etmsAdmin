@@ -1,6 +1,8 @@
 package com.humane.util.jasperreports;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -40,7 +42,6 @@ public class JasperReportsExportHelper {
     public static final String EXT_XLS = "xls";
     public static final String EXT_XLSX = "xlsx";
 
-
     private static JasperReportsExportHelper instance;
 
     static {
@@ -57,31 +58,27 @@ public class JasperReportsExportHelper {
     }
 
     private static ResponseEntity out(JasperPrint jasperPrint, ByteArrayOutputStream baos, String format) throws JRException {
-        switch (format) {
-            case EXT_PDF: {
-                instance.exportReportToPdf(jasperPrint, baos);
-                HttpHeaders headers = new HttpHeaders();
-                headers.set("Set-Cookie", "fileDownload=true; path=/");
-                headers.setContentType(MediaType.parseMediaType(PDF));
-                headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
-                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-            }
-            case EXT_XLS: {
-                instance.exportReportToXls(jasperPrint, baos);
-                HttpHeaders headers = new HttpHeaders();
-                headers.set("Set-Cookie", "fileDownload=true; path=/");
-                headers.setContentType(MediaType.parseMediaType(XLS));
-                headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + XLS));
-                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-            }
-            case EXT_XLSX: {
-                instance.exportReportToXlsx(jasperPrint, baos);
-                HttpHeaders headers = new HttpHeaders();
-                headers.set("Set-Cookie", "fileDownload=true; path=/");
-                headers.setContentType(MediaType.parseMediaType(XLSX));
-                headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_XLSX));
-                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-            }
+        if (format.equals(EXT_PDF)) {
+            instance.exportReportToPdf(jasperPrint, baos);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Set-Cookie", "fileDownload=true; path=/");
+            headers.setContentType(MediaType.parseMediaType(PDF));
+            headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
+            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+        } else if (format.equals(EXT_XLS)) {
+            instance.exportReportToXls(jasperPrint, baos);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Set-Cookie", "fileDownload=true; path=/");
+            headers.setContentType(MediaType.parseMediaType(XLS));
+            headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + XLS));
+            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+        } else if (format.equals(EXT_XLSX)) {
+            instance.exportReportToXlsx(jasperPrint, baos);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Set-Cookie", "fileDownload=true; path=/");
+            headers.setContentType(MediaType.parseMediaType(XLSX));
+            headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_XLSX));
+            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
         }
         return null;
     }
@@ -135,16 +132,70 @@ public class JasperReportsExportHelper {
 
             fos = new FileOutputStream(file);
 
-            switch (format) {
-                case EXT_PDF:
-                    instance.exportReportToPdf(jasperPrint, fos);
-                    break;
-                case EXT_XLS:
-                    instance.exportReportToXls(jasperPrint, fos);
-                    break;
-                case EXT_XLSX:
-                    instance.exportReportToXlsx(jasperPrint, fos);
-                    break;
+            if (format.equals(EXT_PDF)) {
+                instance.exportReportToPdf(jasperPrint, fos);
+            } else if (format.equals(EXT_XLS)) {
+                instance.exportReportToXls(jasperPrint, fos);
+            } else if (format.equals(EXT_XLSX)) {
+                instance.exportReportToXlsx(jasperPrint, fos);
+            }
+        } catch (JRException | FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(fos);
+        }
+        return file;
+    }
+
+    public static File toXlsxFile(JasperPrint jasperPrint) {
+        return toFile((File) null, jasperPrint, EXT_XLSX);
+    }
+
+    public static File toXlsFile(JasperPrint jasperPrint) {
+        return toFile((File) null, jasperPrint, EXT_XLS);
+    }
+
+    public static File toPdfFile(JasperPrint jasperPrint) {
+        return toFile((File) null, jasperPrint, EXT_PDF);
+    }
+
+    public static File toFile(String path, JasperPrint jasperPrint, String format) {
+        return toFile(new File(path), jasperPrint, format);
+    }
+
+    public static File toXlsxFile(String name, JasperReportBuilder jasperReportBuilder, List<?> content) throws DRException {
+        return toFile(name, jasperReportBuilder, EXT_XLSX, content);
+    }
+
+    public static File toFile(String name, JasperReportBuilder jasperReportBuilder, String format, List<?> content) throws DRException {
+        JRRewindableDataSource dataSource = (content == null || content.size() == 0) ? new JREmptyDataSource() : new JRBeanCollectionDataSource(content);
+        jasperReportBuilder.setDataSource(dataSource);
+        JasperPrint jasperPrint = jasperReportBuilder.toJasperPrint();
+        jasperPrint.setName(name);
+        return toFile((File) null, jasperPrint, format);
+    }
+
+    public static File toFile(File path, JasperPrint jasperPrint, String format) {
+        FileOutputStream fos = null;
+        File file = null;
+        try {
+            if (jasperPrint == null) return null;
+
+            if (path != null) {
+                path.mkdirs();
+                file = new File(path, jasperPrint.getName() + "." + format);
+            } else {
+                file = new File(jasperPrint.getName() + "." + format);
+            }
+
+            fos = new FileOutputStream(file);
+
+            if (format.equals(EXT_PDF)) {
+                instance.exportReportToPdf(jasperPrint, fos);
+            } else if (format.equals(EXT_XLS)) {
+                instance.exportReportToXls(jasperPrint, fos);
+            } else if (format.equals(EXT_XLSX)) {
+                instance.exportReportToXlsx(jasperPrint, fos);
             }
         } catch (JRException | FileNotFoundException e) {
             e.printStackTrace();
