@@ -4,7 +4,7 @@ import com.humane.etms.model.AttendHall;
 import com.humane.etms.model.QAttendHall;
 import com.humane.etms.repository.AttendHallRepository;
 import com.humane.util.spring.data.JoinDescriptor;
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

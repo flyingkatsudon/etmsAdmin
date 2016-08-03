@@ -4,8 +4,8 @@ import com.humane.etms.model.AttendMap;
 import com.humane.etms.model.QAttendMap;
 import com.humane.etms.repository.AttendMapRepository;
 import com.humane.util.spring.data.JoinDescriptor;
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -98,7 +98,7 @@ public class AttendMapController {
     public ResponseEntity<Iterable<AttendMap>> merge(@RequestBody Iterable<AttendMap> attendMaps) {
         QAttendMap qAttendMap = QAttendMap.attendMap;
         // 채점자는 채점자의 내용만 손대야 한다.
-        ArrayList<AttendMap> rtn = new ArrayList<AttendMap>();
+        ArrayList<AttendMap> rtn = new ArrayList<>();
         attendMaps.forEach(attendMap -> {
             AttendMap find = repository.findOne(new BooleanBuilder()
                     .and(qAttendMap.attend.eq(attendMap.getAttend()))

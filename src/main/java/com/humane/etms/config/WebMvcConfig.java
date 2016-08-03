@@ -1,7 +1,7 @@
 package com.humane.etms.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.humane.etms.filter.LoggingFilter;
 import com.humane.util.filter.MultiReadableHttpServletRequestFilter;
 import com.humane.util.spring.ApplicationContextProvider;
@@ -69,8 +69,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
 
         ObjectMapper mapper = new ObjectMapper();
-        //Registering Hibernate4Module to support lazy objects
-        mapper.registerModule(new Hibernate4Module());
+        mapper.registerModule(new Hibernate5Module());
 
         messageConverter.setObjectMapper(mapper);
         return messageConverter;
@@ -78,7 +77,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        //Here we add our custom-configured HttpMessageConverter
         converters.add(jacksonMessageConverter());
         super.configureMessageConverters(converters);
     }
@@ -86,7 +84,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SPRING_WEB)
-                .groupName("etmsApi")
+                .groupName("etmsAdmin")
                 .apiInfo(new ApiInfoBuilder().build())
                 .select()
                 .build();

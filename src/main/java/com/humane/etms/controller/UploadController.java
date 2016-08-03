@@ -8,7 +8,7 @@ import com.humane.etms.form.FormHallVo;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.*;
 import com.humane.util.file.FileUtils;
-import com.mysema.query.BooleanBuilder;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.format.DateTimeFormat;

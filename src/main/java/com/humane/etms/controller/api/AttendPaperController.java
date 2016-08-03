@@ -3,8 +3,8 @@ package com.humane.etms.controller.api;
 import com.humane.etms.model.AttendPaper;
 import com.humane.etms.model.QAttendPaper;
 import com.humane.etms.repository.AttendPaperRepository;
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,10 +42,7 @@ public class AttendPaperController {
                 .and(qAttendPaper.paperCd.eq(attendPaper.getPaperCd()))
         );
 
-        if (find != null) {
-            attendPaper.set_id(find.get_id());
-            if (find.getOldPaperCd() != null) attendPaper.setOldPaperCd(find.getOldPaperCd());
-        }
+        if (find != null) attendPaper.set_id(find.get_id());
 
         AttendPaper rtn = repository.save(attendPaper);
         return new ResponseEntity<>(rtn, HttpStatus.OK);
@@ -63,12 +60,8 @@ public class AttendPaperController {
                     .and(qAttendPaper.paperCd.eq(attendPaper.getPaperCd()))
             );
 
-            if (find != null) {
-                attendPaper.set_id(find.get_id());
-                if (find.getOldPaperCd() != null) attendPaper.setOldPaperCd(find.getOldPaperCd());
-            } else {
-                attendPaper.set_id(null);
-            }
+            if (find != null) attendPaper.set_id(find.get_id());
+
             list.add(repository.save(attendPaper));
         });
         return new ResponseEntity<>(list, HttpStatus.OK);

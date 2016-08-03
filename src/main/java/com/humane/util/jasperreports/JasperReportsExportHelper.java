@@ -57,27 +57,31 @@ public class JasperReportsExportHelper {
     }
 
     private static ResponseEntity out(JasperPrint jasperPrint, ByteArrayOutputStream baos, String format) throws JRException {
-        if (format.equals(EXT_PDF)) {
-            instance.exportReportToPdf(jasperPrint, baos);
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Set-Cookie", "fileDownload=true; path=/");
-            headers.setContentType(MediaType.parseMediaType(PDF));
-            headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
-            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-        } else if (format.equals(EXT_XLS)) {
-            instance.exportReportToXls(jasperPrint, baos);
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Set-Cookie", "fileDownload=true; path=/");
-            headers.setContentType(MediaType.parseMediaType(XLS));
-            headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + XLS));
-            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-        } else if (format.equals(EXT_XLSX)) {
-            instance.exportReportToXlsx(jasperPrint, baos);
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Set-Cookie", "fileDownload=true; path=/");
-            headers.setContentType(MediaType.parseMediaType(XLSX));
-            headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_XLSX));
-            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+        switch (format) {
+            case EXT_PDF: {
+                instance.exportReportToPdf(jasperPrint, baos);
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Set-Cookie", "fileDownload=true; path=/");
+                headers.setContentType(MediaType.parseMediaType(PDF));
+                headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
+                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+            }
+            case EXT_XLS: {
+                instance.exportReportToXls(jasperPrint, baos);
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Set-Cookie", "fileDownload=true; path=/");
+                headers.setContentType(MediaType.parseMediaType(XLS));
+                headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + XLS));
+                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+            }
+            case EXT_XLSX: {
+                instance.exportReportToXlsx(jasperPrint, baos);
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Set-Cookie", "fileDownload=true; path=/");
+                headers.setContentType(MediaType.parseMediaType(XLSX));
+                headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_XLSX));
+                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+            }
         }
         return null;
     }
@@ -131,12 +135,16 @@ public class JasperReportsExportHelper {
 
             fos = new FileOutputStream(file);
 
-            if (format.equals(EXT_PDF)) {
-                instance.exportReportToPdf(jasperPrint, fos);
-            } else if (format.equals(EXT_XLS)) {
-                instance.exportReportToXls(jasperPrint, fos);
-            } else if (format.equals(EXT_XLSX)) {
-                instance.exportReportToXlsx(jasperPrint, fos);
+            switch (format) {
+                case EXT_PDF:
+                    instance.exportReportToPdf(jasperPrint, fos);
+                    break;
+                case EXT_XLS:
+                    instance.exportReportToXls(jasperPrint, fos);
+                    break;
+                case EXT_XLSX:
+                    instance.exportReportToXlsx(jasperPrint, fos);
+                    break;
             }
         } catch (JRException | FileNotFoundException e) {
             e.printStackTrace();

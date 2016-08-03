@@ -12,7 +12,7 @@ import java.util.Date;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"deviceNo", "attendCd"})})
 @Data
 public class AttendDevice {
-    @Id @GeneratedValue private long _id;
+    @Id @GeneratedValue private Long _id;
 
     @ManyToOne @JoinColumn(name = "deviceNo") private Device device;
     @ManyToOne @JoinColumn(name = "attendCd", nullable = false) private Attend attend;
