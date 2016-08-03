@@ -1,54 +1,34 @@
 package com.humane.etms.service;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 @Service
+@Slf4j
 public class ImageService {
-
-    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
-    @Value("${path.image.noIdCard:C:/api/image/noIdCard}") String pathNoIdCard;
-    @Value("${path.image.recheck:C:/api/image/recheck}") String pathRecheck;
-    @Value("${path.image.signature:C:/api/image/signature}") String pathSignature;
-    @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
-
-    public InputStream getExaminee(String fileName) {
-        return getFile(pathExaminee, fileName);
-    }
-
-    public InputStream getUnivLogo(String fileName) {
-        return getFile(pathUnivLogo, fileName);
-    }
-
-    public InputStream getNoIdCard(String fileName) {
-        return getFile(pathNoIdCard, fileName);
-    }
-
-    public InputStream getRecheck(String fileName) {
-        return getFile(pathRecheck, fileName);
-    }
-
-    public InputStream getSignature(String fileName) {
-        return getFile(pathSignature, fileName);
-    }
-
-    private InputStream getFile(String filePath, String fileName) {
+    public ResponseEntity<InputStreamResource> toResponseEntity(String path, String fileName) {
         try {
-            File path = new File(filePath);
-            if (!path.exists()) path.mkdirs();
-            File file = new File(path, fileName);
-            if (file.exists()) {
-                return new FileInputStream(file);
-            }
-        } catch (IOException ignored) {
-
+            InputStream inputStream = getFile(path, fileName);
+            return ResponseEntity.ok(new InputStreamResource(inputStream));
+        } catch (Exception e) {
+            log.error("i{}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return null;
+    }
+
+    public InputStream getFile(String filePath, String fileName) throws FileNotFoundException {
+        File path = new File(filePath);
+        if (!path.exists()) path.mkdirs();
+        File file = new File(path, fileName);
+        return new FileInputStream(file);
     }
 
     public void deleteImage(String... paths) {

@@ -8,7 +8,8 @@
         admission.admission_nm, attend.type_nm,
         attend.attend_date, attend.attend_time,
         examinee.college_nm,
-        examinee.examinee_cd, examinee.examinee_nm, examinee.birth, examinee.major_nm, examinee.dept_nm,
+        examinee.examinee_cd, examinee.examinee_nm,
+        date_format(examinee.birth, '%y%m%d') as birth, examinee.major_nm, examinee.dept_nm,
         CASE WHEN attend_hall.hall_cd IS NULL THEN false
         ELSE true
         END AS is_attend,
@@ -209,7 +210,7 @@
             , examinee.major_nm
             , examinee.examinee_cd
             , examinee.examinee_nm
-            , examinee.birth
+            , date_format(examinee.birth, '%y%m%d') as birth
             , (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
             attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) AS paper_cnt
             , (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and

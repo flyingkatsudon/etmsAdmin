@@ -3,12 +3,12 @@ package com.humane.etms.controller.admin;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.DataMapper;
-import com.humane.etms.service.DataService;
 import com.humane.etms.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,10 +29,12 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DataController {
     private final DataMapper mapper;
-    private final DataService dataService;
     private final ImageService imageService;
     private static final String JSON = "json";
     private static final String PDF = "pdf";
+
+    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
+    @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
 
     @RequestMapping(value = "examinee.{format:json|pdf|xls|xlsx}")
     public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, Pageable page) {
@@ -53,14 +55,14 @@ public class DataController {
         List<ExamineeDto> list = mapper.examinee(examineeDto, pageable).getContent();
 
         list.forEach(item -> {
-            try (InputStream is = imageService.getExaminee(item.getExamineeCd() + ".jpg")) {
+            try (InputStream is = imageService.getFile(pathExaminee, item.getExamineeCd() + ".jpg")) {
                 BufferedImage image = ImageIO.read(is);
                 item.setExamineeImage(image);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            try (InputStream is = imageService.getUnivLogo("symbol_03.jpg")) {
+            try (InputStream is = imageService.getFile(pathUnivLogo, "symbol_03.jpg")) {
                 BufferedImage image = ImageIO.read(is);
                 item.setUnivLogo(image);
             } catch (IOException e) {
@@ -175,12 +177,14 @@ public class DataController {
                 return null;
         }
     }
+
     @RequestMapping(value = "checkIdCard")
     public String checkIdCard(String examineeCd) {
         Date idCheckDttm = new Date();
         mapper.checkIdCard(examineeCd, idCheckDttm);
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(idCheckDttm);
     }
+
     @RequestMapping(value = "reCheck")
     public String reCheck(String examineeCd) {
         Date recheckDttm = new Date();

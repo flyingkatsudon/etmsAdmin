@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 
 @RestController
@@ -27,17 +26,18 @@ import java.util.Date;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ImageController {
 
-    @Value("${path.image.recheck:C:/api/image/recheck}") String pathRecheck;
+    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
     @Value("${path.image.noIdCard:C:/api/image/noIdCard}") String pathNoIdCard;
-    @Value("${path.image.noIdCard:C:/api/image/signature}") String pathSignature;
+    @Value("${path.image.recheck:C:/api/image/recheck}") String pathRecheck;
+    @Value("${path.image.signature:C:/api/image/signature}") String pathSignature;
+    @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
 
     private final ImageService imageService;
     private final AttendHallRepository attendHallRepository;
 
     @RequestMapping(value = "examinee/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> examinee(@PathVariable("fileName") String fileName) {
-        InputStream inputStream = imageService.getExaminee(fileName);
-        return ResponseEntity.ok(new InputStreamResource(inputStream));
+        return imageService.toResponseEntity(pathExaminee, fileName);
     }
 
     @RequestMapping(value = "noIdCard", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
@@ -53,8 +53,7 @@ public class ImageController {
 
     @RequestMapping(value = "noIdCard/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> noIdCard(@PathVariable("fileName") String fileName) {
-        InputStream inputStream = imageService.getNoIdCard(fileName);
-        return ResponseEntity.ok(new InputStreamResource(inputStream));
+        return imageService.toResponseEntity(pathNoIdCard, fileName);
     }
 
     @RequestMapping(value = "recheck", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
@@ -70,8 +69,7 @@ public class ImageController {
 
     @RequestMapping(value = "recheck/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> recheck(@PathVariable("fileName") String fileName) {
-        InputStream inputStream = imageService.getRecheck(fileName);
-        return ResponseEntity.ok(new InputStreamResource(inputStream));
+        return imageService.toResponseEntity(pathRecheck, fileName);
     }
 
     @RequestMapping(value = "signature", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
@@ -86,7 +84,7 @@ public class ImageController {
                             .and(qAttendHall.attend.attendCd.eq(attendCd))
                             .and(qAttendHall.hall.hallCd.eq(hallCd)));
 
-            if(attendHall != null){
+            if (attendHall != null) {
                 attendHall.setSignDttm(new Date());
                 attendHallRepository.save(attendHall);
             }
@@ -100,7 +98,6 @@ public class ImageController {
 
     @RequestMapping(value = "signature/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> signature(@PathVariable("fileName") String fileName) {
-        InputStream inputStream = imageService.getSignature(fileName);
-        return ResponseEntity.ok(new InputStreamResource(inputStream));
+        return imageService.toResponseEntity(pathSignature, fileName);
     }
 }

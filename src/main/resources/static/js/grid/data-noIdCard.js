@@ -25,7 +25,14 @@ define(function (require) {
                     formatter: 'select',
                     editoptions: {value: {true: '예', false: '아니오'}}
                 },
-                {name: 'idCheckDttm', label: '신원확인시간'}
+                {name: 'idCheckDttm', label: '신원확인시간'},
+                {
+                    name: 'btnIdCheck', label: '신원확인', formatter: function (cellValue, option) {
+                    var rowid = option.rowId;
+                    return '<button id="checkBtn" value="' + rowid + '">확인</button>';
+
+                }
+                }
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -36,81 +43,58 @@ define(function (require) {
                 defaults: {
                     url: 'data/noIdCard.json',
                     colModel: colModel,
-                    onSelectRow: function (rowid, status, e) {
-                        var _this = this;
-                        var rowdata = $(this).jqGrid('getRowData', rowid);
-                        var url1 = 'image/examinee/' + rowdata.examineeCd + '.jpg'; // 원본
-                        var url2 = 'image/noIdCard/' + rowdata.examineeCd + '.jpg'; // 대조본
+                    onCellSelect: function (rowid, index, contents, event) {
+                        var colModel = $(this).jqGrid('getGridParam', 'colModel');
+                        if (colModel[index].name == 'btnIdCheck') {
+                            var _this = this;
+                            var checkBtn = '<button id="checkBtn" value="' + rowid + '">확인</button>';
+                            var rowdata = $(this).jqGrid('getRowData', rowid);
+                            var url1 = 'image/examinee/' + rowdata.examineeCd + '.jpg'; // 원본
+                            var url2 = 'image/noIdCard/' + rowdata.examineeCd + '.jpg'; // 대조본
 
-                        var img = new Image();
-                        img.src = url1;
-                        // 원본사진 없는 경우
-                        img.onerror = function () {
                             BootstrapDialog.show({
-                                title: '신분증 미소지자',
-                                message: '촬영한 사진이 업로드 전 입니다. 관리자에게 문의하세요.',
+                                title: rowdata.examineeCd + '::' + rowdata.examineeNm,
+                                message: '이미지 로딩중입니다.',
+                                size: 'size-wide',
                                 closable: true,
+                                onshow: function (dialog) {
+                                    var img = new Image();
+                                    img.src = url2;
+                                    img.onload = function () {
+                                        dialog.$modalBody.html('<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">');
+                                        if (rowdata.idCheckDttm) {
+                                            dialog.getButton('idCheck').disable();
+                                        }
+                                    };
+                                    img.onerror = function () {
+                                        dialog.$modalBody.html('잠시 후 다시 시도하세요');
+                                        dialog.getButton('idCheck').remove();
+                                    }
+                                },
                                 buttons: [{
+                                    id: 'idCheck',
+                                    label: '신원 확인',
+                                    cssClass: 'btn-primary',
+                                    action: function (dialog) {
+                                        $.ajax({
+                                            url: 'data/checkIdCard?examineeCd=' + rowdata.examineeCd,
+                                            success: function (data) {
+                                                $(_this).jqGrid('setCell', rowid, 'idCheckDttm', data);
+                                                dialog.close();
+                                            }
+                                        });
+                                    }
+                                }, {
                                     label: '닫기',
                                     action: function (dialog) {
                                         dialog.close();
                                     }
                                 }]
                             });
-                        };
-                        // 대조본이 없는 경우
-                        img.onload = function () {
-                            img.src = url2;
-                            img.onerror = function () {
-                                BootstrapDialog.show({
-                                    title: '신분증 미소지자',
-                                    message: '촬영한 사진이 업로드 전 입니다. 잠시 후 다시 시도하세요.',
-                                    closable: true,
-                                    buttons: [{
-                                        label: '닫기',
-                                        action: function (dialog) {
-                                            dialog.close();
-                                        }
-                                    }]
-                                });
-                            };
-                            img.onload = function () {
-                                BootstrapDialog.show({
-                                    title: rowdata.examineeCd + '::' + rowdata.examineeNm,
-                                    message: '<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">',
-                                    size: 'size-wide',
-                                    closable: true,
-                                    onshow: function (dialog) {
-                                        if (rowdata.idCheckDttm != "") {
-                                            dialog.getButton('idCheck').disable();
-                                        }
-                                    },
-                                    buttons: [{
-                                        id: 'idCheck',
-                                        label: '신원 확인',
-                                        cssClass: 'btn-primary',
-                                        action: function (dialog) {
-                                            $.ajax({
-                                                url: 'data/checkIdCard?examineeCd=' + rowdata.examineeCd,
-                                                success: function (data) {
-                                                    $(_this).jqGrid('setCell', rowid, 'idCheckDttm', data);
-                                                    dialog.close();
-                                                }
-                                            });
-                                        }
-                                    }, {
-                                        label: '닫기',
-                                        action: function (dialog) {
-                                            dialog.close();
-                                        }
-                                    }]
-                                });
-                            }
                         }
                     }
                 }
             }, options);
-
             this.constructor.__super__.initialize.call(this, opt);
         },
         render: function () {
