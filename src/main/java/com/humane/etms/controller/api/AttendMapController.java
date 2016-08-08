@@ -7,6 +7,7 @@ import com.humane.util.spring.data.JoinDescriptor;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -38,6 +36,20 @@ public class AttendMapController {
                 JoinDescriptor.innerJoin(attendMap.hall),
                 JoinDescriptor.innerJoin(attendMap.attend)
         );
+    }
+
+    @RequestMapping(value = "find", method = RequestMethod.GET)
+    public ResponseEntity<?> findByExaminee(@RequestParam(defaultValue = "") String examineeCd, @RequestParam(defaultValue = "") String examineeNm) {
+        if (StringUtils.isEmpty(examineeCd) && StringUtils.isEmpty(examineeNm)) {
+            return new ResponseEntity<>("parameters empty!", HttpStatus.BAD_REQUEST);
+        }
+
+        QAttendMap attendMap = QAttendMap.attendMap;
+        BooleanBuilder predicate = new BooleanBuilder();
+        if (StringUtils.isNotEmpty(examineeCd)) predicate.and(attendMap.examinee.examineeCd.like(examineeCd));
+        if (StringUtils.isNotEmpty(examineeNm)) predicate.and(attendMap.examinee.examineeNm.like(examineeNm));
+
+        return ResponseEntity.ok(repository.findAll(predicate));
     }
 
     @RequestMapping(method = RequestMethod.POST)
