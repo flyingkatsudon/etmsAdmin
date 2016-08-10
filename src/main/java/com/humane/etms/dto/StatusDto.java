@@ -29,7 +29,7 @@ public class StatusDto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date attendDate;
 
-    @DateTimeFormat(pattern = "HH:mm:ss")
+    @DateTimeFormat(pattern = "HH:mm")
     @JsonSerialize(using = TimeSerializer.class)
     private Date attendTime;
     private String hallCd;

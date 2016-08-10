@@ -165,8 +165,7 @@ public class DownloadController {
         if (noIdCardList != null) {
             for (File f : noIdCardList) {
                 if (f.isFile()) {
-                    File renamed = new File(FilenameUtils.getBaseName(f.getName()) + "_1.jpg");
-                    zipFile.addFile(dataPath + "/신분증 미소지자 사진", renamed);
+                    zipFile.addFile(dataPath + "/신분증 미소지자 사진", f, FilenameUtils.getBaseName(f.getName()) + "_1.jpg");
                 }
             }
         }
@@ -178,8 +177,7 @@ public class DownloadController {
         if (recheckList != null){
             for (File f : recheckList) {
                 if (f.isFile()) {
-                    File renamed = new File(FilenameUtils.getBaseName(f.getName()) + "_2.jpg");
-                    zipFile.addFile(dataPath + "/재확인 대상자 사진", renamed);
+                    zipFile.addFile(dataPath + "/재확인 대상자 사진", f, FilenameUtils.getBaseName(f.getName()) + "_2.jpg");
                 }
             }
         }

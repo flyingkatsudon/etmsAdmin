@@ -63,4 +63,7 @@ public class ExamineeDto extends StatusDto {
     private Date printDttm;
 
     private BufferedImage univLogo;
+
+    private String hallCd;
+    private String attendHallCd;
 }

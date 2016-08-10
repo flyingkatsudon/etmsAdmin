@@ -20,10 +20,12 @@ define(function (require) {
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
                 {name: 'recheckDttm', label: '신원확인시간'},
-                {name: 'btnRecheck', label: '신원확인', formatter: function (cellValue, option) {
+                {
+                    name: 'btnRecheck', label: '신원확인', formatter: function (cellValue, option) {
                     var rowid = option.rowId;
                     return '<button id="checkBtn" value="' + rowid + '">확인</button>';
-                }}
+                    }
+                }
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -34,63 +36,55 @@ define(function (require) {
                 defaults: {
                     url: 'data/recheck.json',
                     colModel: colModel,
-                    onCellSelect: function(rowid, index, contents, event)
-                    {
-                        var colModel = $(this).jqGrid('getGridParam','colModel');
-                        if(colModel[index].name == 'btnRecheck') {
+                    onCellSelect: function (rowid, index, contents, event) {
+                        var colModel = $(this).jqGrid('getGridParam', 'colModel');
+                        if (colModel[index].name == 'btnRecheck') {
                             var _this = this;
                             var checkBtn = '<button id="checkBtn" value="' + rowid + '">확인</button>';
                             var rowdata = $(this).jqGrid('getRowData', rowid);
                             var url1 = 'image/examinee/' + rowdata.examineeCd + '.jpg'; // 원본
                             var url2 = 'image/recheck/' + rowdata.examineeCd + '.jpg'; // 대조본
 
-                            var img = new Image();
-                            img.src = url2;
-                            img.onload = function(){
-                                BootstrapDialog.show({
-                                    title: rowdata.examineeCd + '::' + rowdata.examineeNm,
-                                    message: '<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">',
-                                    size: 'size-wide',
-                                    closable: true,
-                                    onshow: function (dialog) {
-                                        if (rowdata.recheckDttm != checkBtn) {
+                            BootstrapDialog.show({
+                                title: rowdata.examineeCd + '::' + rowdata.examineeNm,
+                                message: '<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">',
+                                size: 'size-wide',
+                                closable: true,
+                                onshow: function (dialog) {
+                                    var img = new Image();
+                                    img.src = url2;
+                                    img.onload = function () {
+                                        dialog.$modalBody.html('<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">');
+                                        if (rowdata.recheckDttm) {
                                             dialog.getButton('recheck').disable();
                                         }
-                                    },
-                                    buttons: [{
-                                        id: 'recheck',
-                                        label: '신원 확인',
-                                        cssClass: 'btn-primary',
-                                        action: function (dialog) {
-                                            $.ajax({
-                                                url: 'data/reCheck?examineeCd=' + rowdata.examineeCd,
-                                                success: function (data) {
-                                                    $(_this).jqGrid('setCell', rowid, 'recheckDttm', data);
-                                                    dialog.close();
-                                                }
-                                            });
-                                        }
-                                    }, {
-                                        label: '닫기',
-                                        action: function (dialog) {
-                                            dialog.close();
-                                        }
-                                    }]
-                                });
-                            };
-                            img.onerror = function() {
-                                BootstrapDialog.show({
-                                    title: '신분증 미소지자',
-                                    message: '잠시 후 다시 시도하세요.',
-                                    buttons:[{
-                                        label: '닫기',
-                                        action: function(dialog){
-                                            dialog.close();
-                                        }
-                                    }]
-                                });
-                            };
-                        }
+                                    };
+                                    img.onerror = function () {
+                                        dialog.$modalBody.html('잠시 후 다시 시도하세요');
+                                        dialog.getButton('recheck').remove();
+                                    }
+                                },
+                                buttons: [{
+                                    id: 'recheck',
+                                    label: '신원 확인',
+                                    cssClass: 'btn-primary',
+                                    action: function (dialog) {
+                                        $.ajax({
+                                            url: 'data/reCheck?examineeCd=' + rowdata.examineeCd,
+                                            success: function (data) {
+                                                $(_this).jqGrid('setCell', rowid, 'recheckDttm', data);
+                                                dialog.close();
+                                            }
+                                        });
+                                    }
+                                }, {
+                                    label: '닫기',
+                                    action: function (dialog) {
+                                        dialog.close();
+                                    }
+                                }]
+                            });
+                        };
                     }
                 }
             }, options);

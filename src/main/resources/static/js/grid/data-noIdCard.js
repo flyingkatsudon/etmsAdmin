@@ -30,8 +30,7 @@ define(function (require) {
                     name: 'btnIdCheck', label: '신원확인', formatter: function (cellValue, option) {
                     var rowid = option.rowId;
                     return '<button id="checkBtn" value="' + rowid + '">확인</button>';
-
-                }
+                    }
                 }
             ];
 

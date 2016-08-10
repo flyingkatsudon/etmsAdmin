@@ -7,6 +7,7 @@ import com.humane.etms.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.dynamicreports.report.exception.DRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
@@ -190,5 +191,14 @@ public class DataController {
         Date recheckDttm = new Date();
         mapper.recheck(examineeCd, recheckDttm);
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(recheckDttm);
+    }
+
+    @RequestMapping(value = "uplus.{format:xls|xlsx}")
+    public ResponseEntity uplus(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
+        return JasperReportsExportHelper.toResponseEntity(
+                "jrxml/data-uplus.jrxml"
+                , format
+                , mapper.examinee(param, pageable).getContent()
+        );
     }
 }
