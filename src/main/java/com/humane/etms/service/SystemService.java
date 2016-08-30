@@ -89,13 +89,11 @@ public class SystemService {
         }
 
         // delete photo
-        if (photo) {
-            imageService.deleteImage(pathExaminee, pathNoIdCard, pathRecheck, pathSignature);
-        }
+        if (photo) imageService.deleteImage(pathExaminee, pathNoIdCard, pathRecheck, pathSignature);
     }
 
     @Transactional
-    public ResponseEntity<String> initData(boolean photo) {
+    public ResponseEntity<String> initData() {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
         QAttendMap attendMap = QAttendMap.attendMap;
@@ -117,9 +115,7 @@ public class SystemService {
                 .setNull(QAttendHall.attendHall.signDttm)
                 .execute();
 
-        if (photo) {
-            imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
-        }
+        imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
 
         return ResponseEntity.ok("OK");
     }

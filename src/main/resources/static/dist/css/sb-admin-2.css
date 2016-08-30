@@ -211,7 +211,35 @@ body {
 }
 
 .login-panel {
-    margin-top: 25%;
+    margin-top: 50%;
+    text-align: center;
+    background: #e8e8e8;
+    border-radius: 5%;
+}
+
+.login-heading {
+}
+
+.login-body {
+    padding: 10%;
+}
+
+.logo-margin {
+    margin: 10%;
+}
+
+.login-title {
+    font-size: 20px;
+    font-weight:bold;
+}
+
+.login-btn {
+    margin-top: 20%;
+}
+
+.login-footer {
+    padding-top: 1%;
+    text-align:center;
 }
 
 .flot-chart {
@@ -299,14 +327,95 @@ table.dataTable thead .sorting:after {
     font-size: 40px;
 }
 
-.panel-green {
-    border-color: #5cb85c;
+.huge h4 {
+    font-size: 35px
+}
+
+.mid {
+    font-size: 25px;
+}
+
+.panel-size {
+    width: 20%;
+    height: 80px;
+    float: left;
+    padding: 0 10px 0 10px;
+}
+
+h4 {
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.img-page {
+    width: 30px;
+    padding: 4% 5% 0 0;
+    float: left;
+}
+
+.main-font {
+    font-size: 40px;
+}
+
+.main-row {
+    margin-top: 100px;
+}
+
+.main-large {
+    height: 285px;
+    padding: 90px 30px;
+}
+
+.main-small {
+    height: 130px;
+    padding: 10px 30px;
+}
+
+.ui-th-column{
+    text-align:center;
+}
+
+.panel-blue .panel-custom {
+    border-color: #62a7e2!important;
+    background-color: #62a7e2!important;
+}
+.panel-green .panel-custom {
+    border-color: #79d079!important;
+    background-color: #79d079!important;
+}
+.panel-yellow .panel-custom {
+    border-color: #e8b873!important;
+    background-color: #e8b873!important;
+}
+.panel-red .panel-custom {
+    border-color: #ec9592!important;
+    background-color: #ec9592!important;
+}
+.panel-light-gray .panel-custom {
+    border-color: #c3bcbc!important;
+    background-color: #c3bcbc!important;
+}
+
+.panel-custom {
+    height: 55px;
+}
+
+.panel-blue .panel-heading{
+    border-radius: 5px;
+    color: #fff;
+    background-color: #266296;
+}
+
+.panel-light-gray .panel-heading{
+    border-radius: 5px;
+    color: #fff;
+    background-color: #696868;
 }
 
 .panel-green .panel-heading {
-    border-color: #5cb85c;
+    border-radius: 5px;
     color: #fff;
-    background-color: #5cb85c;
+    background-color: #189018;
 }
 
 .panel-green a {
@@ -317,14 +426,10 @@ table.dataTable thead .sorting:after {
     color: #3d8b3d;
 }
 
-.panel-red {
-    border-color: #d9534f;
-}
-
 .panel-red .panel-heading {
-    border-color: #d9534f;
+    border-radius: 5px;
     color: #fff;
-    background-color: #d9534f;
+    background-color: #f9625c;
 }
 
 .panel-red a {
@@ -335,14 +440,10 @@ table.dataTable thead .sorting:after {
     color: #b52b27;
 }
 
-.panel-yellow {
-    border-color: #f0ad4e;
-}
-
 .panel-yellow .panel-heading {
-    border-color: #f0ad4e;
+    border-radius: 5px;
     color: #fff;
-    background-color: #f0ad4e;
+    background-color: #e8a039;
 }
 
 .panel-yellow a {

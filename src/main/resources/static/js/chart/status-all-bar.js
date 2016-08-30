@@ -28,13 +28,13 @@ define(function (require) {
         }, search: function (o) {
             var _this = this;
             $.ajax({
-                url: 'status/all.chart',
+                url: 'status/all',
                 data: o
             }).done(function (response) {
                 _this.chart.setData([{
                     name: '응시현황',
-                    attendCnt: response.attendCnt,
-                    absentCnt: response.absentCnt
+                    attendCnt: response[0].attendCnt,
+                    absentCnt: response[0].absentCnt
                 }]);
             });
         }

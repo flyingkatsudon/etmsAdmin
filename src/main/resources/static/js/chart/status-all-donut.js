@@ -27,12 +27,12 @@ define(function (require) {
         }, search: function (o) {
             var _this = this;
             $.ajax({
-                url: 'status/all.chart',
+                url: 'status/all',
                 data: o
             }).done(function (response) {
                 _this.chart.setData([
-                    {label: '응시율', color: '#0B62A4', value: response.attendPer},
-                    {label: '결시율', color: '#7A92A3', value: response.absentPer}
+                    {label: '응시율', color: '#0B62A4', value: response[0].attendPer},
+                    {label: '결시율', color: '#7A92A3', value: response[0].absentPer}
                 ]);
             });
         }

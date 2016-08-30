@@ -25,7 +25,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "init")
-    public void init(@RequestParam(defaultValue = "true") boolean photo) {
-        systemService.initData(photo);
+    public void init() {
+        systemService.initData();
     }
 }

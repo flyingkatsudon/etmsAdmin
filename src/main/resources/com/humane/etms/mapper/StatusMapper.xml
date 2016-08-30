@@ -137,6 +137,14 @@
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
             </if>
         </where>
+        GROUP BY
+            admission.admission_nm
+            , attend.type_nm
+            , attend.attend_date
+            , attend.attend_time
+            , hall.head_nm
+            , hall.bldg_nm
+            , hall.hall_nm
         ) AS result
     </select>
 
@@ -180,10 +188,10 @@
         attend.type_nm,
         attend.attend_date,
         attend.attend_time,
+        examinee.major_nm,
         attend_map.group_nm,
         hall.head_nm,
         hall.bldg_nm,
-        hall.hall_nm,
-        examinee.major_nm
+        hall.hall_nm
     </select>
 </mapper>
