@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-07-20T12:06:32 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="attachment" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="59edc4d7-0d57-40dc-b929-062869ae9b2f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="examineeNm" class="java.lang.String"/>
+	<field name="examineeCd" class="java.lang.String"/>
+	<field name="deptNm" class="java.lang.String"/>
+	<field name="attendDate" class="java.util.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="73" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="483" height="73" uuid="6a06805b-d83a-4489-9db9-41545319f112"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="29" isBold="false" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[각    서]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="120" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="90" height="40" uuid="61f41920-c5fc-40a0-8645-a0fd59e7710e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="15" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[성      명:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="90" height="40" uuid="df563284-2cd0-4c54-b0f6-43ffdb5478f5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="15" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[수험번호:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="160" height="40" uuid="ffbea45b-b993-4441-a59f-7888cf7094a3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="15" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[모집단위(지원학과):]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="0" width="392" height="40" uuid="03d73204-8b5c-411e-a420-c2da24d46760">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="15" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examineeNm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="40" width="392" height="40" uuid="6bef8d96-58c4-48a6-bb4d-9a2eeeed5f6a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="15" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examineeCd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="80" width="322" height="40" uuid="07c80b94-896d-40e9-8a8f-9fbd485f5da4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="15" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deptNm}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="260" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="0" y="0" width="483" height="169" uuid="72cda04a-c896-4f67-b481-8e958b0128ee"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[상기 본인은 2017학년도 재외국민 필답/면접고사에 신분증을 미지참하고 응시하였기에]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="107" width="483" height="85" uuid="19352e32-87e3-4680-b4ec-80f6a4c5e110"/>
+				<textElement>
+					<font size="18" isBold="true" isUnderline="true" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[2016년 8월 2일(화) 17:00까지 신분증과 본 각서를 지참하고 서울캠퍼스 입학처(신본관 1층)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="131" width="483" height="129" uuid="64337eac-c5bb-44c2-991d-8849452c76e4"/>
+				<textElement verticalAlignment="Top">
+					<font size="18" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[				 			   로 방문하여 
+본인 신분확인을 하겠습니다. 만약 기간 내에 방문하여 
+본인 확인을 하지 않을 경우 합격자 선발대상에서 제외되는데 동의하며 이에 대하여 어떠한 이의제기도 하지 않을 것을 서약합니다.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="185">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<staticText>
+				<reportElement x="0" y="0" width="483" height="63" uuid="51f8dd42-7914-4f46-ae1f-2db2ffc2384a"/>
+				<textElement textAlignment="Center">
+					<font size="18" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[2016년 7월 30일]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="63" width="483" height="61" uuid="0a9d324a-4beb-4c89-aa89-211e34167159"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[서약자		(성명)				(서명)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="124" width="483" height="61" uuid="e19a28c6-1a99-483c-aef5-2f8044c24b23"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="18" pdfFontName="HYSMyeongJo-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[한양대학교 입학처장 귀하]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>
