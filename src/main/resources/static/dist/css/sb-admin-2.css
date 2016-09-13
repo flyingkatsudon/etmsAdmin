@@ -335,6 +335,73 @@ table.dataTable thead .sorting:after {
     font-size: 25px;
 }
 
+.chosen {
+    width: 80%;
+    padding: 1%;
+    margin-right: 25px;
+    background-color: #aeb1b3;
+    border: 1px solid #aeb1b3;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-setting {
+    width: 15%;
+}
+
+.btn-regist {
+    width: 15%;
+    background-color: #CCA63D;
+    border: 1px solid #CCA63D;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-delete {
+    width: 20%;
+    background-color: #CC3D3D;
+    border: 1px solid #CC3D3D;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-init {
+    width: 20%;
+    background-color: #673AB7;
+    border: 1px solid #673AB7;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-download {
+    width: 20%;
+    background-color: #476600;
+    border: 1px solid #476600;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.btn-others {
+    width: 79px;
+    background-color: #ab6a65;
+    border: 1px solid #ab6a65;
+    border-radius: 5px;
+    color: #eee;
+}
+
+.textbox {
+    width: 400px;
+}
+
+.panel-height {
+    height:90px;
+    padding: 5% 0 0 3%;
+}
+
+.align-right {
+    text-align: right;
+}
+
 .panel-size {
     width: 20%;
     height: 80px;
