@@ -272,7 +272,7 @@
         hall.hall_nm,
         attend_paper.paper_cd,
         attend_paper.paper_no,
-        concat(attend.attend_date,' ',attend.attend_time) as attendDttm,
+        concat(attend.attend_date,' ',attend.attend_time) as attend_d_t,
         attend_paper.reg_dttm
         FROM attend_paper
         INNER JOIN attend ON attend.attend_cd = attend_paper.attend_cd

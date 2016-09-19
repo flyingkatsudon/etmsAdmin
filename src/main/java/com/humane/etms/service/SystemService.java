@@ -42,6 +42,8 @@ public class SystemService {
         QAttend attend = QAttend.attend;
         QAttendHall attendHall = QAttendHall.attendHall;
         QAdmission admission = QAdmission.admission;
+        QAttendPaper attendPaper = QAttendPaper.attendPaper;
+        QHall hall = QHall.hall;
 
         queryFactory.delete(attendHall).execute();
 
@@ -52,6 +54,10 @@ public class SystemService {
 
         while (scrollAttendMap.next()) {
             String examineeCd = scrollAttendMap.getString(0);
+            queryFactory.delete(attendPaper)
+                    .where(attendPaper.examinee.examineeCd.eq(examineeCd))
+                    .execute();
+
             queryFactory.delete(attendMap)
                     .where(attendMap.examinee.examineeCd.eq(examineeCd))
                     .execute();
@@ -67,6 +73,11 @@ public class SystemService {
         scrollAttendMap.close();
 
         queryFactory.delete(attendHall).execute();
+
+        try {
+            queryFactory.delete(QHall.hall).execute();
+        } catch (Exception ignored) {
+        }
 
         ScrollableResults scrollAttend = queryFactory.select(attend.admission.admissionCd)
                 .distinct()
