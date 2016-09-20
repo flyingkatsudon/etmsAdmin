@@ -32,4 +32,11 @@ public class FormHallVo {
     @Column(name = "고사건물") private String bldgNm;
     @Column(name = "고사실") private String hallNm;
     @Column(name = "예비고사실여부") private Boolean isEtc;
+
+    @Column(name = "수험번호 자릿수") private String attendLen;
+    @Column(name = "답안지 교체여부") private Boolean isPaperChange;
+    @Column(name = "답안지 매수") private String paperCnt;
+    @Column(name = "답안지 자릿수") private String paperLen;
+    @Column(name = "답안지 헤더") private String paperHeader;
+
 }

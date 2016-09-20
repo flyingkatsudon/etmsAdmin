@@ -40,6 +40,11 @@ public class ImageController {
         return imageService.toResponseEntity(pathExaminee, fileName);
     }
 
+    @RequestMapping(value = "univLogo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> univLogo() {
+        return imageService.toResponseEntity(pathUnivLogo, "univLogo.png");
+    }
+
     @RequestMapping(value = "noIdCard", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> noIdCard(@RequestParam("file") MultipartFile file) {
         try {

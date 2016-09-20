@@ -63,7 +63,7 @@ public class DataController {
                 e.printStackTrace();
             }
 
-            try (InputStream is = imageService.getFile(pathUnivLogo, "symbol_03.jpg")) {
+            try (InputStream is = imageService.getFile(pathUnivLogo, "univLogo.png")) {
                 BufferedImage image = ImageIO.read(is);
                 item.setUnivLogo(image);
             } catch (IOException e) {

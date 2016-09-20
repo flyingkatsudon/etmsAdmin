@@ -46,8 +46,8 @@
                 <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
-                <if test="param.examineeCd != null">AND examinee.examinee_cd = #{param.examineeCd}</if>
-                <if test="param.examineeNm != null">AND examinee.examinee_nm = #{param.examineeNm}</if>
+                <if test="param.examineeCd != null">AND examinee.examinee_cd LIKE '%' #{param.examineeCd} '%'</if>
+                <if test="param.examineeNm != null">AND examinee.examinee_nm LIKE '%' #{param.examineeNm} '%'</if>
                 <if test="param.attendHeadNm != null">AND attend_hall.head_nm = #{param.attendHeadNm}</if>
                 <if test="param.attendBldgNm != null">AND attend_hall.bldg_nm = #{param.attendBldgNm}</if>
                 <if test="param.attendHallNm != null">AND attend_hall.hall_nm = #{param.attendHallNm}</if>

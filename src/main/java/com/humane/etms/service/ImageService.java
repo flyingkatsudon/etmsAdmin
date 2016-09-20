@@ -19,7 +19,7 @@ public class ImageService {
             InputStream inputStream = getFile(path, fileName);
             return ResponseEntity.ok(new InputStreamResource(inputStream));
         } catch (Exception e) {
-            log.error("i{}", e.getMessage());
+            log.error("{}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
