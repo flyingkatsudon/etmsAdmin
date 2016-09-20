@@ -19,6 +19,7 @@ public class Attend {
 
     @Column(columnDefinition = "int default 9") private int attendLen;
     @Column(columnDefinition = "bit default 0") private boolean isUseScanner;  // 외부 스캐너 사용여부
+    @Column(columnDefinition = "bit default 0") private boolean isUseGroup;  // 조 사용 여부
     @Column(columnDefinition = "int default 0") private int paperCnt;
     @Column(columnDefinition = "int default 5") private int paperLen;  // 답안지 자리수.
     @Column(columnDefinition = "bit default 1") private boolean isPaperChange;
