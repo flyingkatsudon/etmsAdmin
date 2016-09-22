@@ -20,10 +20,10 @@ public class Attend {
     @Column(columnDefinition = "int default 9") private int attendLen;
     @Column(columnDefinition = "bit default 0") private boolean isUseScanner;  // 외부 스캐너 사용여부
     @Column(columnDefinition = "bit default 0") private boolean isUseGroup;  // 조 사용 여부
-    @Column(columnDefinition = "int default 0") private int paperCnt;
-    @Column(columnDefinition = "int default 5") private int paperLen;  // 답안지 자리수.
-    @Column(columnDefinition = "bit default 1") private boolean isPaperChange;
-    @Column String paperHeader;
+    @Column(columnDefinition = "int default 0") private int paperCnt; // 답안지 매수
+    @Column(columnDefinition = "int default 5") private int paperLen;  // 답안지 자리수
+    @Column(columnDefinition = "bit default 1") private boolean isPaperChange; // 답안지 교체 허용여부
+    @Column String paperHeader; // 답안지 헤더값
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Temporal(TemporalType.DATE)
@@ -34,4 +34,9 @@ public class Attend {
     @Temporal(TemporalType.TIME)
     private Date attendTime; // 출결시간
     private String typeNm;
+
+    // 각서
+    private String printTitle;
+    private String printContent;
+    private String printSign;
 }

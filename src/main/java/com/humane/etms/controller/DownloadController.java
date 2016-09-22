@@ -70,7 +70,7 @@ public class DownloadController {
 
         String statusPath = "응시율 통계";
         String dataPath = "특이사항 리스트";
-        String signPath = "감독관 서명 사진";
+        String signPath = "감독관 서명";
 
         // entry 생성
         File fileAttend = JasperReportsExportHelper.toXlsxFile(
@@ -165,7 +165,7 @@ public class DownloadController {
         if (noIdCardList != null) {
             for (File f : noIdCardList) {
                 if (f.isFile()) {
-                    zipFile.addFile(dataPath + "/신분증 미소지자 사진", f, FilenameUtils.getBaseName(f.getName()) + "_1.jpg");
+                    zipFile.addFile(dataPath + "/신분증 미소지자 사진", f);
                 }
             }
         }
@@ -177,7 +177,7 @@ public class DownloadController {
         if (recheckList != null){
             for (File f : recheckList) {
                 if (f.isFile()) {
-                    zipFile.addFile(dataPath + "/재확인 대상자 사진", f, FilenameUtils.getBaseName(f.getName()) + "_2.jpg");
+                    zipFile.addFile(dataPath + "/재확인 대상자 사진", f);
                 }
             }
         }

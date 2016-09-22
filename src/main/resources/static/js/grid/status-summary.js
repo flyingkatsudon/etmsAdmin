@@ -12,9 +12,9 @@ define(function (require) {
             $.ajax({
                 url: 'status/all',
                 success: function (response) {
-                    _this.$('#examineeCnt').html(response.examineeCnt+"명");
-                    _this.$('#attendCnt').html(response.attendCnt+"명");
-                    _this.$('#absentCnt').html(response.absentCnt+"명");
+                    _this.$('#examineeCnt').html(response.examineeCnt);
+                    _this.$('#attendCnt').html(response.attendCnt);
+                    _this.$('#absentCnt').html(response.absentCnt);
                     _this.$('#attendPer').html(response.attendPer+"%");
                     _this.$('#absentPer').html(response.absentPer+"%");
                 }
