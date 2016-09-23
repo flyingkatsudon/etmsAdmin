@@ -34,9 +34,4 @@ public class Attend {
     @Temporal(TemporalType.TIME)
     private Date attendTime; // 출결시간
     private String typeNm;
-
-    // 각서
-    private String printTitle;
-    private String printContent;
-    private String printSign;
 }
