@@ -46,7 +46,8 @@ public class AttendMapController {
 
         QAttendMap attendMap = QAttendMap.attendMap;
         BooleanBuilder predicate = new BooleanBuilder();
-        if (StringUtils.isNotEmpty(examineeCd)) predicate.and(attendMap.examinee.examineeCd.like(examineeCd.concat("%")));
+        if (StringUtils.isNotEmpty(examineeCd))
+            predicate.and(attendMap.examinee.examineeCd.like(examineeCd.concat("%")));
         if (StringUtils.isNotEmpty(examineeNm)) predicate.and(attendMap.examinee.examineeNm.eq(examineeNm));
 
         return ResponseEntity.ok(repository.findAll(predicate));
@@ -54,8 +55,9 @@ public class AttendMapController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<AttendMap> merge(@RequestBody AttendMap attendMap) {
-        // 채점자는 채점자의 내용만 손대야 한다.
+        // 출결관리자는 출결데이터만 손댄다.
         QAttendMap qAttendMap = QAttendMap.attendMap;
+        // 기존 여부 확인
         AttendMap find = repository.findOne(new BooleanBuilder()
                 .and(qAttendMap.attend.eq(attendMap.getAttend()))
                 .and(qAttendMap.examinee.eq(attendMap.getExaminee()))
@@ -63,47 +65,14 @@ public class AttendMapController {
         );
         AttendMap rtn = null;
         if (find != null) {
-            attendMap.setIsNoIdCard(find.getIsNoIdCard());
-            rtn = repository.save(attendMap);
-        }
-
-        return new ResponseEntity<>(rtn, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "mgr", method = RequestMethod.POST)
-    public ResponseEntity<AttendMap> mgr(@RequestBody AttendMap attendMap) {
-        // 중간관리자는 중간관리자의 내용만 손대야한다.
-        QAttendMap qAttendMap = QAttendMap.attendMap;
-        AttendMap find = repository.findOne(new BooleanBuilder()
-                .and(qAttendMap.attend.eq(attendMap.getAttend()))
-                .and(qAttendMap.examinee.eq(attendMap.getExaminee()))
-                .and(qAttendMap.hall.eq(attendMap.getHall()))
-        );
-        AttendMap rtn = null;
-        if (find != null) {
-            find.setIsNoIdCard(attendMap.getIsNoIdCard());
+            find.setIsCheck(attendMap.getIsCheck()); // 신원재확인 대상자
+            find.setIsMidOut(attendMap.getIsMidOut()); // 중도퇴실자
+            find.setIsCheat(attendMap.getIsCheat()); // 부정행위 대상자
+            find.setMemo(attendMap.getMemo()); // 메모
             rtn = repository.save(find);
         }
 
         return new ResponseEntity<>(rtn, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "mgr/list", method = RequestMethod.POST)
-    public ResponseEntity mgrList(@RequestBody Iterable<AttendMap> attendMaps) {
-        // 중간관리자는 중간관리자의 내용만 손대야한다.
-        QAttendMap qAttendMap = QAttendMap.attendMap;
-        attendMaps.forEach(attendMap -> {
-            AttendMap find = repository.findOne(new BooleanBuilder()
-                    .and(qAttendMap.attend.eq(attendMap.getAttend()))
-                    .and(qAttendMap.examinee.eq(attendMap.getExaminee()))
-                    .and(qAttendMap.hall.eq(attendMap.getHall()))
-            );
-            if (find != null) {
-                find.setIsNoIdCard(attendMap.getIsNoIdCard());
-                repository.save(find);
-            }
-        });
-        return ResponseEntity.ok(null);
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
@@ -118,11 +87,55 @@ public class AttendMapController {
                     .and(qAttendMap.hall.eq(attendMap.getHall()))
             );
             if (find != null) {
-                attendMap.setIsNoIdCard(find.getIsNoIdCard());
-                rtn.add(repository.save(attendMap));
+                find.setIsCheck(attendMap.getIsCheck()); // 신원재확인 대상자
+                find.setIsMidOut(attendMap.getIsMidOut()); // 중도퇴실자
+                find.setIsCheat(attendMap.getIsCheat()); // 부정행위 대상자
+                find.setMemo(attendMap.getMemo()); // 메모
+
+                rtn.add(repository.save(find));
             }
         });
 
         return new ResponseEntity<>(rtn, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "mgr", method = RequestMethod.POST)
+    public ResponseEntity<AttendMap> mgr(@RequestBody AttendMap attendMap) {
+        // 중간관리자는 중간관리자의 내용만 손대야한다.
+        QAttendMap qAttendMap = QAttendMap.attendMap;
+        AttendMap find = repository.findOne(new BooleanBuilder()
+                .and(qAttendMap.attend.eq(attendMap.getAttend()))
+                .and(qAttendMap.examinee.eq(attendMap.getExaminee()))
+                .and(qAttendMap.hall.eq(attendMap.getHall()))
+        );
+        AttendMap rtn = null;
+
+        if (find != null) {
+            find.setIsNoIdCard(attendMap.getIsNoIdCard()); // 신분증 미소지자
+            rtn = repository.save(find);
+        }
+
+        return new ResponseEntity<>(rtn, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "mgr/list", method = RequestMethod.POST)
+    public ResponseEntity mgrList(@RequestBody Iterable<AttendMap> attendMaps) {
+        // 중간관리자는 중간관리자의 내용만 손대야한다.
+        QAttendMap qAttendMap = QAttendMap.attendMap;
+        ArrayList<AttendMap> rtn = new ArrayList<>();
+
+        attendMaps.forEach(attendMap -> {
+            AttendMap find = repository.findOne(new BooleanBuilder()
+                    .and(qAttendMap.attend.eq(attendMap.getAttend()))
+                    .and(qAttendMap.examinee.eq(attendMap.getExaminee()))
+                    .and(qAttendMap.hall.eq(attendMap.getHall()))
+            );
+            if (find != null) {
+                find.setIsNoIdCard(attendMap.getIsNoIdCard());
+
+                rtn.add(repository.save(find));
+            }
+        });
+        return ResponseEntity.ok(rtn);
     }
 }
