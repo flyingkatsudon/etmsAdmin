@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.File;
 
 @Service
 @Slf4j
@@ -66,6 +67,8 @@ public class SystemService {
                 queryFactory.delete(examinee)
                         .where(examinee.examineeCd.eq(examineeCd))
                         .execute();
+
+                if (photo) new File(pathExaminee, examineeCd + ".jpg").delete();
             } catch (Exception e) {
                 log.error("{}", e.getMessage());
             }
@@ -100,7 +103,7 @@ public class SystemService {
         }
 
         // delete photo
-        if (photo) imageService.deleteImage(pathExaminee, pathNoIdCard, pathRecheck, pathSignature);
+        if (photo) imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
     }
 
     @Transactional
