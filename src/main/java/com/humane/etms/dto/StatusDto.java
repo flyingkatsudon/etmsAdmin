@@ -13,11 +13,13 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StatusDto implements Serializable {
+    private List<String> userAdmissions;
     private String admissionCd;
     private String admissionNm;
     private String attendNm;

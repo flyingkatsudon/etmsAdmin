@@ -24,6 +24,7 @@ public class StatusController {
 
     @RequestMapping(value = "all")
     public ResponseEntity all(StatusDto statusDto) {
+        log.debug("{}", statusDto);
         return ResponseEntity.ok(mapper.all(statusDto));
     }
 
