@@ -13,8 +13,6 @@ import javax.persistence.*;
 @ToString
 public class UserAdmission {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
-
-    @Column(nullable = false) private String admissionCd;
-
-    @ManyToOne @JoinColumn(name = "userId") private User user;
+    @ManyToOne @JoinColumn(name = "admissionCd", nullable = false) private Admission admission;
+    @ManyToOne @JoinColumn(name = "userId", nullable = false) private User user;
 }

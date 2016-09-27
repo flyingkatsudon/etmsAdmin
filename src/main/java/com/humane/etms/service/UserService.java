@@ -19,14 +19,15 @@ import java.util.Set;
 @Service("userService")
 public class UserService implements UserDetailsService {
 
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         com.humane.etms.model.User user = userRepository.findOne(userId);
         List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRoles());
-        List<String> admissions = buildUserAdmission(user.getUserAdmissions());
+        String admissions = buildUserAdmission(user.getUserAdmissions());
 
         return new CustomUserDetails(user.getUserId(), user.getPassword(), authorities, admissions);
     }
@@ -40,14 +41,16 @@ public class UserService implements UserDetailsService {
         return authorities;
     }
 
-    private List<String> buildUserAdmission(Set<UserAdmission> userAdmissions) {
-        List<String> admissions = null;
+    private String buildUserAdmission(Set<UserAdmission> userAdmissions) {
         if (userAdmissions != null && userAdmissions.size() > 0) {
-            admissions = new ArrayList<>();
-            for (UserAdmission userAdmission : userAdmissions) {
-                admissions.add(userAdmission.getAdmissionCd());
+            UserAdmission[] items = userAdmissions.toArray(new UserAdmission[userAdmissions.size()]);
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < items.length; i++) {
+                sb.append("'").append(items[i].getAdmission().getAdmissionCd()).append("'");
+                if (i != userAdmissions.size() - 1) sb.append(",");
             }
+            return sb.toString();
         }
-        return admissions;
+        return null;
     }
 }

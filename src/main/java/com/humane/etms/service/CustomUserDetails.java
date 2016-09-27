@@ -9,10 +9,10 @@ import java.util.Collection;
 public class CustomUserDetails extends User {
 
     @Getter
-    private Collection<String> admissions;
+    private String userAdmissions;
 
-    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities, Collection<String> admissions) {
+    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities, String userAdmissions) {
         super(username, password, authorities);
-        this.admissions = admissions;
+        this.userAdmissions = userAdmissions;
     }
 }
