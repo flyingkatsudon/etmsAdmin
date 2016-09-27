@@ -46,8 +46,8 @@ public class AttendMapController {
 
         QAttendMap attendMap = QAttendMap.attendMap;
         BooleanBuilder predicate = new BooleanBuilder();
+        if (StringUtils.isNotEmpty(examineeCd)) predicate.and(attendMap.examinee.examineeCd.like(examineeCd.concat("%")));
         if (StringUtils.isNotEmpty(examineeNm)) predicate.and(attendMap.examinee.examineeNm.like(examineeNm.concat("%")));
-        if (StringUtils.isNotEmpty(examineeCd)) predicate.and(attendMap.examinee.examineeCd.eq(examineeCd));
 
         return ResponseEntity.ok(repository.findAll(predicate));
     }
