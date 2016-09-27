@@ -111,6 +111,8 @@ public class AttendMapController {
         AttendMap rtn = null;
 
         if (find != null) {
+            find.setAttendHall(attendMap.getAttendHall());
+            find.setAttendDttm(attendMap.getAttendDttm());
             find.setIsNoIdCard(attendMap.getIsNoIdCard()); // 신분증 미소지자
             rtn = repository.save(find);
         }
@@ -131,6 +133,8 @@ public class AttendMapController {
                     .and(qAttendMap.hall.eq(attendMap.getHall()))
             );
             if (find != null) {
+                find.setAttendHall(attendMap.getAttendHall());
+                find.setAttendDttm(attendMap.getAttendDttm());
                 find.setIsNoIdCard(attendMap.getIsNoIdCard());
 
                 rtn.add(repository.save(find));
