@@ -9,12 +9,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.awt.image.BufferedImage;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamineeDto extends StatusDto {
+    private List<String> userAdmissions;
     private String examineeCd;
     private String examineeNm;
     private String typeNm;

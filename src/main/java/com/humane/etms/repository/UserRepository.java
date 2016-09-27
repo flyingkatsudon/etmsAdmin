@@ -5,6 +5,5 @@ import com.humane.util.spring.data.QueryDslJpaExtendRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends QueryDslJpaExtendRepository<User, Long> {
-    User findByUsername(String username);
+public interface UserRepository extends QueryDslJpaExtendRepository<User, String> {
 }

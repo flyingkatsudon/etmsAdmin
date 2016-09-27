@@ -87,6 +87,12 @@
                 </if>
                 <if test="param.isNoIdCard != null">AND attend_map.is_no_id_card = #{param.isNoIdCard}</if>
                 <if test="param.isCheck != null">AND attend_map.is_check = #{param.isCheck}</if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
         GROUP BY
@@ -120,6 +126,12 @@
                     <if test="param.isSignature != null">
                         <if test="param.isSignature == true">AND attend_hall.sign_dttm IS NOT NULL</if>
                         <if test="param.isSignature == false">AND attend_hall.sign_dttm IS NULL</if>
+                    </if>
+                    <if test="param.userAdmissions != null">
+                        attend.admission_cd IN
+                        <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                            #{item}
+                        </foreach>
                     </if>
                 </if>
             </where>
@@ -248,6 +260,12 @@
                         and attend_paper.paper_no = 1
                         ) LIKE '%' #{param.paperCd} '%'
                     </if>
+                    <if test="param.userAdmissions != null">
+                        attend.admission_cd IN
+                        <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                            #{item}
+                        </foreach>
+                    </if>
                 </if>
             </where>
             GROUP BY
@@ -281,6 +299,12 @@
         <where>
             <if test="param!=null">
                 <if test="param.examineeCd != null">examinee.examinee_cd = #{param.examineeCd}</if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
     </select>

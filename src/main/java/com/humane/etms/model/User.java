@@ -13,9 +13,7 @@ import java.util.Set;
 @Setter
 @ToString
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long userId;
-
-    @Column(unique = true, length = 64) private String username;
+    @Id @Column(unique = true, length = 64) private String userId;
     @Column private String password;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY) private Set<UserRole> userRoles;

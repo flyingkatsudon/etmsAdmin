@@ -39,6 +39,12 @@
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.isEtc != null">AND hall.is_etc = #{param.isEtc}</if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
         GROUP BY admission.admission_nm

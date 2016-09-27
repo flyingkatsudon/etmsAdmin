@@ -23,12 +23,12 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.humane.etms.model.User user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        com.humane.etms.model.User user = userRepository.findOne(userId);
         List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRoles());
         List<String> admissions = buildUserAdmission(user.getUserAdmissions());
 
-        return new CustomUserDetails(user.getUsername(), user.getPassword(), authorities, admissions);
+        return new CustomUserDetails(user.getUserId(), user.getPassword(), authorities, admissions);
     }
 
     private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {

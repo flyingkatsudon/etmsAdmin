@@ -11,6 +11,17 @@
             COUNT(attend_map.attend_hall_cd) * 100 / COUNT(*)              AS attend_per,
             (COUNT(*) - COUNT(attend_map.attend_hall_cd)) * 100 / COUNT(*) AS absent_per
         FROM attend_map
+        INNER JOIN attend ON attend_map.attend_cd = attend.attend_cd
+        <where>
+            <if test="param != null">
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </if>
+        </where>
     </select>
 
     <select id="attend" resultType="com.humane.etms.dto.StatusDto">
@@ -34,6 +45,12 @@
                 <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
         GROUP BY
@@ -66,6 +83,12 @@
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
         GROUP BY
@@ -99,6 +122,12 @@
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
                 <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm}</if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
         GROUP BY
@@ -135,6 +164,12 @@
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
         GROUP BY
@@ -181,6 +216,12 @@
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
         GROUP BY

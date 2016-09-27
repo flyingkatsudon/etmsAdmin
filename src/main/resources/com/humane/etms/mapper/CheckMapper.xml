@@ -37,6 +37,12 @@
                     <if test="param.isSend == true">AND attend_device.send_dttm IS NOT NULL</if>
                     <if test="param.isSend == false">AND attend_device.send_dttm IS NULL</if>
                 </if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
         GROUP BY
@@ -82,6 +88,12 @@
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
                 <if test="param.deviceNo != null">AND attend_device.device_no LIKE '%' #{param.deviceNo} '%'</if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
             </if>
         </where>
         GROUP BY
@@ -122,6 +134,12 @@
                 <if test="param.isSignature != null">
                     <if test="param.isSignature == true">AND attend_hall.sign_dttm IS NOT NULL</if>
                     <if test="param.isSignature == false">AND attend_hall.sign_dttm IS NULL</if>
+                </if>
+                <if test="param.userAdmissions != null">
+                    attend.admission_cd IN
+                    <foreach collection="param.userAdmissions" item="item" index="index" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
                 </if>
             </if>
         </where>
