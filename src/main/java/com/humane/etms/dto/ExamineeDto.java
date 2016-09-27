@@ -16,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamineeDto extends StatusDto {
-    private List<String> userAdmissions;
+    private String userAdmissions;
     private String examineeCd;
     private String examineeNm;
     private String typeNm;
