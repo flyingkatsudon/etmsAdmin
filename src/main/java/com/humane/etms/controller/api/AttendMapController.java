@@ -54,8 +54,7 @@ public class AttendMapController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<AttendMap> merge(@RequestBody AttendMap attendMap) {
-        // 출결관리자는 출결데이터만 손댄다.
+    public ResponseEntity<AttendMap> merge(@RequestBody AttendMap attendMap) { // 출결
         QAttendMap qAttendMap = QAttendMap.attendMap;
         // 기존 여부 확인
         AttendMap find = repository.findOne(new BooleanBuilder()
@@ -65,6 +64,8 @@ public class AttendMapController {
         );
         AttendMap rtn = null;
         if (find != null) {
+            find.setAttendHall(attendMap.getAttendHall()); // 출결고사장
+            find.setAttendDttm(attendMap.getAttendDttm()); // 출결시간
             find.setIsCheck(attendMap.getIsCheck()); // 신원재확인 대상자
             find.setIsMidOut(attendMap.getIsMidOut()); // 중도퇴실자
             find.setIsCheat(attendMap.getIsCheat()); // 부정행위 대상자
@@ -87,6 +88,8 @@ public class AttendMapController {
                     .and(qAttendMap.hall.eq(attendMap.getHall()))
             );
             if (find != null) {
+                find.setAttendHall(attendMap.getAttendHall()); // 출결고사장
+                find.setAttendDttm(attendMap.getAttendDttm()); // 출결시간
                 find.setIsCheck(attendMap.getIsCheck()); // 신원재확인 대상자
                 find.setIsMidOut(attendMap.getIsMidOut()); // 중도퇴실자
                 find.setIsCheat(attendMap.getIsCheat()); // 부정행위 대상자
@@ -111,8 +114,6 @@ public class AttendMapController {
         AttendMap rtn = null;
 
         if (find != null) {
-            find.setAttendHall(attendMap.getAttendHall());
-            find.setAttendDttm(attendMap.getAttendDttm());
             find.setIsNoIdCard(attendMap.getIsNoIdCard()); // 신분증 미소지자
             rtn = repository.save(find);
         }
@@ -133,8 +134,6 @@ public class AttendMapController {
                     .and(qAttendMap.hall.eq(attendMap.getHall()))
             );
             if (find != null) {
-                find.setAttendHall(attendMap.getAttendHall());
-                find.setAttendDttm(attendMap.getAttendDttm());
                 find.setIsNoIdCard(attendMap.getIsNoIdCard());
 
                 rtn.add(repository.save(find));
