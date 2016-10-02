@@ -7,9 +7,13 @@ import com.humane.etms.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -38,15 +43,15 @@ public class DataController {
     @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
 
     @RequestMapping(value = "examinee.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, Pageable page) {
+    public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.examinee(statusDto, page));
+                return ResponseEntity.ok(mapper.examinee(statusDto, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/data-examinee.jrxml",
                         format,
-                        mapper.examinee(statusDto, page).getContent()
+                        mapper.examinee(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -88,7 +93,7 @@ public class DataController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/data-noIdCard.jrxml",
                         format,
-                        mapper.examinee(examineeDto, pageable).getContent()
+                        mapper.examinee(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -103,7 +108,7 @@ public class DataController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/data-recheck.jrxml",
                         format,
-                        mapper.examinee(examineeDto, pageable).getContent()
+                        mapper.examinee(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -119,7 +124,7 @@ public class DataController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/data-otherHall.jrxml",
                         format,
-                        mapper.examinee(examineeDto, pageable).getContent()
+                        mapper.examinee(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -143,7 +148,7 @@ public class DataController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/data-signature.jrxml",
                         format,
-                        mapper.signature(statusDto, pageable).getContent()
+                        mapper.signature(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -158,7 +163,7 @@ public class DataController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/data-paper.jrxml",
                         format,
-                        mapper.paper(statusDto, pageable).getContent()
+                        mapper.paper(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -172,7 +177,7 @@ public class DataController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/data-detail.jrxml"
                         , format
-                        , mapper.detail(param, pageable).getContent()
+                        , mapper.detail(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
             default:
                 return null;
@@ -198,7 +203,7 @@ public class DataController {
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/data-uplus.jrxml"
                 , format
-                , mapper.examinee(param, pageable).getContent()
+                , mapper.examinee(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
         );
     }
 }

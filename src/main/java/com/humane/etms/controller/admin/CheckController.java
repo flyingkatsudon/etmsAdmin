@@ -6,6 +6,7 @@ import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public class CheckController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-send.jrxml",
                         format,
-                        mapper.send(statusDto, pageable).getContent()
+                        mapper.send(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -44,7 +45,7 @@ public class CheckController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-device.jrxml",
                         format,
-                        mapper.device(statusDto, pageable).getContent()
+                        mapper.device(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -58,7 +59,7 @@ public class CheckController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-detect.jrxml",
                         format,
-                        mapper.device(statusDto, pageable).getContent()
+                        mapper.device(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -73,7 +74,7 @@ public class CheckController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/check-signature.jrxml",
                         format,
-                        mapper.signature(statusDto, pageable).getContent()
+                        mapper.signature(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
