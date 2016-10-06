@@ -203,7 +203,7 @@ public class DataController {
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/data-uplus.jrxml"
                 , format
-                , mapper.examinee(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                , mapper.uplus(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
         );
     }
 }

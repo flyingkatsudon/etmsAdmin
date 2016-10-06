@@ -11,6 +11,8 @@ import java.util.Date;
 
 @Mapper
 public interface DataMapper {
+    Page<ExamineeDto> uplus(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
+
     Page<ExamineeDto> examinee(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
     Page<StatusDto> signature(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
