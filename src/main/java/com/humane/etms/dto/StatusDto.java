@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +25,7 @@ public class StatusDto implements Serializable {
     private String majorNm;
     private String deptNm;
     private String typeNm;
+    private String attendHallCd;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

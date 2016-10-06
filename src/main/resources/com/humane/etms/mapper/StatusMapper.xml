@@ -5,7 +5,6 @@
 <mapper namespace="com.humane.etms.mapper.StatusMapper">
     <select id="all" resultType="com.humane.etms.dto.StatusDto">
         SELECT
-            *,
             COUNT(*)                                                       AS examinee_cnt,
             COUNT(attend_map.attend_hall_cd)                               AS attend_cnt,
             COUNT(*) - COUNT(attend_map.attend_hall_cd)                    AS absent_cnt,
@@ -21,6 +20,8 @@
                 <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm} </if>
+                <if test="param.attendCd != null">AND attend.attend_cd = #{param.attendCd} </if>
+                <if test="param.attendHallCd != null">AND attend_map.attend_hall_cd = #{param.attendHallCd} </if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate} </if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                 <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm} </if>
