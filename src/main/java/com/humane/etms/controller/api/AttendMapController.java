@@ -39,13 +39,13 @@ public class AttendMapController {
     }
 
     @RequestMapping(value = "find", method = RequestMethod.GET)
-    public ResponseEntity<?> findByExaminee(@RequestParam(defaultValue = "") String examineeCd, @RequestParam(defaultValue = "") String examineeNm) {
-        if (StringUtils.isEmpty(examineeCd) && StringUtils.isEmpty(examineeNm)) {
+    public ResponseEntity<?> findByExaminee(@RequestParam(defaultValue = "") String admissionCd, @RequestParam(defaultValue = "") String examineeCd, @RequestParam(defaultValue = "") String examineeNm) {
+        if (StringUtils.isEmpty(admissionCd) || (StringUtils.isEmpty(examineeCd) && StringUtils.isEmpty(examineeNm)))
             return new ResponseEntity<>("parameters empty!", HttpStatus.BAD_REQUEST);
-        }
 
         QAttendMap attendMap = QAttendMap.attendMap;
         BooleanBuilder predicate = new BooleanBuilder();
+        predicate.and(attendMap.attend.admission.admissionCd.eq(admissionCd));
         if (StringUtils.isNotEmpty(examineeCd)) predicate.and(attendMap.examinee.examineeCd.like(examineeCd.concat("%")));
         if (StringUtils.isNotEmpty(examineeNm)) predicate.and(attendMap.examinee.examineeNm.like(examineeNm.concat("%")));
 
