@@ -18,6 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 @RestController
@@ -39,13 +41,14 @@ public class AttendMapController {
     }
 
     @RequestMapping(value = "find", method = RequestMethod.GET)
-    public ResponseEntity<?> findByExaminee(@RequestParam(defaultValue = "") String admissionCd, @RequestParam(defaultValue = "") String examineeCd, @RequestParam(defaultValue = "") String examineeNm) {
+    public ResponseEntity<?> findByExaminee(@RequestParam(defaultValue = "") String admissionCd, @RequestParam(defaultValue = "") String attendDate, @RequestParam(defaultValue = "") String examineeCd, @RequestParam(defaultValue = "") String examineeNm) throws ParseException {
         if (StringUtils.isEmpty(admissionCd) || (StringUtils.isEmpty(examineeCd) && StringUtils.isEmpty(examineeNm)))
             return new ResponseEntity<>("parameters empty!", HttpStatus.BAD_REQUEST);
 
         QAttendMap attendMap = QAttendMap.attendMap;
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and(attendMap.attend.admission.admissionCd.eq(admissionCd));
+        if (StringUtils.isNotEmpty(attendDate)) predicate.and(attendMap.attend.attendDate.eq(new SimpleDateFormat("yyyy-MM-dd").parse(attendDate)));
         if (StringUtils.isNotEmpty(examineeCd)) predicate.and(attendMap.examinee.examineeCd.like(examineeCd.concat("%")));
         if (StringUtils.isNotEmpty(examineeNm)) predicate.and(attendMap.examinee.examineeNm.like(examineeNm.concat("%")));
 
