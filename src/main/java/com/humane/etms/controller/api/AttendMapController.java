@@ -40,6 +40,19 @@ public class AttendMapController {
         );
     }
 
+    @RequestMapping(value = "hall", method = RequestMethod.GET)
+    public ResponseEntity<?> findByHall(@RequestParam(defaultValue = "") String attendCd, @RequestParam(defaultValue = "") String hallCd) {
+        if (StringUtils.isAnyEmpty(attendCd, hallCd))
+            return new ResponseEntity<>("parameters empty!", HttpStatus.BAD_REQUEST);
+
+        QAttendMap attendMap = QAttendMap.attendMap;
+        BooleanBuilder predicate = new BooleanBuilder();
+        predicate.and(attendMap.attend.attendCd.eq(attendCd));
+        predicate.and(attendMap.hall.hallCd.eq(hallCd).or(attendMap.attendHall.hallCd.eq(hallCd)));
+
+        return ResponseEntity.ok(repository.findAll(predicate));
+    }
+
     @RequestMapping(value = "find", method = RequestMethod.GET)
     public ResponseEntity<?> findByExaminee(@RequestParam(defaultValue = "") String admissionCd, @RequestParam(defaultValue = "") String attendDate, @RequestParam(defaultValue = "") String examineeCd, @RequestParam(defaultValue = "") String examineeNm) throws ParseException {
         if (StringUtils.isEmpty(admissionCd) || (StringUtils.isEmpty(examineeCd) && StringUtils.isEmpty(examineeNm)))
@@ -48,9 +61,12 @@ public class AttendMapController {
         QAttendMap attendMap = QAttendMap.attendMap;
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and(attendMap.attend.admission.admissionCd.eq(admissionCd));
-        if (StringUtils.isNotEmpty(attendDate)) predicate.and(attendMap.attend.attendDate.eq(new SimpleDateFormat("yyyy-MM-dd").parse(attendDate)));
-        if (StringUtils.isNotEmpty(examineeCd)) predicate.and(attendMap.examinee.examineeCd.like(examineeCd.concat("%")));
-        if (StringUtils.isNotEmpty(examineeNm)) predicate.and(attendMap.examinee.examineeNm.like(examineeNm.concat("%")));
+        if (StringUtils.isNotEmpty(attendDate))
+            predicate.and(attendMap.attend.attendDate.eq(new SimpleDateFormat("yyyy-MM-dd").parse(attendDate)));
+        if (StringUtils.isNotEmpty(examineeCd))
+            predicate.and(attendMap.examinee.examineeCd.like(examineeCd.concat("%")));
+        if (StringUtils.isNotEmpty(examineeNm))
+            predicate.and(attendMap.examinee.examineeNm.like(examineeNm.concat("%")));
 
         return ResponseEntity.ok(repository.findAll(predicate));
     }
