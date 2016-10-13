@@ -1,7 +1,10 @@
 package com.humane.etms.controller.api;
 
 import com.humane.etms.model.AttendPaper;
+import com.humane.etms.model.AttendPaperLog;
 import com.humane.etms.model.QAttendPaper;
+import com.humane.etms.model.QAttendPaperLog;
+import com.humane.etms.repository.AttendPaperLogRepository;
 import com.humane.etms.repository.AttendPaperRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
@@ -27,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AttendPaperController {
     private final AttendPaperRepository repository;
+    private final AttendPaperLogRepository logRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttendPaper> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
@@ -45,6 +49,8 @@ public class AttendPaperController {
         if (find != null) attendPaper.set_id(find.get_id());
 
         AttendPaper rtn = repository.save(attendPaper);
+        saveLog(rtn);
+
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 
@@ -63,7 +69,29 @@ public class AttendPaperController {
             if (find != null) attendPaper.set_id(find.get_id());
 
             list.add(repository.save(attendPaper));
+
+            saveLog(attendPaper);
         });
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    private void saveLog(AttendPaper paper) {
+        QAttendPaperLog paperLog = QAttendPaperLog.attendPaperLog;
+
+        AttendPaperLog findLog = logRepository.findOne(new BooleanBuilder()
+                .and(paperLog.attend.attendCd.eq(paper.getAttend().getAttendCd()))
+                .and(paperLog.paperCd.eq(paper.getPaperCd()))
+                .and(paperLog.paperNo.eq(paper.getPaperNo()))
+                .and(paperLog.examinee.examineeCd.eq(paper.getExaminee().getExamineeCd()))
+                .and(paperLog.hall.hallCd.eq(paper.getHall().getHallCd()))
+                .and(paperLog.regDttm.eq(paper.getRegDttm()))
+                .and(paper.getOldPaperCd() == null ? paperLog.oldPaperCd.isNull() : paperLog.oldPaperCd.eq(paper.getOldPaperCd()))
+        );
+
+        if (findLog == null) {
+            AttendPaperLog log = new AttendPaperLog();
+            log.setAttendPaper(paper);
+            logRepository.save(log);
+        }
     }
 }
