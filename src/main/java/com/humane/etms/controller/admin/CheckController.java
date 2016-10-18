@@ -1,5 +1,6 @@
 package com.humane.etms.controller.admin;
 
+import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.CheckMapper;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
@@ -22,16 +23,16 @@ public class CheckController {
 
     private final CheckMapper mapper;
 
-    @RequestMapping(value = "send.{format:json|xls|xlsx}")
-    public ResponseEntity send(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
+    @RequestMapping(value = "paper.{format:json|xls|xlsx}")
+    public ResponseEntity paper(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.send(statusDto, pageable));
+                return ResponseEntity.ok(mapper.paper(statusDto, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/check-send.jrxml",
+                        "jrxml/check-paper.jrxml",
                         format,
-                        mapper.send(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                        mapper.paper(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
@@ -50,16 +51,18 @@ public class CheckController {
         }
     }
 
-    @RequestMapping(value = "detect.{format:json|xls|xlsx}")
-    public ResponseEntity detect(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
+    @RequestMapping(value = "recheck.{format:json|pdf|xls|xlsx}")
+    public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, Pageable pageable) {
+        examineeDto.setIsCheck(true);
+        examineeDto.setIsNoIdCard(true);
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.device(statusDto, pageable));
+                return ResponseEntity.ok(mapper.recheck(examineeDto, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/check-detect.jrxml",
+                        "jrxml/check-recheck.jrxml",
                         format,
-                        mapper.device(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                        mapper.recheck(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }

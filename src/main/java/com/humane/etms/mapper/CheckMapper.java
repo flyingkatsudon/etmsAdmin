@@ -10,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 public interface CheckMapper {
     Page<StatusDto> signature(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
-    Page<StatusDto> send(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
+    Page<StatusDto> paper(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
+
+    Page<StatusDto> recheck(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
     Page<StatusDto> device(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
