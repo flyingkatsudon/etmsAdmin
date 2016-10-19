@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -43,5 +44,9 @@ public class ImageService {
                 }
             }
         }
+    }
+
+    public void deleteImage(String path, List<String> list) {
+
     }
 }

@@ -25,7 +25,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "init")
-    public void init() {
-        systemService.initData();
+    public void init(@RequestParam(defaultValue = "", required = false) String attendCd, @RequestParam(defaultValue = "", required = false) String attendHallCd) {
+        systemService.initData(attendCd, attendHallCd);
     }
 }

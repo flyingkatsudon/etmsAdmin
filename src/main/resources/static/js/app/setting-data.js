@@ -108,7 +108,7 @@ define(function (require) {
                 message: '삭제 하시겠습니까?',
                 closable: true,
                 buttons: [
-                    {
+                    /*{
                         label: '사진포함',
                         cssClass: 'btn-primary',
                         action: function () {
@@ -132,7 +132,7 @@ define(function (require) {
                             });
                             _this.reset(false);
                         }
-                    },
+                    },*/
                     {
                         label: '닫기',
                         action: function (dialog) {
