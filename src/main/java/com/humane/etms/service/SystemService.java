@@ -1,6 +1,9 @@
 package com.humane.etms.service;
 
 import com.humane.etms.model.*;
+import com.humane.etms.repository.AttendHallRepository;
+import com.humane.etms.repository.AttendMapRepository;
+import com.humane.etms.repository.AttendPaperRepository;
 import com.querydsl.jpa.hibernate.HibernateDeleteClause;
 import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
@@ -18,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -31,6 +35,9 @@ public class SystemService {
     @Value("${path.image.signature:C:/api/image/signature}") String pathSignature;
 
     private final ImageService imageService;
+    private final AttendMapRepository attendMapRepository;
+    private final AttendHallRepository attendHallRepository;
+    private final AttendPaperRepository attendPaperRepository;
 
     @Transactional
     public void resetData(boolean photo) {
@@ -142,14 +149,20 @@ public class SystemService {
 
         QAttendMap attendMap = QAttendMap.attendMap;
 
-        HibernateUpdateClause updateMap = queryFactory.update(attendMap)
-                .setNull(attendMap.isNoIdCard)
+        List<AttendMap> attendMaps = queryFactory.select(attendMap)
+                .from(attendMap)
                 .where(attendMap.attend.admission.admissionCd.eq(admissionCd))
                 .where(attendMap.attend.attendDate.eq(attendDate))
                 .where(attendMap.hall.headNm.eq(headNm))
-                .where(attendMap.hall.bldgNm.eq(bldgNm));
+                .where(attendMap.hall.bldgNm.eq(bldgNm))
+                .fetch();
 
-        updateMap.execute();
+        if(attendMaps != null){
+            for (AttendMap map : attendMaps) {
+                map.setIsNoIdCard(null);
+                attendMapRepository.save(map);
+            }
+        }
 
         // imageService.deleteImage(pathNoIdCard);
     }
@@ -159,35 +172,53 @@ public class SystemService {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
         QAttendMap attendMap = QAttendMap.attendMap;
-
-        HibernateUpdateClause updateMap = queryFactory.update(attendMap)
-                .setNull(attendMap.attendDttm)
-                .setNull(attendMap.idCheckDttm)
-                .setNull(attendMap.isCheat)
-                .setNull(attendMap.isCheck)
-                .setNull(attendMap.isMidOut)
-                .setNull(attendMap.memo)
-                .setNull(attendMap.recheckDttm)
-                .setNull(attendMap.attendHall)
-                .where(attendMap.attend.attendCd.eq(attendCd))
-                .where(attendMap.attendHall.hallCd.eq(attendHallCd));
-
-        updateMap.execute();
-
         QAttendPaper attendPaper = QAttendPaper.attendPaper;
-        HibernateDeleteClause deletePaper = queryFactory.delete(attendPaper)
-                .where(attendPaper.attend.attendCd.eq(attendCd))
-                .where(attendPaper.hall.hallCd.eq(attendHallCd));
 
-        deletePaper.execute();
+        List<AttendMap> attendMaps = queryFactory.select(attendMap)
+                .from(attendMap)
+                .where(attendMap.attend.attendCd.eq(attendCd))
+                .where(attendMap.attendHall.hallCd.eq(attendHallCd))
+                .fetch();
+
+        if(attendMaps != null){
+            for (AttendMap map : attendMaps) {
+                map.setAttendDttm(null);
+                map.setIdCheckDttm(null);
+                map.setIsCheat(null);
+                map.setIsCheck(null);
+                map.setIsMidOut(null);
+                map.setMemo(null);
+                map.setRecheckDttm(null);
+                map.setAttendHall(null);
+                attendMapRepository.save(map);
+            }
+        }
+
+        List<AttendPaper> attendPapers = queryFactory.select(attendPaper)
+                .from(attendPaper)
+                .where(attendPaper.attend.attendCd.eq(attendCd))
+                .where(attendPaper.hall.hallCd.eq(attendHallCd))
+                .fetch();
+
+        if(attendPapers != null){
+            for (AttendPaper paper : attendPapers) {
+                attendPaperRepository.delete(paper);
+            }
+        }
 
         QAttendHall attendHall = QAttendHall.attendHall;
-        HibernateUpdateClause updateHall = queryFactory.update(attendHall)
-                .setNull(QAttendHall.attendHall.signDttm)
+        List<AttendHall> attendHalls = queryFactory.select(attendHall)
+                .from(attendHall)
                 .where(attendHall.attend.attendCd.eq(attendCd))
-                .where(attendHall.hall.hallCd.eq(attendHallCd));
+                .where(attendHall.hall.hallCd.eq(attendHallCd))
+                .fetch();
 
-        updateHall.execute();
+        if(attendHalls != null){
+            for (AttendHall hall : attendHalls) {
+                hall.setSignDttm(null);
+                attendHallRepository.save(hall);
+            }
+        }
 
         // imageService.deleteImage(pathRecheck, pathSignature);
     }
