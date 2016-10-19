@@ -113,21 +113,26 @@ public class SystemService {
     }
 
     @Transactional
-    public ResponseEntity<String> initData(String attendCd, String attendHallCd) {
+    public ResponseEntity<String> initData(String attendCd, String attendHallCd, String headNm, String bldgNm) {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
         QAttendMap attendMap = QAttendMap.attendMap;
 
         // 사진목록
-        HibernateQuery<String> selectMap = queryFactory.select(attendMap.examinee.examineeCd).from(attendMap);
+
+        // TODO : 이미지 선택 삭제
+
+        /*HibernateQuery<String> selectMap = queryFactory.select(attendMap.examinee.examineeCd).from(attendMap);
 
         if (StringUtils.isNotEmpty(attendCd)) selectMap.where(attendMap.attend.attendCd.eq(attendCd));
         if (StringUtils.isNotEmpty(attendHallCd)) selectMap.where(attendMap.attendHall.hallCd.eq(attendHallCd));
+        if (!StringUtils.isAnyEmpty(headNm, bldgNm)){
+            selectMap.where(attendMap.hall.headNm.eq(headNm), attendMap.hall.bldgNm.eq(bldgNm));
+        }
 
         List<String> list = selectMap.fetch();
 
-       // TODO : 이미지 선택 삭제
-        // imageService.deleteImage(pathNoIdCard, list);
+        imageService.deleteImage(pathNoIdCard, list);*/
 
         HibernateUpdateClause updateMap = queryFactory.update(attendMap)
                 .setNull(attendMap.attendDttm)
@@ -142,13 +147,19 @@ public class SystemService {
 
         if (StringUtils.isNotEmpty(attendCd)) updateMap.where(attendMap.attend.attendCd.eq(attendCd));
         if (StringUtils.isNotEmpty(attendHallCd)) updateMap.where(attendMap.attendHall.hallCd.eq(attendHallCd));
+        if (!StringUtils.isAnyEmpty(headNm, bldgNm)) updateMap.where(attendMap.hall.headNm.eq(headNm), attendMap.hall.bldgNm.eq(bldgNm));
+
         updateMap.execute();
+
+
 
         QAttendPaper attendPaper = QAttendPaper.attendPaper;
         HibernateDeleteClause deletePaper = queryFactory.delete(attendPaper);
 
         if (StringUtils.isNotEmpty(attendCd)) deletePaper.where(attendPaper.attend.attendCd.eq(attendCd));
         if (StringUtils.isNotEmpty(attendHallCd)) deletePaper.where(attendPaper.hall.hallCd.eq(attendHallCd));
+        if (!StringUtils.isAnyEmpty(headNm, bldgNm)) deletePaper.where(attendPaper.hall.headNm.eq(headNm), attendPaper.hall.bldgNm.eq(bldgNm));
+
         deletePaper.execute();
 
 
@@ -157,6 +168,8 @@ public class SystemService {
 
         if (StringUtils.isNotEmpty(attendCd)) updateHall.where(attendHall.attend.attendCd.eq(attendCd));
         if (StringUtils.isNotEmpty(attendHallCd)) updateHall.where(attendHall.hall.hallCd.eq(attendHallCd));
+        if (!StringUtils.isAnyEmpty(headNm, bldgNm)) updateHall.where(attendHall.hall.headNm.eq(headNm), attendHall.hall.bldgNm.eq(bldgNm));
+
         updateHall.execute();
 
         imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
