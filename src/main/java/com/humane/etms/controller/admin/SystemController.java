@@ -5,8 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
@@ -32,8 +37,9 @@ public class SystemController {
     }
 
     @RequestMapping(value = "initMgr")
-    public void initMgr(@RequestParam String admissionCd, @RequestParam Date attendDate, @RequestParam String headNm, @RequestParam String bldgNm) {
-        systemService.initMgr(admissionCd, attendDate, headNm, bldgNm);
+    public void initMgr(@RequestParam String admissionCd, @RequestParam String attendDate, @RequestParam String headNm, @RequestParam String bldgNm) throws ParseException {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(attendDate);
+        systemService.initMgr(admissionCd, date, headNm, bldgNm);
     }
 
     @RequestMapping(value = "initApp")
