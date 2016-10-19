@@ -1,42 +1,34 @@
 package com.humane.etms.service;
 
 import com.humane.etms.model.*;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.hibernate.HibernateDeleteClause;
-import com.querydsl.jpa.hibernate.HibernateQuery;
 import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.File;
-import java.util.List;
+import java.util.Date;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemService {
-    @PersistenceContext
-    private EntityManager entityManager;
-    @Value("${path.image.examinee:C:/api/image/examinee}")
-    String pathExaminee;
-    @Value("${path.image.noIdCard:C:/api/image/noIdCard}")
-    String pathNoIdCard;
-    @Value("${path.image.recheck:C:/api/image/recheck}")
-    String pathRecheck;
-    @Value("${path.image.signature:C:/api/image/signature}")
-    String pathSignature;
+    @PersistenceContext private EntityManager entityManager;
+
+    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
+    @Value("${path.image.noIdCard:C:/api/image/noIdCard}") String pathNoIdCard;
+    @Value("${path.image.recheck:C:/api/image/recheck}") String pathRecheck;
+    @Value("${path.image.signature:C:/api/image/signature}") String pathSignature;
 
     private final ImageService imageService;
 
@@ -84,7 +76,7 @@ public class SystemService {
         queryFactory.delete(attendHall).execute();
 
         try {
-            queryFactory.delete(QHall.hall).execute();
+            queryFactory.delete(hall).execute();
         } catch (Exception ignored) {
         }
 
@@ -113,26 +105,60 @@ public class SystemService {
     }
 
     @Transactional
-    public ResponseEntity<String> initData(String attendCd, String attendHallCd, String headNm, String bldgNm) {
+    public void initData() {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
         QAttendMap attendMap = QAttendMap.attendMap;
 
-        // 사진목록
+        HibernateUpdateClause updateMap = queryFactory.update(attendMap)
+                .setNull(attendMap.attendDttm)
+                .setNull(attendMap.idCheckDttm)
+                .setNull(attendMap.isCheat)
+                .setNull(attendMap.isCheck)
+                .setNull(attendMap.isNoIdCard)
+                .setNull(attendMap.isMidOut)
+                .setNull(attendMap.memo)
+                .setNull(attendMap.recheckDttm)
+                .setNull(attendMap.attendHall);
 
-        // TODO : 이미지 선택 삭제
+        updateMap.execute();
 
-        /*HibernateQuery<String> selectMap = queryFactory.select(attendMap.examinee.examineeCd).from(attendMap);
+        QAttendPaper attendPaper = QAttendPaper.attendPaper;
+        HibernateDeleteClause deletePaper = queryFactory.delete(attendPaper);
 
-        if (StringUtils.isNotEmpty(attendCd)) selectMap.where(attendMap.attend.attendCd.eq(attendCd));
-        if (StringUtils.isNotEmpty(attendHallCd)) selectMap.where(attendMap.attendHall.hallCd.eq(attendHallCd));
-        if (!StringUtils.isAnyEmpty(headNm, bldgNm)){
-            selectMap.where(attendMap.hall.headNm.eq(headNm), attendMap.hall.bldgNm.eq(bldgNm));
-        }
+        deletePaper.execute();
 
-        List<String> list = selectMap.fetch();
+        QAttendHall attendHall = QAttendHall.attendHall;
+        HibernateUpdateClause updateHall = queryFactory.update(attendHall).setNull(QAttendHall.attendHall.signDttm);
 
-        imageService.deleteImage(pathNoIdCard, list);*/
+        updateHall.execute();
+
+        imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
+    }
+
+    @Transactional
+    public void initMgr(String admissionCd, Date attendDate, String headNm, String bldgNm) {
+        HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
+
+        QAttendMap attendMap = QAttendMap.attendMap;
+
+        HibernateUpdateClause updateMap = queryFactory.update(attendMap)
+                .setNull(attendMap.isNoIdCard)
+                .where(attendMap.attend.admission.admissionCd.eq(admissionCd))
+                .where(attendMap.attend.attendDate.eq(attendDate))
+                .where(attendMap.hall.headNm.eq(headNm))
+                .where(attendMap.hall.bldgNm.eq(bldgNm));
+
+        updateMap.execute();
+
+        // imageService.deleteImage(pathNoIdCard);
+    }
+
+    @Transactional
+    public void initApp(String attendCd, String attendHallCd) {
+        HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
+
+        QAttendMap attendMap = QAttendMap.attendMap;
 
         HibernateUpdateClause updateMap = queryFactory.update(attendMap)
                 .setNull(attendMap.attendDttm)
@@ -140,40 +166,29 @@ public class SystemService {
                 .setNull(attendMap.isCheat)
                 .setNull(attendMap.isCheck)
                 .setNull(attendMap.isMidOut)
-                .setNull(attendMap.isNoIdCard)
                 .setNull(attendMap.memo)
                 .setNull(attendMap.recheckDttm)
-                .setNull(attendMap.attendHall);
-
-        if (StringUtils.isNotEmpty(attendCd)) updateMap.where(attendMap.attend.attendCd.eq(attendCd));
-        if (StringUtils.isNotEmpty(attendHallCd)) updateMap.where(attendMap.attendHall.hallCd.eq(attendHallCd));
-        if (!StringUtils.isAnyEmpty(headNm, bldgNm)) updateMap.where(attendMap.hall.headNm.eq(headNm), attendMap.hall.bldgNm.eq(bldgNm));
+                .setNull(attendMap.attendHall)
+                .where(attendMap.attend.attendCd.eq(attendCd))
+                .where(attendMap.attendHall.hallCd.eq(attendHallCd));
 
         updateMap.execute();
 
-
-
         QAttendPaper attendPaper = QAttendPaper.attendPaper;
-        HibernateDeleteClause deletePaper = queryFactory.delete(attendPaper);
-
-        if (StringUtils.isNotEmpty(attendCd)) deletePaper.where(attendPaper.attend.attendCd.eq(attendCd));
-        if (StringUtils.isNotEmpty(attendHallCd)) deletePaper.where(attendPaper.hall.hallCd.eq(attendHallCd));
-        if (!StringUtils.isAnyEmpty(headNm, bldgNm)) deletePaper.where(attendPaper.hall.headNm.eq(headNm), attendPaper.hall.bldgNm.eq(bldgNm));
+        HibernateDeleteClause deletePaper = queryFactory.delete(attendPaper)
+                .where(attendPaper.attend.attendCd.eq(attendCd))
+                .where(attendPaper.hall.hallCd.eq(attendHallCd));
 
         deletePaper.execute();
 
-
         QAttendHall attendHall = QAttendHall.attendHall;
-        HibernateUpdateClause updateHall = queryFactory.update(attendHall).setNull(QAttendHall.attendHall.signDttm);
-
-        if (StringUtils.isNotEmpty(attendCd)) updateHall.where(attendHall.attend.attendCd.eq(attendCd));
-        if (StringUtils.isNotEmpty(attendHallCd)) updateHall.where(attendHall.hall.hallCd.eq(attendHallCd));
-        if (!StringUtils.isAnyEmpty(headNm, bldgNm)) updateHall.where(attendHall.hall.headNm.eq(headNm), attendHall.hall.bldgNm.eq(bldgNm));
+        HibernateUpdateClause updateHall = queryFactory.update(attendHall)
+                .setNull(QAttendHall.attendHall.signDttm)
+                .where(attendHall.attend.attendCd.eq(attendCd))
+                .where(attendHall.hall.hallCd.eq(attendHallCd));
 
         updateHall.execute();
 
-        imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
-
-        return ResponseEntity.ok("OK");
+        // imageService.deleteImage(pathRecheck, pathSignature);
     }
 }

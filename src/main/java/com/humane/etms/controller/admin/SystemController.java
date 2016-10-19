@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping(value = "system", method = RequestMethod.GET)
 @Slf4j
@@ -25,12 +27,17 @@ public class SystemController {
     }
 
     @RequestMapping(value = "init")
-    public void init(
-            @RequestParam(defaultValue = "", required = false) String attendCd,
-            @RequestParam(defaultValue = "", required = false) String attendHallCd,
-            @RequestParam(defaultValue = "", required = false) String headNm,
-            @RequestParam(defaultValue = "", required = false) String bldgNm
-            ) {
-        systemService.initData(attendCd, attendHallCd, headNm, bldgNm);
+    public void init() {
+        systemService.initData();
+    }
+
+    @RequestMapping(value = "initMgr")
+    public void initMgr(@RequestParam String admissionCd, @RequestParam Date attendDate, @RequestParam String headNm, @RequestParam String bldgNm) {
+        systemService.initMgr(admissionCd, attendDate, headNm, bldgNm);
+    }
+
+    @RequestMapping(value = "initApp")
+    public void initApp(@RequestParam String attendCd, @RequestParam String attendHallCd) {
+        systemService.initApp(attendCd, attendHallCd);
     }
 }
