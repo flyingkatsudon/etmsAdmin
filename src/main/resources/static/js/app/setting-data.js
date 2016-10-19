@@ -120,7 +120,7 @@ define(function (require) {
                             });
                             _this.reset(true);
                         }
-                    },
+                    },*/
                     {
                         label: '사진 미포함',
                         action: function () {
@@ -132,7 +132,7 @@ define(function (require) {
                             });
                             _this.reset(false);
                         }
-                    },*/
+                    },
                     {
                         label: '닫기',
                         action: function (dialog) {
