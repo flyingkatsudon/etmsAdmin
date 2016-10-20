@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-08-25T12:09:53 -->
+<!-- 2016-10-20T15:23:58 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="출결산출물_유플러스시스템_송부용" pageWidth="1000" pageHeight="100" orientation="Landscape" columnWidth="1000" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="1135ab3a-a652-4483-b7d3-4d1dad6a0c2a">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
@@ -201,7 +201,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{isAttend}) ? "응시" : "미응시"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{isAttend} == true) ? 'N' : 'Y']]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="300" y="0" width="100" height="20" uuid="bc9e9513-b892-4313-b5df-4dc5f4085ec1"/>

@@ -231,49 +231,23 @@
     </update>
 
     <select id="uplus" resultType="com.humane.etms.dto.ExamineeDto">
-        SELECT
-        admission.admission_nm, attend.type_nm,
-        attend.attend_date, attend.attend_time,
-        examinee.college_nm,
-        examinee.examinee_cd, examinee.examinee_nm,
-        date_format(examinee.birth, '%y-%m-%d') as birth, examinee.major_nm, examinee.dept_nm,
-        CASE WHEN attend_hall.hall_cd IS NULL THEN false
-        ELSE true
-        END AS is_attend,
-        hall.head_nm, hall.bldg_nm, hall.hall_cd, hall.hall_nm,
-        attend_hall.head_nm AS attend_head_nm,
-        attend_hall.bldg_nm AS attend_bldg_nm,
-        attend_hall.hall_cd AS attend_hall_cd,
-        attend_hall.hall_nm AS attend_hall_nm,
-        attend_hall.is_etc,
-        attend_map.is_check,
-        CASE WHEN attend_map.attend_hall_cd IS NULL THEN NULL
-        WHEN attend_map.attend_hall_cd != attend_map.hall_cd THEN true
-        ELSE false
-        END AS is_other_hall,
-        attend_map.attend_dttm,
-        attend_map.id_check_dttm,
-        attend_map.recheck_dttm,
-        (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
-        attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1 ORDER BY reg_dttm DESC LIMIT 1)
-        AS last_paper_cd,
-        CASE WHEN (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd and
-        attend_paper.examinee_cd = attend_map.examinee_cd and attend_paper.paper_no = 1) > 1 THEN 1 ELSE 0 END AS is_change_paper,
-        now() AS print_dttm
-        FROM
-        attend_map
-        INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
-        INNER JOIN admission ON admission.admission_cd = attend.admission_cd
-        INNER JOIN hall ON hall.hall_cd = attend_map.hall_cd
-        INNER JOIN examinee ON examinee.examinee_cd = attend_map.examinee_cd
-        LEFT JOIN hall attend_hall ON attend_hall.hall_cd = attend_map.attend_hall_cd
-        WHERE admission.admission_cd = 'HE0001'
-        GROUP BY
-        examinee.examinee_cd, examinee.examinee_nm, examinee.birth,
-        admission.admission_nm, attend.type_nm, attend.attend_date, attend.attend_time,
-        examinee.major_nm, examinee.dept_nm,
-        hall.head_nm, hall.bldg_nm, hall.hall_nm,
-        attend_head_nm, attend_bldg_nm, attend_hall_nm, is_attend,
-        attend_hall.is_etc, attend_map.is_check, is_other_hall, attend_map.attend_dttm
+        SELECT examinee.examinee_cd, examinee.examinee_nm
+             , IF(attend_map.attend_hall_cd is not null, true, false) as is_attend
+             , attend.attend_date
+             , attend.attend_time
+             , (SELECT attend_paper.paper_cd
+                  FROM attend_paper
+                 WHERE attend_paper.attend_cd = attend_map.attend_cd
+                   AND attend_paper.examinee_cd = attend_map.examinee_cd
+                 ORDER BY attend_paper.reg_dttm DESC
+                 LIMIT 1
+                ) as paper_cd
+             , attend_map.hall_cd, h1.hall_nm
+             , attend_map.attend_hall_cd, h2.hall_nm as attend_hall_nm
+          FROM attend_map
+         INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd and attend.paper_cnt > 0
+         INNER JOIN examinee ON attend_map.examinee_cd = examinee.examinee_cd
+         INNER JOIN hall h1 ON attend_map.hall_cd = h1.hall_cd
+          LEFT JOIN hall h2 ON attend_map.attend_hall_cd = h2.hall_cd
     </select>
 </mapper>
