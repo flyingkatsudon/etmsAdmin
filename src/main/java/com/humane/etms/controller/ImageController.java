@@ -4,6 +4,7 @@ import com.humane.etms.model.AttendHall;
 import com.humane.etms.model.QAttendHall;
 import com.humane.etms.repository.AttendHallRepository;
 import com.humane.etms.service.ImageService;
+import com.humane.util.file.FileNameEncoder;
 import com.humane.util.file.FileUtils;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,8 @@ public class ImageController {
         return imageService.toResponseEntity(pathExaminee, fileName);
     }
 
-    @RequestMapping(value = "univLogo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "univLogo", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+
     public ResponseEntity<InputStreamResource> univLogo() {
         return imageService.toResponseEntity(pathUnivLogo, "univLogo.png");
     }
