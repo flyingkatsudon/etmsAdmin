@@ -6,9 +6,9 @@
 
     <select id="paper" resultType="com.humane.etms.dto.StatusDto">
         SELECT DISTINCT a.attend_cd, a.examinee_cd
-            ,if(a.attend_hall_cd is null , false,true) as is_attend
-            ,b.paper_cd as last_paper_cd, b.reg_dttm
-            ,if(b.paper_cd is null, false, true) as is_paper
+            , if(a.attend_hall_cd is null , false,true) as is_attend
+            , b.paper_cd as last_paper_cd, b.reg_dttm
+            , if(b.paper_cd is null, false, true) as is_paper
             , d.admission_nm
             , c.type_nm, c.attend_date, c.attend_time
             , e.examinee_nm, e.major_nm
@@ -26,11 +26,12 @@
                            ,attend_paper.reg_dttm
                            ,attend_paper.paper_cd
                            ,@prev_value := attend_paper.examinee_cd
-                       FROM attend_paper, attend, admission, hall,
+                       FROM attend_paper, attend, admission,
                            (SELECT @row_num := 1, @prev_value := '') x
                        <where>
                            attend_paper.attend_cd = attend.attend_cd
                            and attend.admission_cd = admission.admission_cd
+                           and attend.paper_cnt > 0
                            <if test="param != null">
                                <if test="param.admissionNm != null">and admission.admission_nm = #{param.admissionNm}</if>
                                <if test="param.typeNm != null">and attend.type_nm = #{param.typeNm}</if>
