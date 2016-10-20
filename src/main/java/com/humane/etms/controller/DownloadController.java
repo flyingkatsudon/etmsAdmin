@@ -10,7 +10,6 @@ import com.humane.util.zip4j.ZipFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.exception.ZipException;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,6 +66,7 @@ public class DownloadController {
         String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         File file = new File(currentTime + "_allData.zip");
         ZipFile zipFile = new ZipFile(file);
+        zipFile.setFileNameCharset("EUC-KR");
 
         String statusPath = "응시율 통계";
         String dataPath = "특이사항 리스트";
@@ -206,14 +206,8 @@ public class DownloadController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Set-Cookie", "fileDownload=true; path=/");
         headers.setContentType(MediaType.parseMediaType("application/zip"));
-        headers.setContentLength(ba.length);
+        headers.setContentLength(ba == null ? 0 : ba.length);
         headers.add("Content-Disposition", FileNameEncoder.encode("최종 산출물_출결.zip"));
         return new ResponseEntity<>(ba, headers, HttpStatus.OK);
-    }
-
-    public void manager() throws ZipException {
-        String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        File file = new File(currentTime + "manager.zip");
-        ZipFile zipFile = new ZipFile(file);
     }
 }
