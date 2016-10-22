@@ -6,7 +6,7 @@
     <select id="examinee" resultType="com.humane.etms.dto.ExamineeDto">
         SELECT
         admission.admission_nm, attend.type_nm,
-        attend.attend_date, attend.attend_time,
+        attend.attend_date, attend.attend_time, attend.attend_cd,
         examinee.college_nm,
         examinee.examinee_cd, examinee.examinee_nm,
         date_format(examinee.birth, '%y-%m-%d') as birth, examinee.major_nm, examinee.dept_nm,
@@ -221,13 +221,13 @@
     <update id="checkIdCard">
         UPDATE attend_map
            SET id_check_dttm = #{idCheckDttm}
-         WHERE examinee_cd = #{examineeCd}
+         WHERE examinee_cd = #{examineeCd} and attend_cd = #{attendCd}
     </update>
 
     <update id="recheck">
         UPDATE attend_map
         SET recheck_dttm = #{recheckDttm}
-        WHERE examinee_cd = #{examineeCd}
+        WHERE examinee_cd = #{examineeCd} and attend_cd = #{attendCd}
     </update>
 
     <select id="uplus" resultType="com.humane.etms.dto.ExamineeDto">

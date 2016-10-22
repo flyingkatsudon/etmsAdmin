@@ -31,7 +31,8 @@ define(function (require) {
                     var rowid = option.rowId;
                     return '<button id="checkBtn" value="' + rowid + '">확인</button>';
                     }
-                }
+                },
+                {name: 'attendCd', hidden: true}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -70,25 +71,26 @@ define(function (require) {
                                         dialog.getButton('idCheck').remove();
                                     }
                                 },
-                                buttons: [{
-                                    id: 'idCheck',
-                                    label: '신원 확인',
-                                    cssClass: 'btn-primary',
-                                    action: function (dialog) {
-                                        $.ajax({
-                                            url: 'data/checkIdCard?examineeCd=' + rowdata.examineeCd,
-                                            success: function (data) {
-                                                $(_this).jqGrid('setCell', rowid, 'idCheckDttm', data);
-                                                dialog.close();
-                                            }
-                                        });
-                                    }
-                                }, {
-                                    label: '닫기',
-                                    action: function (dialog) {
-                                        dialog.close();
-                                    }
-                                }]
+                                buttons: [
+                                    {
+                                        id: 'idCheck',
+                                        label: '신원 확인',
+                                        cssClass: 'btn-primary',
+                                        action: function (dialog) {
+                                            $.ajax({
+                                                url: 'data/checkIdCard?examineeCd=' + rowdata.examineeCd + '&attendCd=' + rowdata.attendCd,
+                                                success: function (data) {
+                                                    $(_this).jqGrid('setCell', rowid, 'idCheckDttm', data);
+                                                    dialog.close();
+                                                }
+                                            });
+                                        }
+                                    }, {
+                                        label: '닫기',
+                                        action: function (dialog) {
+                                            dialog.close();
+                                        }
+                                    }]
                             });
                         }
                     }

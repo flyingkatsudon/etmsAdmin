@@ -21,7 +21,7 @@ public interface DataMapper {
 
     Page<StatusDto> detail(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
-    void checkIdCard(@Param("examineeCd") String examineeCd, @Param("idCheckDttm") Date idCheckDttm);
+    void checkIdCard(@Param("examineeCd") String examineeCd, @Param("idCheckDttm") Date idCheckDttm, @Param("attendCd") String attendCd);
 
-    void recheck(@Param("examineeCd") String examineeCd, @Param("recheckDttm") Date recheckDttm);
+    void recheck(@Param("examineeCd") String examineeCd, @Param("recheckDttm") Date recheckDttm, @Param("attendCd") String attendCd);
 }

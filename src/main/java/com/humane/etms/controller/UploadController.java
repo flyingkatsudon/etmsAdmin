@@ -72,7 +72,10 @@ public class UploadController {
                         .and(QAttendHall.attendHall.hall.hallCd.eq(hall.getHallCd()))
                 );
 
-                if (tmp != null) attendHall.set_id(tmp.get_id());
+                if (tmp != null) {
+                    attendHall.set_id(tmp.get_id());
+                    attendHall.setSignDttm(tmp.getSignDttm());
+                }
 
                 // 5. 응시고사실 저장
                 attendRepository.save(attend);

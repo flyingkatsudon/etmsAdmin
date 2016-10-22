@@ -7,10 +7,7 @@ import com.humane.etms.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.exception.DRException;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -185,16 +181,16 @@ public class DataController {
     }
 
     @RequestMapping(value = "checkIdCard")
-    public String checkIdCard(String examineeCd) {
+    public String checkIdCard(String examineeCd, String attendCd) {
         Date idCheckDttm = new Date();
-        mapper.checkIdCard(examineeCd, idCheckDttm);
+        mapper.checkIdCard(examineeCd, idCheckDttm, attendCd);
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(idCheckDttm);
     }
 
     @RequestMapping(value = "reCheck")
-    public String reCheck(String examineeCd) {
+    public String reCheck(String examineeCd, String attendCd) {
         Date recheckDttm = new Date();
-        mapper.recheck(examineeCd, recheckDttm);
+        mapper.recheck(examineeCd, recheckDttm, attendCd);
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(recheckDttm);
     }
 
