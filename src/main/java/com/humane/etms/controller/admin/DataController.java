@@ -7,7 +7,13 @@ import com.humane.etms.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
@@ -24,6 +31,11 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static java.awt.Color.LIGHT_GRAY;
+import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 @RestController
 @RequestMapping(value = "data")
@@ -34,6 +46,14 @@ public class DataController {
     private final ImageService imageService;
     private static final String JSON = "json";
     private static final String PDF = "pdf";
+
+    public static StyleBuilder columnHeaderStyle = DynamicReports.stl.style()
+            .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE)
+            .setBorder(DynamicReports.stl.penThin()).setBackgroundColor(LIGHT_GRAY);
+
+    public static StyleBuilder columnStyle = DynamicReports.stl.style()
+            .setBorder(DynamicReports.stl.penThin())
+            .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
 
     @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
     @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
@@ -201,5 +221,42 @@ public class DataController {
                 , format
                 , mapper.uplus(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
         );
+    }
+
+    @RequestMapping(value = "sqlEdit.{format:json|xls|xlsx}")
+    public ResponseEntity sqlEdit(@PathVariable String format, @RequestParam(value = "sql") String sql) throws DRException {
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(mapper.sqlEdit(sql));
+            default:
+                List<Map<String, String>> list = mapper.sqlEdit(sql);
+
+                for (Map<String, String> map : list) {
+                    Set<String> keyset = map.keySet();
+                    for (String key : keyset) {
+                        Object value = map.get(key);
+                        map.put(key, String.valueOf(value == null ? "" : String.valueOf(value)));
+                    }
+                }
+
+                JasperReportBuilder report = report()
+                        .setPageMargin(DynamicReports.margin(0))
+                        .setIgnorePageWidth(true)
+                        .setIgnorePagination(true);
+
+                Set<String> keyset = list.get(0).keySet();
+                for (String key : keyset) {
+                    report.addColumn(
+                            col.column(key, key, type.stringType())
+                                    .setTitleStyle(columnHeaderStyle)
+                                    .setStyle(columnStyle)
+                                    .setFixedColumns(7)
+                    );
+                }
+
+                report.setDataSource(list);
+                JasperPrint jasperPrint = report.toJasperPrint();
+                return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+        }
     }
 }

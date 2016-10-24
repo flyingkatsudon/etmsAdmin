@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface DataMapper {
@@ -24,4 +26,6 @@ public interface DataMapper {
     void checkIdCard(@Param("examineeCd") String examineeCd, @Param("idCheckDttm") Date idCheckDttm, @Param("attendCd") String attendCd);
 
     void recheck(@Param("examineeCd") String examineeCd, @Param("recheckDttm") Date recheckDttm, @Param("attendCd") String attendCd);
+
+    List<Map<String, String>> sqlEdit(@Param("sql") String sql);
 }
