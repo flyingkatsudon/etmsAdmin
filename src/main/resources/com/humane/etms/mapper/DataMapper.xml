@@ -249,6 +249,11 @@
          INNER JOIN examinee ON attend_map.examinee_cd = examinee.examinee_cd
          INNER JOIN hall h1 ON attend_map.hall_cd = h1.hall_cd
           LEFT JOIN hall h2 ON attend_map.attend_hall_cd = h2.hall_cd
+        <where>
+            <if test="param!=null">
+                <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
+            </if>
+        </where>
     </select>
 
     <select id="sqlEdit" resultType="java.util.LinkedHashMap">

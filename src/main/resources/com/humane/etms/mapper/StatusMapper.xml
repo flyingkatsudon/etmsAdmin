@@ -17,6 +17,7 @@
         INNER JOIN hall ON hall.hall_cd = attend_map.hall_cd
         <where>
             <if test="param != null">
+                <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
             </if>
         </where>
