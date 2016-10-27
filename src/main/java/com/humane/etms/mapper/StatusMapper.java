@@ -20,4 +20,5 @@ public interface StatusMapper {
 
     Page<StatusDto> group(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
+    Page<StatusDto> home(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 }

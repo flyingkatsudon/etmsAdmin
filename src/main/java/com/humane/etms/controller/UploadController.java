@@ -97,6 +97,8 @@ public class UploadController {
 
         try {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
+            log.debug("{}:", examineeList);
+
             examineeList.forEach(vo -> {
 
                 // 1. AttendHall 에서 고사실 및 시험정보를 가져온다.
@@ -114,8 +116,6 @@ public class UploadController {
                 // 3. 수험생정보 생성
                 Examinee examinee = mapper.convertValue(vo, Examinee.class);
                 examineeRepository.save(examinee);
-
-                log.debug("{}", examinee);
 
                 AttendMap attendMap = mapper.convertValue(vo, AttendMap.class);
                 attendMap.setAttend(attendHall.getAttend());

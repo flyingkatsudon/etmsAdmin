@@ -23,6 +23,11 @@ public class StatusController {
 
     private final StatusMapper mapper;
 
+    @RequestMapping(value = "home")
+    public ResponseEntity home(StatusDto param, Pageable pageable){
+        return ResponseEntity.ok(mapper.home(param, pageable));
+    }
+
     @RequestMapping(value = "all")
     public ResponseEntity all(StatusDto param) {
         log.debug("{}", param);
