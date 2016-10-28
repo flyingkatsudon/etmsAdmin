@@ -28,6 +28,7 @@ public class FormHallVo {
     }
 
     @Column(name = "고사실코드") private String hallCd;
+    @Column(name = "원고사실코드") private String univHallCd;
     @Column(name = "고사본부") private String headNm;
     @Column(name = "고사건물") private String bldgNm;
     @Column(name = "고사실") private String hallNm;

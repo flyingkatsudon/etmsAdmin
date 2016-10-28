@@ -29,7 +29,7 @@ public class LoggingFilter implements Filter {
         Map<String, String> parameterMap = requestWrapper.parameterMap();
 
         String body = requestWrapper.getBody();
-        if (uri.matches("^(/)(api|score|check|data|model|setting|status|system)(/).*$")){
+        if (uri.matches("^(/)(api|score|check|data|model|setting|status|system|upload)(/).*$")){
             log.info("uri : {}, header: {}, parameter : {}, body : {}", uri, headerMap, parameterMap, body);
         }
 
