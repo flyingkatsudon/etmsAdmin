@@ -9,6 +9,7 @@ import java.util.Date;
 
 @Data
 public class FormHallVo {
+    @Column(name = "모집") private String recruitNm;
     @Column(name = "전형명") private String admissionNm;
     @Column(name = "전형코드") private String admissionCd;
     @Column(name = "계열") private String typeNm;
@@ -32,9 +33,10 @@ public class FormHallVo {
     @Column(name = "고사본부") private String headNm;
     @Column(name = "고사건물") private String bldgNm;
     @Column(name = "고사실") private String hallNm;
-    @Column(name = "예비고사실여부") private Boolean isEtc;
+    @Column(name = "비상고사실여부") private Boolean isEtc;
 
     @Column(name = "수험번호 자릿수") private String attendLen;
+    @Column(name = "조사용여부") private Boolean isUseGroup;
     @Column(name = "답안지 교체여부") private Boolean isPaperChange;
     @Column(name = "답안지 매수") private String paperCnt;
     @Column(name = "답안지 자릿수") private String paperLen;
@@ -43,5 +45,4 @@ public class FormHallVo {
     @Column(name = "각서제목") private String pledgeTitle;
     @Column(name = "각서문구") private String pledgeContent;
     @Column(name = "각서서명") private String pledgeSign;
-
 }
