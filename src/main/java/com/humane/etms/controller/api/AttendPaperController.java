@@ -54,6 +54,23 @@ public class AttendPaperController {
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "old", method = RequestMethod.POST)
+    public ResponseEntity<AttendPaper> mergeOld(@RequestBody AttendPaper attendPaper) {
+        QAttendPaper qAttendPaper = QAttendPaper.attendPaper;
+
+        AttendPaper find = repository.findOne(new BooleanBuilder()
+                .and(qAttendPaper.attend.attendCd.eq(attendPaper.getAttend().getAttendCd()))
+                .and(qAttendPaper.oldPaperCd.eq(attendPaper.getOldPaperCd()))
+        );
+
+        if (find != null) attendPaper.set_id(find.get_id());
+
+        AttendPaper rtn = repository.save(attendPaper);
+        saveLog(rtn);
+
+        return new ResponseEntity<>(rtn, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseEntity<Iterable<AttendPaper>> merge(@RequestBody Iterable<AttendPaper> attendPapers) {
         QAttendPaper qAttendPaper = QAttendPaper.attendPaper;
