@@ -54,7 +54,7 @@ public class AttendPaperController {
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "old", method = RequestMethod.POST)
+    /*@RequestMapping(value = "old", method = RequestMethod.POST)
     public ResponseEntity<AttendPaper> mergeOld(@RequestBody AttendPaper attendPaper) {
         QAttendPaper qAttendPaper = QAttendPaper.attendPaper;
 
@@ -69,7 +69,7 @@ public class AttendPaperController {
         saveLog(rtn);
 
         return new ResponseEntity<>(rtn, HttpStatus.OK);
-    }
+    }*/
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseEntity<Iterable<AttendPaper>> merge(@RequestBody Iterable<AttendPaper> attendPapers) {
