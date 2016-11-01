@@ -16,6 +16,7 @@ public class AttendHall {
 
     @ManyToOne @JoinColumn(name = "attendCd", nullable = false) private Attend attend;
     @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
+    private String univHallCd;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date signDttm;

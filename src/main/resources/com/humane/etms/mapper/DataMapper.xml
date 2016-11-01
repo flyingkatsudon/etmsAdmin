@@ -242,13 +242,20 @@
                  ORDER BY attend_paper.reg_dttm DESC
                  LIMIT 1
                 ) as paper_cd
-             , attend_map.hall_cd, h1.hall_nm
-             , attend_map.attend_hall_cd, h2.hall_nm as attend_hall_nm
+             , (select univ_hall_cd from attend_hall where hall_cd=attend_map.hall_cd and attend_cd = attend_map.attend_cd) as hall_cd
+             , h1.hall_nm
+             , (select univ_hall_cd from attend_hall where hall_cd=attend_map.attend_hall_cd and attend_cd = attend_map.attend_cd) as attend_hall_cd
+             , h2.hall_nm as attend_hall_nm
           FROM attend_map
          INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd and attend.paper_cnt > 0
          INNER JOIN examinee ON attend_map.examinee_cd = examinee.examinee_cd
          INNER JOIN hall h1 ON attend_map.hall_cd = h1.hall_cd
           LEFT JOIN hall h2 ON attend_map.attend_hall_cd = h2.hall_cd
+        <where>
+            <if test="param!=null">
+                <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
+            </if>
+        </where>
     </select>
 
     <select id="sqlEdit" resultType="java.util.LinkedHashMap">

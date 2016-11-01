@@ -3,6 +3,31 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.etms.mapper.StatusMapper">
+    <select id="home" resultType="com.humane.etms.dto.StatusDto">
+        SELECT admission.admission_nm
+        , attend.attend_date
+        , hall.bldg_nm
+        , hall.hall_nm
+        , COUNT(attend_map.examinee_cd) AS examinee_cnt
+        , COUNT(attend_map.attend_hall_cd) * 100 / COUNT(attend_map.examinee_cd) AS attend_per
+        , (COUNT(attend_map.examinee_cd) - COUNT(attend_map.attend_hall_cd)) * 100 / COUNT(attend_map.examinee_cd) AS absent_per
+        FROM attend_map
+        INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
+        INNER JOIN admission ON admission.admission_cd = attend.admission_cd
+        INNER JOIN hall ON hall.hall_cd = attend_map.hall_cd
+        <where>
+            <if test="param != null">
+                <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
+                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
+            </if>
+        </where>
+        GROUP BY
+        admission.admission_nm
+        , attend.attend_date
+        , hall.bldg_nm
+        , hall.hall_nm
+    </select>
+
     <select id="all" resultType="com.humane.etms.dto.StatusDto">
         SELECT
             COUNT(*)                                                       AS examinee_cnt,

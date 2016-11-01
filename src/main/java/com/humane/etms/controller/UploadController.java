@@ -11,6 +11,7 @@ import com.humane.util.file.FileUtils;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,37 +50,39 @@ public class UploadController {
         try {
             List<FormHallVo> hallList = ExOM.mapFromExcel(file).to(FormHallVo.class).map(1);
             hallList.forEach(dto -> {
+                if(dto != null && StringUtils.isNotEmpty(dto.getAdmissionCd())){
 
-                Admission admission = mapper.convertValue(dto, Admission.class);
-                admission = admissionRepository.save(admission);
+                    Admission admission = mapper.convertValue(dto, Admission.class);
+                    admission = admissionRepository.save(admission);
 
-                // 1. 시험정보 생성
-                Attend attend = mapper.convertValue(dto, Attend.class);
-                attend.setAdmission(admission);
+                    // 1. 시험정보 생성
+                    Attend attend = mapper.convertValue(dto, Attend.class);
+                    attend.setAdmission(admission);
 
-                // 2. 고사실정보 생성
-                Hall hall = mapper.convertValue(dto, Hall.class);
-                hall = hallRepository.save(hall);
+                    // 2. 고사실정보 생성
+                    Hall hall = mapper.convertValue(dto, Hall.class);
+                    hall = hallRepository.save(hall);
 
-                // 3. 응시고사실 생성
-                AttendHall attendHall = mapper.convertValue(dto, AttendHall.class);
-                attendHall.setAttend(attend);
-                attendHall.setHall(hall);
+                    // 3. 응시고사실 생성
+                    AttendHall attendHall = mapper.convertValue(dto, AttendHall.class);
+                    attendHall.setAttend(attend);
+                    attendHall.setHall(hall);
 
-                // 4. 응시고사실 확인
-                AttendHall tmp = attendHallRepository.findOne(new BooleanBuilder()
-                        .and(QAttendHall.attendHall.attend.attendCd.eq(attendHall.getAttend().getAttendCd()))
-                        .and(QAttendHall.attendHall.hall.hallCd.eq(hall.getHallCd()))
-                );
+                    // 4. 응시고사실 확인
+                    AttendHall tmp = attendHallRepository.findOne(new BooleanBuilder()
+                            .and(QAttendHall.attendHall.attend.attendCd.eq(attendHall.getAttend().getAttendCd()))
+                            .and(QAttendHall.attendHall.hall.hallCd.eq(hall.getHallCd()))
+                    );
 
-                if (tmp != null) {
-                    attendHall.set_id(tmp.get_id());
-                    attendHall.setSignDttm(tmp.getSignDttm());
+                    if (tmp != null) {
+                        attendHall.set_id(tmp.get_id());
+                        attendHall.setSignDttm(tmp.getSignDttm());
+                    }
+
+                    // 5. 응시고사실 저장
+                    attendRepository.save(attend);
+                    attendHallRepository.save(attendHall);
                 }
-
-                // 5. 응시고사실 저장
-                attendRepository.save(attend);
-                attendHallRepository.save(attendHall);
             });
         } catch (Throwable throwable) {
             throwable.printStackTrace();
@@ -97,40 +100,42 @@ public class UploadController {
 
         try {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
+            log.debug("{}:", examineeList);
+
             examineeList.forEach(vo -> {
+                if(vo != null && StringUtils.isNoneEmpty(vo.getAdmissionCd())){
 
-                // 1. AttendHall 에서 고사실 및 시험정보를 가져온다.
-                QAttend attend = QAttendHall.attendHall.attend;
-                QHall hall = QAttendHall.attendHall.hall;
+                    // 1. AttendHall 에서 고사실 및 시험정보를 가져온다.
+                    QAttend attend = QAttendHall.attendHall.attend;
+                    QHall hall = QAttendHall.attendHall.hall;
 
-                AttendHall attendHall = attendHallRepository.findOne(new BooleanBuilder()
-                        .and(attend.attendDate.eq(dtf.parseLocalDateTime(vo.getAttendDate()).toDate()))
-                        .and(attend.attendTime.eq(dtf.parseLocalDateTime(vo.getAttendTime()).toDate()))
-                        .and(hall.headNm.eq(vo.getHeadNm()))
-                        .and(hall.bldgNm.eq(vo.getBldgNm()))
-                        .and(hall.hallNm.eq(vo.getHallNm()))
-                );
+                    AttendHall attendHall = attendHallRepository.findOne(new BooleanBuilder()
+                            .and(attend.attendDate.eq(dtf.parseLocalDateTime(vo.getAttendDate()).toDate()))
+                            .and(attend.attendTime.eq(dtf.parseLocalDateTime(vo.getAttendTime()).toDate()))
+                            .and(hall.headNm.eq(vo.getHeadNm()))
+                            .and(hall.bldgNm.eq(vo.getBldgNm()))
+                            .and(hall.hallNm.eq(vo.getHallNm()))
+                    );
 
-                // 3. 수험생정보 생성
-                Examinee examinee = mapper.convertValue(vo, Examinee.class);
-                examineeRepository.save(examinee);
+                    // 3. 수험생정보 생성
+                    Examinee examinee = mapper.convertValue(vo, Examinee.class);
+                    examineeRepository.save(examinee);
 
-                log.debug("{}", examinee);
+                    AttendMap attendMap = mapper.convertValue(vo, AttendMap.class);
+                    attendMap.setAttend(attendHall.getAttend());
+                    attendMap.setHall(attendHall.getHall());
+                    attendMap.setExaminee(examinee);
 
-                AttendMap attendMap = mapper.convertValue(vo, AttendMap.class);
-                attendMap.setAttend(attendHall.getAttend());
-                attendMap.setHall(attendHall.getHall());
-                attendMap.setExaminee(examinee);
+                    AttendMap tmp = attendMapRepository.findOne(new BooleanBuilder()
+                            .and(QAttendMap.attendMap.attend.attendCd.eq(attendMap.getAttend().getAttendCd()))
+                            .and(QAttendMap.attendMap.examinee.examineeCd.eq(attendMap.getExaminee().getExamineeCd()))
+                    );
 
-                AttendMap tmp = attendMapRepository.findOne(new BooleanBuilder()
-                        .and(QAttendMap.attendMap.attend.attendCd.eq(attendMap.getAttend().getAttendCd()))
-                        .and(QAttendMap.attendMap.examinee.examineeCd.eq(attendMap.getExaminee().getExamineeCd()))
-                );
+                    if (tmp != null) attendMap.set_id(tmp.get_id());
 
-                if (tmp != null) attendMap.set_id(tmp.get_id());
-
-                // 3.1 수험생정보 저장
-                attendMapRepository.save(attendMap);
+                    // 3.1 수험생정보 저장
+                    attendMapRepository.save(attendMap);
+                }
             });
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
