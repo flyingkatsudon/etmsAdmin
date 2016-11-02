@@ -108,4 +108,7 @@ public class StatusDto implements Serializable {
 
     private String attendDT;
     private BufferedImage examineeImage;
+
+    private Boolean isNoIdCardFilter;
+    private Boolean isCheckFilter;
 }

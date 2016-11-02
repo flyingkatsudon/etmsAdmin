@@ -22,12 +22,12 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    caption: '응시율 TOP 20',
+                    caption: '응시율 TOP 10',
                     url: 'status/home.json',
                     colModel: colModel,
                     sortname: 'attendPer',
                     sortorder: 'desc',
-                    rowNum: 20,
+                    rowNum: 10,
                     rowList: ''
                 }
             }, options);
@@ -35,14 +35,14 @@ define(function (require) {
             this.constructor.__super__.initialize.call(this, opt);
         },
         render: function () {
-           // this.constructor.__super__.render.call(this);
-            this.$el.empty().append(this.$grid);
+            this.constructor.__super__.render.call(this);
+            /*this.$el.empty().append(this.$grid);
             this.$grid.jqGrid(this.options.defaults);
             this.$('.ui-jqgrid .ui-jqgrid-bdiv').css('overflow-x', 'hidden');
             this.$grid.parents('div.ui-jqgrid-bdiv').css('min-height', '100px');
             this.$grid.jqGrid('setGridWidth', this.$el.width());
 
-            if (this.options.defaults.url) this.$grid.jqGrid('setGridParam', {datatype: 'json'}).trigger('reloadGrid');
+            if (this.options.defaults.url) this.$grid.jqGrid('setGridParam', {datatype: 'json'}).trigger('reloadGrid');*/
 
             return this;
         }

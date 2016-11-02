@@ -16,15 +16,6 @@ define(function (require) {
                 {name: 'examineeCd', label: '수험번호'},
                 {name: 'examineeNm', label: '수험생명'},
                 {name: 'birth', label: '생년월일'},
-                {name: 'attendHeadNm', label: '응시고사본부'},
-                {name: 'attendBldgNm', label: '응시고사건물'},
-                {name: 'attendHallNm', label: '응시고사실'},
-                {
-                    name: 'isOtherHall',
-                    label: '타고사실여부',
-                    formatter: 'select',
-                    editoptions: {value: {true: '예', false: '아니오'}}
-                },
                 {name: 'idCheckDttm', label: '신원확인시간'},
                 {
                     name: 'btnIdCheck', label: '신원확인', formatter: function (cellValue, option) {

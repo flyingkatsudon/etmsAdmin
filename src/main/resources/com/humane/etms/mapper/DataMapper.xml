@@ -91,6 +91,14 @@
                 </if>
                 <if test="param.isNoIdCard != null">AND attend_map.is_no_id_card = #{param.isNoIdCard}</if>
                 <if test="param.isCheck != null">AND attend_map.is_check = #{param.isCheck}</if>
+                <if test="param.isNoIdCardFilter != null">
+                    <if test="param.isNoIdCardFilter == true">AND attend_map.id_check_dttm IS NOT NULL</if>
+                    <if test="param.isNoIdCardFilter == false">AND attend_map.id_check_dttm IS NULL</if>
+                </if>
+                <if test="param.isCheckFilter != null">
+                    <if test="param.isCheckFilter == true">AND attend_map.recheck_dttm IS NOT NULL</if>
+                    <if test="param.isCheckFilter == false">AND attend_map.recheck_dttm IS NULL</if>
+                </if>
                 <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
             </if>
         </where>

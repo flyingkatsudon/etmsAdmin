@@ -53,7 +53,8 @@ define(function (require) {
                     attendBldgNm : _this.$('#attendBldgNm').val(),
                     attendHallNm : _this.$('#attendHallNm').val(),
                     examineeCd : _this.$('#examineeCd').val(),
-                    examineeNm : _this.$('#examineeNm').val()
+                    examineeNm : _this.$('#examineeNm').val(),
+                    isCheckFilter: _this.$('#isCheckFilter').val()
                 });
             }
         },

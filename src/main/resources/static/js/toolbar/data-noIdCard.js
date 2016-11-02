@@ -54,7 +54,8 @@ define(function (require) {
                     attendHallNm : _this.$('#attendHallNm').val(),
                     examineeCd : _this.$('#examineeCd').val(),
                     examineeNm : _this.$('#examineeNm').val(),
-                    isOtherHall : _this.$('#isOtherHall').val()
+                    isOtherHall : _this.$('#isOtherHall').val(),
+                    isNoIdCardFilter: _this.$('#isNoIdCardFilter').val()
                 });
             }
         },
