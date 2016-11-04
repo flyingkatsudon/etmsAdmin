@@ -148,17 +148,6 @@ public class DownloadController {
         );
         zipFile.addFile(signature);
         signature.delete();
-/*
-
-        dto.setIsOtherHall(true);
-        File otherHall = JasperReportsExportHelper.toXlsxFile(
-                "jrxml/data-otherHall.jrxml"
-                , dataMapper.examinee(dto, pageable).getContent()
-        );
-        dto.setIsOtherHall(false);
-        zipFile.addFile(dataPath, otherHall);
-        otherHall.delete();
-*/
 
         File noIdCardFolder = new File(jpgRoot + "/noIdCard");
         File[] noIdCardList = noIdCardFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg"));

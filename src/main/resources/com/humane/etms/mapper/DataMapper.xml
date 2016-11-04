@@ -238,7 +238,7 @@
         WHERE examinee_cd = #{examineeCd} and attend_cd = #{attendCd}
     </update>
 
-    <select id="uplus" resultType="com.humane.etms.dto.ExamineeDto">
+    <select id="sendPaperInfo" resultType="com.humane.etms.dto.ExamineeDto">
         SELECT examinee.examinee_cd, examinee.examinee_nm
              , IF(attend_map.attend_hall_cd is not null, true, false) as is_attend
              , attend.attend_date

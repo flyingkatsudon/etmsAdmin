@@ -214,12 +214,12 @@ public class DataController {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(recheckDttm);
     }
 
-    @RequestMapping(value = "uplus.{format:xls|xlsx}")
-    public ResponseEntity uplus(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
+    @RequestMapping(value = "sendPaperInfo.{format:xls|xlsx}")
+    public ResponseEntity sendPaperInfo(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
         return JasperReportsExportHelper.toResponseEntity(
-                "jrxml/data-uplus.jrxml"
+                "jrxml/data-sendPaperInfo.jrxml"
                 , format
-                , mapper.uplus(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                , mapper.sendPaperInfo(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
         );
     }
 
