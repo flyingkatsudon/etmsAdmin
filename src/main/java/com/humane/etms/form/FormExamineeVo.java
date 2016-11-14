@@ -26,4 +26,6 @@ public class FormExamineeVo {
     @Column(name = "고사본부") private String headNm;
     @Column(name = "고사건물") private String bldgNm;
     @Column(name = "고사실") private String hallNm;
+
+    @Column(name = "선택과목") private String subject;
 }

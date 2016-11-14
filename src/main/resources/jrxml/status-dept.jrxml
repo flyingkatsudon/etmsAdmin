@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-08-10T17:19:24 -->
+<!-- 2016-11-11T17:21:29 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="모집단위별 응시율" pageWidth="1300" pageHeight="75" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1300" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" isIgnorePagination="true" uuid="1d8d5473-da75-420c-b65d-d70368d197b8">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -49,7 +49,7 @@
 	</title>
 	<columnHeader>
 		<band height="15">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<staticText>
 				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="120" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="af96b6cc-6c3b-4e5a-aee0-204543c1ee5a"/>
 				<box>
@@ -101,7 +101,7 @@
 				<text><![CDATA[시험일자]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="474" y="0" width="118" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="eaa5dedc-2e62-4dbb-a0bb-c0473a6be7ab"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="474" y="0" width="86" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="eaa5dedc-2e62-4dbb-a0bb-c0473a6be7ab"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -114,7 +114,7 @@
 				<text><![CDATA[시험시간]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="592" y="0" width="118" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="aa78b04c-6716-4a37-8de9-02bf3b50b3d1"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="560" y="0" width="150" height="15" forecolor="#000000" backcolor="#D3D3D3" uuid="aa78b04c-6716-4a37-8de9-02bf3b50b3d1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -195,7 +195,7 @@
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="120" height="15" uuid="6f5b85b0-6dbc-4fb9-98ba-403d8ff644ea"/>
 				<box>
@@ -247,7 +247,7 @@
 				<textFieldExpression><![CDATA[$F{attendDate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH:mm" isBlankWhenNull="true">
-				<reportElement x="474" y="0" width="118" height="15" uuid="c5eef54c-4455-4053-a45f-b99786d86714"/>
+				<reportElement x="474" y="0" width="86" height="15" uuid="c5eef54c-4455-4053-a45f-b99786d86714"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -260,7 +260,7 @@
 				<textFieldExpression><![CDATA[$F{attendTime}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="592" y="0" width="118" height="15" uuid="b59b7640-762b-4b7f-8603-d470a89e7917"/>
+				<reportElement x="560" y="0" width="150" height="15" uuid="b59b7640-762b-4b7f-8603-d470a89e7917"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -341,7 +341,7 @@
 	</detail>
 	<summary>
 		<band height="15" splitType="Stretch">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<staticText>
 				<reportElement x="0" y="0" width="120" height="15" uuid="8ce64120-7f25-4bc2-a4ee-641edbc59c55"/>
 				<box>
@@ -395,7 +395,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="474" y="0" width="118" height="15" uuid="21ca43f3-715e-4847-a11e-fa869f7c9e3d"/>
+				<reportElement x="474" y="0" width="86" height="15" uuid="21ca43f3-715e-4847-a11e-fa869f7c9e3d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -408,7 +408,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="592" y="0" width="118" height="15" uuid="917a7b55-bfd8-4513-8ad4-c0c636be2105"/>
+				<reportElement x="560" y="0" width="150" height="15" uuid="917a7b55-bfd8-4513-8ad4-c0c636be2105"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
