@@ -21,10 +21,11 @@ define(function (require) {
                 {name: 'attendHeadNm', label: '응시고사본부'},
                 {name: 'attendBldgNm', label: '응시고사건물'},
                 {name: 'attendHallNm', label: '응시고사실'},
-                {name: 'isAttend', label: '응시여부', formatter: 'select', editoptions: {value: {true: '응시', false: '미응시'}}},
+                {name: 'isAttend', label: '응시여부', formatter: 'select', editoptions: {value: {true: '응시', false: '결시'}}},
                 {name: 'isChangePaper', label: '답안지교체여부', formatter: 'select', editoptions: {value: {true: '교체', false: '미교체'}}},
                 {name: 'lastPaperCd', label: '답안지번호'},
-                {name: 'isOtherHall', hidden: true, label: '타고사실여부', formatter: 'select', editoptions: {value: {true: '예', false: '아니오'}}}
+                {name: 'isOtherHall', hidden: true, label: '타고사실여부', formatter: 'select', editoptions: {value: {true: '예', false: '아니오'}}},
+                {name: 'isCancelAttend', hidden: true, label: '응시취소여부', formatter: 'select', editoptions: {value: {true: '예', false: '아니오'}}}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

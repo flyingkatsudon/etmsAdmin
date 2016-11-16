@@ -46,6 +46,7 @@
                   not ( if(b.paper_cd is null, false, true) = false and if(a.attend_hall_cd is null , false,true) = false)
               and not ( if(b.paper_cd is null, false, true) = true and if(a.attend_hall_cd is null , false,true) = true)
               and c.paper_cnt > 0
+              and (a.attend_hall_cd is not null and b.paper_cd is null)
             <if test="param != null">
                 <if test="param.admissionNm != null">and d.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">and c.type_nm = #{param.typeNm}</if>

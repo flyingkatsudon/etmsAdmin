@@ -20,7 +20,7 @@ define(function (require) {
                     name: 'isAttend',
                     label: '응시여부',
                     formatter: 'select',
-                    editoptions: {value: {true: '응시', false: '미응시'}}
+                    editoptions: {value: {true: '응시', false: '결시'}}
                 },
                 {name: 'lastPaperCd', label: '답안지번호'}
             ];
@@ -33,19 +33,6 @@ define(function (require) {
                 defaults: {
                     url: 'check/paper.json',
                     colModel: colModel
-                    , loadComplete: function (data) {
-                        var ids = $(this).getDataIDs(data);
-
-                        for (var i = 0; i < ids.length; i++) {
-                            var rowData = $(this).getRowData(ids[i]);
-                            if (rowData.attendHallNm == '' && rowData.lastPaperCd != '') {
-                                $(this).setRowData(ids[i], false, {background: '#f5a7a4'});
-                            }
-                            else if (rowData.attendHallNm != '' && rowData.lastPaperCd == '') {
-                                $(this).setRowData(ids[i], false, {background: '#f5a7a4'});
-                            }
-                        }
-                    }
                 }
             }, options);
 

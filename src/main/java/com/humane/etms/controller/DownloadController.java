@@ -59,7 +59,7 @@ public class DownloadController {
     }
 
     @RequestMapping(value = "allData.zip", method = RequestMethod.GET)
-    public ResponseEntity allData() throws IOException, ZipException {
+    public ResponseEntity allData(StatusDto statusDto, ExamineeDto examineeDto) throws IOException, ZipException {
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
 
         // 압축파일 생성
@@ -75,26 +75,26 @@ public class DownloadController {
         // entry 생성
         File fileAttend = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/status-attend.jrxml"
-                , statusMapper.attend(new StatusDto(), pageable).getContent());
+                , statusMapper.attend(statusDto, pageable).getContent());
         zipFile.addFile(statusPath, fileAttend);
         fileAttend.delete();
 
         File fileDept = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/status-dept.jrxml"
-                , statusMapper.dept(new StatusDto(), pageable).getContent());
+                , statusMapper.dept(statusDto, pageable).getContent());
         zipFile.addFile(statusPath, fileDept);
         fileDept.delete();
 
         File fileMajor = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/status-major.jrxml"
-                , statusMapper.major(new StatusDto(), pageable).getContent());
+                , statusMapper.major(statusDto, pageable).getContent());
         zipFile.addFile(statusPath, fileMajor);
         fileMajor.delete();
 
         //1. xlsx 파일 생성
         File fileHall = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/status-hall.jrxml"
-                , statusMapper.hall(new StatusDto(), pageable).getContent());
+                , statusMapper.hall(statusDto, pageable).getContent());
         //2. zip파일에 추가시키기
         zipFile.addFile(statusPath, fileHall);
         //3. 추가시킨 후 xlsx파일 삭제
@@ -103,19 +103,19 @@ public class DownloadController {
         // 1. xlsx 파일 생성
         File fileGroup = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/status-group.jrxml"
-                , statusMapper.group(new StatusDto(), pageable).getContent()
+                , statusMapper.group(statusDto, pageable).getContent()
         );
         zipFile.addFile(statusPath, fileGroup);
         fileGroup.delete();
 
         File dataExaminee = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-examinee.jrxml"
-                , dataMapper.examinee(new ExamineeDto(), pageable).getContent()
+                , dataMapper.examinee(examineeDto, pageable).getContent()
         );
         zipFile.addFile(dataExaminee);
         dataExaminee.delete();
 
-        ExamineeDto dto = new ExamineeDto();
+        ExamineeDto dto = examineeDto;
         dto.setIsNoIdCard(true);
         File noIdCard = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-noIdCard.jrxml"
@@ -134,7 +134,6 @@ public class DownloadController {
         zipFile.addFile(dataPath, recheck);
         recheck.delete();
 
-        StatusDto statusDto = new StatusDto();
         File paper = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-paper.jrxml"
                 , dataMapper.paper(statusDto, pageable).getContent()

@@ -440,7 +440,7 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[($F{isAttend}==true) ? "응시" : "미응시"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{isAttend}==true) ? "응시" : "결시"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="2134" y="0" width="133" height="15" uuid="b2e41459-8495-41a6-bdb0-10edadf5133a"/>

@@ -111,4 +111,6 @@ public class StatusDto implements Serializable {
 
     private Boolean isNoIdCardFilter;
     private Boolean isCheckFilter;
+
+    private Boolean isCancelAttend;
 }

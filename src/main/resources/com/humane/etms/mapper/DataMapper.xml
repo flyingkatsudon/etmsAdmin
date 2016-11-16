@@ -26,9 +26,9 @@
         attend_map.id_check_dttm,
         attend_map.recheck_dttm,
 
-        (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd AND
+        CASE WHEN attend_hall.hall_cd IS NOT NULL THEN (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd AND
         attend_paper.examinee_cd = attend_map.examinee_cd AND attend_paper.paper_no = 1 /*AND attend_map.attend_hall_cd IS NOT NULL*/
-        ORDER BY reg_dttm DESC LIMIT 1)
+        ORDER BY reg_dttm DESC LIMIT 1) ELSE NULL END
         AS last_paper_cd,
 
         CASE WHEN (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd AND
@@ -36,7 +36,9 @@
         THEN 1 ELSE 0
         END AS is_change_paper,
 
-        now() AS print_dttm
+        now() AS print_dttm,
+        CASE WHEN (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.examinee_cd = attend_map.examinee_cd) >= 1 AND attend_map.attend_dttm IS NULL
+        THEN TRUE END AS isCancelAttend
         FROM
         attend_map
         INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd
@@ -89,8 +91,10 @@
                 <if test="param.fromExamineeCd != null and param.toExamineeCd != null">
                     AND examinee.examinee_cd BETWEEN #{param.fromExamineeCd} AND #{param.toExamineeCd}
                 </if>
-                <if test="param.isNoIdCard != null">AND attend_map.is_no_id_card = #{param.isNoIdCard}</if>
-                <if test="param.isCheck != null">AND attend_map.is_check = #{param.isCheck}</if>
+                <if test="param.isNoIdCard != null">AND (attend_map.is_no_id_card = #{param.isNoIdCard} AND attend_map.attend_dttm IS NOT NULL)
+                </if>
+                <if test="param.isCheck != null">AND attend_map.is_check = #{param.isCheck}
+                </if>
                 <if test="param.isNoIdCardFilter != null">
                     <if test="param.isNoIdCardFilter == true">AND attend_map.id_check_dttm IS NOT NULL</if>
                     <if test="param.isNoIdCardFilter == false">AND attend_map.id_check_dttm IS NULL</if>
@@ -98,6 +102,10 @@
                 <if test="param.isCheckFilter != null">
                     <if test="param.isCheckFilter == true">AND attend_map.recheck_dttm IS NOT NULL</if>
                     <if test="param.isCheckFilter == false">AND attend_map.recheck_dttm IS NULL</if>
+                </if>
+                <if test="param.isCancelAttend != null">
+                    <if test="param.isCancelAttend == true">AND (SELECT COUNT(*) FROM attend_paper WHERE attend_paper.examinee_cd = attend_map.examinee_cd) >= 1 AND attend_map.attend_dttm IS NULL
+                    </if>
                 </if>
                 <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
             </if>
@@ -107,7 +115,7 @@
         admission.admission_nm, attend.type_nm, attend.attend_date, attend.attend_time,
         examinee.major_nm, examinee.dept_nm,
         hall.hall_cd,
-        attend_hall_cd,
+        attend_map.attend_hall_cd,
         attend_hall.is_etc, attend_map.is_check, attend_map.attend_dttm
     </select>
 
@@ -247,6 +255,7 @@
                   FROM attend_paper
                  WHERE attend_paper.attend_cd = attend_map.attend_cd
                    AND attend_paper.examinee_cd = attend_map.examinee_cd
+                   AND attend_map.attend_hall_cd IS NOT NULL
                  ORDER BY attend_paper.reg_dttm DESC
                  LIMIT 1
                 ) as paper_cd
@@ -266,6 +275,31 @@
         </where>
     </select>
 
+    <select id="cancelAttend" resultType="com.humane.etms.dto.ExamineeDto">
+        select admission.admission_nm, attend.type_nm
+              , examinee.dept_nm, examinee.major_nm
+              , examinee.examinee_cd, examinee.examinee_nm, examinee.birth
+              , hall.head_nm, hall.bldg_nm, hall.hall_nm,
+              (SELECT attend_paper.paper_cd
+              FROM attend_paper
+              WHERE attend_paper.attend_cd = attend_map.attend_cd
+                AND attend_paper.examinee_cd = attend_map.examinee_cd
+              ORDER BY attend_paper.reg_dttm DESC
+              LIMIT 1
+               ) as last_paper_cd
+                , attend_map.attend_dttm
+        from attend_map
+        inner join attend on attend.attend_cd = attend_map.attend_cd
+        inner join hall on hall.hall_cd = attend_map.hall_cd
+        inner join admission on admission.admission_cd = attend.admission_cd
+        inner join examinee on examinee.examinee_cd = attend_map.examinee_cd
+        left join attend_paper on attend_paper.examinee_cd = attend_map.examinee_cd
+        <where> and attend_map.attend_dttm is null and attend_paper.paper_cd is not null
+            <if test="param!=null">
+                <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
+            </if>
+        </where>
+    </select>
     <select id="sqlEdit" resultType="java.util.LinkedHashMap">
         ${sql}
     </select>

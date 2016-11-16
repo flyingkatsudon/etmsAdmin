@@ -15,6 +15,8 @@ import java.util.Map;
 public interface DataMapper {
     Page<ExamineeDto> sendPaperInfo(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
+    Page<ExamineeDto> cancelAttend(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
+
     Page<ExamineeDto> examinee(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
     Page<StatusDto> signature(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);

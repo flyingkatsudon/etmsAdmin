@@ -223,6 +223,16 @@ public class DataController {
         );
     }
 
+    @RequestMapping(value = "cancelAttend.{format:xls|xlsx}")
+    public ResponseEntity cancelAttend(@PathVariable String format, StatusDto param, Pageable pageable) throws DRException {
+        param.setIsCancelAttend(true);
+        return JasperReportsExportHelper.toResponseEntity(
+                "jrxml/data-cancelAttend.jrxml"
+                , format
+                , mapper.cancelAttend(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+        );
+    }
+
     @RequestMapping(value = "sqlEdit.{format:json|xls|xlsx}")
     public ResponseEntity sqlEdit(@PathVariable String format, @RequestParam(value = "sql") String sql) throws DRException {
         switch (format) {
