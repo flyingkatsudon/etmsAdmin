@@ -21,6 +21,7 @@ define(function (require) {
         },
         events: {
             'click .btn': 'buttonClicked',
+            'click .noIdCard': 'noIdCardClicked',
             'change #admissionNm': 'admissionNmChanged',
             'change #attendDate': 'attendDateChanged'
         },
@@ -31,7 +32,7 @@ define(function (require) {
             var attendDate = this.$('#attendDate').val();
 
             var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?admissionNm=" + admissionNm + "&attendDate=" + attendDate});
+            this.dlgDownload.render({url: url + "?admissionNm=" + admissionNm + "&attendDate=" + attendDate });
 
             return false;
         },
@@ -40,6 +41,17 @@ define(function (require) {
                 admissionNm: e.currentTarget.value
             };
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
+        },
+        noIdCardClicked: function (e) {
+            e.preventDefault();
+
+            var admissionNm = this.$('#admissionNm').val();
+            var attendDate = this.$('#attendDate').val();
+
+            var url = e.currentTarget.form.action;
+            this.dlgDownload.render({url: url + "?isAttend=true" + "&admissionNm=" + admissionNm + "&attendDate=" + attendDate  });
+
+            return false;
         }
     });
 });

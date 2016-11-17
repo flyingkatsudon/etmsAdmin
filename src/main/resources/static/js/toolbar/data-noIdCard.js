@@ -55,6 +55,7 @@ define(function (require) {
                     examineeCd : _this.$('#examineeCd').val(),
                     examineeNm : _this.$('#examineeNm').val(),
                     isOtherHall : _this.$('#isOtherHall').val(),
+                    isAttend: _this.$('#isAttend').val(),
                     isNoIdCardFilter: _this.$('#isNoIdCardFilter').val()
                 });
             }
