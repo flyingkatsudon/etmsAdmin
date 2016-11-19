@@ -91,7 +91,7 @@
                 <if test="param.fromExamineeCd != null and param.toExamineeCd != null">
                     AND examinee.examinee_cd BETWEEN #{param.fromExamineeCd} AND #{param.toExamineeCd}
                 </if>
-                <if test="param.isNoIdCard != null">AND (attend_map.is_no_id_card = #{param.isNoIdCard} AND attend_map.attend_dttm IS NOT NULL)
+                <if test="param.isNoIdCard != null">AND attend_map.is_no_id_card = #{param.isNoIdCard}
                 </if>
                 <if test="param.isCheck != null">AND attend_map.is_check = #{param.isCheck}
                 </if>
@@ -293,7 +293,7 @@
         inner join hall on hall.hall_cd = attend_map.hall_cd
         inner join admission on admission.admission_cd = attend.admission_cd
         inner join examinee on examinee.examinee_cd = attend_map.examinee_cd
-        left join attend_paper on attend_paper.examinee_cd = attend_map.examinee_cd
+        left join attend_paper on attend_paper.examinee_cd = attend_map.examinee_cd and attend_map.attend_cd = attend_paper.attend_cd
         <where> and attend_map.attend_dttm is null and attend_paper.paper_cd is not null
             <if test="param!=null">
                 <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
