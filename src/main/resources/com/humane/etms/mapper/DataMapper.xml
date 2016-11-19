@@ -180,7 +180,7 @@
             <where>
                 <if test="param != null">
                     <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
-                    <if test="param.typeNm != null">AND examinee.type_nm = #{param.typeNm}</if>
+                    <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
                     <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                     <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                     <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm}</if>
@@ -248,7 +248,7 @@
 
     <select id="sendPaperInfo" resultType="com.humane.etms.dto.ExamineeDto">
         SELECT examinee.examinee_cd, examinee.examinee_nm
-             , IF(attend_map.attend_hall_cd is not null, true, false) as is_attend
+             , IF(attend_map.attend_hall_cd is not null, 'N', 'Y') as attendYn
              , attend.attend_date
              , attend.attend_time
              , (SELECT attend_paper.paper_cd
@@ -265,12 +265,16 @@
              , h2.hall_nm as attend_hall_nm
           FROM attend_map
          INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd and attend.paper_cnt > 0
+         INNER JOIN admission ON admission.admission_cd = attend.admission_cd
          INNER JOIN examinee ON attend_map.examinee_cd = examinee.examinee_cd
          INNER JOIN hall h1 ON attend_map.hall_cd = h1.hall_cd
           LEFT JOIN hall h2 ON attend_map.attend_hall_cd = h2.hall_cd
         <where>
             <if test="param!=null">
                 <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
+                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
             </if>
         </where>
     </select>

@@ -213,6 +213,7 @@ public class DataController {
         mapper.recheck(examineeCd, recheckDttm, attendCd);
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(recheckDttm);
     }
+/*
 
     @RequestMapping(value = "sendPaperInfo.{format:xls|xlsx}")
     public ResponseEntity sendPaperInfo(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
@@ -221,6 +222,34 @@ public class DataController {
                 , format
                 , mapper.sendPaperInfo(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
         );
+    }
+*/
+
+    @RequestMapping(value = "sendPaperInfo.{format:xls|xlsx}")
+    public ResponseEntity sendPaperInfo(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
+        JasperReportBuilder report= report()
+                .columns(
+                        col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("성명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("결시여부", "attendYn", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("시험일자", "attendDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        col.column("교시", "attendTime", type.dateType()).setPattern("HH:mm").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5),
+                        col.column("바코드", "paperCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("배정고사실코드", "hallCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        col.column("배정고사실명", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
+                        col.column("실제고사실코드", "attendHallCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
+                        col.column("실제고사실명", "attendHallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
+                )
+                .setPageMargin(DynamicReports.margin(0))
+                .setIgnorePageWidth(true)
+                .setIgnorePagination(true);
+
+        report.setDataSource(mapper.sendPaperInfo(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+
+        JasperPrint jasperPrint = report.toJasperPrint();
+        jasperPrint.setName("답안지매칭 전달양식");
+
+        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }
 
     @RequestMapping(value = "cancelAttend.{format:xls|xlsx}")

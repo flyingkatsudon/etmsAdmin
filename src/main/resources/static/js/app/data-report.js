@@ -18,6 +18,7 @@ define(function (require) {
             this.$el.html(Template);
             this.$('#admissionNm').html(this.getOptions(ToolbarModel.getAdmissionNm()));
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate()));
+            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime()));
         },
         events: {
             'click .btn': 'buttonClicked',
@@ -30,9 +31,10 @@ define(function (require) {
 
             var admissionNm = this.$('#admissionNm').val();
             var attendDate = this.$('#attendDate').val();
+            var attendTime = this.$('#attendTime').val();
 
             var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?admissionNm=" + admissionNm + "&attendDate=" + attendDate });
+            this.dlgDownload.render({url: url + "?admissionNm=" + admissionNm + "&attendTime=" + attendTime + "&attendDate=" + attendDate });
 
             return false;
         },
@@ -41,15 +43,24 @@ define(function (require) {
                 admissionNm: e.currentTarget.value
             };
             this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
+            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
+        },
+        attendDateChanged: function (e) {
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                attendDate: e.currentTarget.value
+            };
+            this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
         noIdCardClicked: function (e) {
             e.preventDefault();
 
             var admissionNm = this.$('#admissionNm').val();
             var attendDate = this.$('#attendDate').val();
+            var attendTime = this.$('#attendTime').val();
 
             var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?isAttend=true" + "&admissionNm=" + admissionNm + "&attendDate=" + attendDate  });
+            this.dlgDownload.render({url: url + "?isAttend=true" + "&admissionNm=" + admissionNm + "&attendTime=" + attendTime + "&attendDate=" + attendDate  });
 
             return false;
         }

@@ -68,4 +68,10 @@ public class ExamineeDto extends StatusDto {
 
     private String hallCd;
     private String attendHallCd;
+
+    private String attendYn;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date attendDate;
 }
