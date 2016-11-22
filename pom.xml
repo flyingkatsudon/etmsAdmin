@@ -249,6 +249,12 @@
         </dependency>
         <!--end-->
 
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-jpeg</artifactId>
+            <version>3.3</version> <!-- Alternatively, build your own version -->
+        </dependency>
+
     </dependencies>
 
     <profiles>
