@@ -67,6 +67,11 @@
                         (hall.hall_nm = #{param.hallNm} OR attend_hall.hall_nm = #{param.hallNm})
                         AND(attend_hall.hall_nm IS NULL OR attend_hall.hall_nm = #{param.hallNm})
                 </if>
+                <if test="param.lastPaperCd != null">
+                    AND (SELECT paper_cd FROM attend_paper WHERE attend_paper.attend_cd = attend_map.attend_cd AND
+                    attend_paper.examinee_cd = attend_map.examinee_cd AND attend_paper.paper_no = 1 /*AND attend_map.attend_hall_cd IS NOT NULL*/
+                    ORDER BY reg_dttm DESC LIMIT 1) = #{param.lastPaperCd}
+                </if>
                 <if test="param.attendNm != null">AND attend.attend_nm = #{param.attendNm}</if>
                 <if test="param.isEtc != null">AND attend_hall.is_etc = #{param.isEtc}</if>
                 <if test="param.groupNm != null">AND attend_map.group_nm = #{param.groupNm}</if>
@@ -123,8 +128,9 @@
             SELECT admission.admission_nm
             , attend.attend_cd, attend.type_nm, attend.attend_date, attend.attend_time
             , hall.hall_cd, hall.head_nm, hall.bldg_nm, hall.hall_nm
+            , (SELECT COUNT(*) FROM attend_map WHERE attend_map.hall_cd = hall.hall_cd and attend_map.attend_cd = attend_hall.attend_cd) as attend_cnt
             , CASE WHEN attend_hall.sign_dttm IS NULL THEN 0 ELSE 1 END AS is_signature
-            , attend_hall.sign_dttm
+            , attend_hall.sign_dttm, hall.is_etc
             FROM attend_hall
             INNER JOIN attend ON attend_hall.attend_cd = attend.attend_cd
             INNER JOIN admission ON attend.admission_cd = admission.admission_cd
@@ -138,6 +144,10 @@
                     <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                     <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
                     <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
+                    <if test="param.isEtc != null">
+                        <if test="param.isEtc == true">AND hall.is_etc = TRUE</if>
+                        <if test="param.isEtc == false">AND hall.is_etc = FALSE</if>
+                    </if>
                     <if test="param.isSignature != null">
                         <if test="param.isSignature == true">AND attend_hall.sign_dttm IS NOT NULL</if>
                         <if test="param.isSignature == false">AND attend_hall.sign_dttm IS NULL</if>

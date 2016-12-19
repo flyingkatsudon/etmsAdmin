@@ -34,6 +34,12 @@ public class StatusController {
         return ResponseEntity.ok(mapper.all(param));
     }
 
+    @RequestMapping(value = "hallStat")
+    public ResponseEntity hallStat(StatusDto param) {
+        log.debug("{}", param);
+        return ResponseEntity.ok(mapper.hallStat(param));
+    }
+
     @RequestMapping(value = "attend.{format:json|pdf|xls|xlsx}")
     public ResponseEntity attend(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
 

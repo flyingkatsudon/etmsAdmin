@@ -11,16 +11,19 @@ define(function (require) {
                 {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
+                {name: 'headNm', label: '고사본부'},
+                {name: 'bldgNm', label: '고사건물'},
                 {name: 'deptNm', label: '모집단위'},
-                {name: 'majorNm', label: '전공'},
+                /*{name: 'majorNm', label: '전공'},*/
                 {name: 'examineeCd', label: '수험번호'},
                 {name: 'examineeNm', label: '수험생명'},
                 {name: 'birth', label: '생년월일'},
+                {name: 'attendDttm', label: '응시처리시간'},
                 {name: 'idCheckDttm', label: '신원확인시간'},
                 {
                     name: 'btnIdCheck', label: '신원확인', formatter: function (cellValue, option) {
                     var rowid = option.rowId;
-                    return '<button id="checkBtn" value="' + rowid + '">확인</button>';
+                    return '<button id="checkBtn" value="' + rowid + '">사진보기</button>';
                     }
                 },
                 {name: 'attendCd', hidden: true}
@@ -32,13 +35,13 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/noIdCard.json',
+                    //url: 'data/noIdCard.json',
                     colModel: colModel,
                     onCellSelect: function (rowid, index, contents, event) {
                         var colModel = $(this).jqGrid('getGridParam', 'colModel');
                         if (colModel[index].name == 'btnIdCheck') {
                             var _this = this;
-                            var checkBtn = '<button id="checkBtn" value="' + rowid + '">확인</button>';
+                            var checkBtn = '<button id="checkBtn" value="' + rowid + '">사진보기</button>';
                             var rowdata = $(this).jqGrid('getRowData', rowid);
                             var url1 = 'image/examinee/' + rowdata.examineeCd + '.jpg'; // 원본
                             var url2 = 'image/noIdCard/' + rowdata.examineeCd + '.jpg'; // 대조본

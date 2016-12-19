@@ -29,7 +29,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/paper.json',
+                    //url: 'data/paper.json',
                     colModel: colModel,
                     onSelectRow : function(rowid, status, e){
                         var param = $(this).jqGrid('getRowData', rowid);

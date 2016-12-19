@@ -15,7 +15,7 @@ define(function (require) {
             this.$('#hm-ui-summary').html(InnerTemplate);
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
             /*this.chart1 = new Chart1({el: '#hm-ui-chart'}).render();*/
-            this.summary = new Summary({el: '#hm-ui-summary', parent: this});
+            this.summary = new Summary({el: '#hm-ui-summary', parent: this, url: 'status/all'});
             this.summary.render();
             this.list = new List({el: '.hm-ui-grid', parent: this}).render();
         }, search: function (o) {

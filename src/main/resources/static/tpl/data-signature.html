@@ -2,6 +2,9 @@
     <div class="row">
         <div class="col-lg-12">
             <h3>감독관 서명 리스트</h3>
+            <div class="panel panel-header">
+                <h5>원하는 필터를 선택하고 검색버튼을 누르세요.</h5>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -16,9 +19,12 @@
                         <label for="headNm">고사본부</label><select id="headNm"></select>
                         <label for="bldgNm">고사건물</label><select id="bldgNm"></select>
                         <label for="hallNm">고사실</label><select id="hallNm"></select>
-                        <!--<br>
-                        <label for="deviceNo">단말기번호</label><input type="text" id="deviceNo"/>
-                        <label for="phoneNo">전화번호</label><input type="text" id="phoneNo"/>-->
+                        <label for="isEtc">비상고사실여부</label>
+                        <select id="isEtc">
+                            <option value="">전체</option>
+                            <option value="true">예</option>
+                            <option value="false">아니오</option>
+                        </select>
                         <label for="isSignature">서명여부</label>
                         <select id="isSignature">
                             <option value="">전체</option>

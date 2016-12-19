@@ -32,7 +32,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/recheck.json',
+                    //url: 'data/recheck.json',
                     colModel: colModel,
                     onCellSelect: function (rowid, index, contents, event) {
                         var colModel = $(this).jqGrid('getGridParam', 'colModel');

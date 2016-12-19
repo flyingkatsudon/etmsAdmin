@@ -13,7 +13,7 @@ define(function (require) {
     return Backbone.View.extend({
         render: function () {
             this.$el.html(Template);
-            this.summary = new Summary({el: '#hm-ui-summary'}).render();
+            this.summary = new Summary({el: '#hm-ui-summary', url:'status/all'}).render();
             this.$el.append(StatusTemplate);
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
             this.attendList = new AttendList({el: '.attend-grid'}).render();

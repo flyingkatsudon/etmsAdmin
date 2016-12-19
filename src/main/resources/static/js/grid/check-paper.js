@@ -31,7 +31,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'check/paper.json',
+                    //url: 'check/paper.json',
                     colModel: colModel
                 }
             }, options);

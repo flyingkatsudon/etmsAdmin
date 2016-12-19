@@ -7,12 +7,13 @@ define(function (require) {
         initialize: function (o) {
             this.el = o.el;
             this.parent = o.parent;
+            this.url = o.url;
         },
         render: function (e) {
             var e = e ? e : {};
             var _this = this;
             $.ajax({
-                url: 'status/all',
+                url: this.url,
                 data: e,
                 success: function (response) {
                     _this.$('#examineeCnt').html(response.examineeCnt);

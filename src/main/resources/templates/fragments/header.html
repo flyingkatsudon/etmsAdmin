@@ -12,26 +12,32 @@
     </div>
     <!-- /.navbar-header -->
 
-    <ul class="nav navbar-top-links navbar-right" sec:authorize="isAuthenticated()">
-        <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
-                <!--<span sec:authentication="name">관리자</span>&nbsp;<i class="fa fa-caret-down"></i></a>-->
-                <span sec:authorize="hasRole('ADMIN')">관리자</span>
-                <span sec:authorize="hasRole('USER') or hasRole('GUEST')">사용자</span>&nbsp;<i class="fa fa-caret-down"></i></a>
-            <ul class="dropdown-menu dropdown-user">
-                <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
-                <li class="divider"></li>
-                <li>
-                    <form th:action="@{/logout}" method="POST">
-                        <a href="javascript:" onclick="parentNode.submit();">
-                            <i class="fa fa-sign-out fa-fw"></i> 로그아웃
-                        </a>
-                    </form>
-                </li>
-            </ul>
-            <!-- /.dropdown-user -->
-        </li>
-        <!-- /.dropdown -->
-    </ul>
+    <div class="hm-ui-search">
+        <ul class="nav navbar-top-links navbar-right" sec:authorize="isAuthenticated()">
+            <label for="admissionNm">전형</label> <select id="admissionNm"> </select>
+            <label for="attendDate">시험일자</label> <select id="attendDate"> </select>
+            <button id="search">검색</button>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
+                    <!--<span sec:authentication="name">관리자</span>&nbsp;<i class="fa fa-caret-down"></i></a>-->
+                    <span sec:authorize="hasRole('ADMIN')">관리자</span>
+                    <span sec:authorize="hasRole('USER') or hasRole('GUEST')">사용자</span>&nbsp;<i
+                            class="fa fa-caret-down"></i></a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
+                    <li class="divider"></li>
+                    <li>
+                        <form th:action="@{/logout}" method="POST">
+                            <a href="javascript:" onclick="parentNode.submit();">
+                                <i class="fa fa-sign-out fa-fw"></i> 로그아웃
+                            </a>
+                        </form>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+    </div>
     <!-- /.navbar-top-links -->
 </div>

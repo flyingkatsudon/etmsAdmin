@@ -59,6 +59,59 @@
         </where>
     </select>
 
+    <select id="hallStat" resultType="com.humane.etms.dto.StatusDto">
+        SELECT SUM(current_cnt) as examinee_cnt
+                , SUM(attend_cnt) as attend_cnt
+                , SUM(attend_cnt) * 100 / SUM(current_cnt) as attend_per
+                , SUM(absent_cnt) as absent_cnt
+                , SUM(absent_cnt) * 100 / SUM(current_cnt) as absent_per
+        FROM (SELECT *
+                , (examinee_cnt - to_other_cnt + from_other_cnt) AS current_cnt
+                , (A + from_other_cnt) AS attend_cnt
+                , (examinee_cnt - to_other_cnt + from_other_cnt) - (A + from_other_cnt) AS absent_cnt
+            FROM
+            (SELECT admission.admission_nm, attend.type_nm
+                    , hall.head_nm, hall.bldg_nm, hall.hall_nm
+                    , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd) AS examinee_cnt
+                    , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd AND attend_map.hall_cd = attend_map.attend_hall_cd) AS A
+                    , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.attend_hall_cd = hall.hall_cd AND attend_map.hall_cd != attend_map.attend_hall_cd) AS from_other_cnt
+                    , (SELECT COUNT(*) FROM attend_map WHERE attend_map.attend_cd = attend.attend_cd AND attend_map.hall_cd = hall.hall_cd AND attend_map.hall_cd != attend_map.attend_hall_cd) AS to_other_cnt
+            FROM attend_hall
+            INNER JOIN attend ON attend.attend_cd = attend_hall.attend_cd
+            INNER JOIN admission ON admission.admission_cd = attend.admission_cd
+            INNER JOIN hall ON hall.hall_cd = attend_hall.hall_cd
+            <where>
+                <if test="param != null">
+                    <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
+                    <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                    <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm} </if>
+                    <if test="param.attendCd != null">AND attend.attend_cd = #{param.attendCd} </if>
+                    <if test="param.attendHallCd != null">AND attend_map.attend_hall_cd = #{param.attendHallCd} </if>
+                    <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate} </if>
+                    <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                    <if test="param.deptNm != null">AND examinee.dept_nm = #{param.deptNm} </if>
+                    <if test="param.majorNm != null">AND examinee.major_nm = #{param.majorNm} </if>
+                    <if test="param.headNm != null">AND hall.head_nm = #{param.headNm} </if>
+                    <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm} </if>
+                    <if test="param.hallNm != null">
+                        AND hall.hall_nm = #{param.hallNm}
+                    </if>
+                    <if test="param.groupNm != null">AND attend_map.group_nm LIKE '%' #{param.groupNm} '%' </if>
+                </if>
+            </where>
+            GROUP BY
+                admission.admission_nm
+                , attend.type_nm
+                , attend.attend_date
+                , attend.attend_time
+                , hall.head_nm
+                , hall.bldg_nm
+                , hall.hall_nm
+            ) AS a
+        ) result
+
+    </select>
+
     <select id="attend" resultType="com.humane.etms.dto.StatusDto">
         SELECT
         admission.admission_nm,

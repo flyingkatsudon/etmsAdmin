@@ -16,13 +16,15 @@ define(function (require) {
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
+                {name: 'attendCnt', label: '지원자수'},
                 {
                     name: 'isSignature',
                     label: '서명여부',
                     formatter: 'select',
                     editoptions: {value: {true: '서명', false: '미서명'}}
                 },
-                {name: 'signDttm', label: '서명시간'}
+                {name: 'signDttm', label: '서명시간'},
+                {name: 'isEtc', hidden: true}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -31,8 +33,16 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'data/signature.json',
+                    //url: 'data/signature.json',
                     colModel: colModel,
+                    loadComplete: function (data) {
+                        var ids = $(this).getDataIDs(data);
+
+                        for (var i = 0; i < ids.length; i++) {
+                            var rowData = $(this).getRowData(ids[i]);
+                            if (rowData.isEtc == 'true') $(this).setRowData(ids[i], false, {background: "#FFD8D8"});
+                        }
+                    },
                     onSelectRow: function (rowid, status, e) {
                         var rowdata = $(this).jqGrid('getRowData', rowid);
                         var url1 = 'image/signature/' + rowdata.attendCd + '_' + rowdata.hallCd + '_1_sign.jpg';

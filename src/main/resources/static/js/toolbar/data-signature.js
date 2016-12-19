@@ -45,8 +45,7 @@ define(function (require) {
                     headNm: _this.$('#headNm').val(),
                     bldgNm: _this.$('#bldgNm').val(),
                     hallNm : _this.$('#hallNm').val(),
-                    deviceNo : _this.$('#deviceNo').val(),
-                    phoneNo : _this.$('#phoneNo').val(),
+                    isEtc: _this.$('#isEtc').val(),
                     isSignature : _this.$('#isSignature').val()
                 });
             }

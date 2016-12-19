@@ -53,6 +53,7 @@ define(function (require) {
                     hallNm : _this.$('#hallNm').val(),
                     examineeCd : _this.$('#examineeCd').val(),
                     examineeNm : _this.$('#examineeNm').val(),
+                    lastPaperCd : _this.$('#lastPaperCd').val(),
                     isAttend : _this.$('#isAttend').val(),
                     isOtherHall: _this.$('#isOtherHall').val(),
                     isCancelAttend: _this.$('#isCancelAttend').val()

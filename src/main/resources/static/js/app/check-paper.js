@@ -13,6 +13,7 @@ define(function (require) {
             this.list = new List({el: '.hm-ui-grid'}).render();
         }, search: function (o) {
             this.list.search(o);
+            this.list.$grid.jqGrid('setGridParam', {url: 'check/paper.json', datatype: 'json'}).trigger('reloadGrid');
         }
     });
 });

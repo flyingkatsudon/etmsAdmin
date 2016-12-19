@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 public interface StatusMapper {
     StatusDto all(@Param("param") StatusDto param);
 
+    StatusDto hallStat(@Param("param") StatusDto param);
+
     Page<StatusDto> attend(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 
     Page<StatusDto> dept(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
