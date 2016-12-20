@@ -119,13 +119,9 @@ public class SystemService {
 
         HibernateUpdateClause updateMap = queryFactory.update(attendMap)
                 .setNull(attendMap.attendDttm)
-                .setNull(attendMap.idCheckDttm)
                 .setNull(attendMap.isCheat)
-                .setNull(attendMap.isCheck)
-                .setNull(attendMap.isNoIdCard)
                 .setNull(attendMap.isMidOut)
                 .setNull(attendMap.memo)
-                .setNull(attendMap.recheckDttm)
                 .setNull(attendMap.attendHall);
 
         updateMap.execute();
@@ -159,7 +155,6 @@ public class SystemService {
 
         if(attendMaps != null){
             for (AttendMap map : attendMaps) {
-                map.setIsNoIdCard(null);
                 attendMapRepository.save(map);
             }
         }
@@ -183,13 +178,11 @@ public class SystemService {
         if(attendMaps != null){
             for (AttendMap map : attendMaps) {
                 map.setAttendDttm(null);
-                map.setIdCheckDttm(null);
                 map.setIsCheat(null);
-                map.setIsCheck(null);
                 map.setIsMidOut(null);
                 map.setMemo(null);
-                map.setRecheckDttm(null);
                 map.setAttendHall(null);
+                map.setIsScanner(null);
                 attendMapRepository.save(map);
             }
         }

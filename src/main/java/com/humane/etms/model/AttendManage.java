@@ -3,7 +3,7 @@ package com.humane.etms.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.humane.etms.listener.AttendMapListener;
+import com.humane.etms.listener.AttendManageListener;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,28 +11,25 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@EntityListeners(AttendMapListener.class)
+@EntityListeners(AttendManageListener.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"examineeCd", "attendCd"}))
 @Data
-public class AttendMap implements Serializable {
+public class AttendManage implements Serializable {
     @Id @GeneratedValue private Long _id;
 
     @ManyToOne @JoinColumn(name = "attendCd", nullable = false) private Attend attend;
     @ManyToOne @JoinColumn(name = "examineeCd", nullable = false) private Examinee examinee;
 
-    @ManyToOne @JoinColumn(name = "hallCd", nullable = false) private Hall hall;
-    @ManyToOne @JoinColumn(name = "attendHallCd") private Hall attendHall;
+    @Column(nullable = false) private String headNm;
+    @Column(nullable = false) private String bldgNm;
+
+    @Column(columnDefinition = "bit") private Boolean isNoIdCard;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Date attendDttm;
+    private Date regDttm;
 
-    private String groupNm;
-    @Column(columnDefinition = "bit") private Boolean isMidOut;
-    @Column(columnDefinition = "bit") private Boolean isCheat;
-    private String memo;
-    private String subject;
-
-    @Column(columnDefinition = "bit") private Boolean isScanner;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date idCheckDttm;
 }

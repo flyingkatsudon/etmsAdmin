@@ -3,21 +3,26 @@ package com.humane.etms.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.humane.etms.listener.AttendMapListener;
 import lombok.Data;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@EntityListeners(AttendMapListener.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"examineeCd", "attendCd"}))
+@Table
 @Data
-public class AttendMap implements Serializable {
+public class AttendMapLog implements Serializable {
     @Id @GeneratedValue private Long _id;
+    private Date logDttm;
+
+    @PrePersist
+    public void prePersist() {
+        logDttm = new DateTime().toDate();
+    }
 
     @ManyToOne @JoinColumn(name = "attendCd", nullable = false) private Attend attend;
     @ManyToOne @JoinColumn(name = "examineeCd", nullable = false) private Examinee examinee;
@@ -29,10 +34,9 @@ public class AttendMap implements Serializable {
     private Date attendDttm;
 
     private String groupNm;
-    @Column(columnDefinition = "bit") private Boolean isMidOut;
+    @Column(columnDefinition = "bit" ) private Boolean isMidOut;
     @Column(columnDefinition = "bit") private Boolean isCheat;
     private String memo;
-    private String subject;
 
     @Column(columnDefinition = "bit") private Boolean isScanner;
 }

@@ -12,8 +12,4 @@ import javax.persistence.Id;
 public class Admission {
     @Id private String admissionCd;
     private String admissionNm;
-    private String recruitNm;
-    private String pledgeTitle;
-    private String pledgeContent;
-    private String pledgeSign;
 }

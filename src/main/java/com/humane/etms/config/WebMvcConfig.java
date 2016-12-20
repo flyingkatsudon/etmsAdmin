@@ -4,9 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.humane.etms.filter.LoggingFilter;
 import com.humane.etms.filter.ParametersFilter;
+import com.humane.util.AutowireHelper;
 import com.humane.util.filter.MultiReadableHttpServletRequestFilter;
 import com.humane.util.spring.ApplicationContextProvider;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
@@ -68,6 +69,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registrationBean.setFilter(parametersFilter);
         registrationBean.setOrder(3);
         return registrationBean;
+    }
+
+    @Bean
+    public AutowireHelper autowireHelper(){
+        return AutowireHelper.getInstance();
     }
 
     public MappingJackson2HttpMessageConverter jacksonMessageConverter() {

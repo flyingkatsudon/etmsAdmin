@@ -30,4 +30,6 @@ public interface DataMapper {
     void recheck(@Param("examineeCd") String examineeCd, @Param("recheckDttm") Date recheckDttm, @Param("attendCd") String attendCd);
 
     List<Map<String, String>> sqlEdit(@Param("sql") String sql);
+
+    Page<ExamineeDto> noIdCard(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
 }

@@ -27,12 +27,12 @@
         <mybatis-starter.version>1.1.1</mybatis-starter.version>
         <springfox-swagger.version>2.5.0</springfox-swagger.version>
         <retrofit2.version>2.1.0</retrofit2.version>
-        <okhttp3.version>3.4.2</okhttp3.version>
+        <okhttp3.version>3.5.0</okhttp3.version>
         <commons-io.version>2.5</commons-io.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <commons-compress.version>1.11</commons-compress.version>
         <rxjava.version>1.2.3</rxjava.version>
-        <jasperreports.version>6.3.1</jasperreports.version>
+        <jasperreports.version>6.4.0</jasperreports.version>
         <poi.version>3.15</poi.version>
     </properties>
 
@@ -85,23 +85,25 @@
             <scope>test</scope>
         </dependency>
 
-       <!-- <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-spring</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-hibernate4</artifactId>
-        </dependency>-->
+        <!-- <dependency>
+             <groupId>com.hazelcast</groupId>
+             <artifactId>hazelcast</artifactId>
+         </dependency>
+         <dependency>
+             <groupId>com.hazelcast</groupId>
+             <artifactId>hazelcast-spring</artifactId>
+         </dependency>
+         -->
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hibernate5</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
         </dependency>
 
         <dependency>
@@ -252,7 +254,7 @@
         <dependency>
             <groupId>com.twelvemonkeys.imageio</groupId>
             <artifactId>imageio-jpeg</artifactId>
-            <version>3.3</version> <!-- Alternatively, build your own version -->
+            <version>3.3.1</version> <!-- Alternatively, build your own version -->
         </dependency>
 
     </dependencies>

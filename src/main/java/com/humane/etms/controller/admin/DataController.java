@@ -104,12 +104,12 @@ public class DataController {
         examineeDto.setIsNoIdCard(true);
         switch (format) {
             case JSON:
-                return ResponseEntity.ok(mapper.examinee(examineeDto, pageable));
+                return ResponseEntity.ok(mapper.noIdCard(examineeDto, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/data-noIdCard.jrxml",
                         format,
-                        mapper.examinee(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                        mapper.noIdCard(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
