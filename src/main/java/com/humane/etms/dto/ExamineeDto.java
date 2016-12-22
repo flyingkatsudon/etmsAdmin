@@ -74,4 +74,7 @@ public class ExamineeDto extends StatusDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date attendDate;
+
+    private Boolean isExamineeCdScanner;
+    private Boolean isPaperCdScanner;
 }

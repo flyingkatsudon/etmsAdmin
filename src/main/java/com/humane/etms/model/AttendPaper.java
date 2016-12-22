@@ -29,4 +29,5 @@ public class AttendPaper implements Serializable {
     private Date regDttm;
 
     @Column(columnDefinition = "bit") private Boolean isScanner;
+    private String newPaperCd;
 }

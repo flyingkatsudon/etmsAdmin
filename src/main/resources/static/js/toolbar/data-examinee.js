@@ -56,7 +56,9 @@ define(function (require) {
                     lastPaperCd : _this.$('#lastPaperCd').val(),
                     isAttend : _this.$('#isAttend').val(),
                     isOtherHall: _this.$('#isOtherHall').val(),
-                    isCancelAttend: _this.$('#isCancelAttend').val()
+                    isCancel: _this.$('#isCancel').val(),
+                    isExamineeCdScanner: _this.$('#isExamineeCdScanner').val(),
+                    isPaperCdScanner: _this.$('#isPaperCdScanner').val()
                 });
             }
         },

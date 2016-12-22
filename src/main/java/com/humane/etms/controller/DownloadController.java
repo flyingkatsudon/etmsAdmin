@@ -127,14 +127,14 @@ public class DownloadController {
         zipFile.addFile(dataPath, noIdCard);
         noIdCard.delete();
 
-        dto.setIsCheck(true);
+        /*dto.setIsCheck(true);
         File recheck = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-recheck.jrxml"
                 , dataMapper.examinee(dto, pageable).getContent()
         );
         dto.setIsCheck(null);
         zipFile.addFile(dataPath, recheck);
-        recheck.delete();
+        recheck.delete();*/
 
         File paper = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-paper.jrxml"
@@ -161,7 +161,7 @@ public class DownloadController {
         }
 
 
-        File recheckFolder = new File(jpgRoot + "/recheck");
+       /* File recheckFolder = new File(jpgRoot + "/recheck");
         File[] recheckList = recheckFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg"));
 
         if (recheckList != null){
@@ -170,7 +170,7 @@ public class DownloadController {
                     zipFile.addFile(dataPath + "/재확인 대상자 사진", f);
                 }
             }
-        }
+        }*/
 
         File signFolder = new File(jpgRoot + "/signature");
         File[] signList = signFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg"));

@@ -254,7 +254,7 @@ public class DataController {
 
     @RequestMapping(value = "cancelAttend.{format:xls|xlsx}")
     public ResponseEntity cancelAttend(@PathVariable String format, StatusDto param, Pageable pageable) throws DRException {
-        param.setIsCancelAttend(true);
+            param.setIsCancel(true);
         return JasperReportsExportHelper.toResponseEntity(
                 "jrxml/data-cancelAttend.jrxml"
                 , format
