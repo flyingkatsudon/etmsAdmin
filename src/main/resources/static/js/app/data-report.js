@@ -8,6 +8,8 @@ define(function (require) {
     var Toolbar = require('../dist/toolbar.js');
     var ToolbarModel = require('../model/model-status-toolbar.js');
 
+    var BootstrapDialog = require('bootstrap-dialog');
+
     return Toolbar.extend({
         initialize: function (o) {
             this.el = o.el;
@@ -24,17 +26,20 @@ define(function (require) {
             'click .btn': 'buttonClicked',
             'click .noIdCard': 'noIdCardClicked',
             'change #admissionNm': 'admissionNmChanged',
-            'change #attendDate': 'attendDateChanged'
+            'change #attendDate': 'attendDateChanged',
+            'click .attachment': 'attachmentClicked'
         },
         buttonClicked: function (e) {
             e.preventDefault();
 
-            var admissionNm = this.$('#admissionNm').val();
-            var attendDate = this.$('#attendDate').val();
-            var attendTime = this.$('#attendTime').val();
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                attendDate: this.$('#attendDate').val(),
+                attendTime: this.$('#attendTime').val()
+            };
 
             var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?admissionNm=" + admissionNm + "&attendTime=" + attendTime + "&attendDate=" + attendDate });
+            this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate });
 
             return false;
         },
@@ -52,17 +57,35 @@ define(function (require) {
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
-        noIdCardClicked: function (e) {
-            e.preventDefault();
+        attachmentClicked: function(e){
+            var param = {
+                admissionNm: this.$('#admissionNm').val(),
+                attendDate: this.$('#attendDate').val(),
+                attendTime: this.$('#attendTime').val()
+            };
 
-            var admissionNm = this.$('#admissionNm').val();
-            var attendDate = this.$('#attendDate').val();
-            var attendTime = this.$('#attendTime').val();
+            var _this = this;
 
-            var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?isAttend=true" + "&admissionNm=" + admissionNm + "&attendTime=" + attendTime + "&attendDate=" + attendDate  });
-
-            return false;
+            $.ajax({
+                url: 'data/attachment.json' + '?admissionNm=' + param.admissionNm + '&attendDate=' + param.attendDate + '&attendTime=' + param.attendTime,
+                success: function(e){
+                    if(e.content.length == 0){
+                        BootstrapDialog.show({
+                            title: '신분증 미소지자 각서 PDF',
+                            message: '신분증 미소지자가 존재하지 않습니다',
+                            buttons:[{
+                                label: '닫기',
+                                action: function(dialog){
+                                    dialog.close();
+                                }
+                            }]
+                        });
+                        return false;
+                    }else{
+                        _this.dlgDownload.render({url: 'data/attachment.PDF?admissionNm=' + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate });
+                    }
+                }
+            });
         }
     });
 });

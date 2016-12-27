@@ -1,5 +1,6 @@
 package com.humane.etms.controller.admin;
 
+import com.humane.etms.dto.DocDto;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.DataMapper;
@@ -56,6 +57,7 @@ public class DataController {
             .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
 
     @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
+    @Value("${path.image.examinee:C:/api/image/noIdCard}") String pathNoIdCard;
     @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
 
     @RequestMapping(value = "examinee.{format:json|pdf|xls|xlsx}")
@@ -68,6 +70,36 @@ public class DataController {
                         "jrxml/data-examinee.jrxml",
                         format,
                         mapper.examinee(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                );
+        }
+    }
+
+    @RequestMapping(value = "attachment.{format:json|PDF}")
+    public ResponseEntity attachment(@PathVariable String format, DocDto docDto, Pageable pageable){
+        switch(format) {
+            case JSON:
+                return ResponseEntity.ok(mapper.attachment(docDto, pageable));
+            default:
+                List<DocDto> list = mapper.attachment(docDto, pageable).getContent();
+                list.forEach(item -> {
+                    try (InputStream is = imageService.getFile(pathNoIdCard, item.getExamineeCd() + ".jpg")) {
+                        BufferedImage image = ImageIO.read(is);
+                        item.setNoIdCardImage(image);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    try (InputStream is = imageService.getFile(pathNoIdCard, item.getExamineeCd() + "_sign.jpg")) {
+                        BufferedImage image = ImageIO.read(is);
+                        item.setNoIdCardSign(image);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/attachment.jrxml",
+                        JasperReportsExportHelper.EXT_ATTACH_PDF,
+                        list
                 );
         }
     }

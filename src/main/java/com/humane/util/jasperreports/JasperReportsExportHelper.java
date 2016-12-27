@@ -39,6 +39,7 @@ public class JasperReportsExportHelper {
     private static final String XLS = "application/vnd.ms-excel";
     private static final String PDF = "application/pdf";
     public static final String EXT_PDF = "pdf";
+    public static final String EXT_ATTACH_PDF = "PDF";
     public static final String EXT_XLS = "xls";
     public static final String EXT_XLSX = "xlsx";
 
@@ -64,6 +65,13 @@ public class JasperReportsExportHelper {
             headers.set("Set-Cookie", "fileDownload=true; path=/");
             headers.setContentType(MediaType.parseMediaType(PDF));
             headers.set("Content-Disposition", encode("inline", jasperPrint.getName() + "." + EXT_PDF));
+            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+        } else if (format.equals(EXT_ATTACH_PDF)) {
+            instance.exportReportToPdf(jasperPrint, baos);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Set-Cookie", "fileDownload=true; path=/");
+            headers.setContentType(MediaType.parseMediaType(PDF));
+            headers.set("Content-Disposition", encode("attachment", jasperPrint.getName() + "." + EXT_PDF));
             return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
         } else if (format.equals(EXT_XLS)) {
             instance.exportReportToXls(jasperPrint, baos);
@@ -132,9 +140,9 @@ public class JasperReportsExportHelper {
 
             fos = new FileOutputStream(file);
 
-            if (format.equals(EXT_PDF)) {
+            if (format.equals(EXT_PDF) || format.equals(EXT_ATTACH_PDF)) {
                 instance.exportReportToPdf(jasperPrint, fos);
-            } else if (format.equals(EXT_XLS)) {
+            }else if (format.equals(EXT_XLS)) {
                 instance.exportReportToXls(jasperPrint, fos);
             } else if (format.equals(EXT_XLSX)) {
                 instance.exportReportToXlsx(jasperPrint, fos);
@@ -190,7 +198,7 @@ public class JasperReportsExportHelper {
 
             fos = new FileOutputStream(file);
 
-            if (format.equals(EXT_PDF)) {
+            if (format.equals(EXT_PDF) || format.equals(EXT_ATTACH_PDF)) {
                 instance.exportReportToPdf(jasperPrint, fos);
             } else if (format.equals(EXT_XLS)) {
                 instance.exportReportToXls(jasperPrint, fos);

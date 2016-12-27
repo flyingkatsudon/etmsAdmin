@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2016-12-22T15:29:50 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="attachment" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="59edc4d7-0d57-40dc-b929-062869ae9b2f">
+<!-- 2016-12-27T14:41:46 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="신분증 미소지자 각서" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="59edc4d7-0d57-40dc-b929-062869ae9b2f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -18,34 +18,34 @@
 	<field name="examineeNm" class="java.lang.String"/>
 	<field name="examineeCd" class="java.lang.String"/>
 	<field name="deptNm" class="java.lang.String"/>
-	<field name="attendDate" class="java.util.Date"/>
 	<field name="title" class="java.lang.String"/>
 	<field name="content" class="java.lang.String"/>
 	<field name="sign" class="java.lang.String"/>
-	<field name="signDate" class="java.util.Date"/>
+	<field name="signDate" class="java.lang.String"/>
+	<field name="noIdCardImage" class="java.lang.Object"/>
+	<field name="noIdCardSign" class="java.lang.Object"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
 		<band height="73" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="482" height="73" uuid="4fd97672-e6ea-4a4c-820c-78a1bc975f7f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="15" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+					<font size="31" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="120" splitType="Stretch"/>
-	</columnHeader>
-	<detail>
-		<band height="260" splitType="Stretch">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		<band height="141" splitType="Stretch">
+			<image hAlign="Center" onErrorType="Blank">
+				<reportElement x="0" y="17" width="150" height="108" uuid="e1ad95b7-b3a7-4729-aba8-e0e40747fe3f"/>
+				<imageExpression><![CDATA[$F{noIdCardImage}]]></imageExpression>
+			</image>
 			<staticText>
-				<reportElement x="150" y="-120" width="90" height="40" uuid="61f41920-c5fc-40a0-8645-a0fd59e7710e">
+				<reportElement x="150" y="17" width="90" height="40" uuid="61f41920-c5fc-40a0-8645-a0fd59e7710e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -53,8 +53,8 @@
 				</textElement>
 				<text><![CDATA[성      명:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="240" y="-120" width="242" height="40" uuid="03d73204-8b5c-411e-a420-c2da24d46760">
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="17" width="242" height="40" uuid="03d73204-8b5c-411e-a420-c2da24d46760">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -63,37 +63,42 @@
 				<textFieldExpression><![CDATA[$F{examineeNm}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="150" y="-80" width="90" height="40" uuid="df563284-2cd0-4c54-b0f6-43ffdb5478f5"/>
+				<reportElement x="150" y="57" width="90" height="32" uuid="df563284-2cd0-4c54-b0f6-43ffdb5478f5"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="15" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[수험번호:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="240" y="-80" width="242" height="40" uuid="6bef8d96-58c4-48a6-bb4d-9a2eeeed5f6a"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="57" width="242" height="32" uuid="6bef8d96-58c4-48a6-bb4d-9a2eeeed5f6a"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="15" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{examineeCd}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="150" y="-40" width="160" height="40" uuid="ffbea45b-b993-4441-a59f-7888cf7094a3"/>
+				<reportElement x="150" y="89" width="160" height="36" uuid="ffbea45b-b993-4441-a59f-7888cf7094a3"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="15" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[모집단위(지원학과):]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="310" y="-40" width="172" height="40" uuid="07c80b94-896d-40e9-8a8f-9fbd485f5da4"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="310" y="89" width="172" height="36" uuid="07c80b94-896d-40e9-8a8f-9fbd485f5da4"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="15" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{deptNm}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="0" y="0" width="482" height="260" uuid="d45e5a0c-8bcf-4619-972a-5f0a29ca86ac"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="15" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="210" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="483" height="210" uuid="d45e5a0c-8bcf-4619-972a-5f0a29ca86ac"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="18" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{content}]]></textFieldExpression>
 			</textField>
@@ -102,34 +107,38 @@
 	<pageFooter>
 		<band height="185">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
-			<textField>
-				<reportElement x="0" y="0" width="483" height="63" uuid="8dd33254-bee8-4bb8-825f-b892fcb132be"/>
-				<textElement textAlignment="Center">
-					<font size="15" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+			<textField pattern="yyyy년 MM월 dd일" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="483" height="60" uuid="8dd33254-bee8-4bb8-825f-b892fcb132be"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="18" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{signDate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="63" width="120" height="61" uuid="0a9d324a-4beb-4c89-aa89-211e34167159"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="18" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				<reportElement x="0" y="60" width="120" height="61" uuid="0a9d324a-4beb-4c89-aa89-211e34167159"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="21" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[서약자	]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="0" y="124" width="483" height="61" uuid="953cebd1-07f8-4034-9caf-9587cb2a28b8"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="15" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="121" width="483" height="63" uuid="953cebd1-07f8-4034-9caf-9587cb2a28b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="18" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sign}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="120" y="63" width="140" height="61" uuid="865f92cd-bac1-4d70-8d26-5802fdeb31e2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="15" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="60" width="140" height="61" uuid="865f92cd-bac1-4d70-8d26-5802fdeb31e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="18" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{examineeNm}]]></textFieldExpression>
 			</textField>
+			<image hAlign="Center">
+				<reportElement stretchType="RelativeToBandHeight" x="260" y="60" width="222" height="61" uuid="29db1915-dd24-4ddd-b933-dd8529d840cf"/>
+				<imageExpression><![CDATA[$F{noIdCardSign}]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

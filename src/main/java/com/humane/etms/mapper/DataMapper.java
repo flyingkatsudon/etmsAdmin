@@ -1,5 +1,6 @@
 package com.humane.etms.mapper;
 
+import com.humane.etms.dto.DocDto;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -32,4 +33,6 @@ public interface DataMapper {
     List<Map<String, String>> sqlEdit(@Param("sql") String sql);
 
     Page<ExamineeDto> noIdCard(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
+
+    Page<DocDto> attachment(@Param("param") DocDto param, @Param("pageable") Pageable pageable);
 }
