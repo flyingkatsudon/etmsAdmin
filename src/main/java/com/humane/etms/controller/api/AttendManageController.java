@@ -64,7 +64,7 @@ public class AttendManageController {
         );
         if (find != null) attendManage.set_id(find.get_id());
 
-        return repository.save(find);
+        return repository.save(attendManage);
     }
 
     @PreUpdate
