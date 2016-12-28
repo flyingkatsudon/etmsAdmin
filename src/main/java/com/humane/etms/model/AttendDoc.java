@@ -7,12 +7,12 @@ import javax.persistence.*;
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"attendCd"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"admissionCd"}))
 @Data
 public class AttendDoc {
     @Id @GeneratedValue private Long _id;
 
-    @ManyToOne @JoinColumn(name = "attendCd", nullable = false) private Attend attend;
+    @ManyToOne @JoinColumn(name = "admissionCd", nullable = false) private Admission admission;
     private String title;
     private String content;
     private String sign;
