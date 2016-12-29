@@ -37,6 +37,7 @@ public class UploadController {
     private final AttendMapRepository attendMapRepository;
     private final HallRepository hallRepository;
     private final ExamineeRepository examineeRepository;
+    private final AttendDocRepository attendDocRepository;
 
     @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
 
@@ -82,6 +83,12 @@ public class UploadController {
                     // 5. 응시고사실 저장
                     attendRepository.save(attend);
                     attendHallRepository.save(attendHall);
+
+                    // 6. 각서 저장
+                    AttendDoc attendDoc = mapper.convertValue(dto, AttendDoc.class);
+                    attendDoc.setAdmission(admission);
+
+                    attendDocRepository.save(attendDoc);
                 }
             });
         } catch (Throwable throwable) {

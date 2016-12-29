@@ -77,4 +77,6 @@ public class ExamineeDto extends StatusDto {
 
     private Boolean isExamineeCdScanner;
     private Boolean isPaperCdScanner;
+
+    private String exmAdmNm;
 }

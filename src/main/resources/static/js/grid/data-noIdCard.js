@@ -47,21 +47,23 @@ define(function (require) {
                             var url2 = 'image/noIdCard/' + rowdata.examineeCd + '.jpg'; // 대조본
 
                             BootstrapDialog.show({
-                                title: rowdata.examineeCd + '::' + rowdata.examineeNm,
-                                message: '이미지 로딩중입니다.',
+                                title: rowdata.deptNm + ' / ' + rowdata.examineeCd + ' / ' + rowdata.examineeNm,
+                               // message: '이미지 로딩중입니다.',
+                                message: '<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">',
                                 size: 'size-wide',
                                 closable: true,
                                 onshow: function (dialog) {
                                     var img = new Image();
                                     img.src = url2;
                                     img.onload = function () {
-                                        dialog.$modalBody.html('<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">');
+                                      //  dialog.$modalBody.html('<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">');
                                         if (rowdata.idCheckDttm) {
                                             dialog.getButton('idCheck').disable();
                                         }
                                     };
                                     img.onerror = function () {
-                                        dialog.$modalBody.html('잠시 후 다시 시도하세요');
+                                        // dialog.$modalBody.html('잠시 후 다시 시도하세요');
+                                        dialog.$modalBody.html('<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="image/noIdCard/img-default.jpg" width="400">');
                                         dialog.getButton('idCheck').remove();
                                     }
                                 },

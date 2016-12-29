@@ -136,6 +136,11 @@ public class SystemService {
 
         updateHall.execute();
 
+        QAttendManage attendManage = QAttendManage.attendManage;
+        HibernateDeleteClause deleteManage = queryFactory.delete(attendManage);
+
+        deleteManage.execute();
+
         imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
     }
 

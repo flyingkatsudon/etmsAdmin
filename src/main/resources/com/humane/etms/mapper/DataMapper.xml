@@ -63,6 +63,7 @@
                     WHEN NULL THEN NULL
                 END, NULL) AS is_paper_cd_scanner
         -- 출력부분
+            , examinee.exm_adm_nm
             , examinee.college_nm
             , now() AS printDttm
           FROM attend_map
@@ -219,11 +220,11 @@
          WHERE examinee_cd = #{examineeCd} and attend_cd = #{attendCd}
     </update>
 
-    <update id="recheck">
+    <!--<update id="recheck">
         UPDATE attend_map
         SET recheck_dttm = #{recheckDttm}
         WHERE examinee_cd = #{examineeCd} and attend_cd = #{attendCd}
-    </update>
+    </update>-->
 
     <select id="sendPaperInfo" resultType="com.humane.etms.dto.ExamineeDto">
         SELECT examinee.examinee_cd, examinee.examinee_nm
@@ -287,13 +288,13 @@
         ${sql}
     </select>
     <select id="attachment" resultType="com.humane.etms.dto.DocDto">
-        select admission.admission_nm, attend_doc.title, attend_doc.content, concat(left(attend_doc.sign_date, 4), '년 ', mid(attend_doc.sign_date, 6, 2), '월 ', right(attend_doc.sign_date, 2), '일') AS sign_date, attend_doc.sign
-                , examinee.examinee_cd, examinee.examinee_nm, examinee.dept_nm
-        from attend_manage
-        inner join attend on attend.attend_cd = attend_manage.attend_cd
-        inner join admission on admission.admission_cd = attend.admission_cd
-        inner join examinee on examinee.examinee_cd = attend_manage.examinee_cd
-        inner join attend_doc on attend_doc.attend_cd = attend.attend_cd and attend_doc.attend_cd = attend_manage.attend_cd
+        SELECT admission.admission_nm, attend_doc.title, attend_doc.content, attend_doc.sign_date, attend_doc.sign
+              , examinee.examinee_cd, examinee.examinee_nm, examinee.dept_nm
+        FROM attend_manage
+        INNER JOIN attend ON attend.attend_cd = attend_manage.attend_cd
+        INNER JOIN admission ON admission.admission_cd = attend.admission_cd
+        INNER JOIN examinee ON examinee.examinee_cd = attend_manage.examinee_cd
+        INNER JOIN attend_doc ON attend_doc.admission_cd = attend.admission_cd
         <where>
             <if test="param != null">
                 <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>

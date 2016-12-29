@@ -19,7 +19,7 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="admissionNm" class="java.lang.String"/>
+	<field name="exmAdmNm" class="java.lang.String"/>
 	<field name="examineeCd" class="java.lang.String"/>
 	<field name="examineeNm" class="java.lang.String"/>
 	<field name="typeNm" class="java.lang.String"/>
@@ -197,7 +197,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="16" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{admissionNm}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{exmAdmNm}]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement x="0" y="39" width="202" height="45" uuid="b27cfabb-e06f-47c9-b203-49403aa8de54"/>

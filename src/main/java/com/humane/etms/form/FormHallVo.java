@@ -42,7 +42,8 @@ public class FormHallVo {
     @Column(name = "답안지 자릿수") private String paperLen;
     @Column(name = "답안지 헤더") private String paperHeader;
 
-    @Column(name = "각서제목") private String pledgeTitle;
-    @Column(name = "각서문구") private String pledgeContent;
-    @Column(name = "각서서명") private String pledgeSign;
+    @Column(name = "각서제목") private String title;
+    @Column(name = "각서문구") private String content;
+    @Column(name = "각서서명") private String sign;
+    @Column(name = "서명일자") private String signDate;
 }
