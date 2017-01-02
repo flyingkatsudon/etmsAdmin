@@ -88,6 +88,14 @@ public class UploadController {
                     AttendDoc attendDoc = mapper.convertValue(dto, AttendDoc.class);
                     attendDoc.setAdmission(admission);
 
+                    AttendDoc _tmp = attendDocRepository.findOne(new BooleanBuilder()
+                            .and(QAttendDoc.attendDoc.admission.admissionCd.eq(admission.getAdmissionCd()))
+                    );
+
+                    if(_tmp != null){
+                        attendDoc.set_id(_tmp.get_id());
+                    }
+
                     attendDocRepository.save(attendDoc);
                 }
             });

@@ -30,7 +30,7 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     //url: 'data/paper.json',
-                    colModel: colModel,
+                    colModel: colModel/*,
                     onSelectRow : function(rowid, status, e){
                         var param = $(this).jqGrid('getRowData', rowid);
                         if(param.paperCnt=="") {
@@ -48,7 +48,7 @@ define(function (require) {
                         }else {
                             new DlgPdf().setUrl('data/detail.pdf?' + $.param(param)).render();
                         }
-                    }
+                    }*/
                 }
             }, options);
 
