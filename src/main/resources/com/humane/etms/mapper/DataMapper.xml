@@ -18,6 +18,7 @@
          INNER JOIN examinee ON attend_manage.examinee_cd = examinee.examinee_cd
          INNER JOIN attend_map ON attend_manage.attend_cd = attend_map.attend_cd AND attend_manage.examinee_cd = attend_map.examinee_cd
         <where>
+            AND attend_manage.is_no_id_card = TRUE
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
