@@ -1,7 +1,9 @@
 package com.humane.etms.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.humane.etms.model.*;
+import com.humane.etms.model.AttendManage;
+import com.humane.etms.model.AttendManageLog;
+import com.humane.etms.model.QAttendManage;
 import com.humane.etms.repository.AttendManageLogRepository;
 import com.humane.etms.repository.AttendManageRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -45,7 +47,7 @@ public class AttendManageController {
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public Iterable<AttendManage> list(@QuerydslPredicate Predicate predicate, Sort sort){
+    public Iterable<AttendManage> list(@QuerydslPredicate Predicate predicate, Sort sort) {
         return repository.findAll(predicate, sort);
     }
 
@@ -56,13 +58,16 @@ public class AttendManageController {
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 
-    private AttendManage save(AttendManage attendManage){
+    private AttendManage save(AttendManage attendManage) {
         // 기존 여부 확인
         AttendManage find = repository.findOne(new BooleanBuilder()
                 .and(QAttendManage.attendManage.attend.eq(attendManage.getAttend()))
                 .and(QAttendManage.attendManage.examinee.eq(attendManage.getExaminee()))
         );
-        if (find != null) attendManage.set_id(find.get_id());
+        if (find != null) {
+            attendManage.set_id(find.get_id());
+            attendManage.setIdCheckDttm(find.getIdCheckDttm());
+        }
 
         return repository.save(attendManage);
     }
