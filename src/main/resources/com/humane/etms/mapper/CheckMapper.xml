@@ -57,10 +57,12 @@
                     -- 3. 답안지 번호가 없고 응시를 한 사람과 4. 답안지 번호가 있고 응시를 하지 않은 사람 / 선택한다.
                     and((a.attend_hall_cd is not null and b.paper_cd is null)
                         or (a.attend_hall_cd is null and b.paper_cd is not null))
-                    )
+                )
                 -- 답안지 이상 구분
                     -- 5. 답안지 번호에 문자가 섞여있거나 6. 자릿수가 맞지 않는 경우 7. 바코드 시작 값이 다른 경우 / 선택한다.
                     or (b.paper_cd regexp '^[0-9]+$' != 1 or length(b.paper_cd) != c.paper_len or left(b.paper_cd, 1) != c.paper_header)
+                    -- 8. 최종 답안지가 중복된 경우
+                    or (select count(*) from attend_paper where b.paper_cd = attend_paper.paper_cd) > 1
             )
             <if test="param != null">
                 <if test="param.admissionNm != null">and d.admission_nm = #{param.admissionNm}</if>

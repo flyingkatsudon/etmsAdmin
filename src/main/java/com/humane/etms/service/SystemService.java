@@ -138,8 +138,23 @@ public class SystemService {
 
         QAttendManage attendManage = QAttendManage.attendManage;
         HibernateDeleteClause deleteManage = queryFactory.delete(attendManage);
-
+        
         deleteManage.execute();
+        
+        QAttendManageLog attendManageLog = QAttendManageLog.attendManageLog;
+        HibernateDeleteClause deleteManageLog = queryFactory.delete(attendManageLog);
+        
+        deleteManageLog.execute();
+
+        QAttendPaperLog attendPaperLog = QAttendPaperLog.attendPaperLog;
+        HibernateDeleteClause deletePaperLog = queryFactory.delete(attendPaperLog);
+
+        deletePaperLog.execute();
+
+        QAttendMapLog attendMapLog = QAttendMapLog.attendMapLog;
+        HibernateDeleteClause deleteMapLog = queryFactory.delete(attendMapLog);
+
+        deleteMapLog.execute();
 
         imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
     }

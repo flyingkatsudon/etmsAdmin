@@ -22,11 +22,18 @@ define(function (require) {
                     formatter: 'select',
                     editoptions: {value: {true: '응시', false: '결시'}}
                 },
-                {name: 'lastPaperCd', label: '답안지번호'}
+                {name: 'lastPaperCd', label: '답안지번호'},
+                {name: 'regDttm', label: '등록시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
                 colModel[i].label = colModel[i].label === undefined ? colModel[i].name : colModel[i].label;
+            }
+
+            for(var i = 0; i < colModel.length; i++){
+                var col = colModel[i];
+                col['fixed'] = true;
+                col['width'] = 150;
             }
 
             var opt = $.extend(true, {
@@ -40,6 +47,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
+            this.$grid.closest('.ui-jqgrid-bdiv').css('overflow-x', 'auto');
             this.addExcel('check/paper.xlsx');
             return this;
         }
