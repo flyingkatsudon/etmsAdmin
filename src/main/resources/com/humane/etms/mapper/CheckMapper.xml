@@ -23,8 +23,8 @@
             left join (SELECT  @row_num := IF(@prev_value=attend_paper.examinee_cd,@row_num+1,1) AS rn
                            ,attend_paper.examinee_cd
                            ,attend_paper.attend_cd
-                           ,attend_paper.reg_dttm
-                           ,attend_paper.paper_cd
+                           ,(select a.reg_dttm from attend_paper a where attend_paper.attend_cd = a.attend_cd and attend_paper.examinee_cd = a.examinee_cd order by a.reg_dttm desc limit 1) as reg_dttm
+                           ,(select a.paper_cd from attend_paper a where attend_paper.attend_cd = a.attend_cd and attend_paper.examinee_cd = a.examinee_cd order by a.reg_dttm desc limit 1) as paper_cd
                            ,@prev_value := attend_paper.examinee_cd
                        FROM attend_paper, attend, admission,
                            (SELECT @row_num := 1, @prev_value := '') x
@@ -39,6 +39,7 @@
                                <if test="param.attendTime != null">and attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
                            </if>
                        </where>
+                       GROUP BY attend_paper.examinee_cd
                        ORDER BY attend_paper.examinee_cd, attend_paper.reg_dttm DESC
                       ) b
                 on a.attend_cd = b.attend_cd and a.examinee_cd = b.examinee_cd and b.rn = 1
@@ -62,7 +63,11 @@
                     -- 5. 답안지 번호에 문자가 섞여있거나 6. 자릿수가 맞지 않는 경우 7. 바코드 시작 값이 다른 경우 / 선택한다.
                     or (b.paper_cd regexp '^[0-9]+$' != 1 or length(b.paper_cd) != c.paper_len or left(b.paper_cd, 1) != c.paper_header)
                     -- 8. 최종 답안지가 중복된 경우
-                    or (select count(*) from attend_paper where b.paper_cd = attend_paper.paper_cd) > 1
+                    or (select count(*)
+                        from attend_paper
+                        where attend_paper.new_paper_cd is null
+                          and attend_paper.attend_cd = a.attend_cd
+                          and attend_paper.paper_cd = b.paper_cd) > 1
             )
             <if test="param != null">
                 <if test="param.admissionNm != null">and d.admission_nm = #{param.admissionNm}</if>
