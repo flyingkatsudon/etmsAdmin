@@ -115,4 +115,6 @@ public class StatusDto implements Serializable {
     private Boolean isCancel;
     private Boolean isExamineeCdScanner;
     private Boolean isPaperCdScanner;
+
+    private Long cnt;
 }

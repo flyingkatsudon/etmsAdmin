@@ -158,17 +158,18 @@
 
     <select id="paper" resultType="com.humane.etms.dto.StatusDto">
         SELECT admission.admission_nm
-        , attend.type_nm, attend.attend_date, attend.attend_time
-        , examinee.dept_nm, examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm, date_format(examinee.birth, '%y-%m-%d') as birth
-        , a.paper_cnt, a.first_paper_cd, a.last_paper_cd, a.paper_list
+            , attend.type_nm, attend.attend_date, attend.attend_time
+            , examinee.dept_nm, examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm, date_format(examinee.birth, '%y-%m-%d') as birth
+            , a.paper_cnt, a.first_paper_cd, a.last_paper_cd, a.paper_list
         FROM ( SELECT attend_cd, examinee_cd, hall_cd
-        , COUNT(*) AS paper_cnt
-        , (SELECT paper_cd FROM attend_paper a WHERE a.attend_cd = attend_paper.attend_cd AND a.examinee_cd = attend_paper.examinee_cd ORDER BY a.reg_dttm ASC LIMIT 1) AS first_paper_cd
-        , (SELECT paper_cd FROM attend_paper a WHERE a.attend_cd = attend_paper.attend_cd AND a.examinee_cd = attend_paper.examinee_cd ORDER BY a.reg_dttm DESC LIMIT 1) AS last_paper_cd
-        , GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ',') AS paper_list
-        , MAX(reg_dttm) AS reg_dttm
-        FROM attend_paper
-        GROUP BY attend_cd, examinee_cd, hall_cd HAVING COUNT(*) > 1) a
+                    , COUNT(*) AS paper_cnt
+                    , (SELECT paper_cd FROM attend_paper_log a WHERE a.attend_cd = attend_paper_log.attend_cd AND a.examinee_cd = attend_paper_log.examinee_cd ORDER BY a.reg_dttm ASC LIMIT 1) AS first_paper_cd
+                    , (SELECT paper_cd FROM attend_paper_log a WHERE a.attend_cd = attend_paper_log.attend_cd AND a.examinee_cd = attend_paper_log.examinee_cd ORDER BY a.reg_dttm DESC LIMIT 1) AS last_paper_cd
+                    , GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ',') AS paper_list
+                    , MAX(reg_dttm) AS reg_dttm
+                    FROM attend_paper_log
+                    WHERE attend_paper_log.new_paper_cd is null
+                    GROUP BY attend_cd, examinee_cd, hall_cd HAVING COUNT(*) > 1) a
         INNER JOIN attend ON a.attend_cd = attend.attend_cd
         INNER JOIN admission ON attend.admission_cd = admission.admission_cd
         INNER JOIN examinee ON a.examinee_cd = examinee.examinee_cd
@@ -176,6 +177,7 @@
         <where>
             <if test="param != null">
                 <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.attendCd != null">AND attend.attend_cd = #{param.attendCd}</if>
                 <if test="param.typeNm != null">AND attend.type_nm = #{param.typeNm}</if>
                 <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate}</if>
                 <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
@@ -186,6 +188,7 @@
                 <if test="param.paperCd != null">AND a.paper_list LIKE '%' #{param.paperCd} '%'</if>
                 <if test="param.headNm != null">AND hall.head_nm = #{param.headNm}</if>
                 <if test="param.bldgNm != null">AND hall.bldg_nm = #{param.bldgNm}</if>
+                <if test="param.hallCd != null">AND hall.hall_cd = #{param.hallCd}</if>
                 <if test="param.hallNm != null">AND hall.hall_nm = #{param.hallNm}</if>
                 <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
             </if>
