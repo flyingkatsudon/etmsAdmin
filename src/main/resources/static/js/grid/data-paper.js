@@ -17,14 +17,20 @@ define(function (require) {
                 {name: 'examineeCd', label: '수험번호'},
                 {name: 'examineeNm', label: '수험생명'},
                 {name: 'birth', label: '생년월일'},
-                {name: 'paperCnt', label: '답안지 매수'},
                 {name: 'firstPaperCd', label: '원답안지'},
                 {name: 'lastPaperCd', label: '최종답안지'},
-                {name: 'paperList', label: '교체이력'}
+                {name: 'paperList', label: '교체이력'},
+                {name: 'paperCnt', label: '답안지 매수'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
                 colModel[i].label = colModel[i].label === undefined ? colModel[i].name : colModel[i].label;
+            }
+
+            for(var i = 0; i < colModel.length; i++){
+                var col = colModel[i];
+                col['fixed'] = true;
+                col['width'] = 150;
             }
 
             var opt = $.extend(true, {
@@ -56,6 +62,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
+            this.$grid.closest('.ui-jqgrid-bdiv').css('overflow-x', 'auto');
             this.addExcel('data/paper.xlsx');
             return this;
         }
