@@ -330,6 +330,7 @@
         INNER JOIN examinee ON examinee.examinee_cd = attend_manage.examinee_cd
         INNER JOIN attend_doc ON attend_doc.admission_cd = attend.admission_cd
         <where>
+            AND attend_manage.is_no_id_card = TRUE
             <if test="param != null">
                 <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
                 <if test="param.admissionNm != null">AND admission.admission_nm =  #{param.admissionNm}</if>
