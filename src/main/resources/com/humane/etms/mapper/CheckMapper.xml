@@ -45,7 +45,7 @@
                 on a.attend_cd = b.attend_cd and a.examinee_cd = b.examinee_cd and b.rn = 1
         <where>
             -- 답안지가 있는 시험만을 포함한다.
-            c.paper_cnt > 0
+            c.paper_cnt > 0 and (select attend_map.attend_dttm from attend_map where attend_map.attend_cd = a.attend_cd and attend_map.examinee_cd = a.examinee_cd) is not null
             and(
                 (
                 -- 단순 출결 및 답안지 매칭으로 구분
@@ -65,7 +65,9 @@
                     -- 8. 최종 답안지가 중복된 경우
                     or (select count(*)
                         from attend_paper
+                        inner join attend_map on attend_map.attend_cd = attend_paper.attend_cd and attend_map.examinee_cd = attend_paper.examinee_cd
                         where attend_paper.new_paper_cd is null
+                          and attend_map.attend_dttm is not null
                           and attend_paper.attend_cd = a.attend_cd
                           and attend_paper.paper_cd = b.paper_cd) > 1
             )

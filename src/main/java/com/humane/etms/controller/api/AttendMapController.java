@@ -97,10 +97,10 @@ public class AttendMapController {
         );
         if (find != null) attendMap.set_id(find.get_id());
 
-        if (attendMap.getAttendHall() == null && find != null) { // 기존에 존재한 답안지 삭제
+        if (attendMap.getAttendHall() == null) { // 기존에 존재한 답안지 삭제
             Iterable<AttendPaper> list = paperRepository.findAll(new BooleanBuilder()
-                    .and(QAttendPaper.attendPaper.attend.attendCd.eq(find.getAttend().getAttendCd()))
-                    .and(QAttendPaper.attendPaper.examinee.examineeCd.eq(find.getExaminee().getExamineeCd()))
+                    .and(QAttendPaper.attendPaper.attend.attendCd.eq(attendMap.getAttend().getAttendCd()))
+                    .and(QAttendPaper.attendPaper.examinee.examineeCd.eq(attendMap.getExaminee().getExamineeCd()))
             );
 
             if (list != null && Iterables.size(list) > 0) paperRepository.delete(list);

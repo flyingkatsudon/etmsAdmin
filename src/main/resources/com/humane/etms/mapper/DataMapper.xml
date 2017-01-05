@@ -55,7 +55,7 @@
                     WHEN FALSE THEN FALSE
                     WHEN NULL THEN NULL
                 END, NULL) AS is_examinee_cd_scanner
-            , IF((SELECT COUNT(*) FROM attend_paper WHERE attend_map.attend_cd = attend_cd AND attend_map.examinee_cd = examinee_cd) > 1, TRUE, FALSE) AS is_change_paper
+            , IF((SELECT COUNT(*) FROM attend_paper WHERE attend_map.attend_cd = attend_cd AND attend_map.examinee_cd = examinee_cd AND attend_map.attend_dttm IS NOT NULL) > 1, TRUE, FALSE) AS is_change_paper
             , IF(attend_map.attend_hall_cd IS NOT NULL, (select paper_cd from attend_paper where attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd order by reg_dttm desc limit 1), NULL) as last_paper_cd
             , IF(attend_map.attend_hall_cd IS NOT NULL,
                 CASE (select is_scanner from attend_paper where attend_paper.attend_cd = attend_map.attend_cd and attend_paper.examinee_cd = attend_map.examinee_cd order by reg_dttm desc limit 1)
@@ -158,17 +158,48 @@
 
     <select id="paper" resultType="com.humane.etms.dto.StatusDto">
         SELECT admission.admission_nm
-            , attend.type_nm, attend.attend_date, attend.attend_time
-            , examinee.dept_nm, examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm, date_format(examinee.birth, '%y-%m-%d') as birth
-            , a.paper_cnt, a.first_paper_cd, a.last_paper_cd, a.paper_list
-        FROM ( SELECT attend_cd, examinee_cd, hall_cd
-                    , COUNT(*) AS paper_cnt
-                    , (SELECT paper_cd FROM attend_paper a WHERE a.attend_cd = attend_paper.attend_cd AND a.examinee_cd = attend_paper.examinee_cd ORDER BY a.reg_dttm ASC LIMIT 1) AS first_paper_cd
-                    , (SELECT paper_cd FROM attend_paper a WHERE a.attend_cd = attend_paper.attend_cd AND a.examinee_cd = attend_paper.examinee_cd ORDER BY a.reg_dttm DESC LIMIT 1) AS last_paper_cd
-                    , GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ',') AS paper_list
-                    , MAX(reg_dttm) AS reg_dttm
-                FROM attend_paper
-                GROUP BY attend_cd, examinee_cd, hall_cd HAVING COUNT(*) > 1) a
+        , attend.type_nm, attend.attend_date, attend.attend_time
+        , examinee.dept_nm, examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm, date_format(examinee.birth, '%y-%m-%d') as birth
+        , a.paper_cnt, a.first_paper_cd, a.last_paper_cd, a.paper_list, a.reg_dttm
+        FROM ( SELECT attend_paper.attend_cd, attend_paper.examinee_cd, attend_paper.hall_cd, attend_map.attend_dttm
+                        , COUNT(*) AS paper_cnt
+                        , (SELECT paper_cd FROM (select attend_cd, hall_cd, examinee_cd, paper_cd, reg_dttm
+                                                    from (
+                                                            select attend_cd, hall_cd, examinee_cd, paper_cd, reg_dttm
+                                                                  , case when @prev = paper_cd then @vrank := 0
+                                                                          when @prev := paper_cd then @vrank := 1
+                                                                    end as rank
+                                                            from attend_paper_log, (select @vrank := 0, @prev := null) a
+                                                            where new_paper_cd is null
+                                                            order by attend_cd, hall_cd, examinee_cd, reg_dttm) a
+                                                    where rank = 1) a
+                            WHERE a.attend_cd = attend_paper.attend_cd AND a.examinee_cd = attend_paper.examinee_cd ORDER BY a.reg_dttm ASC LIMIT 1) AS first_paper_cd
+                        , (SELECT paper_cd FROM (select attend_cd, hall_cd, examinee_cd, paper_cd, reg_dttm
+                                                    from (
+                                                            select attend_cd, hall_cd, examinee_cd, paper_cd, reg_dttm
+                                                                  , case when @prev = paper_cd then @vrank := 0
+                                                                          when @prev := paper_cd then @vrank := 1
+                                                                    end as rank
+                                                            from attend_paper_log, (select @vrank := 0, @prev := null) a
+                                                            where new_paper_cd is null
+                                                            order by attend_cd, hall_cd, examinee_cd, reg_dttm) a
+                                                    where rank = 1) a
+                            WHERE a.attend_cd = attend_paper.attend_cd AND a.examinee_cd = attend_paper.examinee_cd ORDER BY a.reg_dttm DESC LIMIT 1) AS last_paper_cd
+                        , GROUP_CONCAT(paper_cd ORDER BY reg_dttm SEPARATOR ',') AS paper_list
+                        , MAX(reg_dttm) AS reg_dttm
+                        FROM (select attend_cd, hall_cd, examinee_cd, paper_cd, reg_dttm
+                                from (
+                                select attend_cd, hall_cd, examinee_cd, paper_cd, reg_dttm
+                                      , case when @prev = paper_cd then @vrank := 0
+                                              when @prev := paper_cd then @vrank := 1
+                                        end as rank
+                                from attend_paper_log, (select @vrank := 0, @prev := null) a
+                                where new_paper_cd is null
+                                order by attend_cd, hall_cd, examinee_cd, reg_dttm) a
+                                where rank = 1) attend_paper
+                        INNER JOIN attend_map ON attend_map.attend_cd = attend_paper.attend_cd AND attend_map.examinee_cd = attend_paper.examinee_cd
+                        WHERE attend_map.attend_hall_cd IS NOT NULL
+                        GROUP BY attend_cd, examinee_cd, hall_cd HAVING COUNT(*) > 1) a
         INNER JOIN attend ON a.attend_cd = attend.attend_cd
         INNER JOIN admission ON attend.admission_cd = admission.admission_cd
         INNER JOIN examinee ON a.examinee_cd = examinee.examinee_cd
