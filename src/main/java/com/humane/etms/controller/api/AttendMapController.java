@@ -1,8 +1,12 @@
 package com.humane.etms.controller.api;
 
+import com.google.common.collect.Iterables;
 import com.humane.etms.model.AttendMap;
+import com.humane.etms.model.AttendPaper;
 import com.humane.etms.model.QAttendMap;
+import com.humane.etms.model.QAttendPaper;
 import com.humane.etms.repository.AttendMapRepository;
+import com.humane.etms.repository.AttendPaperRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +33,7 @@ import java.util.ArrayList;
 @Slf4j
 public class AttendMapController {
     private final AttendMapRepository repository;
+    private final AttendPaperRepository paperRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttendMap> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
@@ -91,6 +96,15 @@ public class AttendMapController {
                 .and(QAttendMap.attendMap.examinee.eq(attendMap.getExaminee()))
         );
         if (find != null) attendMap.set_id(find.get_id());
+
+        if (attendMap.getAttendHall() == null && find != null) { // 기존에 존재한 답안지 삭제
+            Iterable<AttendPaper> list = paperRepository.findAll(new BooleanBuilder()
+                    .and(QAttendPaper.attendPaper.attend.attendCd.eq(find.getAttend().getAttendCd()))
+                    .and(QAttendPaper.attendPaper.examinee.examineeCd.eq(find.getExaminee().getExamineeCd()))
+            );
+
+            if (list != null && Iterables.size(list) > 0) paperRepository.delete(list);
+        }
 
         return repository.save(attendMap);
     }
