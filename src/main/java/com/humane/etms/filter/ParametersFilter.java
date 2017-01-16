@@ -2,6 +2,7 @@ package com.humane.etms.filter;
 
 import com.humane.etms.service.CustomUserDetails;
 import com.humane.util.filter.EnhancedHttpRequest;
+import com.humane.util.filter.RequestWrapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -23,6 +24,10 @@ public class ParametersFilter implements Filter {
                 additionalParams.put("userAdmissions", new String[]{userDetails.getUserAdmissions()});
             }
         }
+
+        RequestWrapper requestWrapper = RequestWrapper.of(request);
+        Map<String, String> headerMap = requestWrapper.headerMap();
+        additionalParams.put("uuid",  new String[]{headerMap.get("uuid")});
 
         EnhancedHttpRequest enhancedHttpRequest = new EnhancedHttpRequest((HttpServletRequest) request, additionalParams);
         chain.doFilter(enhancedHttpRequest, response);
