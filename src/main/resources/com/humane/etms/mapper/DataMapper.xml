@@ -47,6 +47,7 @@
             , attend.type_nm, attend.attend_date, attend.attend_time
             , examinee.dept_nm, examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm, DATE_FORMAT(examinee.birth, '%y-%m-%d') AS birth
             , hall.head_nm, hall.bldg_nm, hall.hall_nm
+            , attend_map.group_nm
             , ah.head_nm AS attend_head_nm, ah.bldg_nm AS attend_bldg_nm, ah.hall_nm AS attend_hall_nm
             , IF(attend_map.attend_hall_cd IS NULL, FALSE, TRUE) AS is_attend
             , IF(attend_map.attend_hall_cd IS NOT NULL,
