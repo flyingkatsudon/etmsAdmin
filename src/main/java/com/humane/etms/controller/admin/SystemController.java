@@ -21,6 +21,11 @@ import java.util.Date;
 public class SystemController {
     private final SystemService systemService;
 
+    @RequestMapping
+    public ResponseEntity.BodyBuilder home() {
+        return ResponseEntity.ok();
+    }
+
     @RequestMapping(value = "download", method = RequestMethod.POST)
     public ResponseEntity download() {
         return ResponseEntity.ok("준비 중입니다.");
