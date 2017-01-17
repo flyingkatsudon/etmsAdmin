@@ -12,6 +12,7 @@ define(function (require) {
                 {name: 'attendTime', label: '시험시간'},
                 {name: 'deptNm', label: '모집단위'},
                 {name: 'majorNm', label: '전공'},
+                {name: 'groupNm', label: '조'},
                 {name: 'examineeCd', label: '수험번호'},
                 {name: 'examineeNm', label: '수험생명'},
                 {name: 'birth', label: '생년월일'},
