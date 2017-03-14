@@ -17,6 +17,7 @@ public class Device {
     private String uuid;
     private String phoneNo;
     private String deviceId;
+    private String deviceNo;
     private String versionName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date lastDttm;

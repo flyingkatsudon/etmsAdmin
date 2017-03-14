@@ -35,8 +35,14 @@ import java.util.Date;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DownloadController {
 
-    @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
-    @Value("${path.image:C:/api/image}") String jpgRoot;
+    // windows
+    //@Value("${path.image.examinee:C:/api/etms}") String pathRoot;
+    //@Value("${path.image:C:/api/image}") String jpgRoot;
+
+    // mac ex) userid: mac account
+    @Value("${path.image.examinee:/Users/userid/Humane/api/etms}") String pathRoot;
+    @Value("${path.image:/Users/userid/Humane/api/image}") String jpgRoot;
+
     private final StatusMapper statusMapper;
     private final DataMapper dataMapper;
 

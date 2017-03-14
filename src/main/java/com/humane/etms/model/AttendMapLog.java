@@ -39,4 +39,5 @@ public class AttendMapLog implements Serializable {
     private String memo;
 
     @Column(columnDefinition = "bit") private Boolean isScanner;
+    private String groupOrder;
 }
