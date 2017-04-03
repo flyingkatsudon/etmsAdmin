@@ -1,6 +1,7 @@
 package com.humane.etms.controller.api;
 
 import com.google.common.collect.Iterables;
+import com.humane.etms.mapper.DataMapper;
 import com.humane.etms.model.AttendMap;
 import com.humane.etms.model.AttendPaper;
 import com.humane.etms.model.QAttendMap;
@@ -34,6 +35,8 @@ import java.util.ArrayList;
 public class AttendMapController {
     private final AttendMapRepository repository;
     private final AttendPaperRepository paperRepository;
+
+    private final DataMapper dataMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttendMap> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
@@ -106,6 +109,8 @@ public class AttendMapController {
             if (list != null && Iterables.size(list) > 0) paperRepository.delete(list);
         }
 
+        if(attendMap.getGroupOrder() != null)
+            dataMapper.insertGroupOrder(attendMap);
         return repository.save(attendMap);
     }
 }

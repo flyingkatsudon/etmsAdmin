@@ -40,9 +40,9 @@ public class UploadController {
     private final AttendDocRepository attendDocRepository;
 
     // windows
-    //@Value("${path.image.examinee:C:/api/smps}") String pathRoot;
+    @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
     // mac
-    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/smps}") String pathRoot;
+    //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
 
     @RequestMapping(value = "hall", method = RequestMethod.POST)
     public void hall(@RequestParam("file") MultipartFile multipartFile) throws IOException {

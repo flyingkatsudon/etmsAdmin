@@ -3,6 +3,7 @@ package com.humane.etms.mapper;
 import com.humane.etms.dto.DocDto;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
+import com.humane.etms.model.AttendMap;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
@@ -35,4 +36,10 @@ public interface DataMapper {
     Page<ExamineeDto> noIdCard(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
 
     Page<DocDto> attachment(@Param("param") DocDto param, @Param("pageable") Pageable pageable);
+
+    //void insertGroupOrder(@Param("examineeCd") String examineeCd, @Param("groupOrder") String groupOrder);
+
+    void insertGroupOrder(@Param("param") AttendMap param);
+
+    void initGroupOrder(@Param("examineeCd") String examineeCd);
 }

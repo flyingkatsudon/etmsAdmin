@@ -1,5 +1,6 @@
 package com.humane.etms.service;
 
+import com.humane.etms.mapper.DataMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.AttendHallRepository;
 import com.humane.etms.repository.AttendMapRepository;
@@ -38,20 +39,29 @@ public class SystemService {
     private final AttendMapRepository attendMapRepository;
     private final AttendHallRepository attendHallRepository;
     private final AttendPaperRepository attendPaperRepository;
+    private final DataMapper mapper;
 
     @Transactional
     public void resetData(boolean photo) {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
+        QAttendDoc attendDoc = QAttendDoc.attendDoc;
         QAttendMap attendMap = QAttendMap.attendMap;
+        QAttendMapLog attendMapLog = QAttendMapLog.attendMapLog;
         QExaminee examinee = QExaminee.examinee;
         QAttend attend = QAttend.attend;
         QAttendHall attendHall = QAttendHall.attendHall;
         QAdmission admission = QAdmission.admission;
         QAttendPaper attendPaper = QAttendPaper.attendPaper;
+        QAttendPaperLog attendPaperLog = QAttendPaperLog.attendPaperLog;
         QHall hall = QHall.hall;
+        QDevice device = QDevice.device;
 
         queryFactory.delete(attendHall).execute();
+        queryFactory.delete(attendMapLog).execute();
+        queryFactory.delete(attendPaperLog).execute();
+        queryFactory.delete(device).execute();
+        queryFactory.delete(attendDoc).execute();
 
         ScrollableResults scrollAttendMap = queryFactory.select(attendMap.examinee.examineeCd)
                 .distinct()
@@ -117,12 +127,25 @@ public class SystemService {
 
         QAttendMap attendMap = QAttendMap.attendMap;
 
+        // smps initialize
+        List<String> list = queryFactory.select(attendMap.examinee.examineeCd)
+                .from(attendMap)
+                .where(attendMap.groupOrder.isNotNull())
+                .fetch();
+
+        if(list != null){
+            for (String examineeCd  : list) {
+                mapper.initGroupOrder(examineeCd);
+            }
+        }
+
         HibernateUpdateClause updateMap = queryFactory.update(attendMap)
                 .setNull(attendMap.attendDttm)
                 .setNull(attendMap.isCheat)
                 .setNull(attendMap.isMidOut)
                 .setNull(attendMap.memo)
-                .setNull(attendMap.attendHall);
+                .setNull(attendMap.attendHall)
+                .setNull(attendMap.groupOrder);
 
         updateMap.execute();
 
@@ -203,6 +226,10 @@ public class SystemService {
                 map.setMemo(null);
                 map.setAttendHall(null);
                 map.setIsScanner(null);
+                map.setGroupOrder(null);
+
+                mapper.initGroupOrder(map.getExaminee().getExamineeCd());
+
                 attendMapRepository.save(map);
             }
         }
