@@ -45,8 +45,8 @@ define(function (require) {
                     },
                     onSelectRow: function (rowid, status, e) {
                         var rowdata = $(this).jqGrid('getRowData', rowid);
-                        var url1 = 'image/signature/' + rowdata.attendCd + '_' + rowdata.hallCd + '_1_sign.jpg';
-                        var url2 = 'image/signature/' + rowdata.attendCd + '_' + rowdata.hallCd + '_2_sign.jpg';
+                        var url1 = 'image/signature/' + rowdata.attendCd + '_' + rowdata.hallCd + '_1_all_sign.jpg';
+                        var url2 = 'image/signature/' + rowdata.attendCd + '_' + rowdata.hallCd + '_2_all_sign.jpg';
 
                         if (rowdata.isSignature && rowdata.isSignature == 'false') return false;
 

@@ -40,7 +40,7 @@ public class UploadController {
     private final AttendDocRepository attendDocRepository;
 
     // windows
-    @Value("${path.image.examinee:C:/api/smps}") String pathRoot;
+    @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
     // mac
     //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
 
