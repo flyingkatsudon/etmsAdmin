@@ -1,7 +1,17 @@
+.gradle/
 .idea/
+.settings/
+.vscode/
+bin/
+build/
 target/
 src/main/resources/static/bower_components/
+src/querydsl/
 logs/
+node/
+node_modules/
 *.iws
 *.ipr
 *.iml
+.classpath
+.project
