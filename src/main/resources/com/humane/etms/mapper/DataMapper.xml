@@ -47,7 +47,8 @@
             , attend.type_nm, attend.attend_date, attend.attend_time
             , examinee.dept_nm, examinee.major_nm, examinee.examinee_cd, examinee.examinee_nm, DATE_FORMAT(examinee.birth, '%y-%m-%d') AS birth
             , hall.head_nm, hall.bldg_nm, hall.hall_nm
-            , attend_map.group_nm
+           -- , attend_map.group_nm
+            , if(attend_map.group_order is null, attend_map.group_nm, concat(attend_map.group_nm, ' ', lpad(attend_map.group_order, 2, '0'))) as group_nm
             , ah.head_nm AS attend_head_nm, ah.bldg_nm AS attend_bldg_nm, ah.hall_nm AS attend_hall_nm
             , IF(attend_map.attend_hall_cd IS NULL, FALSE, TRUE) AS is_attend
             , IF(attend_map.attend_hall_cd IS NOT NULL,
@@ -94,7 +95,7 @@
                     AND (SELECT paper_cd FROM attend_paper WHERE attend_cd = attend_map.attend_cd AND examinee_cd = attend_map.examinee_cd ORDER BY reg_dttm DESC LIMIT 1) = #{param.lastPaperCd}
                 </if>
                 <if test="param.isEtc != null">AND attend_hall.is_etc = #{param.isEtc}</if>
-                <if test="param.groupNm != null">AND attend_map.group_nm = #{param.groupNm}</if>
+                <if test="param.groupNm != null">AND if(attend_map.group_order is null, attend_map.group_nm, concat(attend_map.group_nm, ' ', lpad(attend_map.group_order, 2, '0')))  LIKE '%' #{param.groupNm} '%'</if>
                 <if test="param.isAttend != null">
                     <if test="param.isAttend == true">AND attend_map.attend_hall_cd IS NOT NULL</if>
                     <if test="param.isAttend == false">AND attend_map.attend_hall_cd IS NULL</if>
@@ -353,8 +354,12 @@
         <if test="param != null">
             <if test="param.groupOrder != null">
                 UPDATE exam_map
-                SET virt_no = #{param.groupOrder}, scan_dttm = NOW()
+                SET virt_no = #{param.groupOrder}, scan_dttm = NOW(), group_nm = #{param.groupNm}
+                    , hall_cd = (select exam_group.hall_cd
+                        from exam_group
+                        where exam_group_cd = #{param.attendGroupCd})
                 WHERE examinee_cd = #{param.examinee.examineeCd}
+                  AND exam_cd = (select exam_group.exam_cd FROM exam_group where exam_group_cd = #{param.attendGroupCd})
             </if>
         </if>
     </update>
