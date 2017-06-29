@@ -10,6 +10,7 @@ import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;

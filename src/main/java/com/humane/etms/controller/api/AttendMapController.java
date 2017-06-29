@@ -2,12 +2,10 @@ package com.humane.etms.controller.api;
 
 import com.google.common.collect.Iterables;
 import com.humane.etms.mapper.DataMapper;
-import com.humane.etms.model.AttendMap;
-import com.humane.etms.model.AttendPaper;
-import com.humane.etms.model.QAttendMap;
-import com.humane.etms.model.QAttendPaper;
+import com.humane.etms.model.*;
 import com.humane.etms.repository.AttendMapRepository;
 import com.humane.etms.repository.AttendPaperRepository;
+import com.humane.etms.repository.DeviceRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +33,7 @@ import java.util.ArrayList;
 public class AttendMapController {
     private final AttendMapRepository repository;
     private final AttendPaperRepository paperRepository;
+    private final DeviceRepository deviceRepository;
 
     private final DataMapper dataMapper;
 
@@ -90,6 +89,19 @@ public class AttendMapController {
         attendMaps.forEach(attendMap -> rtn.add(save(attendMap)));
 
         return new ResponseEntity<>(rtn, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "device", method = RequestMethod.GET)
+    public ResponseEntity<?> findByDevice(@RequestParam(defaultValue = "") String packageName, @RequestParam(defaultValue = "") String deviceUuid) {
+       // if (StringUtils.isAnyEmpty(packageName, uuid))
+       //     return new ResponseEntity<>(packageName + " " + uuid, HttpStatus.BAD_REQUEST);
+
+        QDevice device = QDevice.device;
+        BooleanBuilder predicate = new BooleanBuilder();
+        predicate.and(device.packageName.eq(packageName));
+        predicate.and(device.uuid.eq(deviceUuid));
+
+        return ResponseEntity.ok(deviceRepository.findOne(predicate).getDeviceId());
     }
 
     private AttendMap save(AttendMap attendMap) {

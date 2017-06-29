@@ -1,5 +1,6 @@
 package com.humane.etms.model;
 
+import ch.qos.logback.classic.db.names.ColumnName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -36,4 +37,5 @@ public class AttendMap implements Serializable {
 
     @Column(columnDefinition = "bit") private Boolean isScanner;
     private String groupOrder;
+    private Long deviceId;
 }

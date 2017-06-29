@@ -43,8 +43,9 @@
                     <a href="#"><img src="images/menu/M04.png"/> 시스템 설정<span class="fa arrow"></span></a>
                 </li>
                 <ul class="nav nav-second-level">
-                    <li sec:authorize="hasRole('ADMIN')"><a href="#setting-data"><img src="images/menu/M04_1.png"/> 데이터
-                        관리</a></li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href="#setting-data"><img src="images/menu/M04_1.png"/> 데이터 관리</a>
+                        <a href="#system-account"><img src="images/menu/M04_3.png"/> 계정 관리</a></li>
                     <li><a href="#print-idCard"><img src="images/menu/M04_2.png"/> 수험표 출력</a></li>
                 </ul>
             </ul>

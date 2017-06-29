@@ -34,11 +34,11 @@ public class DeviceFilter extends GenericFilterBean {
 
         String uuid = headerMap.get("uuid"); // 단말기 고유번호
         String phoneNo = headerMap.get("phoneno"); // 전화번호. 없을수도 있다.
-        String deviceId = headerMap.get("deviceid"); // 단말기 등록번호 ex : 1
+        String deviceNo = headerMap.get("deviceno"); // 단말기 등록번호 ex : 1
         String packageName = headerMap.get("packagename"); // 앱 com.humane.etms2.app 등등.
         String versionName = headerMap.get("versionname"); // 앱 버전
 
-        if (!StringUtils.isAnyEmpty(uuid, packageName) && !packageName.contains(".mgr")) {
+        if (!StringUtils.isAnyEmpty(uuid, packageName)/* && !packageName.contains(".mgr")*/) {
             Device device = deviceRepository.findOne(new BooleanBuilder()
                     .and(QDevice.device.uuid.eq(uuid))
                     .and(QDevice.device.packageName.eq(packageName))
@@ -50,7 +50,7 @@ public class DeviceFilter extends GenericFilterBean {
                 device.setPackageName(packageName);
             }
 
-            device.setDeviceId(deviceId);
+            device.setDeviceNo(deviceNo);
             device.setPhoneNo(phoneNo);
             device.setVersionName(versionName);
             device.setLastDttm(new DateTime().toDate());

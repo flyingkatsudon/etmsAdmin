@@ -12,11 +12,10 @@ import java.util.Date;
 @Data
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"packageName", "uuid"})})
 public class Device {
-    @Id @GeneratedValue private Long _id;
+    @Id @GeneratedValue private Long deviceId;
     private String packageName;
     private String uuid;
     private String phoneNo;
-    private String deviceId;
     private String deviceNo;
     private String versionName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
