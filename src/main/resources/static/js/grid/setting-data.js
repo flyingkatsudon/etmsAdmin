@@ -90,11 +90,12 @@ define(function (require) {
                                         break;
                                 }
 
+
                                 $('#detailPart2').append('<div style="margin:2% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;매수<input type="text" id="paperCnt" style="width: 10%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.paperCnt + '">&nbsp;장</div>');
                                 $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지 자리수<input type="text" id="paperLen" style="width: 10%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.paperLen + '">&nbsp;자리</div>');
 
-                                if(rowdata.paperHeader == null) rowdata.paperHeader = '';
-                                $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;헤더<input type="text" id="paperHeader" style="width: 10%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.paperHeader + '"></div>');
+                                if(rowData.paperHeader == null) rowData.paperHeader = '';
+                                $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;헤더<input type="text" id="paperHeader" style="width: 20%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.paperHeader + '"></div>');
 
                                 $('#attendDate').appendDtpicker({
                                     autodateOnStart: false,
@@ -133,8 +134,12 @@ define(function (require) {
                                         if(param.attendNm == '' || param.typeNm == '' || param.atDate == '' || param.atTime == ''
                                                                 || param.paperCnt == '' || param.paperLen == '' || param.attendLen == ''){
                                             $('#basicPart2').append('<div style="margin:10% 0 0 0; text-align:center"><h4 style="margin-top: 1%; color:crimson">빈 항목을 확인하세요</h4></div>');
+
                                             return false;
                                         }
+
+
+                                        if(param.paperHeader == '') param.paperHeader = null;
 
                                         $.ajax({
                                             url: 'status/modifyAttend',
