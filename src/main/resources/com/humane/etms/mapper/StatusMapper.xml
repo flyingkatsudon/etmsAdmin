@@ -3,6 +3,30 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.humane.etms.mapper.StatusMapper">
+    <select id="attendInfo" resultType="com.humane.etms.dto.AttendInfoDto">
+        select attend.*, admission.admission_nm
+        from attend
+        inner join admission on admission.admission_cd = attend.admission_cd
+        <where>
+            <if test="param != null">
+                <if test="param.admissionNm">and admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.attendCd">and attend.attend_cd = #{param.attendCd}</if>
+                <if test="param.attendNm">and attend.attend_nm = #{param.attendNm}</if>
+            </if>
+        </where>
+    </select>
+
+    <update id="modifyAttend">
+
+        <if test="param != null">
+        update attend set attend_nm = #{param.attendNm}, type_nm = #{param.typeNm}, attend_len = #{param.attendLen}
+                        , attend_date = #{param.atDate}, attend_time = #{param.atTime}, is_paper_change = #{param.isPaperChange}
+                        , is_use_group = #{param.isUseGroup}, paper_cnt = #{param.paperCnt}, paper_len = #{param.paperLen}, paper_header = #{param.paperHeader}
+        where attend_cd = #{param.attendCd}
+        </if>
+
+    </update>
+
     <select id="home" resultType="com.humane.etms.dto.StatusDto">
         SELECT admission.admission_nm
         , attend.attend_date

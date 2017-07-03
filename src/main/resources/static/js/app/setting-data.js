@@ -7,6 +7,9 @@ define(function (require) {
     var Template = require('text!tpl/setting-data.html');
     var BootstrapDialog = require('bootstrap-dialog');
 
+    var SettingAttend = require('./../grid/setting-data.js');
+    var DataToolbar = require('../toolbar/setting-data.js');
+
     return Backbone.View.extend({
         initialize: function (o) {
             this.el = o.el;
@@ -15,6 +18,13 @@ define(function (require) {
             this.$el.html(Template);
             this.initForm('#frmUploadHall');
             this.initForm('#frmUploadExaminee');
+
+            // 시험 정보 관리 메뉴
+            this.toolbar = new DataToolbar({el: '.hm-ui-search', parent: this}).render();
+            this.list = new SettingAttend({el: '#attendInfo', parent: this}).render();
+
+        }, search: function (o) {
+            this.list.search(o);
         }, initForm: function (id) {
             this.$(id).ajaxForm({
                 loading: function () {
@@ -109,18 +119,18 @@ define(function (require) {
                 closable: true,
                 buttons: [
                     /*{
-                        label: '사진포함',
-                        cssClass: 'btn-primary',
-                        action: function () {
-                            BootstrapDialog.closeAll();
-                            BootstrapDialog.show({
-                                title: '서버 데이터 관리',
-                                message: '진행 중입니다. 잠시만 기다려주세요.',
-                                closable: false
-                            });
-                            _this.reset(true);
-                        }
-                    },*/
+                     label: '사진포함',
+                     cssClass: 'btn-primary',
+                     action: function () {
+                     BootstrapDialog.closeAll();
+                     BootstrapDialog.show({
+                     title: '서버 데이터 관리',
+                     message: '진행 중입니다. 잠시만 기다려주세요.',
+                     closable: false
+                     });
+                     _this.reset(true);
+                     }
+                     },*/
                     {
                         label: '사진 미포함',
                         action: function () {
