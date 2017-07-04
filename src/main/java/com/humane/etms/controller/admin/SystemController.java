@@ -23,7 +23,6 @@ import javax.persistence.PersistenceContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "system", method = RequestMethod.GET)
@@ -67,6 +66,11 @@ public class SystemController {
     @RequestMapping(value = "account")
     public ResponseEntity account(AccountDto accountDto, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.account(accountDto, pageable));
+    }
+
+    @RequestMapping(value="device")
+    public ResponseEntity getDevice(Device device, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.getDevice(device, pageable));
     }
 
     @RequestMapping(value = "admission")
