@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,13 +45,25 @@ public class SystemController {
     }
 
     @RequestMapping(value = "reset")
-    public void reset(@RequestParam(defaultValue = "false") boolean photo) {
-        systemService.resetData(photo);
+    public ResponseEntity reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
+        try{
+            systemService.resetData(photo);
+            return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
+        }catch(Exception e){
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
+        }
     }
 
     @RequestMapping(value = "init")
-    public void init() {
-        systemService.initData();
+    public ResponseEntity init() throws IOException {
+        try{
+            systemService.initData();
+            return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
+        }catch(Exception e){
+            log.debug("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
+        }
     }
 
     @RequestMapping(value = "initMgr")

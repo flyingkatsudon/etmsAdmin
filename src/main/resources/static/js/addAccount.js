@@ -12,7 +12,7 @@ define(function (require) {
             $.ajax({
                 url: 'system/admission',
                 success: function (admissions) {
-                    BootstrapDialog.show({
+                    var dialog = new BootstrapDialog({
                         title: '<h3>계정을 추가합니다</h3>',
                         // message: '<h1>' + rowdata.userId + '</h1>',
                         size: 'size-wide',
@@ -144,6 +144,11 @@ define(function (require) {
                             }
                         ]
                     }); // dialog
+
+                    dialog.realize();
+                    dialog.getModalDialog().css('margin-top', '10%');
+                    dialog.open();
+
                 } // success
             }); // ajax
         }

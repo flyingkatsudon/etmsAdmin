@@ -41,7 +41,7 @@ define(function (require) {
                         $.ajax({
                             url: 'system/admission',
                             success: function (admissions) {
-                                BootstrapDialog.show({
+                                var dialog = new BootstrapDialog({
                                     title: '<h3>' + rowdata.userId + ' / ' + rowdata.role + '</h3>',
                                     size: 'size-wide',
                                     closable: false,
@@ -214,6 +214,11 @@ define(function (require) {
                                         }
                                     ]
                                 }); // dialog
+
+                                dialog.realize();
+                                dialog.getModalDialog().css('margin-top', '10%');
+                                dialog.open();
+
                             } // success
                         }); // ajax
                     }
