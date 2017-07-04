@@ -26,10 +26,20 @@ define(function (require) {
                     url: 'system/device',
                     colModel: colModel,
                     loadComplete: function (data) {
+                        // 실제로 사용할 일이 없어 삭제함
                         // var ids = $(this).getDataIDs(data);
-
+                        //
                         // for (var i = 0; i < ids.length; i++) {
                         //     var rowData = $(this).getRowData(ids[i]);
+                        //
+                        //     if (rowData.packageName.upperCase.indexOf('MGR')) {
+                        //         // 중간본부 앱
+                        //         $(this).setRowData(ids[i], false, {background: "#FFD8D8"});
+                        //     }
+                        //     // else {
+                        //     //     // 출석 앱
+                        //     //     $(this).setRowData(ids[i], false, {background: "#FFD8D8"});
+                        //     // }
                         // }
                     },
                     loadError: function (err) {
