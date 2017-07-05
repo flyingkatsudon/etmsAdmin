@@ -53,13 +53,12 @@
 
     <select id="getDevice" resultType="com.humane.etms.model.Device">
         SELECT * FROM device
-         WHERE 1=1
-        <if test="param.packageName != null">
-           AND package_name = CONCAT('com.humane.etms2.', #{param.packageName})
-        </if>
-        <if test="param.deviceNo != null">
-           AND device_no = #{param.deviceNo}
-        </if>
+        <where>
+            <if test="param != null">
+                <if test="param.packageName">AND package_name = CONCAT('com.humane.etms2.', #{param.packageName})</if>
+                <if test="param.deviceNo">AND device_no = #{param.deviceNo}</if>
+            </if>
+        </where>
     </select>
 
     <insert id="insertAdmission" parameterType="String" useGeneratedKeys="true" keyProperty="id">
