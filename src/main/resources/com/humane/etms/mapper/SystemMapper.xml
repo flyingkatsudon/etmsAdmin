@@ -58,7 +58,7 @@
                 <if test="param.packageName">AND package_name = CONCAT('com.humane.etms2.', #{param.packageName})</if>
                 <if test="param.deviceNo">AND device_no = #{param.deviceNo}</if>
             </if>
-        </where>
+        </where> 
     </select>
 
     <insert id="insertAdmission" parameterType="String" useGeneratedKeys="true" keyProperty="id">
