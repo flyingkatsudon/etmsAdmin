@@ -16,6 +16,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,7 +46,7 @@ public class UploadController {
     //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
 
     @RequestMapping(value = "hall", method = RequestMethod.POST)
-    public void hall(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity hall(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -102,14 +103,19 @@ public class UploadController {
                     attendDocRepository.save(attendDoc);
                 }
             });
+
+            return ResponseEntity.ok("고사실 정보가 업로드되었습니다");
+
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             log.error("{}", throwable.getMessage());
+
+            return ResponseEntity.ok("양식 파일이 맞는지 확인하세요");
         }
     }
 
     @RequestMapping(value = "examinee", method = RequestMethod.POST)
-    public void examinee(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity examinee(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -155,9 +161,13 @@ public class UploadController {
                     attendMapRepository.save(attendMap);
                 }
             });
+            return ResponseEntity.ok("수험생 정보가 업로드되었습니다");
+
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
+
+            return ResponseEntity.ok("양식 파일이 맞는지 확인하세요");
         }
     }
 }

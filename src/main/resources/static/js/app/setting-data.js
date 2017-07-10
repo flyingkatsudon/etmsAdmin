@@ -47,11 +47,11 @@ define(function (require) {
                         dialog.open();
                     }
                 },
-                error: function () {
-                    _this.completeDialog('양식 파일이 맞는지 확인하세요');
+                error: function (response) {
+                    _this.completeDialog(response);
                 },
-                success: function () {
-                    _this.completeDialog('업로드가 완료되었습니다');
+                success: function (response) {
+                    _this.completeDialog(response);
                 }
             });
         }, events: {
