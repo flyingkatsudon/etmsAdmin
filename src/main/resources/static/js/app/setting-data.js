@@ -32,7 +32,7 @@ define(function (require) {
                 beforeSubmit: function (arr) {
                     for (var i in arr) {
                         if (arr[i].name == 'file' && arr[i].value == '') {
-                            this.error();
+                            _this.completeDialog('파일을 선택하세요');
                             return false;
                         }
 
@@ -48,7 +48,7 @@ define(function (require) {
                     }
                 },
                 error: function (response) {
-                    _this.completeDialog(response);
+                    _this.errorDialog(response.responseJSON);
                 },
                 success: function (response) {
                     _this.completeDialog(response);
@@ -103,10 +103,11 @@ define(function (require) {
                 data: {
                     photo: o
                 },
+                error: function (response) {
+                    _this.completeDialog(response.responseJSON);
+                },
                 success: function (response) {
                     _this.completeDialog(response);
-                }, error: function (response){
-                    _this.completeDialog(response.JSON);
                 }
             });
 
@@ -156,6 +157,22 @@ define(function (require) {
             dialog.getModalHeader().hide();
             dialog.getModalFooter().hide();
             dialog.open();
+
+        }, errorDialog: function(msg){
+            BootstrapDialog.closeAll();
+
+            var dialog = new BootstrapDialog({
+                title: '',
+                message: '<h5 style="margin-left:5%">' + msg + '</h5>',
+                closable: true
+            });
+
+            dialog.realize();
+            dialog.getModalDialog().css('margin-top', '20%');
+            dialog.getModalHeader().hide();
+            dialog.getModalFooter().hide();
+            dialog.open();
+
         }
     });
 });

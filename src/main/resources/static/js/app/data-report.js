@@ -39,7 +39,7 @@ define(function (require) {
             };
 
             var url = e.currentTarget.form.action;
-            this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate });
+            this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate});
 
             return false;
         },
@@ -57,7 +57,7 @@ define(function (require) {
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
         },
-        attachmentClicked: function(e){
+        attachmentClicked: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 attendDate: this.$('#attendDate').val(),
@@ -68,24 +68,45 @@ define(function (require) {
 
             $.ajax({
                 url: 'data/attachment.json' + '?admissionNm=' + param.admissionNm + '&attendDate=' + param.attendDate + '&attendTime=' + param.attendTime,
-                success: function(e){
-                    if(e.content.length == 0){
-                        BootstrapDialog.show({
-                            title: '신분증 미소지자 각서 PDF',
-                            message: '신분증 미소지자가 존재하지 않습니다',
-                            buttons:[{
-                                label: '닫기',
-                                action: function(dialog){
-                                    dialog.close();
-                                }
-                            }]
-                        });
+                success: function (e) {
+                    if (e.content.length == 0) {
+                        _this.completeDialog('신분증 미소지자가 존재하지 않습니다');
                         return false;
-                    }else{
-                        _this.dlgDownload.render({url: 'data/attachment.PDF?admissionNm=' + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate });
+                    } else {
+                        _this.dlgDownload.render({url: 'data/attachment.PDF?admissionNm=' + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate});
                     }
                 }
             });
+        }, completeDialog: function (msg) {
+            BootstrapDialog.closeAll();
+
+            var dialog = new BootstrapDialog({
+                title: '',
+                message: '<h5 style="margin-left:20%">' + msg + '</h5>',
+                closable: true
+            });
+
+            dialog.realize();
+            dialog.getModalDialog().css('margin-top', '20%');
+            dialog.getModalHeader().hide();
+            dialog.getModalFooter().hide();
+            dialog.open();
+
+        }, errorDialog: function (msg) {
+            BootstrapDialog.closeAll();
+
+            var dialog = new BootstrapDialog({
+                title: '',
+                message: '<h5 style="margin-left:5%">' + msg + '</h5>',
+                closable: true
+            });
+
+            dialog.realize();
+            dialog.getModalDialog().css('margin-top', '20%');
+            dialog.getModalHeader().hide();
+            dialog.getModalFooter().hide();
+            dialog.open();
         }
+
     });
 });

@@ -44,7 +44,7 @@ define(function (require) {
                                 '<div style="margin:3% 0 0 3%; width:47%;">' + '권한'
                                 + '<input style="margin: 0 2% 0 15%;" type="radio" id="admin" name="role" value="ROLE_ADMIN">' + '관리자'
                                 + '<input style="margin: 0 2% 0 10%;" type="radio" id="user" name="role" value="ROLE_USER">' + '사용자'
-                                + '<input style="margin: 0 2% 0 10%;" type="radio" id="guest" name="role" value="ROLE_GUEST">' + '기타' + '</div>');
+                                + '<input style="margin: 0 2% 0 10%;" type="radio" id="guest" name="role" value="ROLE_GUEST">' + '신분증확인용' + '</div>');
 
                             $('#userId').keyup(function () {
                                 var tmp = $('#userId').val();
