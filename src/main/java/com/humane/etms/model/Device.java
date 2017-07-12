@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"packageName", "uuid"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"packageName", "uuid", "versionName"})})
 public class Device {
     @Id @GeneratedValue private Long deviceId;
     private String packageName;

@@ -38,21 +38,22 @@ public class DeviceFilter extends GenericFilterBean {
         String packageName = headerMap.get("packagename"); // 앱 com.humane.etms2.app 등등.
         String versionName = headerMap.get("versionname"); // 앱 버전
 
-        if (!StringUtils.isAnyEmpty(uuid, packageName)/* && !packageName.contains(".mgr")*/) {
+        if (!StringUtils.isAnyEmpty(uuid, packageName) && !packageName.contains(".mgr")) {
             Device device = deviceRepository.findOne(new BooleanBuilder()
                     .and(QDevice.device.uuid.eq(uuid))
                     .and(QDevice.device.packageName.eq(packageName))
+                    .and(QDevice.device.versionName.eq(versionName))
             );
 
             if (device == null) {
                 device = new Device();
+                device.setPhoneNo(phoneNo);
                 device.setUuid(uuid);
                 device.setPackageName(packageName);
+                device.setVersionName(versionName);
             }
 
             device.setDeviceNo(deviceNo);
-            device.setPhoneNo(phoneNo);
-            device.setVersionName(versionName);
             device.setLastDttm(new DateTime().toDate());
 
             deviceRepository.save(device);
