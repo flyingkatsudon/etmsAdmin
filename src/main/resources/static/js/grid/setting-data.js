@@ -40,8 +40,8 @@ define(function (require) {
                         var colModel = $(this).jqGrid('getGridParam', 'colModel');
                         var rowData = $(this).jqGrid('getRowData', rowid);
 
-                        BootstrapDialog.show({
-                            title: '<h3>' + rowData.admissionNm + ' / ' + rowData.attendNm + '</h3>',
+                        var dialog = new BootstrapDialog({
+                            title: '<h3>' + rowData.admissionNm + '&nbsp;&nbsp;|&nbsp;&nbsp;' + rowData.attendNm + '</h3>',
                             size: 'size-wide',
                             closable: false,
                             onshown: function (dialogRef) {
@@ -148,18 +148,15 @@ define(function (require) {
                                             data: JSON.stringify(param),
                                             success: function(response){
                                                 console.log(response);
-                                                BootstrapDialog.show({
-                                                    title: '<h3>시험 정보 관리</h3>',
-                                                    message: '<label><h4>변경되었습니다</h4></label>',
-                                                    buttons:[{
-                                                        label: '닫기',
-                                                        action: function(dialog){
-
-                                                            $('#search').trigger('click');
-                                                            dialog.close();
-                                                        }
-                                                    }]
+                                                var innerDialog = new BootstrapDialog({
+                                                    message: '<h5 style="font-weight: normal; margin-left:20%">시험정보가 변경되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요</h5>'
                                                 });
+
+                                                innerDialog.realize();
+                                                innerDialog.getModalDialog().css('margin-top', '20%');
+                                                innerDialog.getModalHeader().hide();
+                                                innerDialog.getModalFooter().hide();
+                                                innerDialog.open();
 
                                                 $('#search').trigger('click');
                                             }
@@ -174,6 +171,10 @@ define(function (require) {
                                 }
                             ]
                         }); // dialog
+
+                        dialog.realize();
+                        dialog.getModalDialog().css('margin-top', '5%');
+                        dialog.open();
                     }
                 }
             }, options);

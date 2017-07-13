@@ -39,6 +39,11 @@
                     <li><a href="#data-signature"><img src="images/menu/M03_3.png"/> 감독관 서명 리스트</a></li>
                     <li><a href="#data-report"><img src="images/menu/M03_4.png"/> 산출물 다운로드</a></li>
                 </ul>
+            </ul>
+        </div>
+
+        <div sec:authorize="hasRole('ADMIN')" class="sidebar-nav navbar-collapse">
+            <ul class="nav">
                 <li>
                     <a href="#"><img src="images/menu/M04.png"/> 시스템 설정<span class="fa arrow"></span></a>
                 </li>

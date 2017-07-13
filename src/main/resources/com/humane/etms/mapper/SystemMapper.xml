@@ -13,7 +13,7 @@
                 , case user_role.role_name
                     when 'ROLE_ADMIN' then '관리자'
                     when 'ROLE_USER' then '사용자'
-                    else '기타' end as role
+                    else '신분증확인용' end as role
                 , user_role.role_name
                 from user
                 inner join user_role on user_role.user_id = user.user_id

@@ -10,7 +10,6 @@ import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
@@ -134,8 +133,8 @@ public class SystemService {
                 .where(attendMap.groupOrder.isNotNull())
                 .fetch();
 
-        if(list != null){
-            for (String examineeCd  : list) {
+        if (list != null) {
+            for (String examineeCd : list) {
                 mapper.initGroupOrder(examineeCd);
             }
         }
@@ -197,7 +196,7 @@ public class SystemService {
                 .where(attendMap.hall.bldgNm.eq(bldgNm))
                 .fetch();
 
-        if(attendMaps != null){
+        if (attendMaps != null) {
             for (AttendMap map : attendMaps) {
                 attendMapRepository.save(map);
             }
@@ -219,7 +218,7 @@ public class SystemService {
                 .where(attendMap.attendHall.hallCd.eq(attendHallCd))
                 .fetch();
 
-        if(attendMaps != null){
+        if (attendMaps != null) {
             for (AttendMap map : attendMaps) {
                 map.setAttendDttm(null);
                 map.setIsCheat(null);
@@ -241,7 +240,7 @@ public class SystemService {
                 .where(attendPaper.hall.hallCd.eq(attendHallCd))
                 .fetch();
 
-        if(attendPapers != null){
+        if (attendPapers != null) {
             for (AttendPaper paper : attendPapers) {
                 attendPaperRepository.delete(paper);
             }
@@ -254,7 +253,7 @@ public class SystemService {
                 .where(attendHall.hall.hallCd.eq(attendHallCd))
                 .fetch();
 
-        if(attendHalls != null){
+        if (attendHalls != null) {
             for (AttendHall hall : attendHalls) {
                 hall.setSignDttm(null);
                 attendHallRepository.save(hall);

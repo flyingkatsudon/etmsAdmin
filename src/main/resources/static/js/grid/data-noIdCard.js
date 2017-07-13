@@ -24,7 +24,7 @@ define(function (require) {
                     name: 'btnIdCheck', label: '신원확인', formatter: function (cellValue, option) {
                     var rowid = option.rowId;
                     return '<button id="checkBtn" value="' + rowid + '">사진보기</button>';
-                    }
+                }
                 },
                 {name: 'attendCd', hidden: true}
             ];
@@ -46,40 +46,71 @@ define(function (require) {
                             var url1 = 'image/examinee/' + rowdata.examineeCd + '.jpg'; // 원본
                             var url2 = 'image/noIdCard/' + rowdata.examineeCd + '.jpg'; // 대조본
 
-                            BootstrapDialog.show({
-                                title: rowdata.deptNm + ' / ' + rowdata.examineeCd + ' / ' + rowdata.examineeNm,
-                               // message: '이미지 로딩중입니다.',
-                                message: '<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">',
+                            var dialog = new BootstrapDialog({
+                                title: '<h3>' + rowdata.deptNm + ' | ' + rowdata.examineeCd + ' | ' + rowdata.examineeNm + '</h3>',
+                                // message: '이미지 로딩중입니다.',
+                                message: '<div style="text-align:center"><image src="' + url1 + '" height="500px"/>&nbsp;&nbsp;&nbsp;&nbsp;<image src="' + url2 + '" style="height: 500px"/></div>',
                                 size: 'size-wide',
                                 closable: true,
                                 onshow: function (dialog) {
                                     var img = new Image();
                                     img.src = url2;
                                     img.onload = function () {
-                                      //  dialog.$modalBody.html('<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">');
+                                        //  dialog.$modalBody.html('<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">');
                                         if (rowdata.idCheckDttm) {
                                             dialog.getButton('idCheck').disable();
+                                            dialog.getButton('cancel').show();
                                         }
                                     };
                                     img.onerror = function () {
                                         // dialog.$modalBody.html('잠시 후 다시 시도하세요');
-                                        dialog.$modalBody.html('<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="image/noIdCard/img-default.jpg" width="400">');
+                                        dialog.$modalBody.html('<div style="text-align:center"><image src="' + url1 + '" height="500px"/>&nbsp;&nbsp;&nbsp;&nbsp;<image src="image/noIdCard/img-default.jpg" width="400"/></div>');
                                         dialog.getButton('idCheck').remove();
-                                    }
+                                        var tmp = new BootstrapDialog({
+                                                message: '<h4 style="margin-left:10%; font-weight: normal">사진이 아직 업로드되지 않았습니다. 단말기를 확인해주세요</h4>',
+                                            });
+
+                                        tmp.realize();
+                                        tmp.getModalDialog().css('margin-top', '20%');
+                                        tmp.getModalFooter().css('padding', '1%');
+                                        tmp.getModalHeader().hide();
+                                        tmp.open();
+                                    };
                                 },
                                 buttons: [
                                     {
                                         id: 'idCheck',
                                         label: '신원 확인',
                                         cssClass: 'btn-primary',
-                                        action: function (dialog) {
-                                            $.ajax({
-                                                url: 'data/checkIdCard?examineeCd=' + rowdata.examineeCd + '&attendCd=' + rowdata.attendCd,
-                                                success: function (data) {
-                                                    $(_this).jqGrid('setCell', rowid, 'idCheckDttm', data);
-                                                    dialog.close();
-                                                }
+                                        action: function () {
+                                            var innerDialog = new BootstrapDialog({
+                                                message: '<h4 style="margin-left:10%; font-weight: normal">신원확인을 하면 <span style="color:red; font-weight: bold">취소</span>할 수 없습니다. 계속하시겠습니까?</h4>',
+                                                closable: false,
+                                                buttons: [{
+                                                    label: '예',
+                                                    cssClass: 'btn-primary',
+                                                    action: function () {
+                                                        $.ajax({
+                                                            url: 'data/checkIdCard?examineeCd=' + rowdata.examineeCd + '&attendCd=' + rowdata.attendCd,
+                                                            success: function (data) {
+                                                                $(_this).jqGrid('setCell', rowid, 'idCheckDttm', data);
+                                                                BootstrapDialog.closeAll();
+                                                            }
+                                                        });
+                                                    }
+                                                },{
+                                                    label: '아니오',
+                                                    action: function(dialog){
+                                                        dialog.close();
+                                                    }
+                                                }]
                                             });
+
+                                            innerDialog.realize();
+                                            innerDialog.getModalDialog().css('margin-top', '20%');
+                                            innerDialog.getModalFooter().css('padding', '1%');
+                                            innerDialog.getModalHeader().hide();
+                                            innerDialog.open();
                                         }
                                     }, {
                                         label: '닫기',
@@ -88,6 +119,10 @@ define(function (require) {
                                         }
                                     }]
                             });
+
+                            dialog.realize();
+                            dialog.getModalDialog().css('margin-top', '5%');
+                            dialog.open();
                         }
                     }
                 }
