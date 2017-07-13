@@ -2,11 +2,15 @@ package com.humane.etms.mapper;
 
 import com.humane.etms.dto.AccountDto;
 import com.humane.etms.dto.DeviceDto;
+import com.humane.etms.dto.StatusDto;
 import com.humane.etms.model.Device;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SystemMapper {
@@ -25,4 +29,9 @@ public interface SystemMapper {
     void modifyRole(@Param("userId") String userId, @Param("roleName") String roleName);
 
     Page<AccountDto> idCheck(@Param("pageable") Pageable pageable);
+
+    List<Map<String, Object>> getInfo();
+    List<Map<String, Object>> getAttendResult();
+
+    Page<Map<String, Object>> ready(@Param("param") StatusDto statusDto, @Param("pageable") Pageable pageable);
 }

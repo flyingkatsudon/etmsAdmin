@@ -13,7 +13,7 @@
                 , case user_role.role_name
                     when 'ROLE_ADMIN' then '관리자'
                     when 'ROLE_USER' then '사용자'
-                    else '기타' end as role
+                    else '신분증확인용' end as role
                 , user_role.role_name
                 from user
                 inner join user_role on user_role.user_id = user.user_id
@@ -103,5 +103,34 @@
 
     <select id="idCheck" resultType="com.humane.etms.dto.AccountDto">
         select user_id from user
+    </select>
+
+    <select id="getInfo" resultType="com.humane.util.CamelMap">
+        select *, count(*)
+        from (select dept_nm, group_nm, @prev := @prev + 1 as rank
+                from group_info as tmp, (select @prev := 0) as r
+              order by group_nm) as result
+              group by dept_nm
+        order by group_nm
+    </select>
+
+
+
+
+
+    <!--고려대 면접고사용-->
+    <select id="ready" resultType="com.humane.etms.dto.StatusDto">
+        select dept_nm, group_nm, hall.hall_cd, hall.bldg_nm, hall.hall_nm
+        from group_info
+        inner join hall on hall.hall_cd = group_info.hall_cd
+        order by group_nm
+    </select>
+
+    <select id="getHallCnt" resultType="java.lang.Long">
+
+    </select>
+
+    <select id="getAttendResult" resultType="com.humane.util.CamelMap">
+        select
     </select>
 </mapper>

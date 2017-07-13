@@ -1,6 +1,7 @@
 package com.humane.etms.service;
 
 import com.humane.etms.mapper.DataMapper;
+import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.AttendHallRepository;
 import com.humane.etms.repository.AttendMapRepository;
@@ -10,12 +11,12 @@ import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import javax.persistence.PersistenceContext;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -41,6 +43,7 @@ public class SystemService {
     private final AttendHallRepository attendHallRepository;
     private final AttendPaperRepository attendPaperRepository;
     private final DataMapper mapper;
+    private final SystemMapper systemMapper;
 
     @Transactional
     public void resetData(boolean photo) {
@@ -134,8 +137,8 @@ public class SystemService {
                 .where(attendMap.groupOrder.isNotNull())
                 .fetch();
 
-        if(list != null){
-            for (String examineeCd  : list) {
+        if (list != null) {
+            for (String examineeCd : list) {
                 mapper.initGroupOrder(examineeCd);
             }
         }
@@ -197,7 +200,7 @@ public class SystemService {
                 .where(attendMap.hall.bldgNm.eq(bldgNm))
                 .fetch();
 
-        if(attendMaps != null){
+        if (attendMaps != null) {
             for (AttendMap map : attendMaps) {
                 attendMapRepository.save(map);
             }
@@ -219,7 +222,7 @@ public class SystemService {
                 .where(attendMap.attendHall.hallCd.eq(attendHallCd))
                 .fetch();
 
-        if(attendMaps != null){
+        if (attendMaps != null) {
             for (AttendMap map : attendMaps) {
                 map.setAttendDttm(null);
                 map.setIsCheat(null);
@@ -241,7 +244,7 @@ public class SystemService {
                 .where(attendPaper.hall.hallCd.eq(attendHallCd))
                 .fetch();
 
-        if(attendPapers != null){
+        if (attendPapers != null) {
             for (AttendPaper paper : attendPapers) {
                 attendPaperRepository.delete(paper);
             }
@@ -254,7 +257,7 @@ public class SystemService {
                 .where(attendHall.hall.hallCd.eq(attendHallCd))
                 .fetch();
 
-        if(attendHalls != null){
+        if (attendHalls != null) {
             for (AttendHall hall : attendHalls) {
                 hall.setSignDttm(null);
                 attendHallRepository.save(hall);
@@ -262,5 +265,20 @@ public class SystemService {
         }
 
         // imageService.deleteImage(pathRecheck, pathSignature);
+    }
+
+    /**
+     * 고려대 면접고사용
+     */
+    public ResponseEntity setOrder() {
+
+        List<Map<String, Object>> orderInfo = systemMapper.getInfo();
+        List<Map<String, Object>> attendResult = systemMapper.getAttendResult();
+
+        for (int i = 0; i < orderInfo.size(); i++) {
+            log.debug("{}", orderInfo.get(i));
+        }
+
+        return ResponseEntity.ok("배정 완료");
     }
 }

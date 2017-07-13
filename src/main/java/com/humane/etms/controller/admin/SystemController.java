@@ -1,6 +1,7 @@
 package com.humane.etms.controller.admin;
 
 import com.humane.etms.dto.AccountDto;
+import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.UserAdmissionRepository;
@@ -46,23 +47,23 @@ public class SystemController {
 
     @RequestMapping(value = "reset")
     public ResponseEntity reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
-        try{
+        try {
             systemService.resetData(photo);
-            return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
-        }catch(Exception e){
+            return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
+        } catch (Exception e) {
             log.debug("{}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
         }
     }
 
     @RequestMapping(value = "init")
     public ResponseEntity init() throws IOException {
-        try{
+        try {
             systemService.initData();
             return ResponseEntity.ok("초기화가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요.");
-        }catch(Exception e){
+        } catch (Exception e) {
             log.debug("{}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
         }
     }
 
@@ -82,7 +83,7 @@ public class SystemController {
         return ResponseEntity.ok(systemMapper.account(accountDto, pageable));
     }
 
-    @RequestMapping(value="device")
+    @RequestMapping(value = "device")
     public ResponseEntity getDevice(Device device, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.getDevice(device, pageable));
     }
@@ -112,7 +113,7 @@ public class SystemController {
                     .and(QUserAdmission.userAdmission.admission.admissionCd.eq(admissionCd)));
 
             if (find == null) systemMapper.insertAdmission(userId, admissionCd);
-        }else {
+        } else {
             // 계정 정보 수정
             if (roleName != null) systemMapper.modifyRole(userId, roleName);
         }
@@ -146,5 +147,26 @@ public class SystemController {
     @RequestMapping(value = "idCheck")
     public ResponseEntity idCheck(Pageable pageable) {
         return ResponseEntity.ok(systemMapper.idCheck(pageable).getContent());
+    }
+
+    /**
+     * 고려대 면접고사용
+     */
+
+    @RequestMapping(value = "ready")
+    public ResponseEntity ready(StatusDto statusDto, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.ready(statusDto, pageable).getContent());
+    }
+
+    @RequestMapping(value = "order")
+    public ResponseEntity order() {
+        try {
+            systemService.setOrder();
+        } catch (Exception e) {
+            log.error("{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
+        }
+
+        return ResponseEntity.ok("완료되었습니다");
     }
 }
