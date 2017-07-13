@@ -93,6 +93,7 @@ define(function (require) {
             dialog.realize();
             dialog.getModalDialog().css('margin-top', '20%');
             dialog.getModalHeader().hide();
+            dialog.getModalFooter().css('padding', '1%');
             dialog.open();
         },
         reset: function (o) {
@@ -141,6 +142,7 @@ define(function (require) {
             dialog.realize();
             dialog.getModalDialog().css('margin-top', '20%');
             dialog.getModalHeader().hide();
+            dialog.getModalFooter().css('padding', '1%');
             dialog.open();
 
         }, completeDialog: function (msg) {

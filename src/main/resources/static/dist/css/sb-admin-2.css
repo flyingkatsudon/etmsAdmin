@@ -542,6 +542,16 @@ h4 {
     padding: 15px 0 15px 15px;
 }
 
+.notice {
+    z-index: 10000;
+    font-size: 20px;
+    text-align: center;
+    margin: 10%;
+    padding: 10%;
+    //border: 1px solid crimson;
+    border-radius: 20px;
+}
+
 .sys-group {
     margin-top: 1%;
     margin-bottom: 3%;
