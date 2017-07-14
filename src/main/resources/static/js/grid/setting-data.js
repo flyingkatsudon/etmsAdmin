@@ -49,12 +49,12 @@ define(function (require) {
                                 var body = dialogRef.$modalBody;
                                 body.append(dlgDetail);
 
-                                $('#basicPart1').append('<div style="margin:3% 0 0 3%;">' + '시험구분' + '<input type="text" id="atNm" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.attendNm + '"></div>');
-                                $('#basicPart1').append('<div style="margin:3% 0 0 3%;">' + '계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;열' + '<input type="text" id="typeNm" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.typeNm + '"></div>');
-                                $('#basicPart1').append('<div style="margin:3% 0 0 3%;">' + '수험번호' + '<input type="text" id="attendLen" style="width: 10%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.attendLen + '">&nbsp;자리</div>');
+                                $('#basicPart1').append('<div style="margin:3% 0 0 3%;">' + '시험구분' + '<input type="text" id="atNm" class="set-basic" value="' + rowData.attendNm + '"></div>');
+                                $('#basicPart1').append('<div style="margin:3% 0 0 3%;">' + '계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;열' + '<input type="text" id="typeNm" class="set-basic"  value="' + rowData.typeNm + '"></div>');
+                                $('#basicPart1').append('<div style="margin:3% 0 0 3%;">' + '수험번호' + '<input type="text" id="attendLen" class="set-short" value="' + rowData.attendLen + '">&nbsp;자리</div>');
 
-                                $('#basicPart2').append('<div style="margin:3% 0 0 3%;">' + '시험일자' + '<input type="text" id="attendDate" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.attendDate + '"></div>');
-                                $('#basicPart2').append('<div style="margin:3% 0 0 3%;">' + '시험시간' + '<input type="text" id="attendTime" style="text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.attendTime + '"></div>');
+                                $('#basicPart2').append('<div style="margin:3% 0 0 3%;">' + '시험일자' + '<input type="text" id="attendDate" class="set-basic"  value="' + rowData.attendDate + '"></div>');
+                                $('#basicPart2').append('<div style="margin:3% 0 0 3%;">' + '시험시간' + '<input type="text" id="attendTime" class="set-basic"  value="' + rowData.attendTime + '"></div>');
 
                                 $('#detailPart1').append(
                                     '<div style="margin:4% 0 5% 3%;">' + '답안지 교체'
@@ -91,8 +91,8 @@ define(function (require) {
                                 }
 
 
-                                $('#detailPart2').append('<div style="margin:2% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;매수<input type="text" id="paperCnt" style="width: 10%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.paperCnt + '">&nbsp;장</div>');
-                                $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지 자리수<input type="text" id="paperLen" style="width: 10%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.paperLen + '">&nbsp;자리</div>');
+                                $('#detailPart2').append('<div style="margin:2% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;매수<input type="text" id="paperCnt" class="set-short" value="' + rowData.paperCnt + '">&nbsp;장</div>');
+                                $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지 자리수<input type="text" id="paperLen" class="set-short" value="' + rowData.paperLen + '">&nbsp;자리</div>');
 
                                 if(rowData.paperHeader == null) rowData.paperHeader = '';
                                 $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;헤더<input type="text" id="paperHeader" style="width: 20%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.paperHeader + '"></div>');
