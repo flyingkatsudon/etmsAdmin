@@ -51,12 +51,22 @@
         </where>
     </select>
 
-    <select id="getDevice" resultType="com.humane.etms.model.Device">
-        SELECT * FROM device
+    <select id="getDevice" resultType="com.humane.etms.dto.DeviceDto">
+        select device_id, device_no
+            , case package_name
+            when 'com.humane.etms2.app' then '출결&amp;신원확인'
+            when 'com.humane.etms2.mgr' then '중간관리본부'
+            end as package_name
+            , phone_no, uuid, version_name, last_dttm
+            , case when (select count(*) from attend_map where attend_map.device_id = device.device_id and attend_map.attend_dttm is not null and attend_map.device_id is not null) > 0
+                    then (select count(*) from attend_map where attend_map.device_id = device.device_id and attend_map.attend_dttm is not null and attend_map.device_id is not null)
+                    else '-' end as checkCnt
+        from device
         <where>
             <if test="param != null">
                 <if test="param.packageName">AND package_name = CONCAT('com.humane.etms2.', #{param.packageName})</if>
                 <if test="param.deviceNo">AND device_no = #{param.deviceNo}</if>
+                <if test="param.phoneNo">AND phone_no like '%' #{param.phoneNo} '%' </if>
             </if>
         </where> 
     </select>

@@ -145,6 +145,8 @@ public class SystemService {
                 .setNull(attendMap.isMidOut)
                 .setNull(attendMap.memo)
                 .setNull(attendMap.attendHall)
+                .setNull(attendMap.isScanner)
+                .setNull(attendMap.deviceId)
                 .setNull(attendMap.groupOrder);
 
         updateMap.execute();

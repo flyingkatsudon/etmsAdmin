@@ -34,4 +34,5 @@ public class AttendPaperLog implements Serializable {
 
     @Column(columnDefinition = "bit") private Boolean isScanner;
     private String newPaperCd;
+    private Long deviceId;
 }

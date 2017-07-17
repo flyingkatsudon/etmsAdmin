@@ -1,11 +1,10 @@
 package com.humane.etms.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.humane.etms.model.AttendPaper;
-import com.humane.etms.model.AttendPaperLog;
-import com.humane.etms.model.QAttendPaper;
+import com.humane.etms.model.*;
 import com.humane.etms.repository.AttendPaperLogRepository;
 import com.humane.etms.repository.AttendPaperRepository;
+import com.humane.etms.repository.DeviceRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +19,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PreUpdate;
 import java.util.ArrayList;
@@ -36,6 +32,8 @@ import java.util.List;
 public class AttendPaperController {
     private final AttendPaperRepository repository;
     private final AttendPaperLogRepository logRepository;
+    private final DeviceRepository deviceRepository;
+
     private final ObjectMapper objectMapper;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -49,18 +47,24 @@ public class AttendPaperController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<AttendPaper> merge(@RequestBody AttendPaper attendPaper) {
-        return new ResponseEntity<>(save(attendPaper), HttpStatus.OK);
+    public ResponseEntity<AttendPaper> merge(@RequestBody AttendPaper attendPaper
+            , @RequestHeader(name = "uuid") String uuid
+            , @RequestHeader(name = "packagename") String packageName
+            , @RequestHeader(name = "versionname") String versionName) {
+        return new ResponseEntity<>(save(uuid, packageName, versionName, attendPaper), HttpStatus.OK);
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ResponseEntity<Iterable<AttendPaper>> merge(@RequestBody Iterable<AttendPaper> attendPapers) {
+    public ResponseEntity<Iterable<AttendPaper>> merge(@RequestBody Iterable<AttendPaper> attendPapers
+            , @RequestHeader(name = "uuid") String uuid
+            , @RequestHeader(name = "packagename") String packageName
+            , @RequestHeader(name = "versionname") String versionName) {
         List<AttendPaper> list = new ArrayList<>();
-        attendPapers.forEach(attendPaper -> list.add(save(attendPaper)));
+        attendPapers.forEach(attendPaper -> list.add(save(uuid, packageName, versionName, attendPaper)));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    private AttendPaper save(AttendPaper attendPaper) {
+    private AttendPaper save(String uuid, String packageName, String versionName, AttendPaper attendPaper) {
         AttendPaper find = repository.findOne(new BooleanBuilder()
                 .and(QAttendPaper.attendPaper.attend.attendCd.eq(attendPaper.getAttend().getAttendCd()))
                 .and(QAttendPaper.attendPaper.examinee.examineeCd.eq(attendPaper.getExaminee().getExamineeCd()))
@@ -68,6 +72,19 @@ public class AttendPaperController {
         );
 
         if (find != null) attendPaper.set_id(find.get_id());
+
+        // 헤더에 포함된 아래 세 개의 값으로
+        // device 테이블의 _id 값을 찾아 저장함
+        Device tmp = deviceRepository.findOne(new BooleanBuilder()
+                .and(QDevice.device.versionName.eq(versionName))
+                .and(QDevice.device.uuid.eq(uuid))
+                .and(QDevice.device.packageName.eq(packageName))
+        );
+
+        Long deviceId = null;
+        if (tmp != null) deviceId = tmp.getDeviceId();
+
+        attendPaper.setDeviceId(deviceId);
 
         return repository.save(attendPaper);
     }

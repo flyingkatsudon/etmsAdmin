@@ -79,32 +79,41 @@ public class AttendMapController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<AttendMap> merge(@RequestBody AttendMap attendMap) { // 출결
-        return new ResponseEntity<>(save(attendMap), HttpStatus.OK);
+    public ResponseEntity<AttendMap> merge(@RequestBody AttendMap attendMap
+            , @RequestHeader(name = "uuid") String uuid
+            , @RequestHeader(name = "packagename") String packageName
+            , @RequestHeader(name = "versionname") String versionName) { // 출결
+        return new ResponseEntity<>(save(uuid, packageName, versionName, attendMap), HttpStatus.OK);
     }
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ResponseEntity<Iterable<AttendMap>> merge(@RequestBody Iterable<AttendMap> attendMaps) {
+    public ResponseEntity<Iterable<AttendMap>> merge(@RequestBody Iterable<AttendMap> attendMaps
+            , @RequestHeader(name = "uuid") String uuid
+            , @RequestHeader(name = "packagename") String packageName
+            , @RequestHeader(name = "versionname") String versionName) {
         ArrayList<AttendMap> rtn = new ArrayList<>();
-        attendMaps.forEach(attendMap -> rtn.add(save(attendMap)));
+        attendMaps.forEach(attendMap -> rtn.add(save(uuid, packageName, versionName, attendMap)));
 
         return new ResponseEntity<>(rtn, HttpStatus.OK);
     }
 
     @RequestMapping(value = "device", method = RequestMethod.GET)
-    public ResponseEntity<?> findByDevice(@RequestParam(defaultValue = "") String packageName, @RequestParam(defaultValue = "") String deviceUuid) {
-       // if (StringUtils.isAnyEmpty(packageName, uuid))
-       //     return new ResponseEntity<>(packageName + " " + uuid, HttpStatus.BAD_REQUEST);
+    //public ResponseEntity<?> findByDevice(@RequestParam(defaultValue = "") String packageName, @RequestParam(defaultValue = "") String deviceUuid, @RequestParam(defaultValue = "") String versionName) {
+    public ResponseEntity<?> findByDevice(@RequestHeader(name = "uuid") String uuid, @RequestHeader(name = "packagename") String packageName, @RequestHeader(name = "versionname") String versionName) {
+        // if (StringUtils.isAnyEmpty(packageName, uuid))
+        //     return new ResponseEntity<>(packageName + " " + uuid, HttpStatus.BAD_REQUEST);
 
         QDevice device = QDevice.device;
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and(device.packageName.eq(packageName));
-        predicate.and(device.uuid.eq(deviceUuid));
+        predicate.and(device.uuid.eq(uuid));
+        predicate.and(device.versionName.eq(versionName));
 
         return ResponseEntity.ok(deviceRepository.findOne(predicate).getDeviceId());
     }
 
-    private AttendMap save(AttendMap attendMap) {
+    private AttendMap save(String uuid, String packageName, String versionName, AttendMap attendMap) {
+
         // 기존 여부 확인
         AttendMap find = repository.findOne(new BooleanBuilder()
                 .and(QAttendMap.attendMap.attend.eq(attendMap.getAttend()))
@@ -121,7 +130,20 @@ public class AttendMapController {
             if (list != null && Iterables.size(list) > 0) paperRepository.delete(list);
         }
 
-        if(attendMap.getGroupOrder() != null)
+        // 헤더에 포함된 아래 세 개의 값으로
+        // device 테이블의 _id 값을 찾아 저장함
+        Device tmp = deviceRepository.findOne(new BooleanBuilder()
+                .and(QDevice.device.versionName.eq(versionName))
+                .and(QDevice.device.uuid.eq(uuid))
+                .and(QDevice.device.packageName.eq(packageName))
+        );
+
+        Long deviceId = null;
+        if (tmp != null) deviceId = tmp.getDeviceId();
+
+        attendMap.setDeviceId(deviceId);
+
+        if (attendMap.getGroupOrder() != null)
             dataMapper.insertGroupOrder(attendMap);
         return repository.save(attendMap);
     }
