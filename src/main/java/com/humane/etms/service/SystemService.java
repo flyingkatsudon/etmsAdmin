@@ -127,18 +127,6 @@ public class SystemService {
 
         QAttendMap attendMap = QAttendMap.attendMap;
 
-        // smps initialize
-        List<String> list = queryFactory.select(attendMap.examinee.examineeCd)
-                .from(attendMap)
-                .where(attendMap.groupOrder.isNotNull())
-                .fetch();
-
-        if (list != null) {
-            for (String examineeCd : list) {
-                mapper.initGroupOrder(examineeCd);
-            }
-        }
-
         HibernateUpdateClause updateMap = queryFactory.update(attendMap)
                 .setNull(attendMap.attendDttm)
                 .setNull(attendMap.isCheat)
@@ -146,8 +134,7 @@ public class SystemService {
                 .setNull(attendMap.memo)
                 .setNull(attendMap.attendHall)
                 .setNull(attendMap.isScanner)
-                .setNull(attendMap.deviceId)
-                .setNull(attendMap.groupOrder);
+                .setNull(attendMap.deviceId);
 
         updateMap.execute();
 
@@ -228,9 +215,6 @@ public class SystemService {
                 map.setMemo(null);
                 map.setAttendHall(null);
                 map.setIsScanner(null);
-                map.setGroupOrder(null);
-
-                mapper.initGroupOrder(map.getExaminee().getExamineeCd());
 
                 attendMapRepository.save(map);
             }

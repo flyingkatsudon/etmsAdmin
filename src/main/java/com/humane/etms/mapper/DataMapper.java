@@ -36,10 +36,4 @@ public interface DataMapper {
     Page<ExamineeDto> noIdCard(@Param("param") ExamineeDto param, @Param("pageable") Pageable pageable);
 
     Page<DocDto> attachment(@Param("param") DocDto param, @Param("pageable") Pageable pageable);
-
-    //void insertGroupOrder(@Param("examineeCd") String examineeCd, @Param("groupOrder") String groupOrder);
-
-    void insertGroupOrder(@Param("param") AttendMap param);
-
-    void initGroupOrder(@Param("examineeCd") String examineeCd);
 }

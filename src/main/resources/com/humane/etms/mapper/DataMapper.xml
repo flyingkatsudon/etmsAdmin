@@ -341,34 +341,4 @@
             </if>
         </where>
     </select>
-
-    <!--<update id="insertGroupOrder">
-        <if test="examineeCd != null">
-            UPDATE exam_map
-            SET virt_no = #{groupOrder}, scan_dttm = NOW()
-            WHERE examinee_cd = #{examineeCd}
-        </if>
-    </update>-->
-
-    <update id="insertGroupOrder">
-        <if test="param != null">
-            <if test="param.groupOrder != null">
-                UPDATE exam_map
-                SET virt_no = #{param.groupOrder}, scan_dttm = NOW(), group_nm = #{param.groupNm}
-                    , hall_cd = (select exam_group.hall_cd
-                        from exam_group
-                        where exam_group_cd = #{param.attendGroupCd})
-                WHERE examinee_cd = #{param.examinee.examineeCd}
-                  AND exam_cd = (select exam_group.exam_cd FROM exam_group where exam_group_cd = #{param.attendGroupCd})
-            </if>
-        </if>
-    </update>
-
-    <update id="initGroupOrder">
-        <if test="examineeCd != null">
-            UPDATE exam_map
-            SET virt_no = null, scan_dttm = null
-            WHERE examinee_cd = #{examineeCd}
-        </if>
-    </update>
 </mapper>

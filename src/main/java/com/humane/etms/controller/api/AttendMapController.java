@@ -142,9 +142,6 @@ public class AttendMapController {
         if (tmp != null) deviceId = tmp.getDeviceId();
 
         attendMap.setDeviceId(deviceId);
-
-        if (attendMap.getGroupOrder() != null)
-            dataMapper.insertGroupOrder(attendMap);
         return repository.save(attendMap);
     }
 }
