@@ -23,7 +23,7 @@ define(function (require) {
                 {
                     name: 'btnIdCheck', label: '신원확인', formatter: function (cellValue, option) {
                     var rowid = option.rowId;
-                    return '<button id="checkBtn" value="' + rowid + '">사진보기</button>';
+                    return '<button class="btn-primary" id="checkBtn" value="' + rowid + '">사진보기</button>';
                 }
                 },
                 {name: 'attendCd', hidden: true}
