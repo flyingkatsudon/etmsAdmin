@@ -8,13 +8,14 @@ define(function (require) {
             this.parent = options.parents;
 
             var colModel = [
-                {name: 'deviceId', label: '디바이스 아이디'},
-                {name: 'deviceNo', label: '디바이스 설정번호'},
-                {name: 'lastDttm', label: '갱신일자'},
+                {name: 'deviceId', label: '단말기코드'},
+                {name: 'deviceNo', label: '단말기번호'},
                 {name: 'packageName', label: '서비스명'},
-                {name: 'phoneNo', hidden: true},
-                {name: 'uuid', hidden: true},
-                {name: 'versionName', label: '서비스버전'}
+                {name: 'versionName', label: '서비스버전'},
+                {name: 'checkCnt', label: '처리인원(단위: 명)'},
+                {name: 'phoneNo', label: '전화번호'},
+                {name: 'uuid', label: 'uuid'},
+                {name: 'lastDttm', label: '갱신일자'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {

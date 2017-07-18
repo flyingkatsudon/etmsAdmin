@@ -17,7 +17,7 @@ public interface SystemMapper {
     Page<AccountDto> account(@Param("param") AccountDto param, @Param("pageable") Pageable pageable);
     Page<AccountDto> admission(@Param("pageable") Pageable pageable);
     Page<AccountDto> accountDetail(@Param("userId") String userId, @Param("pageable") Pageable pageable);
-    Page<Device> getDevice(@Param("param") Device device, @Param("pageable") Pageable pageable);
+    Page<Device> getDevice(@Param("param") DeviceDto deviceDto, @Param("pageable") Pageable pageable);
     void addAccount(@Param("userId") String userId, @Param("password") String password);
     void addRole(@Param("userId") String userId, @Param("roleName") String roleName);
     void deleteAccount(@Param("userId") String userId);

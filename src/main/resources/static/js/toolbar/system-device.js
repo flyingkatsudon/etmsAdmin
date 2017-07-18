@@ -26,7 +26,8 @@ define(function (require) {
             if (this.parent) {
                 this.parent.search({
                     packageName: _this.$('#packageName').val(),
-                    deviceNo: _this.$('#deviceNo').val()
+                    deviceNo: _this.$('#deviceNo').val(),
+                    phoneNo: _this.$('#phoneNo').val()
                 });
             }
         }

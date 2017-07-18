@@ -1,6 +1,7 @@
 package com.humane.etms.controller.admin;
 
 import com.humane.etms.dto.AccountDto;
+import com.humane.etms.dto.DeviceDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
@@ -84,8 +85,8 @@ public class SystemController {
     }
 
     @RequestMapping(value = "device")
-    public ResponseEntity getDevice(Device device, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.getDevice(device, pageable));
+    public ResponseEntity getDevice(DeviceDto deviceDto, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.getDevice(deviceDto, pageable));
     }
 
     @RequestMapping(value = "admission")
