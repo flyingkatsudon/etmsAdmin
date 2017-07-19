@@ -168,6 +168,11 @@ public class SystemService {
 
         deleteMapLog.execute();
 
+        QDevice device = QDevice.device;
+        HibernateDeleteClause deleteDevice = queryFactory.delete(device);
+
+        deleteDevice.execute();
+
         imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
     }
 
@@ -215,6 +220,7 @@ public class SystemService {
                 map.setMemo(null);
                 map.setAttendHall(null);
                 map.setIsScanner(null);
+                map.setDeviceId(null);
 
                 attendMapRepository.save(map);
             }

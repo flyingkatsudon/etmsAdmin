@@ -114,4 +114,37 @@
     <select id="idCheck" resultType="com.humane.etms.dto.AccountDto">
         select user_id from user
     </select>
+
+    <select id="duplicate" resultType="com.humane.etms.dto.DuplicateDto">
+        select *
+        from(select *, case when count(*) = 0 then '-' else concat(count(*), '대') end as duplicateCnt, count(*) as cnt
+                from( select attend.attend_nm, attend.attend_date, attend.attend_time, examinee.examinee_cd, examinee.examinee_nm
+                        from attend_map_log
+                        inner join attend on attend.attend_cd = attend_map_log.attend_cd
+                        inner join examinee on examinee.examinee_cd = attend_map_log.examinee_cd
+                        group by attend_map_log.examinee_cd, attend_map_log.device_id
+                    ) a
+                group by a.examinee_cd
+             ) result
+        <where>
+            and cnt > 1
+        </where>
+    </select>
+
+    <select id="innerDuplicate" resultType="com.humane.etms.dto.DuplicateDto">
+        select examinee.examinee_cd, examinee.examinee_nm, device.device_id, device.device_no
+        , case when attend_map_log.attend_dttm is not null then true else false end as current_state
+        , attend_map_log.log_dttm, hall.bldg_nm, hall.hall_nm
+        from attend_map_log
+        inner join examinee on examinee.examinee_cd = attend_map_log.examinee_cd
+        inner join device on device.device_id = attend_map_log.device_id
+        left join hall on hall.hall_cd = attend_map_log.attend_hall_cd
+        <where>
+            <if test="param != null">
+                <if test="param.attendCd != null"> and attend_map_log.attend_cd = #{param.attendCd} </if>
+                <if test="param.examineeCd != null"> and attend_map_log.examinee_cd = #{param.examineeCd} </if>
+            </if>
+         </where>
+         order by attend_map_log.log_dttm desc
+    </select>
 </mapper>

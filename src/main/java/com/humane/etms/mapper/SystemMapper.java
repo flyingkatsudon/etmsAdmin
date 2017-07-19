@@ -2,6 +2,7 @@ package com.humane.etms.mapper;
 
 import com.humane.etms.dto.AccountDto;
 import com.humane.etms.dto.DeviceDto;
+import com.humane.etms.dto.DuplicateDto;
 import com.humane.etms.model.Device;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,4 +26,7 @@ public interface SystemMapper {
     void modifyRole(@Param("userId") String userId, @Param("roleName") String roleName);
 
     Page<AccountDto> idCheck(@Param("pageable") Pageable pageable);
+
+    Page<DuplicateDto> duplicate(@Param("pageable") Pageable pageable);
+    Page<DuplicateDto> innerDuplicate(@Param("param") DuplicateDto duplicateDto, @Param("pageable") Pageable pageable);
 }

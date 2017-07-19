@@ -2,6 +2,7 @@ package com.humane.etms.controller.admin;
 
 import com.humane.etms.dto.AccountDto;
 import com.humane.etms.dto.DeviceDto;
+import com.humane.etms.dto.DuplicateDto;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.UserAdmissionRepository;
@@ -15,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -147,5 +145,15 @@ public class SystemController {
     @RequestMapping(value = "idCheck")
     public ResponseEntity idCheck(Pageable pageable) {
         return ResponseEntity.ok(systemMapper.idCheck(pageable).getContent());
+    }
+
+    @RequestMapping(value = "duplicate")
+    public ResponseEntity duplicate(Pageable pageable){
+        return ResponseEntity.ok(systemMapper.duplicate(pageable).getContent());
+    }
+
+    @RequestMapping(value = "innerDuplicate")
+    public ResponseEntity innerDuplicate(DuplicateDto duplicateDto, Pageable pageable){
+        return ResponseEntity.ok(systemMapper.innerDuplicate(duplicateDto, pageable).getContent());
     }
 }
