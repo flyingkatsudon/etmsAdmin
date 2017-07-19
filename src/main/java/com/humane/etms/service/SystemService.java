@@ -149,6 +149,8 @@ public class SystemService {
                 .setNull(attendMap.isMidOut)
                 .setNull(attendMap.memo)
                 .setNull(attendMap.attendHall)
+                .setNull(attendMap.isScanner)
+                .setNull(attendMap.deviceId)
                 .setNull(attendMap.groupOrder);
 
         updateMap.execute();
@@ -182,6 +184,11 @@ public class SystemService {
         HibernateDeleteClause deleteMapLog = queryFactory.delete(attendMapLog);
 
         deleteMapLog.execute();
+
+        QDevice device = QDevice.device;
+        HibernateDeleteClause deleteDevice = queryFactory.delete(device);
+
+        deleteDevice.execute();
 
         imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
     }
@@ -230,6 +237,7 @@ public class SystemService {
                 map.setMemo(null);
                 map.setAttendHall(null);
                 map.setIsScanner(null);
+                map.setDeviceId(null);
                 map.setGroupOrder(null);
 
                 mapper.initGroupOrder(map.getExaminee().getExamineeCd());
