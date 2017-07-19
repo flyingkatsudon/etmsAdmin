@@ -126,7 +126,7 @@ public class DownloadController {
         dto.setIsAttend(true);
         File noIdCard = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-noIdCard.jrxml"
-                , dataMapper.examinee(dto, pageable).getContent()
+                , dataMapper.noIdCard(dto, pageable).getContent()
         );
         dto.setIsAttend(null);
         dto.setIsNoIdCard(null);

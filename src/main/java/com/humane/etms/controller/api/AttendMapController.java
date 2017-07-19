@@ -147,4 +147,16 @@ public class AttendMapController {
             dataMapper.insertGroupOrder(attendMap);
         return repository.save(attendMap);
     }
+
+    @RequestMapping(value = "detect", method = RequestMethod.GET)
+    public Page<AttendMap> detect(@RequestParam(defaultValue = "") String attendCd, @RequestParam(defaultValue = "") String attendHallCd, @PageableDefault Pageable pageable) {
+
+        QAttendMap attendMap = QAttendMap.attendMap;
+
+        BooleanBuilder predicate = new BooleanBuilder()
+                .and(attendMap.attend.attendCd.eq(attendCd))
+                .and(attendMap.attendHall.hallCd.eq(attendHallCd));
+
+        return repository.findAll(predicate, pageable);
+    }
 }

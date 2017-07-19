@@ -1,7 +1,6 @@
 define(function (require) {
     "use strict";
 
-    var Backbone = require('backbone');
     var Template = require('text!tpl/data-report.html');
     var DlgDownload = require('../dist/dlg-download.js');
 
