@@ -35,8 +35,6 @@ public class AttendMapController {
     private final AttendPaperRepository paperRepository;
     private final DeviceRepository deviceRepository;
 
-    private final DataMapper dataMapper;
-
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttendMap> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
         return repository.findAll(predicate, pageable);
@@ -143,5 +141,17 @@ public class AttendMapController {
 
         attendMap.setDeviceId(deviceId);
         return repository.save(attendMap);
+    }
+
+    @RequestMapping(value = "detect", method = RequestMethod.GET)
+    public Page<AttendMap> detect(@RequestParam(defaultValue = "") String attendCd, @RequestParam(defaultValue = "") String attendHallCd, @PageableDefault Pageable pageable) {
+
+        QAttendMap attendMap = QAttendMap.attendMap;
+
+        BooleanBuilder predicate = new BooleanBuilder()
+                .and(attendMap.attend.attendCd.eq(attendCd))
+                .and(attendMap.attendHall.hallCd.eq(attendHallCd));
+
+        return repository.findAll(predicate, pageable);
     }
 }
