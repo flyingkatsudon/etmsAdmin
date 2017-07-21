@@ -52,7 +52,7 @@
     </select>
 
     <select id="getDevice" resultType="com.humane.etms.dto.DeviceDto">
-        select device_id, device_no
+        select device_id, cast(device_no as unsigned) as device_no
             , case package_name
             when 'com.humane.etms2.app' then '출결&amp;신원확인'
             when 'com.humane.etms2.mgr' then '중간관리본부'
