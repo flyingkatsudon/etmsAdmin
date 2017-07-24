@@ -34,7 +34,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'status/attendInfo',
+                    url: 'system/attendInfo',
                     colModel: colModel,
                     onCellSelect: function (rowid, index, contents, event) {
                         var colModel = $(this).jqGrid('getGridParam', 'colModel');
@@ -110,7 +110,7 @@ define(function (require) {
                             },
                             buttons: [
                                 {
-                                    id: 'modiyfy',
+                                    id: 'modify',
                                     label: '변경 내용 저장',
                                     cssClass: 'btn-primary',
                                     action: function (dialog) {
@@ -139,10 +139,10 @@ define(function (require) {
                                         }
 
 
-                                        if(param.paperHeader == '') param.paperHeader = null;
+                                        if(param.paperHeader == '' || param.paperHeader == '-') param.paperHeader = null;
 
                                         $.ajax({
-                                            url: 'status/modifyAttend',
+                                            url: 'system/modifyAttend',
                                             type: 'POST',
                                             contentType: "application/json; charset=utf-8",
                                             data: JSON.stringify(param),

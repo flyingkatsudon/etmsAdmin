@@ -1,9 +1,6 @@
 package com.humane.etms.controller.admin;
 
-import com.humane.etms.dto.AccountDto;
-import com.humane.etms.dto.DeviceDto;
-import com.humane.etms.dto.DuplicateDto;
-import com.humane.etms.dto.StatusDto;
+import com.humane.etms.dto.*;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.UserAdmissionRepository;
@@ -27,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
-@RequestMapping(value = "system", method = RequestMethod.GET)
+@RequestMapping(value = "system")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemController {
@@ -146,6 +143,21 @@ public class SystemController {
     @RequestMapping(value = "idCheck")
     public ResponseEntity idCheck(Pageable pageable) {
         return ResponseEntity.ok(systemMapper.idCheck(pageable).getContent());
+    }
+
+    @RequestMapping(value = "attendInfo")
+    public ResponseEntity attendInfo(AttendInfoDto param, Pageable pageable){
+        try{
+            systemMapper.attendInfo(param, pageable).getContent();
+            return ResponseEntity.ok("시험정보가 변경되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+        }
+    }
+
+    @RequestMapping(value = "modifyAttend")
+    public void modifyAttend(@RequestBody AttendInfoDto param){
+        systemMapper.modifyAttend(param);
     }
 
     @RequestMapping(value = "duplicate")

@@ -1,6 +1,5 @@
 package com.humane.etms.controller.admin;
 
-import com.humane.etms.dto.AttendInfoDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.StatusMapper;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,16 +22,6 @@ public class StatusController {
     private static final String JSON = "json";
 
     private final StatusMapper mapper;
-
-    @RequestMapping(value = "attendInfo")
-    public ResponseEntity attendInfo(AttendInfoDto param, Pageable pageable){
-        return ResponseEntity.ok(mapper.attendInfo(param, pageable).getContent());
-    }
-
-    @RequestMapping(value = "modifyAttend")
-    public void modifyAttend(@RequestBody AttendInfoDto param){
-        mapper.modifyAttend(param);
-    }
 
     @RequestMapping(value = "home")
     public ResponseEntity home(StatusDto param, Pageable pageable){
