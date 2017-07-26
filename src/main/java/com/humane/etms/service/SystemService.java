@@ -1,7 +1,6 @@
 package com.humane.etms.service;
 
 import com.humane.etms.mapper.DataMapper;
-import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.AttendHallRepository;
 import com.humane.etms.repository.AttendMapRepository;
@@ -16,7 +15,6 @@ import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +23,6 @@ import javax.persistence.PersistenceContext;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -43,7 +40,6 @@ public class SystemService {
     private final AttendHallRepository attendHallRepository;
     private final AttendPaperRepository attendPaperRepository;
     private final DataMapper mapper;
-    private final SystemMapper systemMapper;
 
     @Transactional
     public void resetData(boolean photo) {
@@ -130,18 +126,6 @@ public class SystemService {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
         QAttendMap attendMap = QAttendMap.attendMap;
-
-        // smps initialize
-        List<String> list = queryFactory.select(attendMap.examinee.examineeCd)
-                .from(attendMap)
-                .where(attendMap.groupOrder.isNotNull())
-                .fetch();
-
-        if (list != null) {
-            for (String examineeCd : list) {
-                mapper.initGroupOrder(examineeCd);
-            }
-        }
 
         HibernateUpdateClause updateMap = queryFactory.update(attendMap)
                 .setNull(attendMap.attendDttm)
@@ -240,8 +224,6 @@ public class SystemService {
                 map.setDeviceId(null);
                 map.setGroupOrder(null);
 
-                mapper.initGroupOrder(map.getExaminee().getExamineeCd());
-
                 attendMapRepository.save(map);
             }
         }
@@ -273,20 +255,5 @@ public class SystemService {
         }
 
         // imageService.deleteImage(pathRecheck, pathSignature);
-    }
-
-    /**
-     * 고려대 면접고사용
-     */
-    public ResponseEntity setOrder() {
-
-        List<Map<String, Object>> orderInfo = systemMapper.getInfo();
-        List<Map<String, Object>> attendResult = systemMapper.getAttendResult();
-
-        for (int i = 0; i < orderInfo.size(); i++) {
-            log.debug("{}", orderInfo.get(i));
-        }
-
-        return ResponseEntity.ok("배정 완료");
     }
 }

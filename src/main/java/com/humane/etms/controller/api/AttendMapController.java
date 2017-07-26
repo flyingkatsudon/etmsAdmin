@@ -35,8 +35,6 @@ public class AttendMapController {
     private final AttendPaperRepository paperRepository;
     private final DeviceRepository deviceRepository;
 
-    private final DataMapper dataMapper;
-
     @RequestMapping(method = RequestMethod.GET)
     public Page<AttendMap> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
         return repository.findAll(predicate, pageable);
@@ -142,9 +140,6 @@ public class AttendMapController {
         if (tmp != null) deviceId = tmp.getDeviceId();
 
         attendMap.setDeviceId(deviceId);
-
-        if(attendMap.getGroupOrder() != null)
-            dataMapper.insertGroupOrder(attendMap);
         return repository.save(attendMap);
     }
 

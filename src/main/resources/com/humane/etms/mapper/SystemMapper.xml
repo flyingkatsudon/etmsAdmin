@@ -140,14 +140,14 @@
     <select id="duplicate" resultType="com.humane.etms.dto.DuplicateDto">
         select *
         from(select *, case when count(*) = 0 then '-' else concat(count(*), '대') end as duplicateCnt, count(*) as cnt
-        from( select attend.attend_nm, attend.attend_date, attend.attend_time, examinee.examinee_cd, examinee.examinee_nm
-        from attend_map_log
-        inner join attend on attend.attend_cd = attend_map_log.attend_cd
-        inner join examinee on examinee.examinee_cd = attend_map_log.examinee_cd
-        group by attend_map_log.examinee_cd, attend_map_log.device_id
-        ) a
-        group by a.examinee_cd
-        ) result
+                from( select attend.attend_nm, attend.attend_date, attend.attend_time, examinee.examinee_cd, examinee.examinee_nm
+                        from attend_map_log
+                        inner join attend on attend.attend_cd = attend_map_log.attend_cd
+                        inner join examinee on examinee.examinee_cd = attend_map_log.examinee_cd
+                        group by attend_map_log.examinee_cd, attend_map_log.device_id
+                    ) a
+                group by a.examinee_cd
+             ) result
         <where>
             and cnt > 1
         </where>
@@ -166,36 +166,7 @@
                 <if test="param.attendCd != null"> and attend_map_log.attend_cd = #{param.attendCd} </if>
                 <if test="param.examineeCd != null"> and attend_map_log.examinee_cd = #{param.examineeCd} </if>
             </if>
-        </where>
-        order by attend_map_log.log_dttm desc
-    </select>
-
-    <select id="getInfo" resultType="com.humane.util.CamelMap">
-        select *, count(*)
-        from (select dept_nm, group_nm, @prev := @prev + 1 as rank
-                from group_info as tmp, (select @prev := 0) as r
-              order by group_nm) as result
-              group by dept_nm
-        order by group_nm
-    </select>
-
-
-
-
-
-    <!--고려대 면접고사용-->
-    <select id="ready" resultType="com.humane.etms.dto.StatusDto">
-        select dept_nm, group_nm, hall.hall_cd, hall.bldg_nm, hall.hall_nm
-        from group_info
-        inner join hall on hall.hall_cd = group_info.hall_cd
-        order by group_nm
-    </select>
-
-    <select id="getHallCnt" resultType="java.lang.Long">
-
-    </select>
-
-    <select id="getAttendResult" resultType="com.humane.util.CamelMap">
-        select
+         </where>
+         order by attend_map_log.log_dttm desc
     </select>
 </mapper>

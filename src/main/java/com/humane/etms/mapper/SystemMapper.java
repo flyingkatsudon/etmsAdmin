@@ -7,9 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-import java.util.Map;
-
 @Mapper
 public interface SystemMapper {
     Page<AccountDto> account(@Param("param") AccountDto param, @Param("pageable") Pageable pageable);
@@ -33,9 +30,4 @@ public interface SystemMapper {
 
     Page<DuplicateDto> duplicate(@Param("pageable") Pageable pageable);
     Page<DuplicateDto> innerDuplicate(@Param("param") DuplicateDto duplicateDto, @Param("pageable") Pageable pageable);
-
-    List<Map<String, Object>> getInfo();
-    List<Map<String, Object>> getAttendResult();
-
-    Page<Map<String, Object>> ready(@Param("param") StatusDto statusDto, @Param("pageable") Pageable pageable);
 }

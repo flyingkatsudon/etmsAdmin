@@ -1,6 +1,9 @@
 package com.humane.etms.controller.admin;
 
-import com.humane.etms.dto.*;
+import com.humane.etms.dto.AccountDto;
+import com.humane.etms.dto.AttendInfoDto;
+import com.humane.etms.dto.DeviceDto;
+import com.humane.etms.dto.DuplicateDto;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.UserAdmissionRepository;
@@ -168,26 +171,5 @@ public class SystemController {
     @RequestMapping(value = "innerDuplicate")
     public ResponseEntity innerDuplicate(DuplicateDto duplicateDto, Pageable pageable){
         return ResponseEntity.ok(systemMapper.innerDuplicate(duplicateDto, pageable).getContent());
-    }
-
-    /**
-     * 고려대 면접고사용
-     */
-
-    @RequestMapping(value = "ready")
-    public ResponseEntity ready(StatusDto statusDto, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.ready(statusDto, pageable).getContent());
-    }
-
-    @RequestMapping(value = "order")
-    public ResponseEntity order() {
-        try {
-            systemService.setOrder();
-        } catch (Exception e) {
-            log.error("{}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요");
-        }
-
-        return ResponseEntity.ok("완료되었습니다");
     }
 }
