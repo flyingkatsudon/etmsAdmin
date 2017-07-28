@@ -151,6 +151,8 @@ public class UploadController {
                     attendMap.setHall(attendHall.getHall());
                     attendMap.setExaminee(examinee);
 
+                    if (vo.getGroupNm().equals("")) attendMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
+
                     AttendMap tmp = attendMapRepository.findOne(new BooleanBuilder()
                             .and(QAttendMap.attendMap.attend.attendCd.eq(attendMap.getAttend().getAttendCd()))
                             .and(QAttendMap.attendMap.examinee.examineeCd.eq(attendMap.getExaminee().getExamineeCd()))

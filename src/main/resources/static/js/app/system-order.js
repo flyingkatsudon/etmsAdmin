@@ -4,10 +4,13 @@ define(function (require) {
 
     var List = require('../grid/system-account.js');
     var Toolbar = require('../toolbar/system-account.js');
-    var SystemGroup = require('text!/tpl/system-group.html');
+    var SystemGroup = require('text!/tpl/system-order.html');
     var BootstrapDialog = require('bootstrap-dialog');
 
     var InnerTemplate = require('text!/tpl/system-order.html');
+
+    var ResponseDialog = require('../responseDialog.js');
+    var responseDialog = new ResponseDialog();
 
     return Backbone.View.extend({
         render: function () {
@@ -49,29 +52,15 @@ define(function (require) {
                         $.ajax({
                             url: 'system/order',
                             error: function (response) {
-                                _this.completeDialog(response.responseJSON)
+                                responseDialog.complete(response.responseJSON)
                             }, success: function (response) {
                                 console.log('success');
-                                _this.completeDialog(response);
+                                responseDialog.complete(response);
                             }
                         });
                     }
                 });
             });
-        }, completeDialog: function (msg) {
-            BootstrapDialog.closeAll();
-
-            var dialog = new BootstrapDialog({
-                title: '',
-                message: '<h5 style="margin-left:20%">' + msg + '</h5>',
-                closable: true
-            });
-
-            dialog.realize();
-            dialog.getModalDialog().css('margin-top', '20%');
-            dialog.getModalHeader().hide();
-            dialog.getModalFooter().hide();
-            dialog.open();
         }
     });
 });
