@@ -7,7 +7,8 @@ define(function (require) {
     var Toolbar = require('../dist/toolbar.js');
     var ToolbarModel = require('../model/model-status-toolbar.js');
 
-    var BootstrapDialog = require('bootstrap-dialog');
+    var ResponseDialog = require('../responseDialog.js');
+    var responseDialog = new ResponseDialog();
 
     return Toolbar.extend({
         initialize: function (o) {
@@ -69,43 +70,13 @@ define(function (require) {
                 url: 'data/attachment.json' + '?admissionNm=' + param.admissionNm + '&attendDate=' + param.attendDate + '&attendTime=' + param.attendTime,
                 success: function (e) {
                     if (e.content.length == 0) {
-                        _this.completeDialog('신분증 미소지자가 존재하지 않습니다');
+                        responseDialog.complete('신분증 미소지자가 존재하지 않습니다');
                         return false;
                     } else {
                         _this.dlgDownload.render({url: 'data/attachment.PDF?admissionNm=' + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate});
                     }
                 }
             });
-        }, completeDialog: function (msg) {
-            BootstrapDialog.closeAll();
-
-            var dialog = new BootstrapDialog({
-                title: '',
-                message: '<h5 style="margin-left:20%">' + msg + '</h5>',
-                closable: true
-            });
-
-            dialog.realize();
-            dialog.getModalDialog().css('margin-top', '20%');
-            dialog.getModalHeader().hide();
-            dialog.getModalFooter().hide();
-            dialog.open();
-
-        }, errorDialog: function (msg) {
-            BootstrapDialog.closeAll();
-
-            var dialog = new BootstrapDialog({
-                title: '',
-                message: '<h5 style="margin-left:5%">' + msg + '</h5>',
-                closable: true
-            });
-
-            dialog.realize();
-            dialog.getModalDialog().css('margin-top', '20%');
-            dialog.getModalHeader().hide();
-            dialog.getModalFooter().hide();
-            dialog.open();
         }
-
     });
 });
