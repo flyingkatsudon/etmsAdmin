@@ -33,19 +33,22 @@ define(function (require) {
                 beforeSubmit: function (arr) {
                     for (var i in arr) {
                         if (arr[i].name == 'file' && arr[i].value == '') {
-                            responseDialog.complete('파일을 선택하세요');
+                            responseDialog.notify('파일을 선택하세요');
                             return false;
                         }
 
-                        responseDialog.complete('<div style="cursor: wait">업로드 중 입니다. 창이 사라지지 않으면 관리자에게 문의하세요</div>');
+                        responseDialog.notify({
+                            msg: '<div style="cursor: wait">업로드 중 입니다. 창이 사라지지 않으면 관리자에게 문의하세요</div>',
+                            closable: false
+                        });
 
                     }
                 },
                 error: function (response) {
-                    responseDialog.error(response.responseJSON);
+                    responseDialog.notify({msg: response.responseJSON});
                 },
                 success: function (response) {
-                    responseDialog.complete(response);
+                    responseDialog.notify({msg: response});
                 }
             });
         }, events: {
