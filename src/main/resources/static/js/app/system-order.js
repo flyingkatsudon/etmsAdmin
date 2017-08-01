@@ -4,7 +4,7 @@ define(function (require) {
 
     var List = require('../grid/system-account.js');
     var Toolbar = require('../toolbar/system-account.js');
-    var SystemGroup = require('text!/tpl/system-order.html');
+    var Template = require('text!/tpl/system-order.html');
     var BootstrapDialog = require('bootstrap-dialog');
 
     var InnerTemplate = require('text!/tpl/system-order.html');
@@ -14,8 +14,7 @@ define(function (require) {
 
     return Backbone.View.extend({
         render: function () {
-            var _this = this;
-            this.$el.html(SystemGroup);
+            this.$el.html(Template);
             /*this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
              this.list = new List({el: '.hm-ui-grid', parent: this}).render();
 
@@ -52,10 +51,9 @@ define(function (require) {
                         $.ajax({
                             url: 'system/order',
                             error: function (response) {
-                                responseDialog.complete(response.responseJSON)
+                                responseDialog.notify({msg: response.responseJSON});
                             }, success: function (response) {
-                                console.log('success');
-                                responseDialog.complete(response);
+                                responseDialog.notify({msg: response});
                             }
                         });
                     }
