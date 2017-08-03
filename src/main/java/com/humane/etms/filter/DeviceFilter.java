@@ -42,17 +42,19 @@ public class DeviceFilter extends GenericFilterBean {
             Device device = deviceRepository.findOne(new BooleanBuilder()
                     .and(QDevice.device.uuid.eq(uuid))
                     .and(QDevice.device.packageName.eq(packageName))
-                    .and(QDevice.device.versionName.eq(versionName))
+                    //.and(QDevice.device.versionName.eq(versionName))
             );
 
             if (device == null) {
                 device = new Device();
-                device.setPhoneNo(phoneNo);
                 device.setUuid(uuid);
                 device.setPackageName(packageName);
-                device.setVersionName(versionName);
             }
 
+            device.setPhoneNo(phoneNo);
+            device.setUuid(uuid);
+            device.setPackageName(packageName);
+            device.setVersionName(versionName);
             device.setDeviceNo(deviceNo);
             device.setLastDttm(new DateTime().toDate());
 
