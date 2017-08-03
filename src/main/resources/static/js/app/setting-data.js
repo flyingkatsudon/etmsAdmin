@@ -101,10 +101,10 @@ define(function (require) {
                     photo: o
                 },
                 error: function (response) {
-                    responseDialog.complete(response.responseJSON);
+                    responseDialog.notify({msg: response.responseJSON});
                 },
                 success: function (response) {
-                    responseDialog.complete(response);
+                    responseDialog.notify({msg: response, closable: true});
                 }
             });
 
@@ -121,7 +121,7 @@ define(function (require) {
                             $.ajax({
                                 url: 'system/init',
                                 success: function (response) {
-                                    responseDialog.complete(response);
+                                    responseDialog.notify({msg: response, closable: true});
                                 }
                             });
                         }
