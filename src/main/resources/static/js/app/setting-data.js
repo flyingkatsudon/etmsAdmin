@@ -104,7 +104,7 @@ define(function (require) {
                     responseDialog.notify({msg: response.responseJSON});
                 },
                 success: function (response) {
-                    responseDialog.notify({msg: response});
+                    responseDialog.notify({msg: response, closable: true});
                 }
             });
 
@@ -121,7 +121,7 @@ define(function (require) {
                             $.ajax({
                                 url: 'system/init',
                                 success: function (response) {
-                                    responseDialog.notify({msg: response});
+                                    responseDialog.notify({msg: response, closable: true});
                                 }
                             });
                         }
