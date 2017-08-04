@@ -6,6 +6,9 @@ define(function (require) {
 
     var dlgDetail = require('text!tpl/attend-detail.html');
 
+    var ResponseDialog = require('../responseDialog.js');
+    var responseDialog = new ResponseDialog();
+
     require('jquery-simple-datetimepicker');
 
     return GridBase.extend({
@@ -147,17 +150,7 @@ define(function (require) {
                                             contentType: "application/json; charset=utf-8",
                                             data: JSON.stringify(param),
                                             success: function(response){
-                                                console.log(response);
-                                                var innerDialog = new BootstrapDialog({
-                                                    message: '<h5 style="font-weight: normal; margin-left:20%">시험정보가 변경되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요</h5>'
-                                                });
-
-                                                innerDialog.realize();
-                                                innerDialog.getModalDialog().css('margin-top', '20%');
-                                                innerDialog.getModalHeader().hide();
-                                                innerDialog.getModalFooter().hide();
-                                                innerDialog.open();
-
+                                                responseDialog.notify({msg: response});
                                                 $('#search').trigger('click');
                                             }
                                         });

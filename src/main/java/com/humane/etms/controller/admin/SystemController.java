@@ -149,27 +149,27 @@ public class SystemController {
     }
 
     @RequestMapping(value = "attendInfo")
-    public ResponseEntity attendInfo(AttendInfoDto param, Pageable pageable){
-        try{
-            systemMapper.attendInfo(param, pageable).getContent();
+    public ResponseEntity attendInfo(AttendInfoDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.attendInfo(param, pageable).getContent());
+    }
+
+    @RequestMapping(value = "modifyAttend")
+    public ResponseEntity modifyAttend(AttendInfoDto param) {
+        try {
+            systemMapper.modifyAttend(param);
             return ResponseEntity.ok("시험정보가 변경되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
         }
     }
 
-    @RequestMapping(value = "modifyAttend")
-    public void modifyAttend(@RequestBody AttendInfoDto param){
-        systemMapper.modifyAttend(param);
-    }
-
     @RequestMapping(value = "duplicate")
-    public ResponseEntity duplicate(Pageable pageable){
+    public ResponseEntity duplicate(Pageable pageable) {
         return ResponseEntity.ok(systemMapper.duplicate(pageable).getContent());
     }
 
     @RequestMapping(value = "innerDuplicate")
-    public ResponseEntity innerDuplicate(DuplicateDto duplicateDto, Pageable pageable){
+    public ResponseEntity innerDuplicate(DuplicateDto duplicateDto, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.innerDuplicate(duplicateDto, pageable).getContent());
     }
 }
