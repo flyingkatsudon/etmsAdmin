@@ -211,4 +211,26 @@
             </if>
         </where>
     </select>
+
+    <select id="waitHall" resultType="com.humane.etms.dto.WaitHallDto">
+        select hall.head_nm, hall.bldg_nm, awh.hall_cd, hall.hall_nm, awh.group_nm
+        from attend_wait_hall awh
+        inner join hall on hall.hall_cd = awh.hall_cd
+        order by awh.hall_cd, awh.group_nm
+    </select>
+
+    <delete id="delWaitHall">
+        delete from attend_wait_hall
+        <where>
+            <if test="hallCd != null"> and attend_wait_hall.hall_cd = #{hallCd}</if>
+        </where>
+    </delete>
+
+    <insert id="addWaitHall" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+        insert into attend_wait_hall values (null, #{groupNm}, #{hallCd}, null)
+
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 </mapper>

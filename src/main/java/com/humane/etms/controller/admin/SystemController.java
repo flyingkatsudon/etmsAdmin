@@ -3,6 +3,7 @@ package com.humane.etms.controller.admin;
 import com.humane.etms.dto.*;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
+import com.humane.etms.repository.AttendWaitHallRepository;
 import com.humane.etms.repository.UserAdmissionRepository;
 import com.humane.etms.repository.UserRepository;
 import com.humane.etms.repository.UserRoleRepository;
@@ -34,6 +35,7 @@ public class SystemController {
     private final EntityManager entityManager;
     private final UserRepository userRepository;
     private final UserAdmissionRepository userAdmissionRepository;
+    private final AttendWaitHallRepository waitHallRepository;
     private final UserRoleRepository userRoleRepository;
     private final SystemService systemService;
     private final SystemMapper systemMapper;
@@ -206,6 +208,47 @@ public class SystemController {
                         format,
                         systemMapper.order(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
+        }
+    }
+
+    @RequestMapping(value = "waitHall")
+    public ResponseEntity waitHall(Pageable pageable){
+        try{
+            return ResponseEntity.ok(systemMapper.waitHall(pageable).getContent());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("불러오지 못했습니다. 잠시 후 다시 시도하세요");
+        }
+    }
+
+    @RequestMapping(value = "delWaitHall")
+    public void delWaitHall(String hallCd){ systemMapper.delWaitHall(hallCd);}
+
+    @RequestMapping(value = "addWaitHall")
+    public ResponseEntity addWaitHall(String hallCd, String groupNm) {
+        try {
+
+            // attendWaitHall이 있는지 검사
+            AttendWaitHall attendWaitHall = waitHallRepository.findOne(new BooleanBuilder()
+                    .and(QAttendWaitHall.attendWaitHall.hallCd.eq(hallCd))
+                    .and(QAttendWaitHall.attendWaitHall.groupNm.eq(groupNm))
+            );
+
+            // attendWaitHall이 존재하지 않으면 insert
+            if(attendWaitHall == null) systemMapper.addWaitHall(hallCd, groupNm);
+
+            return ResponseEntity.ok("저장되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "delawh")
+    public ResponseEntity delawh() {
+        try {
+            systemMapper.delWaitHall(null);
+            return ResponseEntity.ok("저장되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
     }
 }

@@ -37,7 +37,7 @@ public class UploadController {
     private final AdmissionRepository admissionRepository;
     private final AttendRepository attendRepository;
     private final AttendHallRepository attendHallRepository;
-    private final AttendWaitHallRepository attendWaitHallRepository;
+    private final AttendWaitHallRepository waitHallRepository;
     private final AttendMapRepository attendMapRepository;
     private final HallRepository hallRepository;
     private final ExamineeRepository examineeRepository;
@@ -85,7 +85,7 @@ public class UploadController {
                 if(tmpHall != null) {
 
                     // DB에 존재하는 AttendWaitHall을 찾음
-                    AttendWaitHall tmp = attendWaitHallRepository.findOne(new BooleanBuilder()
+                    AttendWaitHall tmp = waitHallRepository.findOne(new BooleanBuilder()
                             .and(QAttendWaitHall.attendWaitHall.division.eq(vo.getDivision()))
                             .and(QAttendWaitHall.attendWaitHall.groupNm.eq(vo.getGroupNm()))
                             .and(QAttendWaitHall.attendWaitHall.hallCd.eq(tmpHall.getHallCd()))
@@ -101,7 +101,7 @@ public class UploadController {
                         attendWaitHall.setHallCd(tmpHall.getHallCd());
 
                         // 모든 값을 저장하면 DB에 최종적으로 저장
-                        attendWaitHallRepository.save(attendWaitHall);
+                        waitHallRepository.save(attendWaitHall);
                     }
                 }
             }

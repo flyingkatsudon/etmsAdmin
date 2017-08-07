@@ -54,8 +54,42 @@ define(function (require) {
             });
         }, events: {
             'click #reset': 'resetClicked',
-            'click #init': 'initClicked'
-        }, resetClicked: function (e) {
+            'click #init': 'initClicked',
+            'click #delawh': 'delawhClicked'
+        }, delawhClicked: function(e) {
+            var _this = this;
+            var dialog = new BootstrapDialog({
+                message: '<h5 style="margin-left:10%">삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?</h5>',
+                buttons: [
+                    {
+                        label: '삭제',
+                        cssClass: 'btn-delete',
+                        action: function () {
+                            $.ajax({
+                                url: 'system/delawh',
+                                success: function(response){
+                                    responseDialog.notify({msg: response});
+                                }
+                            })
+                        }
+                    },
+                    {
+                        label: '닫기',
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }
+                ]
+            });
+
+            dialog.realize();
+            dialog.getModalDialog().css('margin-top', '20%');
+            dialog.getModalHeader().hide();
+            dialog.getModalFooter().css('padding', '1%');
+            dialog.open();
+
+        }
+        , resetClicked: function (e) {
             var _this = this;
             var dialog = new BootstrapDialog({
                 message: '<h5 style="margin-left:10%">삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?</h5>',
