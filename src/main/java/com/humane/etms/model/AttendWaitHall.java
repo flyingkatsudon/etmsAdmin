@@ -14,6 +14,7 @@ import javax.persistence.Id;
 public class AttendWaitHall {
     @Id @GeneratedValue
     private Long _id;
+    private String division;
     private String hallCd;
     private String groupNm;
 }

@@ -1,19 +1,18 @@
 package com.humane.etms.controller.admin;
 
-import com.humane.etms.dto.AccountDto;
-import com.humane.etms.dto.AttendInfoDto;
-import com.humane.etms.dto.DeviceDto;
-import com.humane.etms.dto.DuplicateDto;
+import com.humane.etms.dto.*;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.UserAdmissionRepository;
 import com.humane.etms.repository.UserRepository;
 import com.humane.etms.repository.UserRoleRepository;
 import com.humane.etms.service.SystemService;
+import com.humane.util.jasperreports.JasperReportsExportHelper;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +37,8 @@ public class SystemController {
     private final UserRoleRepository userRoleRepository;
     private final SystemService systemService;
     private final SystemMapper systemMapper;
+
+    private static final String JSON = "json";
 
     @RequestMapping(value = "download", method = RequestMethod.POST)
     public ResponseEntity download() {
@@ -171,5 +172,40 @@ public class SystemController {
     @RequestMapping(value = "innerDuplicate")
     public ResponseEntity innerDuplicate(DuplicateDto duplicateDto, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.innerDuplicate(duplicateDto, pageable).getContent());
+    }
+
+    /**
+     * 고려대 면접고사용
+     */
+    @RequestMapping(value = "local/orderCnt")
+    public boolean fromLocal(String admissionCd){
+
+        try {
+            long check = systemMapper.orderCnt(admissionCd);
+
+            if(check <= 0)
+                return false;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    @RequestMapping(value = "order.{format:json|pdf|xls|xlsx}")
+    public ResponseEntity order(@PathVariable String format, ExamineeDto examineeDto, Pageable pageable) {
+
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(systemMapper.order(examineeDto, pageable));
+            default:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/system-order.jrxml",
+                        format,
+                        systemMapper.order(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                );
+        }
     }
 }

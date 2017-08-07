@@ -19,6 +19,7 @@ define(function (require) {
             this.parent = o.parent;
         }, render: function () {
             this.$el.html(Template);
+            this.initForm('#frmUploadWaitHall');
             this.initForm('#frmUploadHall');
             this.initForm('#frmUploadExaminee');
 

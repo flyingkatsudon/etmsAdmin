@@ -30,4 +30,11 @@ public interface SystemMapper {
 
     Page<DuplicateDto> duplicate(@Param("pageable") Pageable pageable);
     Page<DuplicateDto> innerDuplicate(@Param("param") DuplicateDto duplicateDto, @Param("pageable") Pageable pageable);
+
+
+    /**
+     * 고려대 면접고사용
+     */
+    long orderCnt(@Param("param") String admissionCd);
+    Page<ExamineeDto> order(@Param("param") ExamineeDto examineeDto, @Param("pageable") Pageable pageable);
 }

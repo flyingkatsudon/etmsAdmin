@@ -135,7 +135,10 @@ public class SystemService {
                 .setNull(attendMap.attendHall)
                 .setNull(attendMap.isScanner)
                 .setNull(attendMap.deviceId)
-                .setNull(attendMap.groupOrder);
+                .setNull(attendMap.groupNm)
+                .setNull(attendMap.groupOrder)
+                .setNull(attendMap.debateNm)
+                .setNull(attendMap.debateOrder);
 
         updateMap.execute();
 

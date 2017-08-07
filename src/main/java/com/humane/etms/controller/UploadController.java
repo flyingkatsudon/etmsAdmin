@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humane.etms.form.FormExamineeVo;
 import com.humane.etms.form.FormHallVo;
+import com.humane.etms.form.FormWaitHall;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.*;
 import com.humane.util.file.FileUtils;
@@ -36,15 +37,130 @@ public class UploadController {
     private final AdmissionRepository admissionRepository;
     private final AttendRepository attendRepository;
     private final AttendHallRepository attendHallRepository;
+    private final AttendWaitHallRepository attendWaitHallRepository;
     private final AttendMapRepository attendMapRepository;
     private final HallRepository hallRepository;
     private final ExamineeRepository examineeRepository;
     private final AttendDocRepository attendDocRepository;
 
     // windows
-    @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
+    //@Value("${path.image.examinee:C:/api/etms}") String pathRoot;
     // mac
-    //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
+    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
+
+    // 고려대 면접고사용
+    public String validate(String str) {
+        if (str.equals("") || str == null) return null;
+        else return str;
+    }
+
+    // 대기실 별 조 할당 정보
+    @RequestMapping(value = "waitHall", method = RequestMethod.POST)
+    public ResponseEntity<String> waitHall(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+
+        // 파일이 없울경우 에러 리턴.
+        if (multipartFile.isEmpty()) return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(null);
+
+        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+            // 1. excel 변환
+            List<FormWaitHall> waitHallList = ExOM.mapFromExcel(file).to(FormWaitHall.class).map(1);
+            log.debug("{}", waitHallList);
+
+            // 2. 각 대기실 별 조 배정 현황, vo는 한 행을 의미함
+            for (FormWaitHall vo : waitHallList) {
+
+                // 우선 액셀의 각 row의 고사본부, 고사건물, 고사실로 DB 내에 존재하는 Hall을 찾음
+                Hall tmpHall = hallRepository.findOne(new BooleanBuilder()
+                        .and(QHall.hall.headNm.eq(vo.getHeadNm()))
+                        .and(QHall.hall.bldgNm.eq(vo.getBldgNm()))
+                        .and(QHall.hall.hallNm.eq(vo.getHallNm()))
+                );
+
+                // Hall이 존재하면
+                if(tmpHall != null) {
+
+                    // DB에 존재하는 AttendWaitHall을 찾음
+                    AttendWaitHall tmp = attendWaitHallRepository.findOne(new BooleanBuilder()
+                            .and(QAttendWaitHall.attendWaitHall.division.eq(vo.getDivision()))
+                            .and(QAttendWaitHall.attendWaitHall.groupNm.eq(vo.getGroupNm()))
+                            .and(QAttendWaitHall.attendWaitHall.hallCd.eq(tmpHall.getHallCd()))
+                    );
+
+                    // 찾는 AttendWaitHall이 없다면
+                    if (tmp == null) {
+
+                        // 객체를 새로 생성하여 값을 set
+                        AttendWaitHall attendWaitHall = new AttendWaitHall();
+                        attendWaitHall.setDivision(vo.getDivision());
+                        attendWaitHall.setGroupNm(vo.getGroupNm());
+                        attendWaitHall.setHallCd(tmpHall.getHallCd());
+
+                        // 모든 값을 저장하면 DB에 최종적으로 저장
+                        attendWaitHallRepository.save(attendWaitHall);
+                    }
+                }
+            }
+
+            return ResponseEntity.ok("업로드가 완료되었습니다");
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            log.error("{}", throwable.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "order", method = RequestMethod.POST)
+    public ResponseEntity<String> order(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        // 파일이 없울경우 에러 리턴.
+        if (multipartFile.isEmpty()) return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(null);
+
+        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+            // 1. excel 변환
+            List<FormExamineeVo> orderList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
+            log.debug("{}", orderList);
+
+            // 2. 각 수험생 별 순번 저장
+            for (FormExamineeVo vo : orderList) {
+
+                AttendMap attendMap = attendMapRepository.findOne(new BooleanBuilder()
+                        .and(QAttendMap.attendMap.attend.admission.admissionCd.eq(vo.getAdmissionCd()))
+                        .and(QAttendMap.attendMap.attend.attendCd.eq(vo.getAttendCd()))
+                        .and(QAttendMap.attendMap.examinee.examineeCd.eq(vo.getExamineeCd()))
+                );
+
+                if (attendMap != null) {
+                    if (vo.getIsAttend()) {
+                        attendMap.setGroupNm(validate(vo.getGroupNm()));
+                        attendMap.setGroupOrder(validate(vo.getGroupOrder()));
+                        attendMap.setDebateNm(validate(vo.getDebateNm()));
+                        attendMap.setDebateOrder(validate(vo.getDebateOrder()));
+                    } else {
+                        attendMap.setGroupNm(null);
+                        attendMap.setGroupOrder(null);
+                        attendMap.setDebateNm(null);
+                        attendMap.setDebateOrder(null);
+                    }
+                    attendMapRepository.save(attendMap);
+                }
+            }
+
+            return ResponseEntity.ok("업로드가 완료되었습니다");
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            log.error("{}", throwable.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
+        }
+    }
 
     @RequestMapping(value = "hall", method = RequestMethod.POST)
     public ResponseEntity hall(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -56,7 +172,7 @@ public class UploadController {
         try {
             List<FormHallVo> hallList = ExOM.mapFromExcel(file).to(FormHallVo.class).map(1);
             hallList.forEach(dto -> {
-                if(dto != null && StringUtils.isNotEmpty(dto.getAdmissionCd())){
+                if (dto != null && StringUtils.isNotEmpty(dto.getAdmissionCd())) {
 
                     Admission admission = mapper.convertValue(dto, Admission.class);
                     admission = admissionRepository.save(admission);
@@ -97,7 +213,7 @@ public class UploadController {
                             .and(QAttendDoc.attendDoc.admission.admissionCd.eq(admission.getAdmissionCd()))
                     );
 
-                    if(_tmp != null){
+                    if (_tmp != null) {
                         attendDoc.set_id(_tmp.get_id());
                     }
 
@@ -128,7 +244,7 @@ public class UploadController {
             log.debug("{}:", examineeList);
 
             examineeList.forEach(vo -> {
-                if(vo != null && StringUtils.isNoneEmpty(vo.getAdmissionCd())){
+                if (vo != null && StringUtils.isNoneEmpty(vo.getAdmissionCd())) {
 
                     // 1. AttendHall 에서 고사실 및 시험정보를 가져온다.
                     QAttend attend = QAttendHall.attendHall.attend;

@@ -44,6 +44,22 @@
                     </div>
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label>조별대기실</label>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-3">
+                        <a href="download/waitHall.xlsx" class="btn btn-primary">양식 다운로드</a>
+                    </div>
+                    <div class="col-md-9">
+                        <form id="frmUploadWaitHall" action="upload/waitHall" method="post" enctype="multipart/form-data">
+                            <input type="file" name="file" class="pull-left chosen"/>
+                            <input type="submit" class="btn btn-primary btn-regist" value="등록"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-lg-6">
             <div class="row">

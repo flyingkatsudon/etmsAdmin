@@ -1,34 +1,33 @@
 <div class="container-fluid">
-    <div class="sys-group">
-        <div class="row">
-            <div class="col-lg-12">
-                <h3>면접 조 배정</h3>
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>면접 조 배정</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="hm-ui-search">
+                        <label for="admissionNm">전형</label> <select id="admissionNm"> </select>
+                        <label for="typeNm">계열</label> <select id="typeNm"> </select>
+                        <label for="attendDate">시험일자</label> <select id="attendDate"> </select>
+                        <label for="groupNm">조</label> <select id="groupNm"> </select>
+                        <label for="groupOrder">면접순서</label><input type="text" size="5" id="groupOrder"/>
+                        <label for="debateNm">토론 조</label><input type="text" size="5" id="debateNm"/>
+                        <label for="debateOrder">발언순서</label><input type="text" size="5" id="debateOrder"/>
+                        <button id="search">검색</button>
+                        <div style="float: right">
+                            <button class="btn-primary" id="waitHall">대기실 정보</button>
+                            <button class="btn-success" id="refresh">순번 갱신</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row" style="padding-bottom: 10%">
-            <div class="col-lg-12 sys-group-title">
-                <h3>면접을 선택하세요</h3>
-            </div>
-            <!--<div>
-                <img src="images/batch_koreaUniv.png">
-            </div>-->
-            <div class="col-lg-12" id="main" style="padding: 5%; float:left">
-                <div class="sys-group-content">
-                    <button class="btn btn-normal" id="interview"><img src="images/interview.png">&nbsp;&nbsp;&nbsp;&nbsp;일반 면접</button>
-                </div>
-                <div class="sys-group-content">
-                    <button class="btn btn-debate" id="debating"><img src="images/debate.png">&nbsp;&nbsp;&nbsp;&nbsp;토론 면접</button>
-                </div>
-                <div class="sys-group-content">
-                    <button class="btn btn-order" id="ordering"><img src="images/order.png">&nbsp;&nbsp;&nbsp;&nbsp;순서 부여</button>
-                </div>
-            </div>
-
-            <div class="col-lg-12" id="interviewDetail" style="padding: 5%; float:left; hidden: true">
-                <div class="sys-group-content" id="detailPart1">
-                </div>
-                <div class="sys-group-content" id="detailPart2">
-                </div>
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="hm-ui-grid"></div>
             </div>
         </div>
     </div>
