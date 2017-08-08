@@ -1,9 +1,6 @@
 package com.humane.etms.controller.admin;
 
-import com.humane.etms.dto.AccountDto;
-import com.humane.etms.dto.AttendInfoDto;
-import com.humane.etms.dto.DeviceDto;
-import com.humane.etms.dto.DuplicateDto;
+import com.humane.etms.dto.*;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.UserAdmissionRepository;
@@ -171,5 +168,10 @@ public class SystemController {
     @RequestMapping(value = "innerDuplicate")
     public ResponseEntity innerDuplicate(DuplicateDto duplicateDto, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.innerDuplicate(duplicateDto, pageable).getContent());
+    }
+
+    @RequestMapping(value = "staff")
+    public ResponseEntity staff(StaffDto staffDto, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.staff(staffDto, pageable));
     }
 }

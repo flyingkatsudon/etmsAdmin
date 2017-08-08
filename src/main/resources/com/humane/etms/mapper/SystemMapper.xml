@@ -169,4 +169,15 @@
          </where>
          order by attend_map_log.log_dttm desc
     </select>
+
+    <select id="staff" resultType="com.humane.etms.dto.StaffDto">
+        select staff.staff_nm, staff.bldg_nm, staff.phone_no from staff
+        <where>
+            <if test="param != null">
+                <if test="param.staffNm != null"> and staff.staff_nm like '%' #{param.staffNm} '%'</if>
+                <if test="param.bldgNm != null"> and staff.bldg_nm = #{param.bldgNm} </if>
+                <if test="param.phoneNo != null"> and staff.phone_no like '%' #{param.phoneNo} '%'</if>
+            </if>
+        </where>
+    </select>
 </mapper>

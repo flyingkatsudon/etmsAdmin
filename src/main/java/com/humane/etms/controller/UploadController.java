@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humane.etms.form.FormExamineeVo;
 import com.humane.etms.form.FormHallVo;
+import com.humane.etms.form.FormStaffVo;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.*;
 import com.humane.util.file.FileUtils;
@@ -40,6 +41,7 @@ public class UploadController {
     private final HallRepository hallRepository;
     private final ExamineeRepository examineeRepository;
     private final AttendDocRepository attendDocRepository;
+    private final StaffRepository staffContactRepository;
 
     // windows
     @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
@@ -56,7 +58,7 @@ public class UploadController {
         try {
             List<FormHallVo> hallList = ExOM.mapFromExcel(file).to(FormHallVo.class).map(1);
             hallList.forEach(dto -> {
-                if(dto != null && StringUtils.isNotEmpty(dto.getAdmissionCd())){
+                if (dto != null && StringUtils.isNotEmpty(dto.getAdmissionCd())) {
 
                     Admission admission = mapper.convertValue(dto, Admission.class);
                     admission = admissionRepository.save(admission);
@@ -97,7 +99,7 @@ public class UploadController {
                             .and(QAttendDoc.attendDoc.admission.admissionCd.eq(admission.getAdmissionCd()))
                     );
 
-                    if(_tmp != null){
+                    if (_tmp != null) {
                         attendDoc.set_id(_tmp.get_id());
                     }
 
@@ -128,7 +130,7 @@ public class UploadController {
             log.debug("{}:", examineeList);
 
             examineeList.forEach(vo -> {
-                if(vo != null && StringUtils.isNoneEmpty(vo.getAdmissionCd())){
+                if (vo != null && StringUtils.isNoneEmpty(vo.getAdmissionCd())) {
 
                     // 1. AttendHall 에서 고사실 및 시험정보를 가져온다.
                     QAttend attend = QAttendHall.attendHall.attend;
@@ -169,6 +171,37 @@ public class UploadController {
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "staff", method = RequestMethod.POST)
+    public ResponseEntity staff(@RequestParam("file") MultipartFile multipartFile) throws Throwable {
+        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+            List<FormStaffVo> staffList = ExOM.mapFromExcel(file).to(FormStaffVo.class).map(1);
+            staffList.forEach(vo -> {
+
+                Staff staff = mapper.convertValue(vo, Staff.class);
+
+                Staff tmp = staffContactRepository.findOne(new BooleanBuilder()
+                        .and(QStaff.staff.phoneNo.eq(staff.getPhoneNo()))
+                        .and(QStaff.staff.bldgNm.eq(staff.getBldgNm()))
+                );
+
+                if (tmp == null) staffContactRepository.save(staff);
+            });
+
+            return ResponseEntity.ok("스태프 정보가 업로드되었습니다");
+
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            log.error("{}", throwable.getMessage());
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
         }
     }
