@@ -41,7 +41,7 @@ public class UploadController {
     private final HallRepository hallRepository;
     private final ExamineeRepository examineeRepository;
     private final AttendDocRepository attendDocRepository;
-    private final StaffRepository staffContactRepository;
+    private final StaffRepository staffRepository;
 
     // windows
     @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
@@ -188,12 +188,12 @@ public class UploadController {
 
                 Staff staff = mapper.convertValue(vo, Staff.class);
 
-                Staff tmp = staffContactRepository.findOne(new BooleanBuilder()
+                Staff tmp = staffRepository.findOne(new BooleanBuilder()
                         .and(QStaff.staff.phoneNo.eq(staff.getPhoneNo()))
                         .and(QStaff.staff.bldgNm.eq(staff.getBldgNm()))
                 );
 
-                if (tmp == null) staffContactRepository.save(staff);
+                if (tmp == null) staffRepository.save(staff);
             });
 
             return ResponseEntity.ok("스태프 정보가 업로드되었습니다");
