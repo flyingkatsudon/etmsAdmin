@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -151,7 +153,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "modifyAttend")
-    public ResponseEntity modifyAttend(AttendInfoDto param) {
+    public ResponseEntity modifyAttend(@RequestBody AttendInfoDto param) {
         try {
             systemMapper.modifyAttend(param);
             return ResponseEntity.ok("시험정보가 변경되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
@@ -166,12 +168,48 @@ public class SystemController {
     }
 
     @RequestMapping(value = "innerDuplicate")
-    public ResponseEntity innerDuplicate(DuplicateDto duplicateDto, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.innerDuplicate(duplicateDto, pageable).getContent());
+    public ResponseEntity innerDuplicate(DuplicateDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.innerDuplicate(param, pageable).getContent());
     }
 
     @RequestMapping(value = "staff")
-    public ResponseEntity staff(StaffDto staffDto, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.staff(staffDto, pageable));
+    public ResponseEntity staff(StaffDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.staff(param, pageable));
+    }
+
+    @RequestMapping(value = "bldgNm")
+    public ResponseEntity bldgNm(StaffDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.bldgNm(param, pageable).getContent());
+    }
+
+    @RequestMapping(value = "addStaff")
+    public ResponseEntity addStaff(@RequestBody StaffDto param) {
+        log.debug("{}", param);
+        try {
+            systemMapper.addStaff(param);
+            return ResponseEntity.ok("추가되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+        }
+    }
+
+    @RequestMapping(value = "modifyStaff")
+    public ResponseEntity modifyStaff(@RequestBody StaffDto param) {
+        try {
+            systemMapper.modifyStaff(param);
+            return ResponseEntity.ok("변경되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+        }
+    }
+
+    @RequestMapping(value = "deleteStaff")
+    public ResponseEntity deleteStaff(@RequestBody StaffDto param) {
+        try {
+            systemMapper.deleteStaff(param);
+            return ResponseEntity.ok("변경되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+        }
     }
 }
