@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humane.etms.form.FormExamineeVo;
 import com.humane.etms.form.FormHallVo;
+import com.humane.etms.form.FormStaffVo;
 import com.humane.etms.form.FormWaitHall;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.*;
@@ -42,6 +43,7 @@ public class UploadController {
     private final HallRepository hallRepository;
     private final ExamineeRepository examineeRepository;
     private final AttendDocRepository attendDocRepository;
+    private final StaffRepository staffRepository;
 
     // windows
     //@Value("${path.image.examinee:C:/api/etms}") String pathRoot;
@@ -285,6 +287,37 @@ public class UploadController {
         } catch (Throwable throwable) {
             log.error("{}", throwable.getMessage());
             throwable.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "staff", method = RequestMethod.POST)
+    public ResponseEntity staff(@RequestParam("file") MultipartFile multipartFile) throws Throwable {
+        File file = FileUtils.saveFile(new File(pathRoot, "setting"), multipartFile);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+            List<FormStaffVo> staffList = ExOM.mapFromExcel(file).to(FormStaffVo.class).map(1);
+            staffList.forEach(vo -> {
+
+                Staff staff = mapper.convertValue(vo, Staff.class);
+
+                Staff tmp = staffRepository.findOne(new BooleanBuilder()
+                        .and(QStaff.staff.phoneNo.eq(staff.getPhoneNo()))
+                        .and(QStaff.staff.bldgNm.eq(staff.getBldgNm()))
+                );
+
+                if (tmp == null) staffRepository.save(staff);
+            });
+
+            return ResponseEntity.ok("스태프 정보가 업로드되었습니다");
+
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            log.error("{}", throwable.getMessage());
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
         }
     }

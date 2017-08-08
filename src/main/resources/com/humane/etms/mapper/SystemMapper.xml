@@ -170,6 +170,42 @@
          order by attend_map_log.log_dttm desc
     </select>
 
+    <select id="staff" resultType="com.humane.etms.dto.StaffDto">
+        select staff._id, staff.staff_nm, staff.bldg_nm, staff.phone_no from staff
+        <where>
+            <if test="param != null">
+                <if test="param.staffNm != null"> and staff.staff_nm like '%' #{param.staffNm} '%'</if>
+                <if test="param.bldgNm != null"> and staff.bldg_nm = #{param.bldgNm} </if>
+                <if test="param.phoneNo != null"> and staff.phone_no like '%' #{param.phoneNo} '%'</if>
+            </if>
+        </where>
+    </select>
+
+    <select id="bldgNm" resultType="com.humane.etms.dto.StaffDto">
+        select distinct hall.bldg_nm from hall
+    </select>
+
+    <insert id="addStaff" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+    insert into staff values (null, #{param.bldgNm}, #{param.phoneNo}, #{param.staffNm})
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="modifyStaff">
+        update staff set staff_nm = #{param.staffNm}, phone_no = #{param.phoneNo}, bldg_nm = #{param.bldgNm}
+        <where>
+            <if test="param != null">
+                <if test="param._staffNm != null"> and staff_nm = #{param._staffNm}</if>
+                <if test="param._phoneNo != null"> and phone_no = #{param._phoneNo}</if>
+                <if test="param._bldgNm != null"> and bldg_nm = #{param._bldgNm}</if>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteStaff" parameterType="String">
+        delete from staff where staff_nm = #{param._staffNm} and phone_no = #{param._phoneNo} and bldg_nm = #{param._bldgNm}
+    </delete>
 
     <!-- TODO: 고려대 면접고사용 -->
     <select id="orderCnt" resultType="java.lang.Long">

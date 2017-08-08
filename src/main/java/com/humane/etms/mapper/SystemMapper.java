@@ -51,6 +51,16 @@ public interface SystemMapper {
     Page<DuplicateDto> duplicate(@Param("pageable") Pageable pageable);
     Page<DuplicateDto> innerDuplicate(@Param("param") DuplicateDto duplicateDto, @Param("pageable") Pageable pageable);
 
+    Page<StaffDto> staff(@Param("param") StaffDto param, @Param("pageable") Pageable pageable);
+
+    Page<StaffDto> bldgNm(@Param("param") StaffDto param, @Param("pageable") Pageable pageable);
+
+    void addStaff(@Param("param") StaffDto param);
+
+    void modifyStaff(@Param("param") StaffDto param);
+
+    void deleteStaff(@Param("param") StaffDto param);
+
     /**
      * 고려대 면접고사용
      *

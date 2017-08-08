@@ -9,7 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.awt.image.BufferedImage;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor

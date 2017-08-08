@@ -586,6 +586,23 @@ h4 {
     color: #727272
 }
 
+.btn-addEach {
+    background-color: #afd5de;
+    border-color: #afd5de;
+    color: black;
+    padding: 3% 13% 3% 10%;
+    font-size: xx-large;
+    border-radius: 15px;
+}
+
+.btn-addForm {
+    background-color: #d7de88;
+    border-color: #d7de88;
+    color: black;
+    padding: 3% 13% 3% 10%;
+    font-size: xx-large;
+    border-radius: 15px;
+}
 .sys-group {
     margin-top: 1%;
     margin-bottom: 3%;
