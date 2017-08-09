@@ -6,11 +6,17 @@ define(function (require) {
     var ResponseDialog = require('../responseDialog.js');
     var responseDialog = new ResponseDialog();
 
+    var InnerToolbar = require('../toolbar/system-staff-inner.js');
+
     return GridBase.extend({
         initialize: function (options) {
             this.parent = options.parents;
 
             var colModel = [
+                {name: 'admissionCd', hidden: true},
+                {name: 'admissionNm', label: '전형명'},
+                {name: 'attendDate', label: '시험일자'},
+                {name: 'attendTime', label: '시험시간'},
                 {name: 'staffNm', label: '성명'},
                 {name: 'phoneNo', label: '전화번호'},
                 {name: 'bldgNm', label: '고사건물'}
@@ -25,9 +31,9 @@ define(function (require) {
                     url: 'system/staff',
                     colModel: colModel,
                     onSelectRow: function (rowid, status, e) {
-                        var rowdata = $(this).jqGrid('getRowData', rowid);
+                        var rowData = $(this).jqGrid('getRowData', rowid);
 
-                        var phone = rowdata.phoneNo.split('-');
+                        var phone = rowData.phoneNo.split('-');
                         var html = '<div class="container-fluid">' +
                             '<div class="row">' +
                             '<div class="col-lg-12">' +
@@ -43,7 +49,7 @@ define(function (require) {
 
                                 $('#staff').append(
                                     '<div style="margin:1% 0 1% 3%; width:47%;">' + '성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명' +
-                                    '<input id="name" size="12" type="text" style="width: 60%; border-radius: 10px; padding: 1%; margin-left: 20%;" value="' + rowdata.staffNm + '"/>' +
+                                    '<input id="name" size="12" type="text" style="width: 60%; border-radius: 10px; padding: 1%; margin-left: 20%;" value="' + rowData.staffNm + '"/>' +
                                     '</div>'
                                 );
                                 $('#staff').append(
@@ -51,33 +57,48 @@ define(function (require) {
                                     '<input id="first" size="4" type="text" style="border-radius: 10px; padding: 1%; margin-left: 20%" value="' + phone[0] + '">&nbsp;-&nbsp;' +
                                     '<input id="middle" size="4" type="text" style="border-radius: 10px; padding: 1%;" value="' + phone[1] + '">&nbsp;-&nbsp;' +
                                     '<input id="last" size="4" type="text" style="border-radius: 10px; padding: 1%;" value="' + phone[2] + '">' +
+                                    '</div>' +
+                                    '<div id="msg" style="margin:1% 0 1% 3%; width:47%; float:left; vertical-align: middle; color: crimson"></div>'
+                                );
+                                $('#staff').append(
+                                    '<div id="line" style="margin: 10% 0 5% 0; border: 1px solid #d8d6d5"></div>'
+                                );
+                                $('#staff').append(
+                                    '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '전&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;형' +
+                                    '<select id="staffAdm" style="width: 50%; margin-left: 20%; padding: 1%">' +
+                                    '</select>' +
                                     '</div>'
                                 );
                                 $('#staff').append(
-                                    '<div id="msg" style="margin:1% 0 1% 3%; width:47%; float:left; vertical-align: middle; color: crimson"></div>'
+                                    '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '시험일자' +
+                                    '<select id="staffDate" style="width: 50%; margin-left: 20%; padding: 1%">' +
+                                    '</select>' +
+                                    '</div>'
+                                );
+                                $('#staff').append(
+                                    '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '시험시간' +
+                                    '<select id="staffTime" style="width: 50%; margin-left: 20%; padding: 1%">' +
+                                    '</select>' +
+                                    '</div>'
+                                );
+                                $('#staff').append(
+                                    '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '고사건물' +
+                                    '<select id="staffBldg" style="width: 50%; margin-left: 20%; padding: 1%">' +
+                                    '</select>' +
+                                    '</div>'
                                 );
 
-                                $.ajax({
-                                    url: 'system/bldgNm',
-                                    success: function (response) {
-                                        $('#staff').append(
-                                            '<div style="margin:1% 0 1% 3%; width:47%;">' + '고사건물' +
-                                            '<select id="select" style="width: 60%; margin-left: 20%; padding: 1%">' +
-                                            '</select>' +
-                                            '</div>'
-                                        );
+                                // 스태프 추가 dialog에 사용될 툴바
+                                this.toolbar = new InnerToolbar({
+                                    el: '#staff',
+                                    parent: this,
+                                    rowData: rowData
+                                }).render();
 
-                                        for (var i = 0; i < response.length; i++) {
-                                            var tmp = '';
-
-                                            if (rowdata.bldgNm == response[i].bldgNm)
-                                                tmp = '<option value = ' + response[i].bldgNm + ' selected>' + response[i].bldgNm + '</option>';
-                                            else
-                                                tmp = '<option value = ' + response[i].bldgNm + '>' + response[i].bldgNm + '</option>';
-                                            $('#select').append(tmp);
-                                        }
-                                    }
-                                });
+                                $('#staffAdm').val(rowData.admissionNm).attr('selected', 'selected');
+                                $('#staffDate').val(rowData.attendDate).attr('selected', 'selected');
+                                $('#staffTime').val(rowData.attendTime).attr('selected', 'selected');
+                                $('#staffBldg').val(rowData.bldgNm).attr('selected', 'selected');
 
                                 $('#first, #middle, #last').keypress(function (event) {
                                     // 문자 처리
@@ -140,21 +161,32 @@ define(function (require) {
                                         var param = {
                                             staffNm: $('#name').val(),
                                             phoneNo: $('#first').val() + '-' + $('#middle').val() + '-' + $('#last').val(),
-                                            bldgNm: $('#select').val(),
-                                            // 기존 정보
-                                            _staffNm: rowdata.staffNm,
-                                            _phoneNo: rowdata.phoneNo,
-                                            _bldgNm: rowdata.bldgNm
+                                            admissionNm: $('#staffAdm').val(),
+                                            attendDate: $('#staffDate').val(),
+                                            attendTime: $('#staffTime').val(),
+                                            bldgNm: $('#staffBldg').val(),
+
+                                            // 기존 정보, 변경 창에서 값만 바꾼 뒤에 삭제할 수도 있기 때문에
+                                            // 따로 저장해 둔 기존 값으로 삭제 액션을 취한다
+                                            _staffNm: rowData.staffNm,
+                                            _phoneNo: rowData.phoneNo,
+                                            _bldgNm: rowData.bldgNm,
+                                            _admissionNm: rowData.admissionNm,
+                                            _attendDate: rowData.attendDate,
+                                            _attendTime: rowData.attendTime
                                         };
 
                                         $.ajax({
-                                            url: 'system/deleteStaff',
+                                            url: 'system/delStaff',
                                             type: 'POST',
                                             contentType: "application/json; charset=utf-8",
                                             data: JSON.stringify(param),
                                             success: function (response) {
                                                 responseDialog.notify({msg: response});
                                                 $('#search').trigger('click');
+                                            },
+                                            error: function (response) {
+                                                responseDialog.notify({msg: response.responseJSON});
                                             }
                                         })
                                     }
@@ -201,11 +233,15 @@ define(function (require) {
                                         var param = {
                                             staffNm: $('#name').val(),
                                             phoneNo: $('#first').val() + '-' + $('#middle').val() + '-' + $('#last').val(),
-                                            bldgNm: $('#select').val(),
+                                            admissionNm: $('#staffAdm').val(),
+                                            attendDate: $('#staffDate').val(),
+                                            attendTime: $('#staffTime').val(),
+                                            bldgNm: $('#staffBldg').val(),
+
                                             // 기존 정보
-                                            _staffNm: rowdata.staffNm,
-                                            _phoneNo: rowdata.phoneNo,
-                                            _bldgNm: rowdata.bldgNm
+                                            _staffNm: rowData.staffNm,
+                                            _phoneNo: rowData.phoneNo,
+                                            _bldgNm: rowData.bldgNm
                                         };
 
                                         $.ajax({

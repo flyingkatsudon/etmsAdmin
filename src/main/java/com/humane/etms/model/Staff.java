@@ -16,4 +16,5 @@ public class Staff {
     @Column private String staffNm;
     @Column private String phoneNo;
     @Column private String bldgNm;
+    @ManyToOne @JoinColumn(name = "attendCd", nullable = false) private Attend attend;
 }

@@ -3,10 +3,7 @@ package com.humane.etms.controller.admin;
 import com.humane.etms.dto.*;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
-import com.humane.etms.repository.AttendWaitHallRepository;
-import com.humane.etms.repository.UserAdmissionRepository;
-import com.humane.etms.repository.UserRepository;
-import com.humane.etms.repository.UserRoleRepository;
+import com.humane.etms.repository.*;
 import com.humane.etms.service.SystemService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import com.querydsl.core.BooleanBuilder;
@@ -37,6 +34,8 @@ public class SystemController {
     private final UserAdmissionRepository userAdmissionRepository;
     private final AttendWaitHallRepository waitHallRepository;
     private final UserRoleRepository userRoleRepository;
+    private final AttendRepository attendRepository;
+    private final StaffRepository staffRepository;
     private final SystemService systemService;
     private final SystemMapper systemMapper;
 
@@ -157,7 +156,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "modifyAttend")
-    public ResponseEntity modifyAttend(AttendInfoDto param) {
+    public ResponseEntity modifyAttend(@RequestBody AttendInfoDto param) {
         try {
             systemMapper.modifyAttend(param);
             return ResponseEntity.ok("시험정보가 변경되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
@@ -172,8 +171,106 @@ public class SystemController {
     }
 
     @RequestMapping(value = "innerDuplicate")
-    public ResponseEntity innerDuplicate(DuplicateDto duplicateDto, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.innerDuplicate(duplicateDto, pageable).getContent());
+    public ResponseEntity innerDuplicate(DuplicateDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.innerDuplicate(param, pageable).getContent());
+    }
+
+    @RequestMapping(value = "staff")
+    public ResponseEntity staff(StaffDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.staff(param, pageable));
+    }
+
+    @RequestMapping(value = "bldgNm")
+    public ResponseEntity bldgNm(StaffDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.bldgNm(param, pageable).getContent());
+    }
+
+    @RequestMapping(value = "addStaff")
+    public ResponseEntity addStaff(@RequestBody StaffDto param) {
+        try {
+            Attend attend = attendRepository.findOne(new BooleanBuilder()
+                    .and(QAttend.attend.admission.admissionNm.eq(param.getAdmissionNm()))
+                    .and(QAttend.attend.attendDate.eq(param.getAttendDate()))
+                    .and(QAttend.attend.attendTime.eq(param.getAttendTime()))
+            );
+
+            if (attend != null) {
+                Staff tmp = staffRepository.findOne(new BooleanBuilder()
+                        .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
+                        .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
+                        .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
+                        .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
+                );
+
+                if (tmp == null) {
+                    param.setAttendCd(attend.getAttendCd());
+                    systemMapper.addStaff(param);
+                } else {
+                    return ResponseEntity.ok("이미 등록된 스태프입니다");
+                }
+            }
+            return ResponseEntity.ok("추가되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("빈 값을 확인하세요. 콤보박스의 값을 모두 특정하세요");
+        }
+    }
+
+    @RequestMapping(value = "modifyStaff")
+    public ResponseEntity modifyStaff(@RequestBody StaffDto param) {
+        try {
+            Attend attend = attendRepository.findOne(new BooleanBuilder()
+                    .and(QAttend.attend.admission.admissionNm.eq(param.getAdmissionNm()))
+                    .and(QAttend.attend.attendDate.eq(param.getAttendDate()))
+                    .and(QAttend.attend.attendTime.eq(param.getAttendTime()))
+            );
+
+            param.setAttendCd(attend.getAttendCd());
+
+            Staff tmp = staffRepository.findOne(new BooleanBuilder()
+                    .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
+                    .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
+                    .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
+                    .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
+            );
+
+            if (tmp == null) {
+                systemMapper.modifyStaff(param);
+            } else {
+                return ResponseEntity.ok("이미 등록된 스태프입니다");
+            }
+
+            return ResponseEntity.ok("변경되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+        }
+    }
+
+    @RequestMapping(value = "delStaff")
+    public ResponseEntity delStaff(@RequestBody StaffDto param) {
+        try {
+            Attend attend = attendRepository.findOne(new BooleanBuilder()
+                    .and(QAttend.attend.admission.admissionNm.eq(param.get_admissionNm()))
+                    .and(QAttend.attend.attendDate.eq(param.get_attendDate()))
+                    .and(QAttend.attend.attendTime.eq(param.get_attendTime()))
+            );
+
+            param.setAttendCd(attend.getAttendCd());
+
+            systemMapper.delStaff(param);
+            return ResponseEntity.ok("삭제되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+        }
+    }
+
+    @RequestMapping(value = "delStaffAll")
+    public ResponseEntity delStaffAll() {
+        try {
+            systemMapper.delStaffAll();
+            return ResponseEntity.ok("삭제되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+        }
     }
 
     /**

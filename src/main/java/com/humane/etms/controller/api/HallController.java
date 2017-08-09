@@ -1,7 +1,9 @@
 package com.humane.etms.controller.api;
 
 import com.humane.etms.model.Hall;
+import com.humane.etms.model.Staff;
 import com.humane.etms.repository.HallRepository;
+import com.humane.etms.repository.StaffRepository;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class HallController {
     private final HallRepository repository;
+    private final StaffRepository staffRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     public Page<Hall> index(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
@@ -38,5 +41,10 @@ public class HallController {
     public ResponseEntity<Iterable<Hall>> merge(@RequestBody Iterable<Hall> halls) {
         Iterable<Hall> rtn = repository.save(halls);
         return new ResponseEntity<>(rtn, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "staff", method = RequestMethod.GET)
+    public Page<Staff> staff(@QuerydslPredicate Predicate predicate, @PageableDefault Pageable pageable) {
+        return staffRepository.findAll(predicate, pageable);
     }
 }

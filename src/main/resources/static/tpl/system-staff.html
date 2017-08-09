@@ -12,12 +12,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="hm-ui-search">
-                        <label for="staffNm">성명</label><input type="text" id="staffNm"/>
+                        <label for="admissionNm">전형</label> <select id="admissionNm"> </select>
+                        <label for="attendDate">시험일자</label> <select id="attendDate"> </select>
+                        <label for="attendTime">시험시간</label> <select id="attendTime"> </select>
                         <label for="bldgNm">고사건물</label> <select id="bldgNm"> </select>
+                        <label for="staffNm">성명</label><input type="text" id="staffNm"/>
                         <label for="phoneNo">전화번호</label>
                         <input type="number" id="phoneNo" placeholder="숫자로 입력하세요" min="0"/>
                         <button id="search">검색</button>
                         <div style="float:right">
+                            <button class="btn-success" style="width: inherit; background-color: #CC3D3D; border-color: #CC3D3D" id="del">전체 삭제</button>
                             <button class="btn-success" id="add">스태프 추가</button>
                         </div>
                     </div>
