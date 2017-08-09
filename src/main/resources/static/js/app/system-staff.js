@@ -14,6 +14,8 @@ define(function (require) {
     var ResponseDialog = require('../responseDialog.js');
     var responseDialog = new ResponseDialog();
 
+    var InnerToolbar = require('../toolbar/system-staff-inner.js');
+
     return Backbone.View.extend({
         render: function () {
             var _this = this;
@@ -53,8 +55,8 @@ define(function (require) {
 
                         // 스태프 개별 추가
                         $('#addEach').click(function () {
-                            alert('준비중!');
-                            return false;
+                            // alert('준비중!');
+                            // return false;
 
                             var html = '<div class="container-fluid">' +
                                 '<div class="row">' +
@@ -79,28 +81,39 @@ define(function (require) {
                                         '<input id="first" size="4" type="text" style="border-radius: 10px; padding: 1%; margin-left: 20%">&nbsp;-&nbsp;' +
                                         '<input id="middle" size="4" type="text" style="border-radius: 10px; padding: 1%;">&nbsp;-&nbsp;' +
                                         '<input id="last" size="4" type="text" style="border-radius: 10px; padding: 1%;">' +
+                                        '</div>' +
+                                        '<div id="msg" style="margin:2% 0 1% 3%; width:47%; float:right; vertical-align: middle; color: crimson"></div>'
+                                    );
+                                    $('#staff').append(
+                                        '<div id="line" style="margin: 10% 0 5% 0; border: 1px solid #d8d6d5"></div>'
+                                    );
+                                    $('#staff').append(
+                                        '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '전&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;형' +
+                                        '<select id="staffAdm" style="width: 50%; margin-left: 20%; padding: 1%">' +
+                                        '</select>' +
                                         '</div>'
                                     );
                                     $('#staff').append(
-                                        '<div id="msg" style="margin:1% 0 1% 3%; width:47%; float:left; vertical-align: middle; color: crimson"></div>'
+                                        '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '시험일자' +
+                                        '<select id="staffDate" style="width: 50%; margin-left: 20%; padding: 1%">' +
+                                        '</select>' +
+                                        '</div>'
+                                    );
+                                    $('#staff').append(
+                                        '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '시험시간' +
+                                        '<select id="staffTime" style="width: 50%; margin-left: 20%; padding: 1%">' +
+                                        '</select>' +
+                                        '</div>'
+                                    );
+                                    $('#staff').append(
+                                        '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '고사건물' +
+                                        '<select id="staffBldg" style="width: 50%; margin-left: 20%; padding: 1%">' +
+                                        '</select>' +
+                                        '</div>'
                                     );
 
-                                    $.ajax({
-                                        url: 'system/bldgNm',
-                                        success: function (response) {
-                                            $('#staff').append(
-                                                '<div style="margin:1% 0 1% 3%; width:47%;">' + '고사건물' +
-                                                '<select id="select" style="width: 60%; margin-left: 20%; padding: 1%">' +
-                                                '</select>' +
-                                                '</div>'
-                                            );
-
-                                            for (var i = 0; i < response.length; i++) {
-                                                var tmp = '<option value = ' + response[i].bldgNm + '>' + response[i].bldgNm + '</option>';
-                                                $('#select').append(tmp);
-                                            }
-                                        }
-                                    });
+                                    // 스태프 추가 dialog에 사용될 툴바
+                                    this.toolbar = new InnerToolbar({el: '#staff', parent: this}).render();
 
                                     $('#first, #middle, #last').keypress(function (event) {
                                         // 문자 처리
@@ -175,19 +188,19 @@ define(function (require) {
 
                                             if (first.length != 3) {
                                                 $('#msg').html('3자리를 입력하세요');
-                                                $('#first').css('border', '3px solid crimson');
+                                                $('#first').css('border', '2px solid crimson');
                                                 $('#first').focus();
                                             }
 
                                             if (middle.length != 4) {
                                                 $('#msg').html('4자리를 입력하세요');
-                                                $('#middle').css('border', '3px solid crimson');
+                                                $('#middle').css('border', '2px solid crimson');
                                                 $('#middle').focus();
                                             }
 
                                             if (last.length != 4) {
                                                 $('#msg').html('4자리를 입력하세요');
-                                                $('#last').css('border', '3px solid crimson');
+                                                $('#last').css('border', '2px solid crimson');
                                                 $('#last').focus();
                                             }
 
@@ -196,7 +209,10 @@ define(function (require) {
                                             var param = {
                                                 staffNm: $('#name').val(),
                                                 phoneNo: $('#first').val() + '-' + $('#middle').val() + '-' + $('#last').val(),
-                                                bldgNm: $('#select').val()
+                                                admissionNm: $('#staffAdm').val(),
+                                                attendDate: $('#staffDate').val(),
+                                                attendTime: $('#staffTime').val(),
+                                                bldgNm: $('#staffBldg').val()
                                             };
 
                                             $.ajax({
@@ -208,6 +224,11 @@ define(function (require) {
                                                 success: function (response) {
                                                     responseDialog.notify({msg: response});
                                                     $('#search').trigger('click');
+                                                }, error: function(response){
+                                                    responseDialog.notify({
+                                                        msg: response.responseJSON,
+                                                        closeAll: false
+                                                    });
                                                 }
                                             })
                                         }
@@ -222,7 +243,7 @@ define(function (require) {
                             });
 
                             dialog.realize();
-                            dialog.getModalDialog().css('margin-top', '20%');
+                            dialog.getModalDialog().css('margin-top', '17%');
                             dialog.getModalDialog().css('width', '40%');
                             dialog.open();
 

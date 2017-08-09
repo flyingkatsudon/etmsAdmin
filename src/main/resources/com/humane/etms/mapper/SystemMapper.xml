@@ -193,14 +193,14 @@
     </select>
 
     <insert id="addStaff" parameterType="String" useGeneratedKeys="true" keyProperty="id">
-    insert into staff values (null, #{param.bldgNm}, #{param.phoneNo}, #{param.staffNm})
+    insert into staff values (null, #{param.bldgNm}, #{param.phoneNo}, #{param.staffNm}, #{param.attendCd})
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 
     <update id="modifyStaff">
-        update staff set staff_nm = #{param.staffNm}, phone_no = #{param.phoneNo}, bldg_nm = #{param.bldgNm}
+        update staff set staff_nm = #{param.staffNm}, phone_no = #{param.phoneNo}, bldg_nm = #{param.bldgNm}, attend_cd = #{param.attendCd}
         <where>
             <if test="param != null">
                 <if test="param._staffNm != null"> and staff_nm = #{param._staffNm}</if>
@@ -212,7 +212,7 @@
 
     <delete id="delStaff" parameterType="String">
         delete from staff
-        where staff_nm = #{param._staffNm} and phone_no = #{param._phoneNo} and bldg_nm = #{param._bldgNm}
+        where staff_nm = #{param._staffNm} and phone_no = #{param._phoneNo} and bldg_nm = #{param._bldgNm} and attend_cd = #{param.attendCd}
     </delete>
 
     <delete id="delStaffAll" parameterType="String">

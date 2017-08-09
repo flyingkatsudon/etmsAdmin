@@ -3,9 +3,7 @@ package com.humane.etms.controller.admin;
 import com.humane.etms.dto.*;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
-import com.humane.etms.repository.UserAdmissionRepository;
-import com.humane.etms.repository.UserRepository;
-import com.humane.etms.repository.UserRoleRepository;
+import com.humane.etms.repository.*;
 import com.humane.etms.service.SystemService;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -35,6 +31,8 @@ public class SystemController {
     private final UserRepository userRepository;
     private final UserAdmissionRepository userAdmissionRepository;
     private final UserRoleRepository userRoleRepository;
+    private final AttendRepository attendRepository;
+    private final StaffRepository staffRepository;
     private final SystemService systemService;
     private final SystemMapper systemMapper;
 
@@ -184,19 +182,58 @@ public class SystemController {
 
     @RequestMapping(value = "addStaff")
     public ResponseEntity addStaff(@RequestBody StaffDto param) {
-        log.debug("{}", param);
         try {
-            systemMapper.addStaff(param);
+            Attend attend = attendRepository.findOne(new BooleanBuilder()
+                    .and(QAttend.attend.admission.admissionNm.eq(param.getAdmissionNm()))
+                    .and(QAttend.attend.attendDate.eq(param.getAttendDate()))
+                    .and(QAttend.attend.attendTime.eq(param.getAttendTime()))
+            );
+
+            if (attend != null) {
+                Staff tmp = staffRepository.findOne(new BooleanBuilder()
+                        .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
+                        .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
+                        .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
+                        .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
+                );
+
+                if (tmp == null) {
+                    param.setAttendCd(attend.getAttendCd());
+                    systemMapper.addStaff(param);
+                } else {
+                    return ResponseEntity.ok("이미 등록된 스태프입니다");
+                }
+            }
             return ResponseEntity.ok("추가되었습니다");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("빈 값을 확인하세요. 콤보박스의 값을 모두 특정하세요");
         }
     }
 
     @RequestMapping(value = "modifyStaff")
     public ResponseEntity modifyStaff(@RequestBody StaffDto param) {
         try {
-            systemMapper.modifyStaff(param);
+            Attend attend = attendRepository.findOne(new BooleanBuilder()
+                    .and(QAttend.attend.admission.admissionNm.eq(param.getAdmissionNm()))
+                    .and(QAttend.attend.attendDate.eq(param.getAttendDate()))
+                    .and(QAttend.attend.attendTime.eq(param.getAttendTime()))
+            );
+
+            param.setAttendCd(attend.getAttendCd());
+
+            Staff tmp = staffRepository.findOne(new BooleanBuilder()
+                    .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
+                    .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
+                    .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
+                    .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
+            );
+
+            if (tmp == null) {
+                systemMapper.modifyStaff(param);
+            } else {
+                return ResponseEntity.ok("이미 등록된 스태프입니다");
+            }
+
             return ResponseEntity.ok("변경되었습니다");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
@@ -206,8 +243,16 @@ public class SystemController {
     @RequestMapping(value = "delStaff")
     public ResponseEntity delStaff(@RequestBody StaffDto param) {
         try {
+            Attend attend = attendRepository.findOne(new BooleanBuilder()
+                    .and(QAttend.attend.admission.admissionNm.eq(param.get_admissionNm()))
+                    .and(QAttend.attend.attendDate.eq(param.get_attendDate()))
+                    .and(QAttend.attend.attendTime.eq(param.get_attendTime()))
+            );
+
+            param.setAttendCd(attend.getAttendCd());
+
             systemMapper.delStaff(param);
-            return ResponseEntity.ok("변경되었습니다");
+            return ResponseEntity.ok("삭제되었습니다");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
         }

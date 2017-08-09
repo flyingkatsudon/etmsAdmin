@@ -30,6 +30,7 @@ public class StaffDto implements Serializable {
     private Date attendDate;
 
     @DateTimeFormat(pattern = "HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     @JsonSerialize(using = TimeSerializer.class)
     private Date attendTime;
 
@@ -37,4 +38,15 @@ public class StaffDto implements Serializable {
     private String _staffNm;
     private String _phoneNo;
     private String _bldgNm;
+
+    private String _admissionNm;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date _attendDate;
+
+    @DateTimeFormat(pattern = "HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
+    @JsonSerialize(using = TimeSerializer.class)
+    private Date _attendTime;
 }
