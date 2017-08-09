@@ -11,6 +11,10 @@ define(function (require) {
             this.parent = options.parents;
 
             var colModel = [
+                {name: 'admissionCd', hidden: true},
+                {name: 'admissionNm', label: '전형명'},
+                {name: 'attendDate', label: '시험일자'},
+                {name: 'attendTime', label: '시험시간'},
                 {name: 'staffNm', label: '성명'},
                 {name: 'phoneNo', label: '전화번호'},
                 {name: 'bldgNm', label: '고사건물'}
@@ -148,7 +152,7 @@ define(function (require) {
                                         };
 
                                         $.ajax({
-                                            url: 'system/deleteStaff',
+                                            url: 'system/delStaff',
                                             type: 'POST',
                                             contentType: "application/json; charset=utf-8",
                                             data: JSON.stringify(param),

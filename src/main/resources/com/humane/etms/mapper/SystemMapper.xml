@@ -171,11 +171,18 @@
     </select>
 
     <select id="staff" resultType="com.humane.etms.dto.StaffDto">
-        select staff._id, staff.staff_nm, staff.bldg_nm, staff.phone_no from staff
+        select admission.admission_cd, admission.admission_nm, attend.attend_cd, attend.attend_nm, attend.attend_date, attend.attend_time
+              , staff._id, staff.staff_nm, staff.bldg_nm, staff.phone_no
+        from staff
+        inner join attend on attend.attend_cd = staff.attend_cd
+        inner join admission on admission.admission_cd = attend.admission_cd
         <where>
             <if test="param != null">
+                <if test="param.admissionNm != null">AND admission.admission_nm = #{param.admissionNm}</if>
+                <if test="param.attendDate != null">AND attend.attend_date = #{param.attendDate} </if>
+                <if test="param.attendTime != null">AND attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                <if test="param.bldgNm != null">AND staff.bldg_nm = #{param.bldgNm} </if>
                 <if test="param.staffNm != null"> and staff.staff_nm like '%' #{param.staffNm} '%'</if>
-                <if test="param.bldgNm != null"> and staff.bldg_nm = #{param.bldgNm} </if>
                 <if test="param.phoneNo != null"> and staff.phone_no like '%' #{param.phoneNo} '%'</if>
             </if>
         </where>
@@ -203,7 +210,12 @@
         </where>
     </update>
 
-    <delete id="deleteStaff" parameterType="String">
-        delete from staff where staff_nm = #{param._staffNm} and phone_no = #{param._phoneNo} and bldg_nm = #{param._bldgNm}
+    <delete id="delStaff" parameterType="String">
+        delete from staff
+        where staff_nm = #{param._staffNm} and phone_no = #{param._phoneNo} and bldg_nm = #{param._bldgNm}
+    </delete>
+
+    <delete id="delStaffAll" parameterType="String">
+        delete from staff
     </delete>
 </mapper>

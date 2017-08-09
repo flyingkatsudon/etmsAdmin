@@ -51,5 +51,7 @@ public interface SystemMapper {
 
     void modifyStaff(@Param("param") StaffDto param);
 
-    void deleteStaff(@Param("param") StaffDto param);
+    void delStaff(@Param("param") StaffDto param);
+
+    void delStaffAll();
 }

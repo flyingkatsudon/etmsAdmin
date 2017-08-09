@@ -26,6 +26,10 @@ define(function (require) {
                 _this.add();
             });
 
+            $('#del').click(function () {
+                _this.del();
+            });
+
         }, search: function (o) {
             this.list.search(o);
         },
@@ -49,6 +53,9 @@ define(function (require) {
 
                         // 스태프 개별 추가
                         $('#addEach').click(function () {
+                            alert('준비중!');
+                            return false;
+
                             var html = '<div class="container-fluid">' +
                                 '<div class="row">' +
                                 '<div class="col-lg-12">' +
@@ -153,7 +160,7 @@ define(function (require) {
                                         action: function () {
                                             var staffNm = $('#name').val();
 
-                                            if(staffNm.length == 0){
+                                            if (staffNm.length == 0) {
                                                 $('#msg').html('성명을 입력하세요');
                                                 $('#name').css('border', '3px solid crimson');
                                                 $('#name').focus();
@@ -172,13 +179,13 @@ define(function (require) {
                                                 $('#first').focus();
                                             }
 
-                                            if(middle.length != 4){
+                                            if (middle.length != 4) {
                                                 $('#msg').html('4자리를 입력하세요');
                                                 $('#middle').css('border', '3px solid crimson');
                                                 $('#middle').focus();
                                             }
 
-                                            if(last.length != 4){
+                                            if (last.length != 4) {
                                                 $('#msg').html('4자리를 입력하세요');
                                                 $('#last').css('border', '3px solid crimson');
                                                 $('#last').focus();
@@ -198,7 +205,7 @@ define(function (require) {
                                                 contentType: "application/json",
                                                 dataType: 'json',
                                                 data: JSON.stringify(param),
-                                                success: function(response){
+                                                success: function (response) {
                                                     responseDialog.notify({msg: response});
                                                     $('#search').trigger('click');
                                                 }
@@ -279,8 +286,37 @@ define(function (require) {
                     responseDialog.notify({msg: response});
                 }
             });
+        },
+        del: function () {
+            var dialog = new BootstrapDialog({
+                message: '<h5 style="margin-left:10%">스태프 정보를 모두 삭제합니다</h5>',
+                buttons: [
+                    {
+                        label: '삭제',
+                        cssClass: 'btn-delete',
+                        action: function () {
+                            $.ajax({
+                                url: 'system/delStaffAll',
+                                success: function (response) {
+                                    $('#search').trigger('click');
+                                    responseDialog.notify({msg: response});
+                                }
+                            });
+                        }
+                    },
+                    {
+                        label: '닫기',
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }
+                ]
+            });
+
+            dialog.realize();
+            dialog.getModalHeader().hide();
+            dialog.getModalDialog().css('margin-top', '20%');
+            dialog.open();
         }
-    })
-        ;
-})
-;
+    });
+});

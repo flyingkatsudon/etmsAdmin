@@ -27,6 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -185,15 +188,35 @@ public class UploadController {
         try {
             List<FormStaffVo> staffList = ExOM.mapFromExcel(file).to(FormStaffVo.class).map(1);
             staffList.forEach(vo -> {
-
                 Staff staff = mapper.convertValue(vo, Staff.class);
 
-                Staff tmp = staffRepository.findOne(new BooleanBuilder()
-                        .and(QStaff.staff.phoneNo.eq(staff.getPhoneNo()))
-                        .and(QStaff.staff.bldgNm.eq(staff.getBldgNm()))
-                );
+                try {
+                    Date attendDate = new SimpleDateFormat("yyyy-MM-dd").parse(vo.getAttendDate());
+                    Date attendTime = new SimpleDateFormat("HH:mm:ss").parse(vo.getAttendTime());
 
-                if (tmp == null) staffRepository.save(staff);
+                    Attend attend = attendRepository.findOne(new BooleanBuilder()
+                            .and(QAttend.attend.admission.admissionCd.eq(vo.getAdmissionCd()))
+                            .and(QAttend.attend.admission.admissionNm.eq(vo.getAdmissionNm()))
+                            .and(QAttend.attend.attendDate.eq(attendDate))
+                            .and(QAttend.attend.attendTime.eq(attendTime))
+                    );
+
+                    if (attend != null) {
+                        staff.setAttend(attend);
+                        Staff tmp = staffRepository.findOne(new BooleanBuilder()
+                                .and(QStaff.staff.phoneNo.eq(staff.getPhoneNo()))
+                                .and(QStaff.staff.bldgNm.eq(staff.getBldgNm()))
+                                .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
+                        );
+
+                        staff.setAttend(attend);
+
+                        if (tmp == null) staffRepository.save(staff);
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             });
 
             return ResponseEntity.ok("스태프 정보가 업로드되었습니다");

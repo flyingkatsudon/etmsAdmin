@@ -203,11 +203,21 @@ public class SystemController {
         }
     }
 
-    @RequestMapping(value = "deleteStaff")
-    public ResponseEntity deleteStaff(@RequestBody StaffDto param) {
+    @RequestMapping(value = "delStaff")
+    public ResponseEntity delStaff(@RequestBody StaffDto param) {
         try {
-            systemMapper.deleteStaff(param);
+            systemMapper.delStaff(param);
             return ResponseEntity.ok("변경되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+        }
+    }
+
+    @RequestMapping(value = "delStaffAll")
+    public ResponseEntity delStaffAll() {
+        try {
+            systemMapper.delStaffAll();
+            return ResponseEntity.ok("삭제되었습니다");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
         }
