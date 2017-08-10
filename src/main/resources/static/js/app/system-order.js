@@ -213,6 +213,7 @@ define(function (require) {
                                 $('#groupInfo').fadeIn(500);
                                 $('#line').fadeIn(100);
                                 $('#addGroup').fadeIn(200);
+                                $('#notice').html('조 추가 시 값을 기입하지 않으면 추가되지 않습니다');
 
                                 // 해당하는 groupNm만 append 함
                                 for (var k = 0; k < response.length; k++) {
@@ -223,10 +224,9 @@ define(function (require) {
                                 }
 
                                 $('#addGroup').click(function () {
-                                    //id += 1;
-                                    //$('#group').append('<div style="width: 15%; float: left"><input type="text" name="addGroup" size="2" style="margin-right: 10%">조</div>');
-
-                                    alert('준비중');
+                                    id += 1;
+                                    $('#group').append('<div style="width: 15%; float: left">' +
+                                        '<input type="text" size="2" style="margin-right: 10%;" id="' + id + '" name="newGroup">조</div>');
                                 });
                             });
                         }, // onshown
@@ -235,26 +235,62 @@ define(function (require) {
                                 label: '선택 저장',
                                 cssClass: 'btn-primary',
                                 action: function () {
-                                    /*var tmp = [];
+                                    // ori: 기존에 있던 조 이름 중에 유지되는 이름
+                                    // newGroup: 새로 입력한 조, tmp: 업로드할 조 리스트
+                                    var ori = [], newList = [], tmp = [];
 
+                                    // 기존에 저장되어 있던 조 중에 선택된 조
                                     $('input[name=group]:checked').each(function () {
-                                        tmp.push({groupNm: $(this).val()});
+                                        ori.push({
+                                            id: $(this)[0].id,
+                                            groupNm: $(this).val()
+                                        });
+                                        tmp.push({
+                                            id: $(this)[0].id,
+                                            groupNm: $(this).val()
+                                        });
                                     });
+
+                                    // '조 추가' 버튼을 통해 새로 입력된 조
+                                    $('input[name=newGroup]').each(function () {
+                                        if ($(this).val() != '') {
+                                            tmp.push({
+                                                id: $(this)[0].id,
+                                                groupNm: $(this).val() + '조'
+                                            });
+                                            newList.push({
+                                                id: $(this)[0].id,
+                                                groupNm: $(this).val() + '조'
+                                            });
+                                        }
+                                    });
+
+                                    // 기존에 있는 조 인지 검사
+                                    var flag = true;
+                                    for (var i = 0; i < newList.length; i++) {
+                                        for (var j = 0; j < ori.length; j++) {
+                                            if (newList[i].groupNm == ori[j].groupNm) {
+                                                flag = false;
+                                                $(newList[i].id).css('border', '2px solid crimson');
+                                                $('#notice').html('중복된 이름이 있습니다. 확인 후 수정하세요');
+                                                return false;
+                                            }
+                                        }
+                                    }
 
                                     // 선택된 대기실의 데이터를 모두 삭제함
                                     var hallCd = $('input[name=hall]:checked').val();
                                     $.ajax({url: 'system/delWaitHall?hallCd=' + hallCd});
 
+                                    // 조 리스트를 새로 insert
                                     for (var i = 0; i < tmp.length; i++) {
                                         $.ajax({
                                             url: 'system/addWaitHall?hallCd=' + hallCd + '&groupNm=' + tmp[i].groupNm,
-                                            success: function(response){
+                                            success: function (response) {
                                                 responseDialog.notify({msg: response});
                                             }
                                         });
-                                    }*/
-
-                                    alert('준비중');
+                                    }
                                 }
                             },
                             {
