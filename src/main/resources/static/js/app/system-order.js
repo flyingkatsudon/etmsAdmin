@@ -11,7 +11,7 @@ define(function (require) {
     var BootstrapDialog = require('bootstrap-dialog');
     var updateFrame = require('text!tpl/system-updateOrder.html');
 
-    var WaitHall = require('text!/tpl/waitHall-detail.html');
+    var WaitHall = require('text!/tpl/system-waitHall.html');
 
     var ResponseDialog = require('../responseDialog.js');
     var responseDialog = new ResponseDialog();
@@ -174,12 +174,11 @@ define(function (require) {
             });
         },
         setWaitHall: function () {
+            var _this = this;
+
             $.ajax({
                 url: 'system/waitHall',
                 success: function (response) {
-
-                    // 조를 추가할 때 그 값에 붙일 id
-                    var id = response.length;
 
                     var dialog = new BootstrapDialog({
                         title: '<h3>대기실 별 조 배정 내역</h3>',
@@ -190,107 +189,40 @@ define(function (require) {
                             body.append(WaitHall);
 
                             // 대기실 출력
-                            for (var i = 0; i < response.length; i++) {
-                                // 중복된 값은 나타낼 필요 없음
-                                var flag = true;
-                                for (var j = 0; j < i; j++) {
-                                    // 중복된 값이 있으면 flag값을 바꾼다
-                                    if (response[i].hallCd == response[j].hallCd) {
-                                        flag = false;
+                            if (response.length == 0) {
+                                $('#hall').append('<div style="width: 25%; float: left">' +
+                                    '<input type="text" size="10" style="margin-left: 15%;" id ="' + response.length + '" name="newWaitHall" ></div>'
+                                );
+                            } else {
+                                for (var i = 0; i < response.length; i++) {
+                                    // 중복된 값은 나타낼 필요 없음
+                                    var flag = true;
+                                    for (var j = 0; j < i; j++) {
+                                        // 중복된 값이 있으면 flag값을 바꾼다
+                                        if (response[i].hallCd == response[j].hallCd) {
+                                            flag = false;
+                                        }
                                     }
-                                }
 
-                                // 중복검사 후, name=hall의 라디오 버튼을 만듦
-                                if (flag) {
-                                    $('#hall').append('<input style="margin: 0 2% 0 15%;" type="radio" id="' + i + '" name="hall" value="' + response[i].hallCd + '">' + response[i].hallNm);
+                                    // 중복검사 후, name=hall의 라디오 버튼을 만듦
+                                    if (flag) {
+                                        $('#hall').append('<div style="width: 25%; float: left">' +
+                                            '<input style="margin: 0 2% 0 15%; float: left" type="radio" id="' + i + '" name="hall" value="' + response[i].hallCd + '">' + response[i].hallNm +
+                                            '</div>');
+                                    }
                                 }
                             }
 
-                            // 각 hallNm을 클릭 시
-                            $('input[name=hall]').click(function () {
-                                // #group에 append 되어있는 값 없애기
-                                $('#group').html('');
-                                $('#groupInfo').fadeIn(500);
-                                $('#line').fadeIn(100);
-                                $('#addGroup').fadeIn(200);
-                                $('#notice').html('조 추가 시 값을 기입하지 않으면 추가되지 않습니다');
-
-                                // 해당하는 groupNm만 append 함
-                                for (var k = 0; k < response.length; k++) {
-                                    if (response[k].hallCd == $(this).val()) {
-                                        $('#group').append('<div style="width: 15%; float: left"><input style="margin-right: 10%" type="checkbox" id="' + k + '"' +
-                                            'name="group" value=' + response[k].groupNm + ' checked><label style="font-size: large; font-weight: normal" for=' + k + '>' + response[k].groupNm + '</label></div>');
-                                    }
-                                }
-
-                                $('#addGroup').click(function () {
-                                    id += 1;
-                                    $('#group').append('<div style="width: 15%; float: left">' +
-                                        '<input type="text" size="2" style="margin-right: 10%;" id="' + id + '" name="newGroup">조</div>');
-                                });
-                            });
+                            // 대기실 편집
+                            _this.modifyWaitHall(response);
                         }, // onshown
                         buttons: [
                             {
                                 label: '선택 저장',
                                 cssClass: 'btn-primary',
                                 action: function () {
-                                    // ori: 기존에 있던 조 이름 중에 유지되는 이름
-                                    // newGroup: 새로 입력한 조, tmp: 업로드할 조 리스트
-                                    var ori = [], newList = [], tmp = [];
-
-                                    // 기존에 저장되어 있던 조 중에 선택된 조
-                                    $('input[name=group]:checked').each(function () {
-                                        ori.push({
-                                            id: $(this)[0].id,
-                                            groupNm: $(this).val()
-                                        });
-                                        tmp.push({
-                                            id: $(this)[0].id,
-                                            groupNm: $(this).val()
-                                        });
-                                    });
-
-                                    // '조 추가' 버튼을 통해 새로 입력된 조
-                                    $('input[name=newGroup]').each(function () {
-                                        if ($(this).val() != '') {
-                                            tmp.push({
-                                                id: $(this)[0].id,
-                                                groupNm: $(this).val() + '조'
-                                            });
-                                            newList.push({
-                                                id: $(this)[0].id,
-                                                groupNm: $(this).val() + '조'
-                                            });
-                                        }
-                                    });
-
-                                    // 기존에 있는 조 인지 검사
-                                    var flag = true;
-                                    for (var i = 0; i < newList.length; i++) {
-                                        for (var j = 0; j < ori.length; j++) {
-                                            if (newList[i].groupNm == ori[j].groupNm) {
-                                                flag = false;
-                                                $(newList[i].id).css('border', '2px solid crimson');
-                                                $('#notice').html('중복된 이름이 있습니다. 확인 후 수정하세요');
-                                                return false;
-                                            }
-                                        }
-                                    }
-
-                                    // 선택된 대기실의 데이터를 모두 삭제함
-                                    var hallCd = $('input[name=hall]:checked').val();
-                                    $.ajax({url: 'system/delWaitHall?hallCd=' + hallCd});
-
-                                    // 조 리스트를 새로 insert
-                                    for (var i = 0; i < tmp.length; i++) {
-                                        $.ajax({
-                                            url: 'system/addWaitHall?hallCd=' + hallCd + '&groupNm=' + tmp[i].groupNm,
-                                            success: function (response) {
-                                                responseDialog.notify({msg: response});
-                                            }
-                                        });
-                                    }
+                                    // 조 편집
+                                    _this.modifyGroup();
                                 }
                             },
                             {
@@ -307,6 +239,117 @@ define(function (require) {
                     dialog.open();
                 } // success
             }); //ajax
+        },
+        // 대기실 수정
+        modifyWaitHall: function (response) {
+
+            $('#addWaitHall').click(function () {
+                $('#hall').append('<div style="width: 25%; float: left">' +
+                    //'<input style="margin-right: 10%" type="radio" name="newWaitHall" value="' + $('response.length').val() + '">' +
+                    '<input type="text" size="10" style="margin-left: 15%;" id ="' + response.length + '" name="newWaitHall" ></div>'
+                );
+
+                $('#innerClose').trigger('click');
+            });
+
+            // 조를 추가할 때 그 값에 붙일 id
+            var id = response.length;
+
+            // 각 hallNm을 클릭 시
+            $('input[name=hall]').click(function () {
+
+                // #group에 append 되어있는 값 없애기
+                $('#group').html('');
+                $('#groupInfo').fadeIn(500);
+                $('#line').fadeIn(100);
+                $('#addGroup').fadeIn(200);
+
+                // 해당하는 groupNm만 append 함
+                for (var k = 0; k < response.length; k++) {
+                    if (response[k].hallCd == $(this).val()) {
+                        if (response[k].groupNm == undefined) {
+                            id += 1;
+                            $('#group').append('<div style="width: 15%; float: left">' +
+                                '<input type="text" size="2" style="margin-right: 10%;" id="' + id + '" name="newGroup">조</div>');
+                        }
+                        else {
+                            $('#group').append('<div style="width: 15%; float: left"><input style="margin-right: 10%" type="checkbox" id="' + k + '"' +
+                                'name="group" value=' + response[k].groupNm + ' checked><label style="font-size: large; font-weight: normal" for=' + k + '>' + response[k].groupNm + '</label></div>');
+                        }
+                    }
+                }
+            });
+
+            $('#addGroup').click(function () {
+                id += 1;
+                $('#group').append('<div style="width: 15%; float: left">' +
+                    '<input type="text" size="2" style="margin-right: 10%;" id="' + id + '" name="newGroup">조</div>');
+            });
+
+            $('#innerClose').click(function () {
+                $('#line').fadeOut(230);
+                $('#groupInfo').fadeOut(200);
+            });
+        },
+        // 조 수정
+        modifyGroup: function () {
+
+            // ori: 기존에 있던 조 이름 중에 유지되는 이름
+            // newGroup: 새로 입력한 조, tmp: 업로드할 조 리스트
+            var ori = [], newList = [], tmp = [];
+
+            // 기존에 저장되어 있던 조 중에 선택된 조
+            $('input[name=group]:checked').each(function () {
+                ori.push({
+                    id: $(this)[0].id,
+                    groupNm: $(this).val()
+                });
+                tmp.push({
+                    id: $(this)[0].id,
+                    groupNm: $(this).val()
+                });
+            });
+
+            // '조 추가' 버튼을 통해 새로 입력된 조
+            $('input[name=newGroup]').each(function () {
+                if ($(this).val() != '') {
+                    tmp.push({
+                        id: $(this)[0].id,
+                        groupNm: $(this).val() + '조'
+                    });
+                    newList.push({
+                        id: $(this)[0].id,
+                        groupNm: $(this).val() + '조'
+                    });
+                }
+            });
+
+            // 기존에 있는 조 인지 검사
+            var flag = true;
+            for (var i = 0; i < newList.length; i++) {
+                for (var j = 0; j < ori.length; j++) {
+                    if (newList[i].groupNm == ori[j].groupNm) {
+                        flag = false;
+                        $(newList[i].id).css('border', '2px solid crimson');
+                        $('#notice').html('중복된 이름이 있습니다. 확인 후 수정하세요');
+                        return false;
+                    }
+                }
+            }
+
+            // 선택된 대기실의 데이터를 모두 삭제함
+            var hallCd = $('input[name=hall]:checked').val();
+            $.ajax({url: 'system/delWaitHall?hallCd=' + hallCd});
+
+            // 조 리스트를 새로 insert
+            for (var i = 0; i < tmp.length; i++) {
+                $.ajax({
+                    url: 'system/addWaitHall?hallCd=' + hallCd + '&groupNm=' + tmp[i].groupNm,
+                    success: function (response) {
+                        responseDialog.notify({msg: response});
+                    }
+                });
+            }
         }
     });
 });

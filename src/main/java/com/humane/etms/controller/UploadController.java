@@ -49,9 +49,9 @@ public class UploadController {
     private final StaffRepository staffRepository;
 
     // windows
-    @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
+    //@Value("${path.image.examinee:C:/api/etms}") String pathRoot;
     // mac
-    //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
+    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
 
     // 고려대 면접고사용
     public String validate(String str) {
@@ -91,7 +91,7 @@ public class UploadController {
 
                     // DB에 존재하는 AttendWaitHall을 찾음
                     AttendWaitHall tmp = waitHallRepository.findOne(new BooleanBuilder()
-                            .and(QAttendWaitHall.attendWaitHall.division.eq(vo.getDivision()))
+                            //.and(QAttendWaitHall.attendWaitHall.division.eq(vo.getDivision()))
                             .and(QAttendWaitHall.attendWaitHall.groupNm.eq(vo.getGroupNm()))
                             .and(QAttendWaitHall.attendWaitHall.hallCd.eq(tmpHall.getHallCd()))
                     );
@@ -101,7 +101,7 @@ public class UploadController {
 
                         // 객체를 새로 생성하여 값을 set
                         AttendWaitHall attendWaitHall = new AttendWaitHall();
-                        attendWaitHall.setDivision(vo.getDivision());
+                        //attendWaitHall.setDivision(vo.getDivision());
                         attendWaitHall.setGroupNm(vo.getGroupNm());
                         attendWaitHall.setHallCd(tmpHall.getHallCd());
 
