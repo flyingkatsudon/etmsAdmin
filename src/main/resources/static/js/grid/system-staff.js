@@ -43,7 +43,7 @@ define(function (require) {
                             '</div>';
 
                         var dialog = new BootstrapDialog({
-                            title: '<h5><div id="alert" style="font-weight: bold; font-size: medium; color: crimson"><span style="color: black">스태프 정보를 확인하세요</span></div></h5>',
+                            title: '<h5><div id="alert" style="font-weight: bold; font-size: medium; color: crimson"><span style="color: black">기술요원 정보를 확인하세요</span></div></h5>',
                             message: html,
                             onshown: function () {
 
@@ -88,7 +88,7 @@ define(function (require) {
                                     '</div>'
                                 );
 
-                                // 스태프 추가 dialog에 사용될 툴바
+                                // 기술요원 추가 dialog에 사용될 툴바
                                 this.toolbar = new InnerToolbar({
                                     el: '#staff',
                                     parent: this,

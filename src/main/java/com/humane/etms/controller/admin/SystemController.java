@@ -201,7 +201,7 @@ public class SystemController {
                     param.setAttendCd(attend.getAttendCd());
                     systemMapper.addStaff(param);
                 } else {
-                    return ResponseEntity.ok("이미 등록된 스태프입니다");
+                    return ResponseEntity.ok("이미 등록된 기술요원입니다");
                 }
             }
             return ResponseEntity.ok("추가되었습니다");
@@ -231,7 +231,7 @@ public class SystemController {
             if (tmp == null) {
                 systemMapper.modifyStaff(param);
             } else {
-                return ResponseEntity.ok("이미 등록된 스태프입니다");
+                return ResponseEntity.ok("이미 등록된 기술요원입니다");
             }
 
             return ResponseEntity.ok("변경되었습니다");

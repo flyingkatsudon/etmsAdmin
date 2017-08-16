@@ -39,7 +39,7 @@ define(function (require) {
             var _this = this;
 
             var dialog = new BootstrapDialog({
-                    title: '<h4>스태프를 추가합니다</h4>',
+                    title: '<h4>기술요원을 추가합니다</h4>',
                     buttons: [
                         {
                             label: '닫기',
@@ -53,7 +53,7 @@ define(function (require) {
                         var body = dialog.$modalBody;
                         body.append(InnerTemplate);
 
-                        // 스태프 개별 추가
+                        // 기술요원 개별 추가
                         $('#addEach').click(function () {
                             // alert('준비중!');
                             // return false;
@@ -67,7 +67,7 @@ define(function (require) {
                                 '</div>';
 
                             var dialog = new BootstrapDialog({
-                                title: '<h5><div id="alert" style="font-weight: bold; font-size: medium; color: crimson"><span style="color: black">스태프 정보를 확인하세요</span></div></h5>',
+                                title: '<h5><div id="alert" style="font-weight: bold; font-size: medium; color: crimson"><span style="color: black">기술요원 정보를 확인하세요</span></div></h5>',
                                 message: html,
                                 onshown: function () {
 
@@ -112,7 +112,7 @@ define(function (require) {
                                         '</div>'
                                     );
 
-                                    // 스태프 추가 dialog에 사용될 툴바
+                                    // 기술요원 추가 dialog에 사용될 툴바
                                     this.toolbar = new InnerToolbar({el: '#staff', parent: this}).render();
 
                                     $('#first, #middle, #last').keypress(function (event) {
@@ -310,7 +310,7 @@ define(function (require) {
         },
         del: function () {
             var dialog = new BootstrapDialog({
-                message: '<h5 style="margin-left:10%">스태프 정보를 모두 삭제합니다</h5>',
+                message: '<h5 style="margin-left:10%">기술요원 정보를 모두 삭제합니다</h5>',
                 buttons: [
                     {
                         label: '삭제',

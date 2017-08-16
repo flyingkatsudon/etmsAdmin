@@ -219,7 +219,7 @@ public class UploadController {
                 }
             });
 
-            return ResponseEntity.ok("스태프 정보가 업로드되었습니다");
+            return ResponseEntity.ok("기술요원 정보가 업로드되었습니다");
 
         } catch (Throwable throwable) {
             throwable.printStackTrace();
