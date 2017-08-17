@@ -42,9 +42,9 @@ define(function (require) {
                             $('#account').append('<div style="margin:3% 0 1% 3%; width:47%;">' + 'PW' + '<input id="pw" type="text" style="border-radius: 10px; padding: 1%; margin-left: 20%"></div>');
                             $('#account').append(
                                 '<div style="margin:3% 0 0 3%; width:47%;">' + '권한'
-                                + '<input style="margin: 0 2% 0 15%;" type="radio" id="admin" name="role" value="ROLE_ADMIN">' + '관리자'
-                                + '<input style="margin: 0 2% 0 10%;" type="radio" id="user" name="role" value="ROLE_USER">' + '사용자'
-                                + '<input style="margin: 0 2% 0 10%;" type="radio" id="guest" name="role" value="ROLE_GUEST">' + '신분증확인용' + '</div>');
+                                + '<input style="margin: 0 2% 0 10%;" type="radio" id="admin" name="role" value="ROLE_ADMIN">' + '관리자'
+                                + '<input style="margin: 0 2% 0 5%;" type="radio" id="user" name="role" value="ROLE_USER">' + '사용자'
+                                + '<input style="margin: 0 2% 0 5%;" type="radio" id="guest" name="role" value="ROLE_GUEST">' + '신분증확인용' + '</div>');
 
                             $('#userId').keyup(function () {
                                 var tmp = $('#userId').val();
