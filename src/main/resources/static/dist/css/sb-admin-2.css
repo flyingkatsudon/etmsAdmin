@@ -548,7 +548,7 @@ h4 {
     text-align: center;
     margin: 10%;
     padding: 10%;
-    //border: 1px solid crimson;
+/ / border: 1 px solid crimson;
     border-radius: 20px;
 }
 
@@ -602,4 +602,15 @@ h4 {
     padding: 3% 13% 3% 10%;
     font-size: xx-large;
     border-radius: 15px;
+}
+
+.staff-toolbar {
+    margin: 1% 0 1% 1%;
+    width: 47%;
+    float: left;
+}
+
+.staff-select {
+    width: 50%;
+    margin-left: 20%;
 }

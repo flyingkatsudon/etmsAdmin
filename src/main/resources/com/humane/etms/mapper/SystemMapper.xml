@@ -206,6 +206,7 @@
                 <if test="param._staffNm != null"> and staff_nm = #{param._staffNm}</if>
                 <if test="param._phoneNo != null"> and phone_no = #{param._phoneNo}</if>
                 <if test="param._bldgNm != null"> and bldg_nm = #{param._bldgNm}</if>
+                <if test="param._attendCd != null"> and attend_cd = #{param._attendCd}</if>
             </if>
         </where>
     </update>

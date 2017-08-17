@@ -185,6 +185,7 @@ public class SystemController {
         try {
             Attend attend = attendRepository.findOne(new BooleanBuilder()
                     .and(QAttend.attend.admission.admissionNm.eq(param.getAdmissionNm()))
+                    .and(QAttend.attend.attendNm.eq(param.getAttendNm()))
                     .and(QAttend.attend.attendDate.eq(param.getAttendDate()))
                     .and(QAttend.attend.attendTime.eq(param.getAttendTime()))
             );
@@ -201,12 +202,13 @@ public class SystemController {
                     param.setAttendCd(attend.getAttendCd());
                     systemMapper.addStaff(param);
                 } else {
-                    return ResponseEntity.ok("이미 등록된 기술요원입니다");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미 등록된 기술요원입니다");
                 }
             }
             return ResponseEntity.ok("추가되었습니다");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("빈 값을 확인하세요. 콤보박스의 값을 모두 특정하세요");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
     }
 
@@ -215,6 +217,7 @@ public class SystemController {
         try {
             Attend attend = attendRepository.findOne(new BooleanBuilder()
                     .and(QAttend.attend.admission.admissionNm.eq(param.getAdmissionNm()))
+                    .and(QAttend.attend.attendNm.eq(param.getAttendNm()))
                     .and(QAttend.attend.attendDate.eq(param.getAttendDate()))
                     .and(QAttend.attend.attendTime.eq(param.getAttendTime()))
             );
@@ -231,12 +234,12 @@ public class SystemController {
             if (tmp == null) {
                 systemMapper.modifyStaff(param);
             } else {
-                return ResponseEntity.ok("이미 등록된 기술요원입니다");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("빈 값을 확인하세요. 콤보박스의 값을 모두 특정하세요");
             }
-
             return ResponseEntity.ok("변경되었습니다");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
     }
 
@@ -245,6 +248,7 @@ public class SystemController {
         try {
             Attend attend = attendRepository.findOne(new BooleanBuilder()
                     .and(QAttend.attend.admission.admissionNm.eq(param.get_admissionNm()))
+                    .and(QAttend.attend.attendNm.eq(param.getAttendNm()))
                     .and(QAttend.attend.attendDate.eq(param.get_attendDate()))
                     .and(QAttend.attend.attendTime.eq(param.get_attendTime()))
             );
@@ -254,7 +258,8 @@ public class SystemController {
             systemMapper.delStaff(param);
             return ResponseEntity.ok("삭제되었습니다");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
     }
 
@@ -264,7 +269,8 @@ public class SystemController {
             systemMapper.delStaffAll();
             return ResponseEntity.ok("삭제되었습니다");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
     }
 }
