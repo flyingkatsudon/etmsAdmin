@@ -248,7 +248,7 @@ public class SystemController {
         try {
             Attend attend = attendRepository.findOne(new BooleanBuilder()
                     .and(QAttend.attend.admission.admissionNm.eq(param.get_admissionNm()))
-                    .and(QAttend.attend.attendNm.eq(param.getAttendNm()))
+                    .and(QAttend.attend.attendNm.eq(param.get_attendNm()))
                     .and(QAttend.attend.attendDate.eq(param.get_attendDate()))
                     .and(QAttend.attend.attendTime.eq(param.get_attendTime()))
             );

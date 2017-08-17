@@ -134,6 +134,10 @@ define(function (require) {
                                             $('#' + id).val('');
                                             //  event.returnValue = false;
                                             $('#msg').html('숫자만 입력할 수 있습니다');
+                                            $('#msg').fadeOut(100);
+                                            $('#msg').fadeIn(100);
+                                            $('#msg').fadeOut(100);
+                                            $('#msg').fadeIn(100);
                                             return false;
                                         } else {
                                             $('#msg').html('');
@@ -141,11 +145,19 @@ define(function (require) {
                                             if (id == 'first') {
                                                 if (text.length > 3) {
                                                     $('#msg').html('3자리까지 입력 가능합니다');
+                                                    $('#msg').fadeOut(100);
+                                                    $('#msg').fadeIn(100);
+                                                    $('#msg').fadeOut(100);
+                                                    $('#msg').fadeIn(100);
                                                     return false;
                                                 }
                                             } else {
                                                 if (text.length > 4) {
                                                     $('#msg').html('4자리까지 입력 가능합니다');
+                                                    $('#msg').fadeOut(100);
+                                                    $('#msg').fadeIn(100);
+                                                    $('#msg').fadeOut(100);
+                                                    $('#msg').fadeIn(100);
                                                     return false;
                                                 }
                                             }
@@ -185,6 +197,10 @@ define(function (require) {
 
                                             if (staffNm.length == 0) {
                                                 $('#msg').html('성명을 입력하세요');
+                                                $('#msg').fadeOut(100);
+                                                $('#msg').fadeIn(100);
+                                                $('#msg').fadeOut(100);
+                                                $('#msg').fadeIn(100);
                                                 $('#name').css('border', '3px solid crimson');
                                                 $('#name').focus();
                                                 return false;
@@ -199,6 +215,10 @@ define(function (require) {
 
                                             if (first.length != 3) {
                                                 $('#msg').html('3자리를 입력하세요');
+                                                $('#msg').fadeOut(100);
+                                                $('#msg').fadeIn(100);
+                                                $('#msg').fadeOut(100);
+                                                $('#msg').fadeIn(100);
                                                 $('#first').css('border', '2px solid crimson');
                                                 $('#first').focus();
                                                 return false;
@@ -206,6 +226,10 @@ define(function (require) {
 
                                             if (middle.length != 4) {
                                                 $('#msg').html('4자리를 입력하세요');
+                                                $('#msg').fadeOut(100);
+                                                $('#msg').fadeIn(100);
+                                                $('#msg').fadeOut(100);
+                                                $('#msg').fadeIn(100);
                                                 $('#middle').css('border', '2px solid crimson');
                                                 $('#middle').focus();
                                                 return false;
@@ -213,6 +237,10 @@ define(function (require) {
 
                                             if (last.length != 4) {
                                                 $('#msg').html('4자리를 입력하세요');
+                                                $('#msg').fadeOut(100);
+                                                $('#msg').fadeIn(100);
+                                                $('#msg').fadeOut(100);
+                                                $('#msg').fadeIn(100);
                                                 $('#last').css('border', '2px solid crimson');
                                                 $('#last').focus();
                                                 return false;
