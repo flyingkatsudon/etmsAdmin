@@ -61,9 +61,9 @@ define(function (require) {
                                     '<div style="margin:1% 0 1% 3%; width: 100%; float:left">' +
                                         '<div style="float:left">전화번호</div>' +
                                         '<div style="width: 42%; float:left">' +
-                                            '<input id="first" size="4" type="text" style="border-radius: 10px; padding: 1%; margin-left: 20%" value="' + phone[0] + '">&nbsp;-&nbsp;' +
-                                            '<input id="middle" size="4" type="text" style="border-radius: 10px; padding: 1%;" value="' + phone[1] + '">&nbsp;-&nbsp;' +
-                                            '<input id="last" size="4" type="text" style="border-radius: 10px; padding: 1%;" value="' + phone[2] + '">' +
+                                            '<input id="first" size="2" type="text" style="border-radius: 10px; padding: 1%; margin-left: 20%" value="' + phone[0] + '">&nbsp;-&nbsp;' +
+                                            '<input id="middle" size="2" type="text" style="border-radius: 10px; padding: 1%;" value="' + phone[1] + '">&nbsp;-&nbsp;' +
+                                            '<input id="last" size="2" type="text" style="border-radius: 10px; padding: 1%;" value="' + phone[2] + '">' +
                                         '</div>' +
                                     '<div id="msg" style="margin:1% 0 1% 3%; width:45%; float:left; vertical-align: middle; color: crimson"></div>' +
                                     '</div>'
