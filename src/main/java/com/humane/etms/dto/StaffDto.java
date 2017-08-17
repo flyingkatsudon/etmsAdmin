@@ -38,6 +38,7 @@ public class StaffDto implements Serializable {
     private String _staffNm;
     private String _phoneNo;
     private String _bldgNm;
+    private String _attendCd;
 
     private String _admissionNm;
 

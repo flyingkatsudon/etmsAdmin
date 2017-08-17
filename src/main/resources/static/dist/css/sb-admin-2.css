@@ -603,6 +603,18 @@ h4 {
     font-size: xx-large;
     border-radius: 15px;
 }
+
+.staff-toolbar {
+    margin: 1% 0 1% 1%;
+    width: 47%;
+    float: left;
+}
+
+.staff-select {
+    width: 50%;
+    margin-left: 20%;
+}
+
 .sys-group {
     margin-top: 1%;
     margin-bottom: 3%;

@@ -39,7 +39,7 @@ define(function (require) {
             var _this = this;
 
             var dialog = new BootstrapDialog({
-                    title: '<h4>스태프를 추가합니다</h4>',
+                    title: '<h4>기술요원을 추가합니다</h4>',
                     buttons: [
                         {
                             label: '닫기',
@@ -53,7 +53,7 @@ define(function (require) {
                         var body = dialog.$modalBody;
                         body.append(InnerTemplate);
 
-                        // 스태프 개별 추가
+                        // 기술요원 개별 추가
                         $('#addEach').click(function () {
                             var html = '<div class="container-fluid">' +
                                 '<div class="row">' +
@@ -64,52 +64,61 @@ define(function (require) {
                                 '</div>';
 
                             var dialog = new BootstrapDialog({
-                                title: '<h5><div id="alert" style="font-weight: bold; font-size: medium; color: crimson"><span style="color: black">스태프 정보를 확인하세요</span></div></h5>',
+                                title: '<h5><div id="alert" style="font-weight: bold; font-size: medium; color: crimson"><span style="color: black">기술요원 정보를 확인하세요</span></div></h5>',
                                 message: html,
+                                closable: false,
                                 onshown: function () {
-
                                     $('#staff').append(
-                                        '<div style="margin:1% 0 1% 3%; width:47%;">' + '성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명' +
-                                        '<input id="name" size="12" type="text" style="width: 60%; border-radius: 10px; padding: 1%; margin-left: 20%;">' +
+                                        '<div style="margin: 1% 0 1% 3%;">' +
+                                        '<div style="float: left">성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명</div>' +
+                                        '<div style="width: 42%">' +
+                                        '<input id="name" size="12" type="text" style="border-radius: 10px; padding: 1%; margin-left: 22%;"/>' +
+                                        '</div>' +
                                         '</div>'
                                     );
                                     $('#staff').append(
-                                        '<div style="margin:1% 0 1% 3%; width:47%; float:left">' + '전화번호' +
+                                        '<div style="margin:1% 0 1% 3%; width: 100%; float:left">' +
+                                        '<div style="float:left">전화번호</div>' +
+                                        '<div style="width: 42%; float:left">' +
                                         '<input id="first" size="4" type="text" style="border-radius: 10px; padding: 1%; margin-left: 20%">&nbsp;-&nbsp;' +
-                                        '<input id="middle" size="4" type="text" style="border-radius: 10px; padding: 1%;">&nbsp;-&nbsp;' +
-                                        '<input id="last" size="4" type="text" style="border-radius: 10px; padding: 1%;">' +
+                                        '<input id="middle" size="4" type="text" style="border-radius: 10px; padding: 1%">&nbsp;-&nbsp;' +
+                                        '<input id="last" size="4" type="text" style="border-radius: 10px; padding: 1%">' +
                                         '</div>' +
-                                        '<div id="msg" style="margin:2% 0 1% 3%; width:47%; float:right; vertical-align: middle; color: crimson"></div>'
+                                        '<div id="msg" style="margin:1% 0 1% 3%; width:45%; float:left; vertical-align: middle; color: crimson"></div>' +
+                                        '</div>'
                                     );
                                     $('#staff').append(
                                         '<div id="line" style="margin: 10% 0 5% 0; border: 1px solid #d8d6d5"></div>'
                                     );
                                     $('#staff').append(
-                                        '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '전&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;형' +
-                                        '<select id="staffAdm" style="width: 50%; margin-left: 20%; padding: 1%">' +
-                                        '</select>' +
+                                        '<div class="staff-toolbar">' + '전&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;형' +
+                                        '<select id="staffAdm" class="staff-select"></select>' +
                                         '</div>'
                                     );
                                     $('#staff').append(
-                                        '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '시험일자' +
-                                        '<select id="staffDate" style="width: 50%; margin-left: 20%; padding: 1%">' +
-                                        '</select>' +
+                                        '<div class="staff-toolbar">' + '시&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;험' +
+                                        '<select id="staffAtn" class="staff-select"></select>' +
                                         '</div>'
                                     );
                                     $('#staff').append(
-                                        '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '시험시간' +
-                                        '<select id="staffTime" style="width: 50%; margin-left: 20%; padding: 1%">' +
-                                        '</select>' +
+                                        '<div class="staff-toolbar">' + '시험일자' +
+                                        '<select id="staffDate" class="staff-select"></select>' +
                                         '</div>'
                                     );
                                     $('#staff').append(
-                                        '<div style="margin:1% 0 1% 1%; width:47%; float:left">' + '고사건물' +
-                                        '<select id="staffBldg" style="width: 50%; margin-left: 20%; padding: 1%">' +
-                                        '</select>' +
+                                        '<div class="staff-toolbar">' + '시험시간' +
+                                        '<select id="staffTime" class="staff-select"></div>'
+                                    );
+                                    $('#staff').append(
+                                        '<div class="staff-toolbar">' + '고사건물' +
+                                        '<select id="staffBldg" class="staff-select"></select>' +
                                         '</div>'
+                                    );
+                                    $('#staff').append(
+                                        '<div style="margin:2% 0 1% 3%; width:45%; float:left; vertical-align: middle; color: crimson"><span id="msg2"></span></div>'
                                     );
 
-                                    // 스태프 추가 dialog에 사용될 툴바
+                                    // 기술요원 추가 dialog에 사용될 툴바
                                     this.toolbar = new InnerToolbar({el: '#staff', parent: this}).render();
 
                                     $('#first, #middle, #last').keypress(function (event) {
@@ -121,19 +130,19 @@ define(function (require) {
                                         if (check_key(event) != 1) {
                                             $('#' + id).val('');
                                             //  event.returnValue = false;
-                                            $("#msg").html("숫자만 입력할 수 있습니다.");
+                                            $('#msg').html('숫자만 입력할 수 있습니다');
                                             return false;
                                         } else {
-                                            $("#msg").html("");
+                                            $('#msg').html('');
 
                                             if (id == 'first') {
                                                 if (text.length > 3) {
-                                                    $("#msg").html("3자리까지 입력 가능합니다");
+                                                    $('#msg').html('3자리까지 입력 가능합니다');
                                                     return false;
                                                 }
                                             } else {
                                                 if (text.length > 4) {
-                                                    $("#msg").html("4자리까지 입력 가능합니다");
+                                                    $('#msg').html('4자리까지 입력 가능합니다');
                                                     return false;
                                                 }
                                             }
@@ -167,6 +176,7 @@ define(function (require) {
                                 buttons: [
                                     {
                                         label: '저장',
+                                        cssClass: 'btn-success',
                                         action: function () {
                                             var staffNm = $('#name').val();
 
@@ -174,6 +184,7 @@ define(function (require) {
                                                 $('#msg').html('성명을 입력하세요');
                                                 $('#name').css('border', '3px solid crimson');
                                                 $('#name').focus();
+                                                return false;
                                             }
 
                                             // 유효한 전화번호인지 검사
@@ -187,26 +198,38 @@ define(function (require) {
                                                 $('#msg').html('3자리를 입력하세요');
                                                 $('#first').css('border', '2px solid crimson');
                                                 $('#first').focus();
+                                                return false;
                                             }
 
                                             if (middle.length != 4) {
                                                 $('#msg').html('4자리를 입력하세요');
                                                 $('#middle').css('border', '2px solid crimson');
                                                 $('#middle').focus();
+                                                return false;
                                             }
 
                                             if (last.length != 4) {
                                                 $('#msg').html('4자리를 입력하세요');
                                                 $('#last').css('border', '2px solid crimson');
                                                 $('#last').focus();
+                                                return false;
                                             }
 
-                                            $('msg').html('');
+                                            if ($('#staffAdm').val() == '' || $('#staffBldg').val() == '' ||
+                                                $('#staffAtn').val() == '' || $('#staffBldg').val() == '') {
+                                                $('#msg2').html('콤보박스의 값을 모두 특정하세요');
+                                                $('#msg2').fadeOut(100);
+                                                $('#msg2').fadeIn(100);
+                                                $('#msg2').fadeOut(100);
+                                                $('#msg2').fadeIn(100);
+                                                return false;
+                                            }
 
                                             var param = {
                                                 staffNm: $('#name').val(),
                                                 phoneNo: $('#first').val() + '-' + $('#middle').val() + '-' + $('#last').val(),
                                                 admissionNm: $('#staffAdm').val(),
+                                                attendNm: $('#staffAtn').val(),
                                                 attendDate: $('#staffDate').val(),
                                                 attendTime: $('#staffTime').val(),
                                                 bldgNm: $('#staffBldg').val()
@@ -221,7 +244,7 @@ define(function (require) {
                                                 success: function (response) {
                                                     responseDialog.notify({msg: response});
                                                     $('#search').trigger('click');
-                                                }, error: function(response){
+                                                }, error: function (response) {
                                                     responseDialog.notify({
                                                         msg: response.responseJSON,
                                                         closeAll: false
@@ -307,7 +330,7 @@ define(function (require) {
         },
         del: function () {
             var dialog = new BootstrapDialog({
-                message: '<h5 style="margin-left:10%">스태프 정보를 모두 삭제합니다</h5>',
+                message: '<h5 style="margin-left:10%">기술요원 정보를 모두 삭제합니다</h5>',
                 buttons: [
                     {
                         label: '삭제',
