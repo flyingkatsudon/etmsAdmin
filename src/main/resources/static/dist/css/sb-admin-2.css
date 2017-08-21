@@ -614,6 +614,22 @@ h4 {
     margin-left: 20%;
 }
 
+.waitHall-toolbar {
+    margin: 1% 0 1% 1%;
+}
+
+.waitHall-textBox {
+    width: 30%;
+    margin-left: 10%;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.waitHall-select {
+    width: 30%;
+    margin-left: 10%;
+}
+
 .sys-group {
     margin-top: 1%;
     margin-bottom: 3%;

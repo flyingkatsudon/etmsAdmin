@@ -2,6 +2,7 @@ package com.humane.etms.mapper;
 
 import com.humane.etms.dto.*;
 import com.humane.etms.model.Device;
+import com.humane.etms.model.Hall;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
@@ -93,5 +94,7 @@ public interface SystemMapper {
     Page<ExamineeDto> order(@Param("param") ExamineeDto examineeDto, @Param("pageable") Pageable pageable);
     Page<WaitHallDto> waitHall(@Param("pageable") Pageable pageable);
     void delWaitHall(@Param("hallCd") String hallCd);
+    void delOrder();
+    void addHall(@Param("param") Hall param);
     void addWaitHall(@Param("hallCd") String hallCd, @Param("groupNm") String groupNm);
 }

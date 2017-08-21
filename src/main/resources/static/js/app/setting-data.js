@@ -18,6 +18,8 @@ define(function (require) {
             this.el = o.el;
             this.parent = o.parent;
         }, render: function () {
+            var _this = this;
+
             this.$el.html(Template);
             this.initForm('#frmUploadWaitHall');
             this.initForm('#frmUploadHall');
@@ -26,6 +28,22 @@ define(function (require) {
             // 시험 정보 관리 메뉴
             this.toolbar = new DataToolbar({el: '.hm-ui-search', parent: this}).render();
             this.list = new SettingAttend({el: '#attendInfo', parent: this}).render();
+
+            $('#reset').click(function(){
+                _this.resetClicked();
+            });
+
+            $('#init').click(function(){
+                _this.dialogFormat('초기화하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '초기화', 'system/init');
+            });
+
+            $('#delawh').click(function(){
+                _this.dialogFormat('삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '삭제', 'system/delawh');
+            });
+
+            $('#delOrder').click(function(){
+                _this.dialogFormat('삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '삭제', 'system/delOrder');
+            });
 
         }, search: function (o) {
             this.list.search(o);
@@ -52,44 +70,8 @@ define(function (require) {
                     responseDialog.notify({msg: response});
                 }
             });
-        }, events: {
-            'click #reset': 'resetClicked',
-            'click #init': 'initClicked',
-            'click #delawh': 'delawhClicked'
-        }, delawhClicked: function(e) {
-            var _this = this;
-            var dialog = new BootstrapDialog({
-                message: '<h5 style="margin-left:10%">삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?</h5>',
-                buttons: [
-                    {
-                        label: '삭제',
-                        cssClass: 'btn-delete',
-                        action: function () {
-                            $.ajax({
-                                url: 'system/delawh',
-                                success: function(response){
-                                    responseDialog.notify({msg: response});
-                                }
-                            })
-                        }
-                    },
-                    {
-                        label: '닫기',
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }
-                ]
-            });
-
-            dialog.realize();
-            dialog.getModalDialog().css('margin-top', '20%');
-            dialog.getModalHeader().hide();
-            dialog.getModalFooter().css('padding', '1%');
-            dialog.open();
-
-        }
-        , resetClicked: function (e) {
+        },
+        resetClicked: function (e) {
             var _this = this;
             var dialog = new BootstrapDialog({
                 message: '<h5 style="margin-left:10%">삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?</h5>',
@@ -143,18 +125,18 @@ define(function (require) {
                 }
             });
 
-        }, initClicked: function (e) {
-
+        },
+        dialogFormat: function(message, label, url){
             var dialog = new BootstrapDialog({
-                message: '<h5 style="margin-left:10%">서버의 데이터를 초기상태로 돌리시겠습니까?</h5>',
+                message: '<div style="text-align:center"><h5>' + message + '</h5></div>',
                 closable: true,
                 buttons: [
                     {
-                        label: '초기화',
+                        label: label,
                         cssClass: 'btn-primary',
                         action: function () {
                             $.ajax({
-                                url: 'system/init',
+                                url: url,
                                 success: function (response) {
                                     responseDialog.notify({msg: response, closable: true});
                                 }

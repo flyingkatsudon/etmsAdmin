@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <label style="width: 80%"><h4>대기실 정보를 입력하세요</h4></label>
+            <button id="innerAddHall" class="btn-success" style="font-weight:normal; border-radius: 10px; float:right">대기실 추가</button>
+        </div>
+        <div id="hallInfo" class="col-lg-12">
+            <div class="waitHall-toolbar">고사본부
+                <select id="headNm" name="head" class="waitHall-select"></select>
+                <input id="headTxt" type="text" name="head" class="waitHall-textBox" visibility=true>
+            </div>
+            <div class="waitHall-toolbar">고사건물
+                <select id="bldgNm" name="bldg" class="waitHall-select"></select>
+                <input id="bldgTxt" type="text" name="bldg" class="waitHall-textBox" visibility=true>
+            </div>
+            <div class="waitHall-toolbar">대기실&nbsp;&nbsp;&nbsp;
+                <input id="hallTxt" name="hall" class="waitHall-textBox" type="text">
+                <span id="notice" style="margin-left:10%; text-align: center; color: crimson" hidden></span>
+            </div>
+        </div>
+    </div>
+    <div id="innerLine" style="margin: 5% 0 5% 0; border: 1px solid #d8d6d5" hidden></div>
+    <div id="innerGroupInfo" class="row" hidden>
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <label style="width: 80%"><h4><span id="innerNotice">조 정보를 입력하세요</span></h4></label>
+                <button id="innerAddGroup" class="btn-success" style="font-weight:normal; border-radius: 10px; float:right">조 추가</button>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <h5>
+                <div id="innerGroup" style="margin-left: 5%; font-weight: normal; font-size: medium;"></div>
+            </h5>
+        </div>
+    </div>
+</div>

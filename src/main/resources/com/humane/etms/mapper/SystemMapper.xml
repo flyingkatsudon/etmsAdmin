@@ -223,9 +223,9 @@
     <!-- TODO: 고려대 면접고사용 -->
     <select id="orderCnt" resultType="java.lang.Long">
         select count(*)
-        from exam_map
-        inner join exam on exam.exam_cd = exam_map.exam_cd
-        inner join admission on admission.admission_cd = exam.admission_cd
+        from attend_map
+        inner join attend on attend.attend_cd = attend_map.attend_cd
+        inner join admission on admission.admission_cd = attend.admission_cd
         <where>
             AND group_nm is not null
             <if test="param != null">
@@ -262,7 +262,7 @@
     </select>
 
     <select id="waitHall" resultType="com.humane.etms.dto.WaitHallDto">
-        select hall.head_nm, hall.bldg_nm, awh.hall_cd, hall.hall_nm, awh.group_nm
+        select awh._id as id, hall.head_nm, hall.bldg_nm, awh.hall_cd, hall.hall_nm, awh.group_nm
         from attend_wait_hall awh
         inner join hall on hall.hall_cd = awh.hall_cd
         order by awh.hall_cd, awh.group_nm
@@ -274,6 +274,14 @@
             <if test="hallCd != null"> and attend_wait_hall.hall_cd = #{hallCd}</if>
         </where>
     </delete>
+
+    <delete id="delOrder">
+        update attend_map set group_nm = null, group_order = null, debate_nm = null, debate_order = null
+    </delete>
+
+    <insert id="addHall" parameterType="String" >
+        insert into hall (hall_cd, head_nm, bldg_nm, hall_nm, is_etc) values ((select max(hall_cd) + 1 from hall as hall_cd), #{param.headNm}, #{param.bldgNm}, #{param.hallNm}, false)
+    </insert>
 
     <insert id="addWaitHall" parameterType="String" useGeneratedKeys="true" keyProperty="id">
         insert into attend_wait_hall values (null, #{groupNm}, #{hallCd}, null)

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class WaitHallDto{
+    private String id;
     private String groupNm;
     private String headNm;
     private String bldgNm;

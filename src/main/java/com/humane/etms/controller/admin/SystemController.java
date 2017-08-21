@@ -283,15 +283,15 @@ public class SystemController {
      * 고려대 면접고사용
      */
     @RequestMapping(value = "local/orderCnt")
-    public boolean fromLocal(String admissionCd){
+    public boolean fromLocal(String admissionCd) {
 
         try {
             long check = systemMapper.orderCnt(admissionCd);
 
-            if(check <= 0)
+            if (check <= 0)
                 return false;
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -315,31 +315,70 @@ public class SystemController {
     }
 
     @RequestMapping(value = "waitHall")
-    public ResponseEntity waitHall(Pageable pageable){
-        try{
+    public ResponseEntity waitHall(Pageable pageable) {
+        try {
             return ResponseEntity.ok(systemMapper.waitHall(pageable).getContent());
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("불러오지 못했습니다. 잠시 후 다시 시도하세요");
         }
     }
 
     @RequestMapping(value = "delWaitHall")
-    public void delWaitHall(String hallCd){ systemMapper.delWaitHall(hallCd);}
+    public void delWaitHall(String hallCd) {
+        systemMapper.delWaitHall(hallCd);
+    }
+
+    private final HallRepository hallRepository;
+
+    @RequestMapping(value = "addHall")
+    public String addHall(@RequestBody Hall hall){
+        try{
+            systemMapper.addHall(hall);
+
+            Hall tmp = hallRepository.findOne(new BooleanBuilder()
+                    .and(QHall.hall.headNm.eq(hall.getHeadNm()))
+                    .and(QHall.hall.bldgNm.eq(hall.getBldgNm()))
+                    .and(QHall.hall.hallNm.eq(hall.getHallNm()))
+            );
+
+            String hallCd = null;
+
+            if(tmp != null){
+                hallCd = tmp.getHallCd();
+            }
+
+            return hallCd;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return e.getMessage();
+
+        }
+    }
 
     @RequestMapping(value = "addWaitHall")
     public ResponseEntity addWaitHall(String hallCd, String groupNm) {
         try {
+            if (hallCd != null) {
+                // attendWaitHall이 있는지 검사
+                AttendWaitHall attendWaitHall = waitHallRepository.findOne(new BooleanBuilder()
+                        .and(QAttendWaitHall.attendWaitHall.hallCd.eq(hallCd))
+                        .and(QAttendWaitHall.attendWaitHall.groupNm.eq(groupNm))
+                );
 
-            // attendWaitHall이 있는지 검사
-            AttendWaitHall attendWaitHall = waitHallRepository.findOne(new BooleanBuilder()
-                    .and(QAttendWaitHall.attendWaitHall.hallCd.eq(hallCd))
-                    .and(QAttendWaitHall.attendWaitHall.groupNm.eq(groupNm))
-            );
+                // attendWaitHall이 존재하지 않으면 insert
+                if (attendWaitHall == null) systemMapper.addWaitHall(hallCd, groupNm);
 
-            // attendWaitHall이 존재하지 않으면 insert
-            if(attendWaitHall == null) systemMapper.addWaitHall(hallCd, groupNm);
+                return ResponseEntity.ok("저장되었습니다");
+            } else {
+                // 1. hall 등록
+                //systemMapper.addHall();
 
-            return ResponseEntity.ok("저장되었습니다");
+                // 2. attendWaithall 등록
+
+                systemMapper.addWaitHall(null, groupNm);
+                return ResponseEntity.ok("저장되었습니다");
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
@@ -349,7 +388,17 @@ public class SystemController {
     public ResponseEntity delawh() {
         try {
             systemMapper.delWaitHall(null);
-            return ResponseEntity.ok("저장되었습니다");
+            return ResponseEntity.ok("삭제되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "delOrder")
+    public ResponseEntity delOrder() {
+        try {
+            systemMapper.delOrder();
+            return ResponseEntity.ok("삭제되었습니다");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
