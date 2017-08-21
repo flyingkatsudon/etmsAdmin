@@ -55,7 +55,6 @@ define(function (require) {
 
                         // 기술요원 개별 추가
                         $('#addEach').click(function () {
-
                             var html = '<div class="container-fluid">' +
                                 '<div class="row">' +
                                 '<div class="col-lg-12">' +
