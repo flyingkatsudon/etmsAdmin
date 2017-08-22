@@ -222,19 +222,18 @@ public class SystemController {
                     .and(QAttend.attend.attendTime.eq(param.getAttendTime()))
             );
 
-            param.setAttendCd(attend.getAttendCd());
+            if (attend == null) return ResponseEntity.ok("일치하는 전형을 찾을 수 없습니다. 다시 시도하세요");
+            else {
+                param.setAttendCd(attend.getAttendCd());
 
-            Staff tmp = staffRepository.findOne(new BooleanBuilder()
-                    .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
-                    .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
-                    .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
-                    .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
-            );
+                Staff tmp = staffRepository.findOne(new BooleanBuilder()
+                        .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
+                        .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
+                        .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
+                        .and(QStaff.staff.attend.attendCd.eq(param.getAttendCd()))
+                );
 
-            if (tmp == null) {
-                systemMapper.modifyStaff(param);
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("빈 값을 확인하세요. 콤보박스의 값을 모두 특정하세요");
+                if (tmp != null) systemMapper.modifyStaff(param);
             }
             return ResponseEntity.ok("변경되었습니다");
         } catch (Exception e) {
