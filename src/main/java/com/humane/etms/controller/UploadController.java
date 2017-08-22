@@ -195,7 +195,7 @@ public class UploadController {
                     Date attendTime = new SimpleDateFormat("HH:mm:ss").parse(vo.getAttendTime());
 
                     Attend attend = attendRepository.findOne(new BooleanBuilder()
-                            .and(QAttend.attend.admission.admissionCd.eq(vo.getAdmissionCd()))
+                            //.and(QAttend.attend.admission.admissionCd.eq(vo.getAdmissionCd()))
                             .and(QAttend.attend.admission.admissionNm.eq(vo.getAdmissionNm()))
                             .and(QAttend.attend.attendDate.eq(attendDate))
                             .and(QAttend.attend.attendTime.eq(attendTime))
