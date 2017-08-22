@@ -72,27 +72,27 @@ define(function (require) {
                                     '<div id="line" style="margin: 10% 0 5% 0; border: 1px solid #d8d6d5"></div>'
                                 );
                                 $('#staff').append(
-                                    '<div class="staff-toolbar">' + '전&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;형' +
+                                    '<div class="staff-toolbar">' + '1.&nbsp;전&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;형' +
                                     '<select id="staffAdm" class="staff-select"></select>' +
                                     '</div>'
                                 );
                                 $('#staff').append(
-                                    '<div class="staff-toolbar">' + '시&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;험' +
-                                    '<select id="staffAtn" class="staff-select"></select>' +
+                                    '<div class="staff-toolbar">' + '2.&nbsp;고사건물' +
+                                    '<select id="staffBldg" class="staff-select"></select>' +
                                     '</div>'
                                 );
                                 $('#staff').append(
-                                    '<div class="staff-toolbar">' + '시험일자' +
+                                    '<div class="staff-toolbar">' + '3.&nbsp;시험일자' +
                                     '<select id="staffDate" class="staff-select"></select>' +
                                     '</div>'
                                 );
                                 $('#staff').append(
-                                    '<div class="staff-toolbar">' + '시험시간' +
+                                    '<div class="staff-toolbar">' + '4.&nbsp;시험시간' +
                                     '<select id="staffTime" class="staff-select"></div>'
                                 );
                                 $('#staff').append(
-                                    '<div class="staff-toolbar">' + '고사건물' +
-                                    '<select id="staffBldg" class="staff-select"></select>' +
+                                    '<div class="staff-toolbar">' + '5.&nbsp;시&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;험' +
+                                    '<select id="staffAtn" class="staff-select"></select>' +
                                     '</div>'
                                 );
                                 $('#staff').append(
