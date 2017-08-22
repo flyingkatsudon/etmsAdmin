@@ -300,9 +300,10 @@ define(function (require) {
                         // 엑셀 파일로 업로드
                         $('#addForm').click(function () {
                             var html = '<form id="uploadStaff" action="upload/staff" method="post" enctype="multipart/form-data">' +
-                                '<input type="file" name="file" style="width: 70%;" class="pull-left chosen"/>' +
-                                '<input type="submit" style="width: 12%; padding: 2%" class="btn btn-success" value="등록"/>' +
-                                '<input type="button" id="close" style="width: 12%; padding: 2%" class="btn pull-right" value="닫기"/>' +
+                                '<input type="file" name="file" style="width: 65%;" class="pull-left chosen"/>' +
+                                '<a href="download/staff.xlsx" style="width: 10%; padding: 2%" class="btn btn-primary">양식</a>' +
+                                '<input type="submit" style="width: 10%; padding: 2%" class="btn btn-success" value="등록"/>' +
+                                '<input type="button" id="close" style="width: 10%; padding: 2%" class="btn" value="닫기"/>' +
                                 '</form>';
 
                             var dialog = new BootstrapDialog({
