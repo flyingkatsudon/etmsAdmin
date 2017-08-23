@@ -175,9 +175,19 @@ public class SystemController {
         return ResponseEntity.ok(systemMapper.innerDuplicate(param, pageable).getContent());
     }
 
-    @RequestMapping(value = "staff")
-    public ResponseEntity staff(StaffDto param, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.staff(param, pageable));
+    @RequestMapping(value = "staff.{format:json|pdf|xls|xlsx}")
+    public ResponseEntity staff(@PathVariable String format, StaffDto param, Pageable pageable) {
+
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(systemMapper.staff(param, pageable));
+            default:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/upload-staff.jrxml",
+                        format,
+                        systemMapper.uploadStaff(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                );
+        }
     }
 
     @RequestMapping(value = "bldgNm")
@@ -227,19 +237,18 @@ public class SystemController {
                     .and(QAttend.attend.attendTime.eq(param.getAttendTime()))
             );
 
-            param.setAttendCd(attend.getAttendCd());
+            if (attend == null) return ResponseEntity.ok("일치하는 전형을 찾을 수 없습니다. 다시 시도하세요");
+            else {
+                param.setAttendCd(attend.getAttendCd());
 
-            Staff tmp = staffRepository.findOne(new BooleanBuilder()
-                    .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
-                    .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
-                    .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
-                    .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
-            );
+                Staff tmp = staffRepository.findOne(new BooleanBuilder()
+                        .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
+                        .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
+                        .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
+                        .and(QStaff.staff.attend.attendCd.eq(param.getAttendCd()))
+                );
 
-            if (tmp == null) {
-                systemMapper.modifyStaff(param);
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("빈 값을 확인하세요. 콤보박스의 값을 모두 특정하세요");
+                if (tmp != null) systemMapper.modifyStaff(param);
             }
             return ResponseEntity.ok("변경되었습니다");
         } catch (Exception e) {

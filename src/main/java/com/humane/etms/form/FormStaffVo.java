@@ -13,18 +13,28 @@ public class FormStaffVo {
     @Column(name = "전화번호") private String phoneNo;
     @Column(name = "전형코드") private String admissionCd;
     @Column(name = "전형명") private String admissionNm;
+    @Column(name = "시험코드") private String attendCd;
     @Column(name = "시험일자") private String attendDate;
-
-    public String getAttendTime() {
-        try {
-            Date date = new SimpleDateFormat("YYYY-mm-dd HH:mm:ss").parse(attendTime);
-            return new SimpleDateFormat("HH:mm:ss").format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return attendTime;
-    }
-
     @Column(name = "시험시간") private String attendTime;
     @Column(name = "고사건물") private String bldgNm;
+
+    public Date getAttendDate() {
+        Date tmp = null;
+        try{
+            tmp = new SimpleDateFormat("yyyy-MM-dd").parse(attendDate);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return tmp;
+    }
+
+    public Date getAttendTime() {
+        Date tmp = null;
+        try{
+            tmp = new SimpleDateFormat("HH:mm:ss").parse(attendTime);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return tmp;
+    }
 }

@@ -64,6 +64,8 @@ public interface SystemMapper {
 
     Page<DuplicateDto> innerDuplicate(@Param("param") DuplicateDto param, @Param("pageable") Pageable pageable);
 
+    Page<StaffDto> uploadStaff(@Param("param") StaffDto param, @Param("pageable") Pageable pageable);
+
     Page<StaffDto> staff(@Param("param") StaffDto param, @Param("pageable") Pageable pageable);
 
     Page<StaffDto> bldgNm(@Param("param") StaffDto param, @Param("pageable") Pageable pageable);
