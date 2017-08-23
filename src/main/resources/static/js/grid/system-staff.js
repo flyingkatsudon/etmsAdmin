@@ -30,12 +30,14 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'system/staff',
+                    url: 'system/staff.json',
                     colModel: colModel,
                     onSelectRow: function (rowid, status, e) {
                         var rowData = $(this).jqGrid('getRowData', rowid);
 
                         var phone = rowData.phoneNo.split('-');
+                        if(phone[2] == undefined) phone.push('');
+
                         var html = '<div class="container-fluid">' +
                             '<div class="row">' +
                             '<div class="col-lg-12">' +
@@ -333,6 +335,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
+            this.addExcel('system/staff.xlsx');
             return this;
         }
     });

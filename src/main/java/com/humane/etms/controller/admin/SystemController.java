@@ -5,10 +5,12 @@ import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.*;
 import com.humane.etms.service.SystemService;
+import com.humane.util.jasperreports.JasperReportsExportHelper;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,8 @@ public class SystemController {
     private final StaffRepository staffRepository;
     private final SystemService systemService;
     private final SystemMapper systemMapper;
+
+    private static final String JSON = "json";
 
     @RequestMapping(value = "download", method = RequestMethod.POST)
     public ResponseEntity download() {
@@ -170,9 +174,19 @@ public class SystemController {
         return ResponseEntity.ok(systemMapper.innerDuplicate(param, pageable).getContent());
     }
 
-    @RequestMapping(value = "staff")
-    public ResponseEntity staff(StaffDto param, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.staff(param, pageable));
+    @RequestMapping(value = "staff.{format:json|pdf|xls|xlsx}")
+    public ResponseEntity staff(@PathVariable String format, StaffDto param, Pageable pageable) {
+
+        switch (format) {
+            case JSON:
+                return ResponseEntity.ok(systemMapper.staff(param, pageable));
+            default:
+                return JasperReportsExportHelper.toResponseEntity(
+                        "jrxml/upload-staff.jrxml",
+                        format,
+                        systemMapper.uploadStaff(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                );
+        }
     }
 
     @RequestMapping(value = "bldgNm")

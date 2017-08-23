@@ -191,21 +191,11 @@ public class UploadController {
             for (FormStaffVo vo : staffList) {
                 Staff staff = mapper.convertValue(vo, Staff.class);
 
-                Date attendDate = null;
-                Date attendTime = null;
-
-                try {
-                    attendDate = new SimpleDateFormat("yyyy-MM-dd").parse(vo.getAttendDate());
-                    attendTime = new SimpleDateFormat("HH:mm:ss").parse(vo.getAttendTime());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
                 Attend attend = attendRepository.findOne(new BooleanBuilder()
-                        //.and(QAttend.attend.admission.admissionCd.eq(vo.getAdmissionCd()))
                         .and(QAttend.attend.admission.admissionNm.eq(vo.getAdmissionNm()))
-                        .and(QAttend.attend.attendDate.eq(attendDate))
-                        .and(QAttend.attend.attendTime.eq(attendTime))
+                        .and(QAttend.attend.attendCd.eq(vo.getAttendCd()))
+                        .and(QAttend.attend.attendDate.eq(vo.getAttendDate()))
+                        .and(QAttend.attend.attendTime.eq(vo.getAttendTime()))
                 );
 
                 if (attend != null) {
