@@ -212,7 +212,7 @@
     </select>
 
     <insert id="addStaff" parameterType="String" useGeneratedKeys="true" keyProperty="id">
-    insert into staff values (null, #{param.headNm}, #{param.bldgNm}, #{param.phoneNo}, #{param.staffNm}, #{param.attendCd})
+    insert into staff values (null, #{param.bldgNm}, #{param.phoneNo}, #{param.staffNm}, #{param.attendCd})
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
