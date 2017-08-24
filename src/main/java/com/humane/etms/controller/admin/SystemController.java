@@ -184,14 +184,9 @@ public class SystemController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/upload-staff.jrxml",
                         format,
-                        systemMapper.uploadStaff(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                        systemMapper.staff(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
-    }
-
-    @RequestMapping(value = "bldgNm")
-    public ResponseEntity bldgNm(StaffDto param, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.bldgNm(param, pageable).getContent());
     }
 
     @RequestMapping(value = "addStaff")
@@ -206,9 +201,9 @@ public class SystemController {
 
             if (attend != null) {
                 Staff tmp = staffRepository.findOne(new BooleanBuilder()
-                        .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
+                        //.and(QStaff.staff.staffNm.eq(param.getStaffNm()))
+                        //.and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
                         .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
-                        .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
                         .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
                 );
 
@@ -216,7 +211,7 @@ public class SystemController {
                     param.setAttendCd(attend.getAttendCd());
                     systemMapper.addStaff(param);
                 } else {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미 등록된 기술요원입니다");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미 기술요원이 배정된 고사건물입니다");
                 }
             }
             return ResponseEntity.ok("추가되었습니다");
@@ -236,17 +231,36 @@ public class SystemController {
                     .and(QAttend.attend.attendTime.eq(param.getAttendTime()))
             );
 
-            if (attend == null) return ResponseEntity.ok("일치하는 전형을 찾을 수 없습니다. 다시 시도하세요");
+            if (attend == null) return ResponseEntity.ok("일치하는 고사건물을 찾을 수 없습니다. 다시 시도하세요");
             else {
                 param.setAttendCd(attend.getAttendCd());
 
-                Staff tmp = staffRepository.findOne(new BooleanBuilder()
-                        .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
-                        .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
-                        .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
-                        .and(QStaff.staff.attend.attendCd.eq(param.getAttendCd()))
-                );
+                Staff tmp;
 
+                if ((param.get_staffNm().equals("") || param.get_staffNm() == null) ||
+                        (param.get_phoneNo().equals("") || param.get_phoneNo() == null)) {
+                    tmp = staffRepository.findOne(new BooleanBuilder()
+                            .and(QStaff.staff.bldgNm.eq(param.get_bldgNm()))
+                            .and(QStaff.staff.attend.attendCd.eq(param.getAttendCd()))
+                    );
+
+                    tmp.setStaffNm("");
+                    tmp.setPhoneNo("");
+                } else if (param.getAttendCd() != param.get_attendCd()) {
+                    tmp = staffRepository.findOne(new BooleanBuilder()
+                            .and(QStaff.staff.bldgNm.eq(param.get_bldgNm()))
+                            .and(QStaff.staff.attend.attendCd.eq(param.get_attendCd()))
+                    );
+
+                    log.debug("{}", tmp);
+                } else {
+                    tmp = staffRepository.findOne(new BooleanBuilder()
+                            .and(QStaff.staff.staffNm.eq(param.getStaffNm()))
+                            .and(QStaff.staff.phoneNo.eq(param.getPhoneNo()))
+                            .and(QStaff.staff.bldgNm.eq(param.getBldgNm()))
+                            .and(QStaff.staff.attend.attendCd.eq(param.getAttendCd()))
+                    );
+                }
                 if (tmp != null) systemMapper.modifyStaff(param);
             }
             return ResponseEntity.ok("변경되었습니다");

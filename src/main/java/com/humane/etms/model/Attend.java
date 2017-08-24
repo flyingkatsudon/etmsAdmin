@@ -18,6 +18,7 @@ public class Attend {
     @ManyToOne @JoinColumn(name = "admissionCd") private Admission admission;
 
     @Column(columnDefinition = "int default 9") private int attendLen;
+    @Column(columnDefinition = "bit default 0") private boolean isAssignedGroup;  // 조 배정 현황 사용
     @Column(columnDefinition = "bit default 0") private boolean isUseScanner;  // 외부 스캐너 사용여부
     @Column(columnDefinition = "bit default 0") private boolean isUseGroup;  // 조 사용 여부
     @Column(columnDefinition = "int default 0") private int paperCnt; // 답안지 매수

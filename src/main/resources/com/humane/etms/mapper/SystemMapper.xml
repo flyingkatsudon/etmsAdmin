@@ -191,7 +191,9 @@
 
     <select id="staff" resultType="com.humane.etms.dto.StaffDto">
         select admission.admission_cd, admission.admission_nm, attend.attend_cd, attend.attend_nm, attend.attend_date, attend.attend_time
-              , staff._id, staff.staff_nm, staff.bldg_nm, staff.phone_no
+              , staff._id, staff.bldg_nm
+              , case when staff.staff_nm is null then '' else staff.staff_nm end as staff_nm
+              , case when staff.phone_no is null then '' else staff.phone_no end as phone_no
         from staff
         inner join attend on attend.attend_cd = staff.attend_cd
         inner join admission on admission.admission_cd = attend.admission_cd
@@ -207,10 +209,6 @@
         </where>
     </select>
 
-    <select id="bldgNm" resultType="com.humane.etms.dto.StaffDto">
-        select distinct hall.bldg_nm from hall
-    </select>
-
     <insert id="addStaff" parameterType="String" useGeneratedKeys="true" keyProperty="id">
     insert into staff values (null, #{param.bldgNm}, #{param.phoneNo}, #{param.staffNm}, #{param.attendCd})
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
@@ -219,7 +217,7 @@
     </insert>
 
     <update id="modifyStaff">
-        update staff set staff_nm = #{param.staffNm}, phone_no = #{param.phoneNo}, bldg_nm = #{param.bldgNm}, attend_cd = #{param.attendCd}
+        update staff set staff_nm = #{param.staffNm}, phone_no = #{param.phoneNo}, attend_cd = #{param.attendCd}
         <where>
             <if test="param != null">
                 <if test="param._staffNm != null"> and staff_nm = #{param._staffNm}</if>
@@ -230,10 +228,17 @@
         </where>
     </update>
 
-    <delete id="delStaff" parameterType="String">
+    <update id="delStaff" parameterType="String">
         delete from staff
-        where staff_nm = #{param._staffNm} and phone_no = #{param._phoneNo} and bldg_nm = #{param._bldgNm} and attend_cd = #{param.attendCd}
-    </delete>
+        <where>
+            <if test="param != null">
+                <if test="param._staffNm != null"> and staff_nm = #{param._staffNm}</if>
+                <if test="param._phoneNo != null"> and phone_no = #{param._phoneNo}</if>
+                <if test="param._bldgNm != null"> and bldg_nm = #{param._bldgNm}</if>
+                <if test="param._attendCd != null"> and attend_cd = #{param._attendCd}</if>
+            </if>
+        </where>
+    </update>
 
     <delete id="delStaffAll" parameterType="String">
         delete from staff

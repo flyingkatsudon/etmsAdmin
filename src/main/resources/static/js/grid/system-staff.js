@@ -36,6 +36,8 @@ define(function (require) {
                         var rowData = $(this).jqGrid('getRowData', rowid);
 
                         var phone = rowData.phoneNo.split('-');
+                        if(phone[0] == undefined) phone.push('');
+                        if(phone[1] == undefined) phone.push('');
                         if(phone[2] == undefined) phone.push('');
 
                         var html = '<div class="container-fluid">' +
@@ -113,6 +115,10 @@ define(function (require) {
                                 $('#staffDate').val(rowData.attendDate).attr('selected', 'selected');
                                 $('#staffTime').val(rowData.attendTime).attr('selected', 'selected');
                                 $('#staffBldg').val(rowData.bldgNm).attr('selected', 'selected');
+
+                                $('#first, #middle, #last').focusin(function(){
+                                    if($(this).val() == 'undefined') $(this).val('');
+                                });
 
                                 $('#first, #middle, #last').keypress(function (event) {
                                     // 문자 처리
@@ -199,10 +205,18 @@ define(function (require) {
                                             _phoneNo: rowData.phoneNo,
                                             _bldgNm: rowData.bldgNm,
                                             _admissionNm: rowData.admissionNm,
+                                            _attendCd: rowData.attendCd,
                                             _attendNm: rowData.attendNm,
                                             _attendDate: rowData.attendDate,
                                             _attendTime: rowData.attendTime
                                         };
+/*
+
+                                        if(param._staffNm == '' || param._phoneNo == '') {
+                                            $('#msg').html('기술요원 정보가 존재하지 않습니다');
+                                            return false;
+                                        }
+*/
 
                                         $.ajax({
                                             url: 'system/delStaff',
@@ -299,7 +313,11 @@ define(function (require) {
                                             _staffNm: rowData.staffNm,
                                             _phoneNo: rowData.phoneNo,
                                             _bldgNm: rowData.bldgNm,
-                                            _attendCd: rowData.attendCd
+                                            _admissionNm: rowData.admissionNm,
+                                            _attendCd: rowData.attendCd,
+                                            _attendNm: rowData.attendNm,
+                                            _attendDate: rowData.attendDate,
+                                            _attendTime: rowData.attendTime
                                         };
 
                                         $.ajax({
