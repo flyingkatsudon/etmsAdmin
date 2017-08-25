@@ -304,26 +304,34 @@ public class UploadController {
             for (FormStaffVo vo : staffList) {
                 Staff staff = mapper.convertValue(vo, Staff.class);
 
-                Attend attend = attendRepository.findOne(new BooleanBuilder()
-                        .and(QAttend.attend.admission.admissionNm.eq(vo.getAdmissionNm()))
-                        .and(QAttend.attend.attendCd.eq(vo.getAttendCd()))
-                        .and(QAttend.attend.attendDate.eq(vo.getAttendDate()))
-                        .and(QAttend.attend.attendTime.eq(vo.getAttendTime()))
-                );
-
-                if (attend != null) {
-                    staff.setAttend(attend);
-                    Staff tmp = staffRepository.findOne(new BooleanBuilder()
-                            .and(QStaff.staff.phoneNo.eq(staff.getPhoneNo()))
-                            .and(QStaff.staff.bldgNm.eq(staff.getBldgNm()))
-                            .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
+                // 기술요원 이름과 전화번호가 있는 것들에 한해서 업로드 진행
+                if(!staff.getStaffNm().isEmpty() || !staff.getPhoneNo().isEmpty()) {
+                    log.debug("{}", staff);
+                    Attend attend = attendRepository.findOne(new BooleanBuilder()
+                            .and(QAttend.attend.admission.admissionNm.eq(vo.getAdmissionNm()))
+                            .and(QAttend.attend.attendCd.eq(vo.getAttendCd()))
+                            .and(QAttend.attend.attendDate.eq(vo.getAttendDate()))
+                            .and(QAttend.attend.attendTime.eq(vo.getAttendTime()))
                     );
 
-                    staff.setAttend(attend);
+                    // 시험정보를 알아내 시험코드를 입력한다
+                    if (attend != null) {
+                        staff.setAttend(attend);
+                        Staff tmp = staffRepository.findOne(new BooleanBuilder()
+                                //.and(QStaff.staff.staffNm.eq(staff.getStaffNm()))
+                                //.and(QStaff.staff.phoneNo.eq(staff.getPhoneNo()))
+                                .and(QStaff.staff.bldgNm.eq(staff.getBldgNm()))
+                                .and(QStaff.staff.attend.attendCd.eq(attend.getAttendCd()))
+                        );
 
-                    if (tmp == null) staffRepository.save(staff);
-                } else {
-                    return ResponseEntity.ok("일치하는 전형을 찾지 못했습니다. 양식을 다시 확인하세요");
+                        staff.setAttend(attend);
+
+                        if (tmp != null) staff.set_id(tmp.get_id());
+                        staffRepository.save(staff);
+
+                    } else {
+                        return ResponseEntity.ok("일치하는 고사건물을 찾지 못했습니다. 양식을 다시 확인하세요");
+                    }
                 }
             }
             return ResponseEntity.ok("기술요원이 추가되었습니다");
@@ -332,7 +340,7 @@ public class UploadController {
             throwable.printStackTrace();
             log.error("{}", throwable.getMessage());
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요. 한 시험에 중복된 고사건물이 존재합니다<br><br>" + throwable.getMessage());
         }
     }
 }

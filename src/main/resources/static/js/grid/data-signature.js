@@ -16,7 +16,7 @@ define(function (require) {
                 {name: 'headNm', label: '고사본부'},
                 {name: 'bldgNm', label: '고사건물'},
                 {name: 'hallNm', label: '고사실'},
-                {name: 'attendCnt', label: '지원자수'},
+                {name: 'attendCnt', label: '배정인원'},
                 {
                     name: 'isSignature',
                     label: '서명여부',
