@@ -5,15 +5,15 @@ define(function (require) {
 
     var Backbone = require('backbone');
 
-    var List = require('../grid/system-order.js');
-    var Toolbar = require('../toolbar/system-order.js');
-    var Template = require('text!/tpl/system-order.html');
+    var List = require('../grid/student-order.js');
+    var Toolbar = require('../toolbar/student-order.js');
+    var Template = require('text!/tpl/student-order.html');
     var BootstrapDialog = require('bootstrap-dialog');
 
-    var UpdateOrder = require('text!tpl/system-updateOrder.html');
-    var WaitHall = require('text!/tpl/system-waitHall.html');
-    var AddWaitHall = require('text!/tpl/system-addWaitHall.html');
-    var InnerToolbar = require('../toolbar/system-waitHall.js');
+    var UpdateOrder = require('text!tpl/student-updateOrder.html');
+    var WaitHall = require('text!/tpl/student-waitHall.html');
+    var AddWaitHall = require('text!/tpl/student-addWaitHall.html');
+    var InnerToolbar = require('../toolbar/student-waitHall.js');
 
     var ResponseDialog = require('../responseDialog.js');
     var responseDialog = new ResponseDialog();
@@ -38,7 +38,7 @@ define(function (require) {
 
             $('#waitHall').click(function () {
                 $.ajax({
-                    url: 'system/waitHall',
+                    url: 'student/waitHall',
                     success: function (response) {
                         if (response.length > 0) {
                             var id = _this.getSorted(response);
@@ -53,7 +53,7 @@ define(function (require) {
 
             $('#add').click(function () {
                 $.ajax({
-                    url: 'system/waitHall',
+                    url: 'student/waitHall',
                     success: function (response) {
                         if (response.length > 0) {
                             var id = _this.getSorted(response);
@@ -86,7 +86,7 @@ define(function (require) {
 
             // TODO: 토론면접 조가 있는지 여부 확인한 후 그것이 있다면 바로 뷰, 없다면 입력 창 띄우기
             $.ajax({
-                url: 'system/local/orderCnt',
+                url: 'student/local/orderCnt',
                 success: function (response) {
                     // 순번이 저장되어 있으면
                     if (response) {
@@ -360,7 +360,7 @@ define(function (require) {
                             // 이미 존재하는 대기실인지 검색, true: 미존재, false: 존재
                             // attend_wait_hall이 비어있다면 hall 테이블에서 입력할 대기실 검사
                             $.ajax({
-                                url: 'system/checkHall',
+                                url: 'student/checkHall',
                                 type: 'POST',
                                 contentType: "application/json; charset=utf-8",
                                 data: JSON.stringify(param),
@@ -456,7 +456,7 @@ define(function (require) {
                             } else {
                                 // 대기실 insert
                                 $.ajax({
-                                    url: 'system/addHall',
+                                    url: 'student/addHall',
                                     type: 'POST',
                                     contentType: 'application/json; charset=utf-8',
                                     data: JSON.stringify(param),
@@ -599,7 +599,7 @@ define(function (require) {
             // 선택된 대기실의 데이터를 모두 삭제함
             var hallCd = $('input[name=hall]:checked').val();
             $.ajax({
-                url: 'system/delAwh?hallCd=' + hallCd,
+                url: 'student/delAwh?hallCd=' + hallCd,
                 success: function () {
                     _this.insertGroup(hallCd, tmp);
                 } // success
@@ -609,7 +609,7 @@ define(function (require) {
             // 조 리스트를 새로 insert
             for (var i = 0; i < insertList.length; i++) {
                 $.ajax({
-                    url: 'system/addAwh?hallCd=' + hallCd + '&groupNm=' + insertList[i].groupNm,
+                    url: 'student/addAwh?hallCd=' + hallCd + '&groupNm=' + insertList[i].groupNm,
                     success: function (response) {
                         responseDialog.notify({msg: response});
                     }

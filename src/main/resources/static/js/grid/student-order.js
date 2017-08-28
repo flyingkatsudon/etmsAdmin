@@ -29,7 +29,7 @@ define(function (require) {
 
             var opt = $.extend(true, {
                 defaults: {
-                    url: 'system/order.json',
+                    url: 'student/order.json',
                     colModel: colModel,
                     loadComplete: function (data) {
                         var ids = $(this).getDataIDs(data);
@@ -46,7 +46,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
-            this.addExcel('system/order.xlsx');
+            this.addExcel('student/order.xlsx');
             return this;
         }
     });

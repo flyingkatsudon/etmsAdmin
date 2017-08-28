@@ -22,22 +22,18 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.function.Predicate;
 
 @RestController
 @RequestMapping(value = "system")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemController {
+
     @PersistenceContext
     private final EntityManager entityManager;
     private final UserRepository userRepository;
     private final UserAdmissionRepository userAdmissionRepository;
-    private final AttendWaitHallRepository waitHallRepository;
-    private final UserRoleRepository userRoleRepository;
     private final AttendRepository attendRepository;
-    private final AttendMapRepository attendMapRepository;
     private final StaffRepository staffRepository;
     private final SystemService systemService;
     private final SystemMapper systemMapper;
@@ -306,146 +302,6 @@ public class SystemController {
             return ResponseEntity.ok("삭제되었습니다");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
-        }
-    }
-
-    /**
-     * 고려대 면접고사용
-     */
-    @RequestMapping(value = "local/orderCnt")
-    public boolean fromLocal(String admissionCd) {
-
-        try {
-            long check = systemMapper.orderCnt(admissionCd);
-
-            if (check <= 0)
-                return false;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-
-    @RequestMapping(value = "order.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity order(@PathVariable String format, ExamineeDto examineeDto, Pageable pageable) {
-
-        switch (format) {
-            case JSON:
-                return ResponseEntity.ok(systemMapper.order(examineeDto, pageable));
-            default:
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/system-order.jrxml",
-                        format,
-                        systemMapper.order(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
-                );
-        }
-    }
-
-    @RequestMapping(value = "waitHall")
-    public ResponseEntity waitHall(Pageable pageable) {
-        try {
-            return ResponseEntity.ok(systemMapper.waitHall(pageable).getContent());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("불러오지 못했습니다. 잠시 후 다시 시도하세요");
-        }
-    }
-
-    private final HallRepository hallRepository;
-
-    @RequestMapping(value = "checkHall")
-    public boolean checkHall(@RequestBody Hall hall) {
-        try {
-            Hall tmp = hallRepository.findOne(new BooleanBuilder()
-                    .and(QHall.hall.headNm.eq(hall.getHeadNm()))
-                    .and(QHall.hall.bldgNm.eq(hall.getBldgNm()))
-                    .and(QHall.hall.hallNm.eq(hall.getHallNm()))
-            );
-
-            if (tmp != null) return false;
-            else return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    @RequestMapping(value = "addHall")
-    public String addHall(@RequestBody Hall hall) {
-        try {
-
-            Hall tmp = hallRepository.findOne(new BooleanBuilder()
-                    .and(QHall.hall.headNm.eq(hall.getHeadNm()))
-                    .and(QHall.hall.bldgNm.eq(hall.getBldgNm()))
-                    .and(QHall.hall.hallNm.eq(hall.getHallNm()))
-            );
-
-            String hallCd;
-
-            if (tmp != null) {
-                hallCd = tmp.getHallCd();
-            } else {
-                systemMapper.addHall(hall);
-                hallCd = hallRepository.findOne(new BooleanBuilder()
-                        .and(QHall.hall.headNm.eq(hall.getHeadNm()))
-                        .and(QHall.hall.bldgNm.eq(hall.getBldgNm()))
-                        .and(QHall.hall.hallNm.eq(hall.getHallNm()))
-                ).getHallCd();
-            }
-
-            return hallCd;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return e.getMessage();
-        }
-    }
-
-    @RequestMapping(value = "addAwh")
-    public ResponseEntity addAwh(String hallCd, String groupNm) {
-        try {
-            if (hallCd != null) {
-                // attendWaitHall이 있는지 검사
-                AttendWaitHall attendWaitHall = waitHallRepository.findOne(new BooleanBuilder()
-                        .and(QAttendWaitHall.attendWaitHall.hallCd.eq(hallCd))
-                        .and(QAttendWaitHall.attendWaitHall.groupNm.eq(groupNm))
-                );
-
-                // attendWaitHall이 존재하지 않으면 insert
-                if (attendWaitHall == null) systemMapper.addAwh(hallCd, groupNm);
-
-                return ResponseEntity.ok("저장되었습니다");
-            } else {
-                // attendWaithall 등록
-                systemMapper.addAwh(null, groupNm);
-                return ResponseEntity.ok("저장되었습니다");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "delAwh")
-    public ResponseEntity delAwh(String hallCd) {
-        try {
-            systemMapper.delAwh(hallCd);
-            return ResponseEntity.ok("삭제되었습니다");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "delOrder")
-    public ResponseEntity delOrder() {
-        try {
-            systemMapper.delOrder();
-            return ResponseEntity.ok("삭제되었습니다");
-        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
     }
