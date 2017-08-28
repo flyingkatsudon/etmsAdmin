@@ -28,11 +28,11 @@ import java.util.Date;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemController {
+
     @PersistenceContext
     private final EntityManager entityManager;
     private final UserRepository userRepository;
     private final UserAdmissionRepository userAdmissionRepository;
-    private final UserRoleRepository userRoleRepository;
     private final AttendRepository attendRepository;
     private final StaffRepository staffRepository;
     private final SystemService systemService;
