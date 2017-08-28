@@ -189,11 +189,6 @@ public class SystemController {
         }
     }
 
-    @RequestMapping(value = "bldgNm")
-    public ResponseEntity bldgNm(StaffDto param, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.bldgNm(param, pageable).getContent());
-    }
-
     @RequestMapping(value = "addStaff")
     public ResponseEntity addStaff(@RequestBody StaffDto param) {
         try {

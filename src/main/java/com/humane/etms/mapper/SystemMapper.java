@@ -9,26 +9,6 @@ import org.springframework.data.domain.Pageable;
 
 @Mapper
 public interface SystemMapper {
-
-    /**
-     * 공통
-     *
-     * author: jeremy(김민섭)
-     *
-     * // 시험정보
-     * Page<AttendInfoDto> attendInfo(@Param("param") AttendInfoDto param, @Param("pageable") Pageable pageable);
-     *
-     * // 시험정보 수정
-     * void modifyAttend(@Param("param") AttendInfoDto param);
-     *
-     * // 두 대 이상의 단말기에서 한 수험생을 처리한 리스트
-     * Page<DuplicateDto> duplicate(@Param("pageable") Pageable pageable);
-     *
-     * // 해당 수험생의 처리이력
-     * Page<DuplicateDto> innerDuplicate(@Param("param") DuplicateDto duplicateDto, @Param("pageable") Pageable pageable);
-     *
-     */
-
     Page<AccountDto> account(@Param("param") AccountDto param, @Param("pageable") Pageable pageable);
 
     Page<AccountDto> admission(@Param("pageable") Pageable pageable);
@@ -64,8 +44,6 @@ public interface SystemMapper {
     Page<DuplicateDto> innerDuplicate(@Param("param") DuplicateDto param, @Param("pageable") Pageable pageable);
 
     Page<StaffDto> staff(@Param("param") StaffDto param, @Param("pageable") Pageable pageable);
-
-    Page<StaffDto> bldgNm(@Param("param") StaffDto param, @Param("pageable") Pageable pageable);
 
     void addStaff(@Param("param") StaffDto param);
 

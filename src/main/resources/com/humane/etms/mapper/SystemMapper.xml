@@ -209,10 +209,6 @@
         </where>
     </select>
 
-    <select id="bldgNm" resultType="com.humane.etms.dto.StaffDto">
-        select distinct hall.bldg_nm from hall
-    </select>
-
     <insert id="addStaff" parameterType="String" useGeneratedKeys="true" keyProperty="id">
     insert into staff values (null, #{param.bldgNm}, #{param.phoneNo}, #{param.staffNm}, #{param.attendCd})
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
@@ -246,83 +242,5 @@
 
     <delete id="delStaffAll" parameterType="String">
         delete from staff
-    </delete>
-
-    <!-- TODO: 고려대 면접고사용 -->
-    <select id="orderCnt" resultType="java.lang.Long">
-        select count(*)
-        from attend_map
-        inner join attend on attend.attend_cd = attend_map.attend_cd
-        inner join admission on admission.admission_cd = attend.admission_cd
-        <where>
-            AND group_nm is not null
-            <if test="param != null">
-                AND admission.admission_cd = #{param}
-            </if>
-        </where>
-    </select>
-
-    <select id="order" resultType="com.humane.etms.dto.ExamineeDto">
-        select result.*
-        from (select admission.admission_cd, admission.admission_nm, attend.type_nm
-                    , examinee.examinee_cd, examinee.examinee_nm, attend.attend_date
-                    , (case when attend_map.group_nm is null then false else true end) as is_attend
-                    , max(case when attend_map.examinee_cd = examinee.examinee_cd then attend_map.group_nm end) as group_nm
-                    , max(case when attend_map.examinee_cd = examinee.examinee_cd then attend_map.group_order end) as group_order
-                    , max(case when attend_map.examinee_cd = examinee.examinee_cd then attend_map.debate_nm end) as debate_nm
-                    , max(case when attend_map.examinee_cd = examinee.examinee_cd then attend_map.debate_order end) as debate_order
-                from attend_map
-                inner join examinee on examinee.examinee_cd = attend_map.examinee_cd
-                inner join attend on attend.attend_cd = attend_map.attend_cd
-                inner join admission on admission.admission_cd = attend.admission_cd
-                group by admission.admission_cd, attend_map.examinee_cd) result
-        <where>
-            <if test="param != null">
-                <if test="param.admissionNm != null"> and result.admission_nm = #{param.admissionNm} </if>
-                <if test="param.typeNm != null"> and result.type_nm = #{param.typeNm} </if>
-                <if test="param.attendDate != null"> and result.attend_date = #{param.attendDate} </if>
-                <if test="param.groupNm != null"> and result.group_nm = #{param.groupNm} </if>
-                <if test="param.groupOrder != null"> and result.group_order = #{param.groupOrder} </if>
-                <if test="param.debateNm != null"> and result.debate_nm = #{param.debateNm} </if>
-                <if test="param.debateOrder != null"> and result.debate_order = #{param.debateOrder} </if>
-            </if>
-        </where>
-    </select>
-
-    <select id="waitHall" resultType="com.humane.etms.dto.WaitHallDto">
-        select awh._id as id, hall.head_nm, hall.bldg_nm, awh.hall_cd, hall.hall_nm, awh.group_nm
-        from attend_wait_hall awh
-        inner join hall on hall.hall_cd = awh.hall_cd
-        order by awh.hall_cd, awh.group_nm
-    </select>
-
-    <delete id="delAwh">
-        delete from attend_wait_hall
-        <where>
-            <if test="hallCd != null"> and attend_wait_hall.hall_cd = #{hallCd}</if>
-        </where>
-    </delete>
-
-    <delete id="delOrder">
-        update attend_map set group_nm = null, group_order = null, debate_nm = null, debate_order = null
-    </delete>
-
-    <insert id="addHall" parameterType="String" >
-        insert into hall (hall_cd, head_nm, bldg_nm, hall_nm, is_etc) values ((select max(hall_cd) + 1 from hall as hall_cd), #{param.headNm}, #{param.bldgNm}, #{param.hallNm}, false)
-    </insert>
-
-    <insert id="addAwh" parameterType="String" useGeneratedKeys="true" keyProperty="id">
-        insert into attend_wait_hall (_id, group_nm, hall_cd, division) values (null, #{groupNm}, #{hallCd}, null)
-
-        <selectKey keyProperty="id" resultType="Long" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-    </insert>
-
-    <delete id="delHall">
-        delete from hall
-        <where>
-            <if test="hallCd != null"> and hall.hall_cd = #{hallCd}</if>
-        </where>
     </delete>
 </mapper>
