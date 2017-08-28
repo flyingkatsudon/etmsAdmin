@@ -93,8 +93,9 @@ public interface SystemMapper {
     long orderCnt(@Param("param") String admissionCd);
     Page<ExamineeDto> order(@Param("param") ExamineeDto examineeDto, @Param("pageable") Pageable pageable);
     Page<WaitHallDto> waitHall(@Param("pageable") Pageable pageable);
-    void delWaitHall(@Param("hallCd") String hallCd);
+    void delAwh(@Param("hallCd") String hallCd);
     void delOrder();
     void addHall(@Param("param") Hall param);
-    void addWaitHall(@Param("hallCd") String hallCd, @Param("groupNm") String groupNm);
+    void addAwh(@Param("hallCd") String hallCd, @Param("groupNm") String groupNm);
+    void delHall(@Param("hallCd") String hallCd);
 }

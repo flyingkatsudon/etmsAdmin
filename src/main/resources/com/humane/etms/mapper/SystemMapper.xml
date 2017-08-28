@@ -296,7 +296,7 @@
         order by awh.hall_cd, awh.group_nm
     </select>
 
-    <delete id="delWaitHall">
+    <delete id="delAwh">
         delete from attend_wait_hall
         <where>
             <if test="hallCd != null"> and attend_wait_hall.hall_cd = #{hallCd}</if>
@@ -311,11 +311,18 @@
         insert into hall (hall_cd, head_nm, bldg_nm, hall_nm, is_etc) values ((select max(hall_cd) + 1 from hall as hall_cd), #{param.headNm}, #{param.bldgNm}, #{param.hallNm}, false)
     </insert>
 
-    <insert id="addWaitHall" parameterType="String" useGeneratedKeys="true" keyProperty="id">
-        insert into attend_wait_hall values (null, #{groupNm}, #{hallCd}, null)
+    <insert id="addAwh" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+        insert into attend_wait_hall (_id, group_nm, hall_cd, division) values (null, #{groupNm}, #{hallCd}, null)
 
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <delete id="delHall">
+        delete from hall
+        <where>
+            <if test="hallCd != null"> and hall.hall_cd = #{hallCd}</if>
+        </where>
+    </delete>
 </mapper>

@@ -34,15 +34,15 @@ define(function (require) {
             });
 
             $('#init').click(function(){
-                _this.dialogFormat('초기화하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '초기화', 'system/init');
+                responseDialog.dialogFormat('초기화하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '초기화', 'system/init');
             });
 
-            $('#delawh').click(function(){
-                _this.dialogFormat('삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '삭제', 'system/delawh');
+            $('#delAwhAll').click(function(){
+                responseDialog.dialogFormat('삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '삭제', 'system/delAwh');
             });
 
-            $('#delOrder').click(function(){
-                _this.dialogFormat('삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '삭제', 'system/delOrder');
+            $('#delOrderAll').click(function(){
+                responseDialog.dialogFormat('삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '삭제', 'system/delOrder');
             });
 
         }, search: function (o) {
@@ -97,6 +97,7 @@ define(function (require) {
                     },
                     {
                         label: '닫기',
+                        cssClass: 'btn-normal',
                         action: function (dialog) {
                             dialog.close();
                         }
@@ -124,38 +125,6 @@ define(function (require) {
                     responseDialog.notify({msg: response, closable: true});
                 }
             });
-
-        },
-        dialogFormat: function(message, label, url){
-            var dialog = new BootstrapDialog({
-                message: '<div style="text-align:center"><h5>' + message + '</h5></div>',
-                closable: true,
-                buttons: [
-                    {
-                        label: label,
-                        cssClass: 'btn-primary',
-                        action: function () {
-                            $.ajax({
-                                url: url,
-                                success: function (response) {
-                                    responseDialog.notify({msg: response, closable: true});
-                                }
-                            });
-                        }
-                    }, {
-                        label: '닫기',
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }
-                ]
-            });
-
-            dialog.realize();
-            dialog.getModalDialog().css('margin-top', '20%');
-            dialog.getModalHeader().hide();
-            dialog.getModalFooter().css('padding', '1%');
-            dialog.open();
         }
     });
 });

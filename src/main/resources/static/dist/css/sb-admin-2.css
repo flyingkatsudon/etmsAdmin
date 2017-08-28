@@ -148,6 +148,10 @@ body {
     transition: all .5s;
 }
 
+.btn-normal.btn-outline {
+    color: #fffbfe;
+}
+
 .btn-primary.btn-outline {
     color: #428bca;
 }
@@ -168,6 +172,12 @@ body {
     color: #d9534f;
 }
 
+.btn-delete.btn-outline {
+    color: #CC3D3D;
+}
+
+.btn-normal.btn-outline:hover,
+.btn-delete.btn-outline:hover,
 .btn-primary.btn-outline:hover,
 .btn-success.btn-outline:hover,
 .btn-info.btn-outline:hover,
@@ -359,6 +369,14 @@ table.dataTable thead .sorting:after {
     border: 1px solid #CCA63D;
     border-radius: 5px;
     color: #eee;
+}
+
+.btn-normal {
+    width: 20%;
+    background-color: #d1d1d1;
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+    color: #515151;
 }
 
 .btn-delete {
@@ -644,15 +662,6 @@ h4 {
 .sys-group .sys-group-content {
     text-align: center;
     margin: 3%;
-}
-
-.btn-normal {
-    background-color: #f9cbb8;
-    border-color: #f9cbb8;
-    color: black;
-    padding: 3% 13% 3% 10%;
-    font-size: xx-large;
-    border-radius: 15px;
 }
 
 .btn-debate {

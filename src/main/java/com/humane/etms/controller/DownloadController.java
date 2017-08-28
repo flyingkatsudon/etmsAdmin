@@ -46,6 +46,15 @@ public class DownloadController {
     private final StatusMapper statusMapper;
     private final DataMapper dataMapper;
 
+    @RequestMapping(value = "waitHall.xlsx", method = RequestMethod.GET)
+    public ResponseEntity waitHall() {
+        return JasperReportsExportHelper.toResponseEntity(
+                "jrxml/upload-waitHall.jrxml",
+                "xlsx",
+                null
+        );
+    }
+
     @RequestMapping(value = "staff.xlsx", method = RequestMethod.GET)
     public ResponseEntity staff() {
         return JasperReportsExportHelper.toResponseEntity(

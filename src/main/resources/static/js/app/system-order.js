@@ -40,8 +40,13 @@ define(function (require) {
                 $.ajax({
                     url: 'system/waitHall',
                     success: function (response) {
-                        var id = _this.getSorted(response);
-                        _this.setWaitHall(response, id);
+                        if (response.length > 0) {
+                            var id = _this.getSorted(response);
+                            _this.setWaitHall(response, id);
+                        } else {
+                            //responseDialog.notify({msg: '최초 양식파일로 대기실 업로드가 필요합니다'});
+                            _this.setWaitHall(response);
+                        }
                     }
                 });
             });
@@ -50,8 +55,13 @@ define(function (require) {
                 $.ajax({
                     url: 'system/waitHall',
                     success: function (response) {
-                        var id = _this.getSorted(response);
-                        _this.addHall(response, id);
+                        if (response.length > 0) {
+                            var id = _this.getSorted(response);
+                            _this.addWaitHall(response, id);
+                        } else {
+                            //responseDialog.notify({msg: '최초 양식파일로 대기실 업로드가 필요합니다'});
+                            _this.addWaitHall(response);
+                        }
                     }
                 });
             });
@@ -162,9 +172,10 @@ define(function (require) {
             var _this = this;
 
             var html = '<form id="' + id + '" action="upload/' + value + '" method="post" enctype="multipart/form-data">' +
-                '<input type="file" name="file" style="width: 70%;" class="pull-left chosen"/>' +
-                '<input type="submit" style="width: 12%; padding: 2%" class="btn btn-success" value="등록"/>' +
-                '<input type="button" id="close" style="width: 12%; padding: 2%" class="btn pull-right" value="닫기"/>' +
+                '<input type="file" name="file" style="width: 65%;" class="pull-left chosen"/>' +
+                '<a href="download/waitHall.xlsx" style="width: 10%; padding: 2%" class="btn btn-primary">양식</a>' +
+                '<input type="submit" style="width: 10%; padding: 2%" class="btn btn-success" value="등록"/>' +
+                '<input type="button" id="close" style="width: 10%; padding: 2%" class="btn" value="닫기"/>' +
                 '</form>';
 
             var dialog = new BootstrapDialog({
@@ -217,6 +228,7 @@ define(function (require) {
 
             // 대기실 정보가 없다면 입력창부터 띄운다
             if (response.length == 0) {
+
                 _this.addWaitHall(response, id);
 
                 responseDialog.notify({
@@ -248,7 +260,7 @@ define(function (require) {
 
                             // 중복검사 후, name=hall의 라디오 버튼을 만듦
                             if (flag) {
-                                $('#hall').append('<div style="width: 25%; float: left">' +
+                                $('#hall').append('<div style="width: 25%; margin: 0 0 1% 0; float: left">' +
                                     '<input style="margin: 0 2% 0 15%; float: left" type="radio" id="' + i + '" name="hall" value="' + response[i].hallCd + '">' + response[i].hallNm + '</div>');
                             }
                         }
@@ -278,10 +290,9 @@ define(function (require) {
                 dialog.open();
             }
         },
-        addHall: function (response, id) {
+        addWaitHall: function (response, id) {
 
             var _this = this;
-
             var dialog = new BootstrapDialog({
                 closable: false,
                 onshown: function (dialogRef) {
@@ -345,61 +356,60 @@ define(function (require) {
                             $('#notice').fadeIn(100);
                             return false;
                         } else {
-                            // 이미 존재하는 대기실인지 검색, isExist: 대기실 존재여부
-                            var isExist = true;
-                            for (var i = 0; i < response.length; i++) {
-                                if (response[i].headNm == param.headNm && response[i].bldgNm == param.bldgNm
-                                    && response[i].hallNm == param.hallNm) isExist = false;
-                            }
 
-                            if (!isExist) {
-                                $('#innerLine').fadeOut(100);
-                                $('#innerGroupInfo').fadeOut(100);
+                            // 이미 존재하는 대기실인지 검색, true: 미존재, false: 존재
+                            // attend_wait_hall이 비어있다면 hall 테이블에서 입력할 대기실 검사
+                            $.ajax({
+                                url: 'system/checkHall',
+                                type: 'POST',
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(param),
+                                success: function(isExist){
+                                    if (!isExist) {
+                                        $('#notice').html('이미 존재하는 대기실입니다');
+                                        $('#notice').fadeOut(100);
+                                        $('#notice').fadeIn(100);
+                                        $('#notice').fadeOut(100);
+                                        $('#notice').fadeIn(100);
+                                    }
 
-                                $('#notice').html('이미 존재하는 대기실입니다');
-                                $('#notice').fadeOut(100);
-                                $('#notice').fadeIn(100);
-                                $('#notice').fadeOut(100);
-                                $('#notice').fadeIn(100);
-                                return false;
-                            } else {
-                                $('#notice').html('');
-                                $('#innerLine').fadeIn(100);
-                                $('#innerGroupInfo').fadeIn(100);
-
-                                // 대기실 추가 후에는 바꾸지 못함
-                                $('#headNm').attr('disabled', true);
-                                $('#headNm').css('background', '#fbf7f7');
-                                $('#headNm').css('color', 'graytext');
-                                $('#headNm').attr('cursor', 'non-allowed');
-
-                                $('#headTxt').attr('disabled', true);
-                                $('#headTxt').css('background', '#fbf7f7');
-                                $('#headTxt').css('color', 'graytext');
-                                $('#headTxt').attr('cursor', 'non-allowed');
-
-                                $('#bldgNm').attr('disabled', true);
-                                $('#bldgNm').css('background', '#fbf7f7');
-                                $('#bldgNm').css('color', 'graytext');
-                                $('#bldgNm').attr('cursor', 'non-allowed');
-
-                                $('#bldgTxt').attr('disabled', true);
-                                $('#bldgTxt').css('background', '#fbf7f7');
-                                $('#bldgTxt').css('color', 'graytext');
-                                $('#bldgTxt').attr('cursor', 'non-allowed');
-
-                                $('#hallTxt').attr('disabled', true);
-                                $('#hallTxt').css('background', '#fbf7f7');
-                                $('#hallTxt').css('color', 'graytext');
-                                $('#hallTxt').attr('cursor', 'non-allowed');
-                            }
+                                    $('#innerLine').fadeIn(100);
+                                    $('#innerGroupInfo').fadeIn(100);
+                                }
+                            });
                         }
                     });
 
                     // 조 추가 버튼 클릭 시
                     $('#innerAddGroup').click(function () {
+
+                        // 대기실 추가 후에는 바꾸지 못함
+                        $('#headNm').attr('disabled', true);
+                        $('#headNm').css('background', '#fbf7f7');
+                        $('#headNm').css('color', 'graytext');
+                        $('#headNm').attr('cursor', 'non-allowed');
+
+                        $('#headTxt').attr('disabled', true);
+                        $('#headTxt').css('background', '#fbf7f7');
+                        $('#headTxt').css('color', 'graytext');
+                        $('#headTxt').attr('cursor', 'non-allowed');
+
+                        $('#bldgNm').attr('disabled', true);
+                        $('#bldgNm').css('background', '#fbf7f7');
+                        $('#bldgNm').css('color', 'graytext');
+                        $('#bldgNm').attr('cursor', 'non-allowed');
+
+                        $('#bldgTxt').attr('disabled', true);
+                        $('#bldgTxt').css('background', '#fbf7f7');
+                        $('#bldgTxt').css('color', 'graytext');
+                        $('#bldgTxt').attr('cursor', 'non-allowed');
+
+                        $('#hallTxt').attr('disabled', true);
+                        $('#hallTxt').css('background', '#fbf7f7');
+                        $('#hallTxt').css('color', 'graytext');
+                        $('#hallTxt').attr('cursor', 'non-allowed');
+
                         id++;
-                        $('#notice').html('');
                         $('#innerNotice').html('<span style="color:crimson">조 추가 시 값을 기입하지 않으면 추가되지 않습니다</span>');
                         $('#innerGroup').append('<div style="width: 15%; float: left">' +
                             '<input type="text" size="2" style="margin-rig ht: 10%;" id="' + id + '" name="newGroup">조</div>');
@@ -410,7 +420,6 @@ define(function (require) {
                         label: '선택 저장',
                         cssClass: 'btn-primary',
                         action: function () {
-
                             // 대기실이 추가되어 있지 않다면
                             if (param.headNm == undefined || param.bldgNm == undefined || param.hallNm == undefined) {
                                 $('#notice').html('대기실을 먼저 추가하세요');
@@ -495,7 +504,7 @@ define(function (require) {
 
             dialog.realize();
             dialog.getModalHeader().hide();
-            dialog.getModalDialog().css('margin-top', '10%');
+            dialog.getModalDialog().css('margin-top', '15%');
             dialog.open();
         },
         // 대기실 및 조 수정
@@ -504,6 +513,7 @@ define(function (require) {
             // 각 대기실명을 클릭 시 생성된 조 정보 호출
             $('input[name=hall]').click(function () {
 
+                $('#delAwh').fadeIn(100);
                 // #group에 append 되어있는 값 없애기
                 $('#group').html('');
                 $('#groupInfo').fadeIn(500);
@@ -526,16 +536,16 @@ define(function (require) {
                 }
             });
 
+            $('#delAwh').click(function () {
+                var hallCd = $('input[name=hall]:checked').val();
+                responseDialog.dialogFormat('삭제하면 복구할 수 없습니다. 계속하시겠습니까?', '삭제', 'system/delAwh?hallCd=' + hallCd);
+            });
+
             $('#addGroup').click(function () {
                 id += 1;
                 $('#noticeGroup').html('조 추가 시 값을 기입하지 않으면 추가되지 않습니다');
                 $('#group').append('<div style="width: 15%; float: left">' +
                     '<input type="text" size="2" style="margin-right: 10%;" id="' + id + '" name="newGroup">조</div>');
-            });
-
-            $('#close').click(function () {
-                $('#line').fadeOut(230);
-                $('#groupInfo').fadeOut(200);
             });
         },
         // '선택 저장' 버튼 클릭 시
@@ -589,7 +599,7 @@ define(function (require) {
             // 선택된 대기실의 데이터를 모두 삭제함
             var hallCd = $('input[name=hall]:checked').val();
             $.ajax({
-                url: 'system/delWaitHall?hallCd=' + hallCd,
+                url: 'system/delAwh?hallCd=' + hallCd,
                 success: function () {
                     _this.insertGroup(hallCd, tmp);
                 } // success
@@ -599,7 +609,7 @@ define(function (require) {
             // 조 리스트를 새로 insert
             for (var i = 0; i < insertList.length; i++) {
                 $.ajax({
-                    url: 'system/addWaitHall?hallCd=' + hallCd + '&groupNm=' + insertList[i].groupNm,
+                    url: 'system/addAwh?hallCd=' + hallCd + '&groupNm=' + insertList[i].groupNm,
                     success: function (response) {
                         responseDialog.notify({msg: response});
                     }

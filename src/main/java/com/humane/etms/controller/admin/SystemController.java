@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
 
 @RestController
 @RequestMapping(value = "system")
@@ -35,6 +37,7 @@ public class SystemController {
     private final AttendWaitHallRepository waitHallRepository;
     private final UserRoleRepository userRoleRepository;
     private final AttendRepository attendRepository;
+    private final AttendMapRepository attendMapRepository;
     private final StaffRepository staffRepository;
     private final SystemService systemService;
     private final SystemMapper systemMapper;
@@ -351,17 +354,30 @@ public class SystemController {
         }
     }
 
-    @RequestMapping(value = "delWaitHall")
-    public void delWaitHall(String hallCd) {
-        systemMapper.delWaitHall(hallCd);
-    }
-
     private final HallRepository hallRepository;
 
+    @RequestMapping(value = "checkHall")
+    public boolean checkHall(@RequestBody Hall hall) {
+        try {
+            Hall tmp = hallRepository.findOne(new BooleanBuilder()
+                    .and(QHall.hall.headNm.eq(hall.getHeadNm()))
+                    .and(QHall.hall.bldgNm.eq(hall.getBldgNm()))
+                    .and(QHall.hall.hallNm.eq(hall.getHallNm()))
+            );
+
+            if (tmp != null) return false;
+            else return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     @RequestMapping(value = "addHall")
-    public String addHall(@RequestBody Hall hall){
-        try{
-            systemMapper.addHall(hall);
+    public String addHall(@RequestBody Hall hall) {
+        try {
 
             Hall tmp = hallRepository.findOne(new BooleanBuilder()
                     .and(QHall.hall.headNm.eq(hall.getHeadNm()))
@@ -369,23 +385,29 @@ public class SystemController {
                     .and(QHall.hall.hallNm.eq(hall.getHallNm()))
             );
 
-            String hallCd = null;
+            String hallCd;
 
-            if(tmp != null){
+            if (tmp != null) {
                 hallCd = tmp.getHallCd();
+            } else {
+                systemMapper.addHall(hall);
+                hallCd = hallRepository.findOne(new BooleanBuilder()
+                        .and(QHall.hall.headNm.eq(hall.getHeadNm()))
+                        .and(QHall.hall.bldgNm.eq(hall.getBldgNm()))
+                        .and(QHall.hall.hallNm.eq(hall.getHallNm()))
+                ).getHallCd();
             }
 
             return hallCd;
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
-
         }
     }
 
-    @RequestMapping(value = "addWaitHall")
-    public ResponseEntity addWaitHall(String hallCd, String groupNm) {
+    @RequestMapping(value = "addAwh")
+    public ResponseEntity addAwh(String hallCd, String groupNm) {
         try {
             if (hallCd != null) {
                 // attendWaitHall이 있는지 검사
@@ -395,16 +417,12 @@ public class SystemController {
                 );
 
                 // attendWaitHall이 존재하지 않으면 insert
-                if (attendWaitHall == null) systemMapper.addWaitHall(hallCd, groupNm);
+                if (attendWaitHall == null) systemMapper.addAwh(hallCd, groupNm);
 
                 return ResponseEntity.ok("저장되었습니다");
             } else {
-                // 1. hall 등록
-                //systemMapper.addHall();
-
-                // 2. attendWaithall 등록
-
-                systemMapper.addWaitHall(null, groupNm);
+                // attendWaithall 등록
+                systemMapper.addAwh(null, groupNm);
                 return ResponseEntity.ok("저장되었습니다");
             }
         } catch (Exception e) {
@@ -412,10 +430,10 @@ public class SystemController {
         }
     }
 
-    @RequestMapping(value = "delawh")
-    public ResponseEntity delawh() {
+    @RequestMapping(value = "delAwh")
+    public ResponseEntity delAwh(String hallCd) {
         try {
-            systemMapper.delWaitHall(null);
+            systemMapper.delAwh(hallCd);
             return ResponseEntity.ok("삭제되었습니다");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
