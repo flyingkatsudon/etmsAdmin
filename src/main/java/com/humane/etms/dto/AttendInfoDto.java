@@ -35,6 +35,7 @@ public class AttendInfoDto implements Serializable {
 
     private boolean isPaperChange;
     private boolean isUseGroup;
+    private boolean isAssignedGroup;
     private boolean isUseScanner;
 
     private Long paperCnt;
