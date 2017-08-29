@@ -26,6 +26,7 @@ define(function (require) {
                 {name: 'attendLen', hidden: true},
                 {name: 'isPaperChange', hidden: true},
                 {name: 'isUseGroup', hidden: true},
+                {name: 'isAssignedGroup', hidden: true},
                 {name: 'paperCnt', hidden: true},
                 {name: 'paperLen', hidden: true},
                 {name: 'paperHeader', hidden: true}
@@ -93,6 +94,22 @@ define(function (require) {
                                         break;
                                 }
 
+                                $('#detailPart1').append(
+                                    '<div style="margin:6% 0 0 3%;">' + '조&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;배정'
+                                   + '<input style="margin: 0 2% 0 15%;" type="radio" id="assignedGroup" name="isAssignedGroup" value=true>사용'
+                                    + '<input style="margin: 0 2% 0 10%;" type="radio" id="notAssignedGroup" name="isAssignedGroup" value=false>미사용</div>');
+
+                                switch (rowData.isAssignedGroup) {
+                                    case 'true':
+                                        $('#assignedGroup').attr('checked', 'checked');
+                                        break;
+                                    case 'false':
+                                        $('#notAssignedGroup').attr('checked', 'checked');
+                                        break;
+                                    default:
+                                        $('#notAssignedGroup').attr('checked', 'checked');
+                                        break;
+                                }
 
                                 $('#detailPart2').append('<div style="margin:2% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;매수<input type="text" id="paperCnt" class="set-short" value="' + rowData.paperCnt + '">&nbsp;장</div>');
                                 $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지 자리수<input type="text" id="paperLen" class="set-short" value="' + rowData.paperLen + '">&nbsp;자리</div>');
