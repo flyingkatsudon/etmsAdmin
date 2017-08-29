@@ -45,6 +45,8 @@ public interface SystemMapper {
 
     Page<StaffDto> staff(@Param("param") StaffDto param, @Param("pageable") Pageable pageable);
 
+    Page<StaffDto> uploadStaff(@Param("param") StaffDto param, @Param("pageable") Pageable pageable);
+
     void addStaff(@Param("param") StaffDto param);
 
     void modifyStaff(@Param("param") StaffDto param);

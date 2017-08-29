@@ -184,7 +184,7 @@ public class SystemController {
                 return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/upload-staff.jrxml",
                         format,
-                        systemMapper.staff(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
+                        systemMapper.uploadStaff(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
                 );
         }
     }
