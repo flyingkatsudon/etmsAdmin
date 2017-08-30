@@ -45,15 +45,17 @@
     </select>
 
     <select id="waitHall" resultType="com.humane.etms.dto.WaitHallDto">
-        select awh._id as id, hall.head_nm, hall.bldg_nm, awh.hall_cd, hall.hall_nm, awh.group_nm
+        select awh._id as id, awh.attend_cd, attend.attend_nm, hall.head_nm, hall.bldg_nm, awh.hall_cd, hall.hall_nm, awh.group_nm
         from attend_wait_hall awh
         inner join hall on hall.hall_cd = awh.hall_cd
+        inner join attend on attend.attend_cd = awh.attend_cd
         order by awh.hall_cd, awh.group_nm
     </select>
 
     <delete id="delAwh">
         delete from attend_wait_hall
         <where>
+            <if test="attendCd != null"> and attend_wait_hall.attend_cd = #{attendCd}</if>
             <if test="hallCd != null"> and attend_wait_hall.hall_cd = #{hallCd}</if>
         </where>
     </delete>
@@ -67,7 +69,7 @@
     </insert>
 
     <insert id="addAwh" parameterType="String" useGeneratedKeys="true" keyProperty="id">
-        insert into attend_wait_hall (_id, group_nm, hall_cd, division) values (null, #{groupNm}, #{hallCd}, null)
+        insert into attend_wait_hall (_id, group_nm, hall_cd, attend_cd, division) values (null, #{groupNm}, #{hallCd}, #{attendCd}, null)
 
         <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID()

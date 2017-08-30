@@ -28,9 +28,9 @@ public interface StudentMapper {
     long orderCnt(@Param("param") String admissionCd);
     Page<ExamineeDto> order(@Param("param") ExamineeDto examineeDto, @Param("pageable") Pageable pageable);
     Page<WaitHallDto> waitHall(@Param("pageable") Pageable pageable);
-    void delAwh(@Param("hallCd") String hallCd);
+    void delAwh(@Param("attendCd") String attendCd, @Param("hallCd") String hallCd);
     void delOrder();
     void addHall(@Param("param") Hall param);
-    void addAwh(@Param("hallCd") String hallCd, @Param("groupNm") String groupNm);
+    void addAwh(@Param("attendCd") String attendCd, @Param("hallCd") String hallCd, @Param("groupNm") String groupNm);
     void delHall(@Param("hallCd") String hallCd);
 }

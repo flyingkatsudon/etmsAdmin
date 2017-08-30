@@ -6,6 +6,7 @@
 package com.humane.etms.controller.admin;
 
 import com.humane.etms.dto.ExamineeDto;
+import com.humane.etms.dto.WaitHallDto;
 import com.humane.etms.mapper.StudentMapper;
 import com.humane.etms.model.AttendWaitHall;
 import com.humane.etms.model.Hall;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "student")
@@ -140,33 +142,28 @@ public class StudentController {
     }
 
     @RequestMapping(value = "addAwh")
-    public ResponseEntity addAwh(String hallCd, String groupNm) {
+    public ResponseEntity addAwh(String attendCd, String hallCd, String groupNm) {
         try {
-            if (hallCd != null) {
-                // attendWaitHall이 있는지 검사
-                AttendWaitHall attendWaitHall = waitHallRepository.findOne(new BooleanBuilder()
-                        .and(QAttendWaitHall.attendWaitHall.hallCd.eq(hallCd))
-                        .and(QAttendWaitHall.attendWaitHall.groupNm.eq(groupNm))
-                );
+            // attendWaitHall이 있는지 검사
+            AttendWaitHall attendWaitHall = waitHallRepository.findOne(new BooleanBuilder()
+                    .and(QAttendWaitHall.attendWaitHall.attendCd.eq(attendCd))
+                    .and(QAttendWaitHall.attendWaitHall.hallCd.eq(hallCd))
+                    .and(QAttendWaitHall.attendWaitHall.groupNm.eq(groupNm))
+            );
 
-                // attendWaitHall이 존재하지 않으면 insert
-                if (attendWaitHall == null) studentMapper.addAwh(hallCd, groupNm);
+            // attendWaitHall이 존재하지 않으면 insert
+            if (attendWaitHall == null) studentMapper.addAwh(attendCd, hallCd, groupNm);
 
-                return ResponseEntity.ok("저장되었습니다");
-            } else {
-                // attendWaithall 등록
-                studentMapper.addAwh(null, groupNm);
-                return ResponseEntity.ok("저장되었습니다");
-            }
+            return ResponseEntity.ok("저장되었습니다");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());
         }
     }
 
     @RequestMapping(value = "delAwh")
-    public ResponseEntity delAwh(String hallCd) {
+    public ResponseEntity delAwh(String attendCd, String hallCd) {
         try {
-            studentMapper.delAwh(hallCd);
+            studentMapper.delAwh(attendCd, hallCd);
             return ResponseEntity.ok("삭제되었습니다");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("관리자에게 문의하세요<br><br>" + e.getMessage());

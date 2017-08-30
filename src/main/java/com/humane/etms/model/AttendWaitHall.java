@@ -15,6 +15,7 @@ public class AttendWaitHall {
     @Id @GeneratedValue
     private Long _id;
     private String division;
+    private String attendCd;
     private String hallCd;
     private String groupNm;
 }

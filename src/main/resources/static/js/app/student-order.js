@@ -42,10 +42,10 @@ define(function (require) {
                     success: function (response) {
                         if (response.length > 0) {
                             var id = _this.getSorted(response);
-                            _this.setWaitHall(response, id);
+                            _this.renderWaitHall(response, id);
                         } else {
                             //responseDialog.notify({msg: '최초 양식파일로 대기실 업로드가 필요합니다'});
-                            _this.setWaitHall(response);
+                            _this.renderWaitHall(response);
                         }
                     }
                 });
@@ -220,7 +220,38 @@ define(function (require) {
                 }
             });
         },
-        setWaitHall: function (response, id) {
+        renderAttendToolbar: function (response, css) {
+            var attendList = [];
+            var cssClass = '';
+            if(css != null) cssClass = 'class=' + css;
+
+            var text = '<select id="attendCd"' + cssClass + '><option value="">선택하세요</option>';
+
+            for (var i = 0; i < response.length; i++) {
+                // 중복된 값은 나타낼 필요 없음
+                var flag = true;
+                for (var j = 0; j < i; j++) {
+                    // 중복된 값이 있으면 flag값을 바꾼다
+                    if (response[i].attendCd == response[j].attendCd) {
+                        flag = false;
+                    }
+                }
+
+                if (flag) {
+                    attendList.push({
+                        attendCd: response[i].attendCd,
+                        attendNm: response[i].attendNm
+                    });
+                    text += '<option value="' + response[i].attendCd + '">' + response[i].attendNm + '</option>';
+                }
+            }
+
+            text += '</select>';
+
+            return text;
+
+        },
+        renderWaitHall: function (response, id) {
             var _this = this;
 
             // 조를 추가할 때 그 값에 붙일 id
@@ -228,7 +259,6 @@ define(function (require) {
 
             // 대기실 정보가 없다면 입력창부터 띄운다
             if (response.length == 0) {
-
                 _this.addWaitHall(response, id);
 
                 responseDialog.notify({
@@ -239,33 +269,54 @@ define(function (require) {
                 return false;
 
             } else {
-
                 var dialog = new BootstrapDialog({
-                    title: '<h3>대기실 별 조 배정 내역</h3>',
+                    title: '<h5>시험을 선택하세요&nbsp;&nbsp;&nbsp;' + _this.renderAttendToolbar(response) + '</h5>',
                     size: 'size-wide',
                     onshown: function (dialogRef) {
 
                         var body = dialogRef.$modalBody;
+                        body.hide();
                         body.append(WaitHall);
 
-                        for (var i = 0; i < response.length; i++) {
-                            // 중복된 값은 나타낼 필요 없음
-                            var flag = true;
-                            for (var j = 0; j < i; j++) {
-                                // 중복된 값이 있으면 flag값을 바꾼다
-                                if (response[i].hallCd == response[j].hallCd) {
-                                    flag = false;
+                        // 1. 시험을 선택한 후에
+                        $('#attendCd').change(function () {
+                            var attendCd = $('#attendCd').val();
+                            // 시험을 선택할 때마다 html을 새로 그린다
+                            $('#hall').html('');
+                            $('#line').hide();
+                            $('#groupInfo').hide();
+                            body.hide();
+
+                            // 시험을 선택하지 않으면 body를 가린다
+                            if (attendCd == '') {
+                                body.hide();
+                                return false;
+                            }
+
+                            for (var i = 0; i < response.length; i++) {
+                                if (response[i].attendCd == attendCd) {
+                                    // 중복된 값은 나타낼 필요 없음
+                                    var flag = true;
+                                    for (var j = 0; j < i; j++) {
+                                        // 중복된 값이 있으면 flag값을 바꾼다
+                                        if (response[i].hallCd == response[j].hallCd) {
+                                            flag = false;
+                                        }
+                                    }
+
+                                    // 중복검사 후, name=hall의 라디오 버튼을 만듦
+                                    if (flag) {
+                                        $('#hall').append('<div style="width: 25%; margin: 0 0 1% 0; float: left">' +
+                                            '<input style="margin: 0 2% 0 15%; float: left" type="radio" id="' + i + '" name="hall" value="' + response[i].hallCd + '">' + response[i].hallNm + '</div>');
+                                    }
                                 }
                             }
 
-                            // 중복검사 후, name=hall의 라디오 버튼을 만듦
-                            if (flag) {
-                                $('#hall').append('<div style="width: 25%; margin: 0 0 1% 0; float: left">' +
-                                    '<input style="margin: 0 2% 0 15%; float: left" type="radio" id="' + i + '" name="hall" value="' + response[i].hallCd + '">' + response[i].hallNm + '</div>');
-                            }
-                        }
-                        // 대기실 편집
-                        _this.modifyWaitHall(response, id);
+                            body.fadeIn(300);
+
+                            // 2. 대기실을 선택하면 조 편집이 가능함
+                            _this.viewGroup(response, id);
+                        });
                     }, // onshown
                     buttons: [
                         {
@@ -293,6 +344,7 @@ define(function (require) {
         addWaitHall: function (response, id) {
 
             var _this = this;
+
             var dialog = new BootstrapDialog({
                 closable: false,
                 onshown: function (dialogRef) {
@@ -301,6 +353,8 @@ define(function (require) {
 
                     // 대기실 추가 dialog에 사용될 툴바
                     this.toolbar = new InnerToolbar({el: '#hallInfo', parent: this}).render();
+
+                    $('#attend').append(_this.getAttendNmList(response, 'waitHall-select'));
 
                     // '직접입력'이 선택되면 텍스트박스 나타냄
                     $('#headNm').change(function () {
@@ -364,7 +418,7 @@ define(function (require) {
                                 type: 'POST',
                                 contentType: "application/json; charset=utf-8",
                                 data: JSON.stringify(param),
-                                success: function(isExist){
+                                success: function (isExist) {
                                     if (!isExist) {
                                         $('#notice').html('이미 존재하는 대기실입니다');
                                         $('#notice').fadeOut(100);
@@ -384,6 +438,11 @@ define(function (require) {
                     $('#innerAddGroup').click(function () {
 
                         // 대기실 추가 후에는 바꾸지 못함
+                        $('#attendCd').attr('disabled', true);
+                        $('#attendCd').css('background', '#fbf7f7');
+                        $('#attendCd').css('color', 'graytext');
+                        $('#attendCd').attr('cursor', 'non-allowed');
+
                         $('#headNm').attr('disabled', true);
                         $('#headNm').css('background', '#fbf7f7');
                         $('#headNm').css('color', 'graytext');
@@ -417,7 +476,7 @@ define(function (require) {
                 },
                 buttons: [
                     {
-                        label: '선택 저장',
+                        label: '저장',
                         cssClass: 'btn-primary',
                         action: function () {
                             // 대기실이 추가되어 있지 않다면
@@ -460,7 +519,7 @@ define(function (require) {
                                     type: 'POST',
                                     contentType: 'application/json; charset=utf-8',
                                     data: JSON.stringify(param),
-                                    success: function (response) {
+                                    success: function (hallCd) {
                                         // 중복검사
                                         for (var i = 0; i < tmp.length; i++) {
                                             for (var j = i + 1; j < tmp.length; j++) {
@@ -482,7 +541,8 @@ define(function (require) {
                                         }
 
                                         // 중복이 없다면 insert
-                                        _this.insertGroup(response, groupList);
+                                        _this.insertGroup($('#attendCd').val(), hallCd, groupList);
+                                        //_this.insertGroup(param);
 
                                     },
                                     error: function (response) {
@@ -507,8 +567,10 @@ define(function (require) {
             dialog.getModalDialog().css('margin-top', '15%');
             dialog.open();
         },
-        // 대기실 및 조 수정
-        modifyWaitHall: function (response, id) {
+        // 대기실 조회 및 편집, 조 편집
+        viewGroup: function (response, id) {
+            var attendCd = $('#attendCd').val();
+            var hallCd = $('input[name=hall]:checked').val();
 
             // 각 대기실명을 클릭 시 생성된 조 정보 호출
             $('input[name=hall]').click(function () {
@@ -522,7 +584,7 @@ define(function (require) {
 
                 // 해당하는 groupNm만 append 함
                 for (var k = 0; k < response.length; k++) {
-                    if (response[k].hallCd == $(this).val()) {
+                    if (response[k].hallCd == $(this).val() && response[k].attendCd == attendCd) {
                         if (response[k].groupNm == undefined) {
                             id += 1;
                             $('#group').append('<div style="width: 15%; float: left">' +
@@ -537,8 +599,7 @@ define(function (require) {
             });
 
             $('#delAwh').click(function () {
-                var hallCd = $('input[name=hall]:checked').val();
-                responseDialog.dialogFormat('삭제하면 복구할 수 없습니다. 계속하시겠습니까?', '삭제', 'system/delAwh?hallCd=' + hallCd);
+                responseDialog.dialogFormat('삭제하면 복구할 수 없습니다. 계속하시겠습니까?', '삭제', 'student/delAwh?attendCd=' + attendCd + '&hallCd=' + hallCd);
             });
 
             $('#addGroup').click(function () {
@@ -548,9 +609,13 @@ define(function (require) {
                     '<input type="text" size="2" style="margin-right: 10%;" id="' + id + '" name="newGroup">조</div>');
             });
         },
-        // '선택 저장' 버튼 클릭 시
+        // 조 추가 및 삭제
         modifyGroup: function () {
             var _this = this;
+
+            // 선택한 시험코드와 대기실코드
+            var attendCd = $('#attendCd').val();
+            var hallCd = $('input[name=hall]:checked').val();
 
             // ori: 기존에 있던 조 이름 중에 유지되는 이름
             // newGroup: 새로 입력한 조, tmp: 업로드할 조 리스트
@@ -597,24 +662,34 @@ define(function (require) {
                 return false;
             }
             // 선택된 대기실의 데이터를 모두 삭제함
-            var hallCd = $('input[name=hall]:checked').val();
             $.ajax({
-                url: 'student/delAwh?hallCd=' + hallCd,
+                url: 'student/delAwh?attendCd=' + attendCd + '&hallCd=' + hallCd,
                 success: function () {
-                    _this.insertGroup(hallCd, tmp);
+                    _this.insertGroup(attendCd, hallCd, tmp);
                 } // success
             }); // ajax
         },
-        insertGroup: function (hallCd, insertList) {
+        insertGroup: function (attendCd, hallCd, groupList) {
             // 조 리스트를 새로 insert
-            for (var i = 0; i < insertList.length; i++) {
+            for (var i = 0; i < groupList.length; i++) {
                 $.ajax({
-                    url: 'student/addAwh?hallCd=' + hallCd + '&groupNm=' + insertList[i].groupNm,
+                    url: 'student/addAwh?attendCd=' + attendCd + '&hallCd=' + hallCd + '&groupNm=' + groupList[i].groupNm,
                     success: function (response) {
                         responseDialog.notify({msg: response});
                     }
                 });
             }
+
+            /* 후에 이런식으로 고쳐야 */
+            /*$.ajax({
+                url: 'student/addWah',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(param),
+                success: function (response) {
+                    responseDialog.notify({msg: response});
+                }
+            });*/
         }
     });
 });

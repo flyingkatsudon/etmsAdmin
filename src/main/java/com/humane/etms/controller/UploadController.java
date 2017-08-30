@@ -84,7 +84,17 @@ public class UploadController {
                 );
 
                 // Hall이 존재하면
-                if(tmpHall != null) {
+                if (tmpHall != null) {
+
+                    /*
+                        attendDate, attendTime을 엑셀에서 '텍스트' 타입으로 저장함
+                        추후 날짜, 시간 타입으로 저장할 수 있도록 더 알아봐야함
+                    */
+                    Attend attend = attendRepository.findOne(new BooleanBuilder()
+                            .and(QAttend.attend.attendDate.eq(vo.getAttendDate()))
+                            .and(QAttend.attend.attendTime.eq(vo.getAttendTime()))
+                            .and(QAttend.attend.admission.admissionNm.eq(vo.getAdmissionNm()))
+                    );
 
                     // DB에 존재하는 AttendWaitHall을 찾음
                     AttendWaitHall tmp = waitHallRepository.findOne(new BooleanBuilder()
@@ -92,19 +102,19 @@ public class UploadController {
                             .and(QAttendWaitHall.attendWaitHall.groupNm.eq(vo.getGroupNm()))
                             .and(QAttendWaitHall.attendWaitHall.hallCd.eq(tmpHall.getHallCd()))
                     );
+                    // 객체를 새로 생성하여 값을 set
+                    AttendWaitHall attendWaitHall = new AttendWaitHall();
 
                     // 찾는 AttendWaitHall이 없다면
-                    if (tmp == null) {
+                    //attendWaitHall.setDivision(vo.getDivision());
+                    attendWaitHall.setGroupNm(vo.getGroupNm());
+                    attendWaitHall.setHallCd(tmpHall.getHallCd());
+                    attendWaitHall.setAttendCd(attend.getAttendCd());
 
-                        // 객체를 새로 생성하여 값을 set
-                        AttendWaitHall attendWaitHall = new AttendWaitHall();
-                        //attendWaitHall.setDivision(vo.getDivision());
-                        attendWaitHall.setGroupNm(vo.getGroupNm());
-                        attendWaitHall.setHallCd(tmpHall.getHallCd());
+                    if (tmp != null) attendWaitHall.set_id(tmp.get_id());
 
-                        // 모든 값을 저장하면 DB에 최종적으로 저장
-                        waitHallRepository.save(attendWaitHall);
-                    }
+                    // 모든 값을 저장하면 DB에 최종적으로 저장
+                    waitHallRepository.save(attendWaitHall);
                 }
             }
 
@@ -305,7 +315,7 @@ public class UploadController {
                 Staff staff = mapper.convertValue(vo, Staff.class);
 
                 // 기술요원 이름과 전화번호가 있는 것들에 한해서 업로드 진행
-                if(!staff.getStaffNm().isEmpty() || !staff.getPhoneNo().isEmpty()) {
+                if (!staff.getStaffNm().isEmpty() || !staff.getPhoneNo().isEmpty()) {
                     log.debug("{}", staff);
                     Attend attend = attendRepository.findOne(new BooleanBuilder()
                             .and(QAttend.attend.admission.admissionNm.eq(vo.getAdmissionNm()))
