@@ -189,7 +189,7 @@ public class UploadController {
                 Staff staff = mapper.convertValue(vo, Staff.class);
 
                 // 기술요원 이름과 전화번호가 있는 것들에 한해서 업로드 진행
-                if(!staff.getStaffNm().isEmpty() || !staff.getPhoneNo().isEmpty()) {
+                if (!staff.getStaffNm().isEmpty() || !staff.getPhoneNo().isEmpty()) {
                     log.debug("{}", staff);
                     Attend attend = attendRepository.findOne(new BooleanBuilder()
                             .and(QAttend.attend.admission.admissionNm.eq(vo.getAdmissionNm()))
