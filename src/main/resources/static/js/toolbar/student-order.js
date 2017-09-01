@@ -25,7 +25,7 @@ define(function (require) {
             'click #search': 'searchClicked',
             'change #admissionNm': 'admissionNmChanged',
             'change #typeNm': 'typeNmChanged',
-            'change #examDate': 'examDateChanged'
+            'change #attendDate': 'attendDateChanged'
         },
         searchClicked: function (e) {
             e.preventDefault();
@@ -48,7 +48,7 @@ define(function (require) {
                 admissionNm: e.currentTarget.value
             };
             this.$('#typeNm').html(this.getOptions(ToolbarModel.getTypeNm(param)));
-            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#attendDate').html(this.getOptions(ToolbarModel.getAttendDate(param)));
             this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
         },
         typeNmChanged: function (e) {
@@ -56,14 +56,14 @@ define(function (require) {
                 admissionNm: this.$('#admissionNm').val(),
                 typeNm: e.currentTarget.value
             };
-            this.$('#examDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
+            this.$('#attendDate').html(this.getOptions(ToolbarModel.getExamDate(param)));
             this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
         },
-        examDateChanged: function (e) {
+        attendDateChanged: function (e) {
             var param = {
                 admissionNm: this.$('#admissionNm').val(),
                 typeNm: this.$('#typeNm').val(),
-                examDate: e.currentTarget.value
+                attendDate: e.currentTarget.value
             };
             this.$('#groupNm').html(this.getOptions(ToolbarModel.getGroupNm(param)));
         }

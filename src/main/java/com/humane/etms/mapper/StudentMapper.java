@@ -1,7 +1,7 @@
 package com.humane.etms.mapper;
 
-import com.humane.etms.dto.*;
-import com.humane.etms.model.Device;
+import com.humane.etms.dto.ExamineeDto;
+import com.humane.etms.dto.WaitHallDto;
 import com.humane.etms.model.Hall;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,9 +28,11 @@ public interface StudentMapper {
     long orderCnt(@Param("param") String admissionCd);
     Page<ExamineeDto> order(@Param("param") ExamineeDto examineeDto, @Param("pageable") Pageable pageable);
     Page<WaitHallDto> waitHall(@Param("pageable") Pageable pageable);
-    void delAwh(@Param("attendCd") String attendCd, @Param("hallCd") String hallCd);
     void delOrder();
     void addHall(@Param("param") Hall param);
     void addAwh(@Param("attendCd") String attendCd, @Param("hallCd") String hallCd, @Param("groupNm") String groupNm);
     void delHall(@Param("hallCd") String hallCd);
+    void delAwh(@Param("attendCd") String attendCd, @Param("hallCd") String hallCd);
+
+    long ready(@Param("attendCd") String attendCd);
 }

@@ -148,10 +148,19 @@ define(function (require) {
                     var body = dialog.$modalBody;
                     body.append(UpdateOrder);
 
-                    // 1. 서버에서 내려받기
+                    // 1. 서버에서 생성하기
                     $('#server').click(function () {
-                        alert('준비중');
-                        //_this.fromServer();
+                        $.ajax({
+                            url: 'student/waitHall',
+                            success: function (response) {
+                                if (response.length > 0) {
+                                    _this.fromServer(response);
+                                } else {
+                                    responseDialog.notify({msg: '대기실 업로드가 필요합니다'});
+                                    return false;
+                                }
+                            }
+                        });
                     });
 
                     // 2. 파일로 업로드
@@ -168,12 +177,84 @@ define(function (require) {
             dialog.open();
 
         },
+        fromServer: function (response) {
+            var _this = this;
+
+            var dialog = new BootstrapDialog({
+                message: '<h5 style="margin-left: 10%">시험을 선택하세요&nbsp;&nbsp;&nbsp;&nbsp;' + _this.renderToolbar('attendCd', response, 'waitHall-select') + '<span id="msg" style="color: crimson"></span></h5>',
+                buttons: [
+                    {
+                        label: '진행',
+                        cssClass: 'btn-primary',
+                        action: function () {
+                            $.ajax({
+                                url: 'student/ready?attendCd=' + $('#attendCd').val(),
+                                // 응시인원 가져옴
+                                success: function (attendCnt) {
+                                    var attendCd = $('#attendCd').val();
+
+                                    // 시험에 배정된 조 갯수
+                                    var groupCnt = 0;
+                                    var groupList = [];
+
+                                    // 중복된 값을 제외하고 조 갯수만 구함
+                                    for (var i = 0; i < response.length; i++) {
+                                        // 시험코드가 같은 항목에 대해
+                                        if (response[i].attendCd == attendCd) {
+
+                                            var flag = true;
+                                            for (var j = 0; j < i; j++) {
+                                                // 중복된 값이 있으면 flag값을 바꾼다
+                                                if (response[i].groupNm == response[j].groupNm) {
+                                                    flag = false;
+                                                }
+                                            }
+
+                                            if (flag) {
+                                                groupList.push({
+                                                    groupNm: response[i].groupNm
+                                                });
+                                                groupCnt++;
+                                            }
+                                        }
+                                    } // for
+
+                                    // 시험코드, 조 리스트, 응시자수, 조별 순번 수
+                                    var param = {
+                                        attendCd: attendCd,
+                                        attendCnt: attendCnt,
+                                        orderCnt: Math.round(attendCnt / groupCnt),
+                                        groupList: groupList
+                                    };
+
+                                    $.ajax({
+                                        url: 'student/assign',
+                                        type: 'POST',
+                                        contentType: "application/json; charset=utf-8",
+                                        data: JSON.stringify(param),
+                                        success: function (response) {
+                                            responseDialog.notify({msg: response});
+                                            $('#search').trigger('click');
+                                        }
+                                    });
+                                } // success
+                            }); // ajax
+                        }
+                    }
+                ]
+            });
+
+            dialog.realize();
+            dialog.getModalHeader().hide();
+            dialog.getModalDialog().css('margin-top', '20%');
+            dialog.open();
+        },
         fromFile: function (id, value) {
             var _this = this;
 
             var html = '<form id="' + id + '" action="upload/' + value + '" method="post" enctype="multipart/form-data">' +
                 '<input type="file" name="file" style="width: 65%;" class="pull-left chosen"/>' +
-                '<a href="download/waitHall.xlsx" style="width: 10%; padding: 2%" class="btn btn-primary">양식</a>' +
+                '<a href="student/order.xlsx" style="width: 10%; padding: 2%" class="btn btn-primary">양식</a>' +
                 '<input type="submit" style="width: 10%; padding: 2%" class="btn btn-success" value="등록"/>' +
                 '<input type="button" id="close" style="width: 10%; padding: 2%" class="btn" value="닫기"/>' +
                 '</form>';
@@ -220,12 +301,12 @@ define(function (require) {
                 }
             });
         },
-        renderAttendToolbar: function (response, css) {
+        renderToolbar: function (id, response, css) {
             var attendList = [];
             var cssClass = '';
-            if(css != null) cssClass = 'class=' + css;
+            if (css != null) cssClass = 'class=' + css;
 
-            var text = '<select id="attendCd"' + cssClass + '><option value="">선택하세요</option>';
+            var text = '<select id="' + id + '"' + cssClass + '><option value="">선택하세요</option>';
 
             for (var i = 0; i < response.length; i++) {
                 // 중복된 값은 나타낼 필요 없음
@@ -270,7 +351,7 @@ define(function (require) {
 
             } else {
                 var dialog = new BootstrapDialog({
-                    title: '<h5>시험을 선택하세요&nbsp;&nbsp;&nbsp;' + _this.renderAttendToolbar(response) + '</h5>',
+                    title: '<h5>시험을 선택하세요&nbsp;&nbsp;&nbsp;' + _this.renderToolbar('attendCd', response) + '</h5>',
                     size: 'size-wide',
                     onshown: function (dialogRef) {
 
@@ -354,7 +435,12 @@ define(function (require) {
                     // 대기실 추가 dialog에 사용될 툴바
                     this.toolbar = new InnerToolbar({el: '#hallInfo', parent: this}).render();
 
-                    $('#attend').append(_this.getAttendNmList(response, 'waitHall-select'));
+                    $.ajax({
+                        url: 'model/toolbar',
+                        success: function(res){
+                            $('#attend').append(_this.renderToolbar('attendCd', res, 'waitHall-select'));
+                        }
+                    });
 
                     // '직접입력'이 선택되면 텍스트박스 나타냄
                     $('#headNm').change(function () {
@@ -570,12 +656,12 @@ define(function (require) {
         // 대기실 조회 및 편집, 조 편집
         viewGroup: function (response, id) {
             var attendCd = $('#attendCd').val();
-            var hallCd = $('input[name=hall]:checked').val();
+            var hallCd = '';
 
             // 각 대기실명을 클릭 시 생성된 조 정보 호출
             $('input[name=hall]').click(function () {
 
-                $('#delAwh').fadeIn(100);
+                $('#delHall').fadeIn(100);
                 // #group에 append 되어있는 값 없애기
                 $('#group').html('');
                 $('#groupInfo').fadeIn(500);
@@ -587,25 +673,28 @@ define(function (require) {
                     if (response[k].hallCd == $(this).val() && response[k].attendCd == attendCd) {
                         if (response[k].groupNm == undefined) {
                             id += 1;
-                            $('#group').append('<div style="width: 15%; float: left">' +
+                            $('#group').append('<div style="width: 20%; float: left">' +
                                 '<input type="text" size="2" style="margin-right: 10%;" id="' + id + '" name="newGroup">조</div>');
                         }
                         else {
-                            $('#group').append('<div style="width: 15%; float: left"><input style="margin-right: 10%" type="checkbox" id="' + k + '"' +
+                            $('#group').append('<div style="width: 20%; float: left"><input style="margin-right: 10%" type="checkbox" id="' + k + '"' +
                                 'name="group" value=' + response[k].groupNm + ' checked><label style="font-size: large; font-weight: normal" for=' + k + '>' + response[k].groupNm + '</label></div>');
                         }
                     }
                 }
+
+                // 체크한 고사실 코드 저장
+                hallCd = $(this).val();
             });
 
-            $('#delAwh').click(function () {
-                responseDialog.dialogFormat('삭제하면 복구할 수 없습니다. 계속하시겠습니까?', '삭제', 'student/delAwh?attendCd=' + attendCd + '&hallCd=' + hallCd);
+            $('#delHall').click(function () {
+                responseDialog.dialogFormat('삭제하면 복구할 수 없습니다. 계속하시겠습니까?', '삭제', 'student/delHall?attendCd=' + attendCd + '&hallCd=' + hallCd);
             });
 
             $('#addGroup').click(function () {
                 id += 1;
                 $('#noticeGroup').html('조 추가 시 값을 기입하지 않으면 추가되지 않습니다');
-                $('#group').append('<div style="width: 15%; float: left">' +
+                $('#group').append('<div style="width: 20%; float: left">' +
                     '<input type="text" size="2" style="margin-right: 10%;" id="' + id + '" name="newGroup">조</div>');
             });
         },
@@ -661,6 +750,7 @@ define(function (require) {
                 $('#noticeGroup').html('최소 1개의 조를 배정하세요');
                 return false;
             }
+
             // 선택된 대기실의 데이터를 모두 삭제함
             $.ajax({
                 url: 'student/delAwh?attendCd=' + attendCd + '&hallCd=' + hallCd,
@@ -682,14 +772,14 @@ define(function (require) {
 
             /* 후에 이런식으로 고쳐야 */
             /*$.ajax({
-                url: 'student/addWah',
-                type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(param),
-                success: function (response) {
-                    responseDialog.notify({msg: response});
-                }
-            });*/
+             url: 'student/addWah',
+             type: 'POST',
+             contentType: "application/json; charset=utf-8",
+             data: JSON.stringify(param),
+             success: function (response) {
+             responseDialog.notify({msg: response});
+             }
+             });*/
         }
     });
 });

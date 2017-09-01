@@ -46,15 +46,10 @@ public class UploadController {
     private final StaffRepository staffRepository;
 
     // windows
-    @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
+    //@Value("${path.image.examinee:C:/api/etms}") String pathRoot;
     // mac
-    //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
-
-    // 고려대 면접고사용
-    public String validate(String str) {
-        if (str.equals("") || str == null) return null;
-        else return str;
-    }
+    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}")
+    String pathRoot;
 
     // 대기실 별 조 할당 정보
     @RequestMapping(value = "waitHall", method = RequestMethod.POST)
@@ -69,6 +64,9 @@ public class UploadController {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
+            // 기존에 배정되어있던 대기실 정보 전체 삭제
+            waitHallRepository.deleteAll();
+
             // 1. excel 변환
             List<FormWaitHall> waitHallList = ExOM.mapFromExcel(file).to(FormWaitHall.class).map(1);
             log.debug("{}", waitHallList);
@@ -122,7 +120,7 @@ public class UploadController {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             log.error("{}", throwable.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요<br><br>" + throwable.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("존재하는 시험인지 확인하세요<br><br>" + throwable.getMessage());
         }
     }
 
@@ -151,11 +149,11 @@ public class UploadController {
                 );
 
                 if (attendMap != null) {
-                    if (vo.getIsAttend()) {
-                        attendMap.setGroupNm(validate(vo.getGroupNm()));
-                        attendMap.setGroupOrder(validate(vo.getGroupOrder()));
-                        attendMap.setDebateNm(validate(vo.getDebateNm()));
-                        attendMap.setDebateOrder(validate(vo.getDebateOrder()));
+                    if (vo.getIsAttend().equals("응시")) {
+                        if(vo.getGroupNm() != null) attendMap.setGroupNm(vo.getGroupNm());
+                        if(!vo.getGroupOrder().equals("")) attendMap.setGroupOrder(Long.parseLong(vo.getGroupOrder()));
+                        if(vo.getDebateNm() != null) attendMap.setDebateNm(vo.getDebateNm());
+                        if(!vo.getDebateOrder().equals("")) attendMap.setDebateOrder(Long.parseLong(vo.getDebateOrder()));
                     } else {
                         attendMap.setGroupNm(null);
                         attendMap.setGroupOrder(null);
@@ -165,7 +163,6 @@ public class UploadController {
                     attendMapRepository.save(attendMap);
                 }
             }
-
             return ResponseEntity.ok("업로드가 완료되었습니다");
         } catch (Throwable throwable) {
             throwable.printStackTrace();

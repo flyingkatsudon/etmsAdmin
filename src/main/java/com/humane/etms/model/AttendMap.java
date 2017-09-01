@@ -35,9 +35,9 @@ public class AttendMap implements Serializable {
     private String subject;
 
     @Column(columnDefinition = "bit") private Boolean isScanner;
-    private String groupOrder;
+    private Long groupOrder;
     private Long deviceId;
 
     private String debateNm;
-    private String debateOrder;
+    private Long debateOrder;
 }

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-08-31T17:33:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="수험생 순번" pageWidth="800" pageHeight="60" columnWidth="800" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="3c84a1de-17d1-4a21-800b-c130366f7256">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="examineeCd" class="java.lang.String"/>
+	<field name="examineeNm" class="java.lang.String"/>
+	<field name="admissionCd" class="java.lang.String"/>
+	<field name="attendCd" class="java.lang.String"/>
+	<field name="isAttend" class="java.lang.Boolean"/>
+	<field name="groupNm" class="java.lang.String"/>
+	<field name="groupOrder" class="java.lang.String"/>
+	<field name="debateNm" class="java.lang.String"/>
+	<field name="debateOrder" class="java.lang.String"/>
+	<title>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="800" height="20" uuid="2c9b0464-f04a-4974-baa2-59c08aa68b66">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[수험생 순번]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="c113f5b6-103e-491d-bc59-5401a53e39c8">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[번호]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="80" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="e602c7b4-40fd-477d-9f6f-29f754573fa2"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[수험번호]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="160" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="e0285990-9677-4357-a8ef-705cf54b2499"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[수험생명]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="240" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="1da2bf48-a17f-44a3-86b0-3c8272b2be9c"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[전형코드]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="320" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="244ba072-589e-4497-a419-73935904c5df"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[시험코드]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="9cb2de12-38ca-4bf3-9386-8d8ab11aca5c"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[응시여부]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="480" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="7e18e0ea-8250-4659-95da-01e96398e050"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[조]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="560" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="b94ff3b0-20fe-4229-8b30-74f216b5f86e"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[면접순서]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="640" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="52d3265e-7c3d-414b-8e68-f04a66b58c9f"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[토론 조]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="720" y="0" width="80" height="20" backcolor="#D9D9D9" uuid="eedc7db5-8501-4c14-a6e8-fd1084b66312"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[발언순서]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="80" height="20" uuid="8c94086c-5a1d-4541-8e9a-15c51280af51"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="80" height="20" uuid="2d05e59d-cb14-484f-8397-fe09737cab76"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{examineeCd}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="0" width="80" height="20" uuid="723d33b5-3896-432d-9c11-aa80cba371f2"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{examineeNm}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="0" width="80" height="20" uuid="8d97f2d2-eb0b-4a3a-a3f1-092254726692"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{admissionCd}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="80" height="20" uuid="3001c70d-a527-4072-b5f8-91641fe6d511"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{attendCd}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="80" height="20" uuid="8227afc9-beb2-48d1-a8ce-430ab294b9bd"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($F{isAttend}==true) ? "응시" : "결시"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="0" width="80" height="20" uuid="7326268a-8214-4940-877e-7ac8b697849a"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{groupNm}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="80" height="20" uuid="cdd10985-2aa3-49af-ac33-263949e99782"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{groupOrder}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="640" y="0" width="80" height="20" uuid="4a1875e7-d95b-4639-9f6a-1c383faad786"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{debateNm}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="720" y="0" width="80" height="20" uuid="b814f986-f46f-44e4-8f71-a343f36567c2"/>
+				<box>
+					<pen lineWidth="0.3"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{debateOrder}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

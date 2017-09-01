@@ -10,6 +10,7 @@
             , examinee.major_nm
             , examinee.dept_nm
             , attend_map.group_nm
+            , attend.attend_cd
             , attend.attend_nm
             , attend.attend_date
             , attend.attend_time
