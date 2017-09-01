@@ -146,6 +146,7 @@ define(function (require) {
                                             atTime: $('#attendTime').val(),
                                             isPaperChange: $('input[name=isPaperChange]:checked').val(),
                                             isUseGroup: $('input[name=isUseGroup]:checked').val(),
+                                            isAssignedGroup: $('input[name=isAssignedGroup]:checked').val(),
                                             paperCnt: $('#paperCnt').val(),
                                             paperLen: $('#paperLen').val(),
                                             paperHeader: $('#paperHeader').val()
