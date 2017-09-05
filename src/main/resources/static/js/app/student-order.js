@@ -527,32 +527,32 @@ define(function (require) {
                         $('#attendCd').attr('disabled', true);
                         $('#attendCd').css('background', '#fbf7f7');
                         $('#attendCd').css('color', 'graytext');
-                        $('#attendCd').attr('cursor', 'non-allowed');
+                        $('#attendCd').css('cursor', 'not-allowed');
 
                         $('#headNm').attr('disabled', true);
                         $('#headNm').css('background', '#fbf7f7');
                         $('#headNm').css('color', 'graytext');
-                        $('#headNm').attr('cursor', 'non-allowed');
+                        $('#headNm').css('cursor', 'not-allowed');
 
                         $('#headTxt').attr('disabled', true);
                         $('#headTxt').css('background', '#fbf7f7');
                         $('#headTxt').css('color', 'graytext');
-                        $('#headTxt').attr('cursor', 'non-allowed');
+                        $('#headTxt').css('cursor', 'not-allowed');
 
                         $('#bldgNm').attr('disabled', true);
                         $('#bldgNm').css('background', '#fbf7f7');
                         $('#bldgNm').css('color', 'graytext');
-                        $('#bldgNm').attr('cursor', 'non-allowed');
+                        $('#bldgNm').css('cursor', 'not-allowed');
 
                         $('#bldgTxt').attr('disabled', true);
                         $('#bldgTxt').css('background', '#fbf7f7');
                         $('#bldgTxt').css('color', 'graytext');
-                        $('#bldgTxt').attr('cursor', 'non-allowed');
+                        $('#bldgTxt').css('cursor', 'not-allowed');
 
                         $('#hallTxt').attr('disabled', true);
                         $('#hallTxt').css('background', '#fbf7f7');
                         $('#hallTxt').css('color', 'graytext');
-                        $('#hallTxt').attr('cursor', 'non-allowed');
+                        $('#hallTxt').css('cursor', 'not-allowed');
 
                         id++;
                         $('#innerNotice').html('<span style="color:crimson">조 추가 시 값을 기입하지 않으면 추가되지 않습니다</span>');
