@@ -58,6 +58,7 @@ define(function (require) {
                     responseDialog.notify({msg: response.responseJSON});
                 },
                 success: function (response) {
+                    $('#search').trigger('click');
                     responseDialog.notify({msg: response});
                 }
             });
@@ -113,6 +114,7 @@ define(function (require) {
                     responseDialog.notify({msg: response.responseJSON});
                 },
                 success: function (response) {
+                    $('#search').trigger('click');
                     responseDialog.notify({msg: response, closable: true});
                 }
             });

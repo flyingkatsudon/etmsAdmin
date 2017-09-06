@@ -85,6 +85,7 @@ public class SystemService {
 
                 if (photo) new File(pathExaminee, examineeCd + ".jpg").delete();
             } catch (Exception e) {
+                e.printStackTrace();
                 log.error("{}", e.getMessage());
             }
         }
@@ -113,6 +114,7 @@ public class SystemService {
                         .where(admission.admissionCd.eq(admissionCd))
                         .execute();
             } catch (Exception e) {
+                e.printStackTrace();
                 log.error("{}", e.getMessage());
             }
         }

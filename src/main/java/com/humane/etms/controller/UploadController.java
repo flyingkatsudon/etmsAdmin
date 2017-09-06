@@ -44,9 +44,9 @@ public class UploadController {
     private final StaffRepository staffRepository;
 
     // windows
-    @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
+    //@Value("${path.image.examinee:C:/api/etms}") String pathRoot;
     // mac
-    //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
+    @Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
 
     @RequestMapping(value = "hall", method = RequestMethod.POST)
     public ResponseEntity hall(@RequestParam("file") MultipartFile multipartFile) throws IOException {
