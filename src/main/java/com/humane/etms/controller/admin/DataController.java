@@ -110,7 +110,12 @@ public class DataController {
 
         list.forEach(item -> {
             try (InputStream is = imageService.getFile(pathExaminee, item.getExamineeCd() + ".jpg")) {
-                BufferedImage image = ImageIO.read(is);
+                BufferedImage image;
+
+                if (is == null) {
+                    InputStream tmp = imageService.getFile(pathExaminee, "default.jpg");
+                    image = ImageIO.read(tmp);
+                } else image = ImageIO.read(is);
                 item.setExamineeImage(image);
             } catch (IOException e) {
                 e.printStackTrace();

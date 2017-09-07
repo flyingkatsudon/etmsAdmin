@@ -133,7 +133,7 @@
             update attend set attend_nm = #{param.attendNm}, type_nm = #{param.typeNm}, attend_len = #{param.attendLen}
             , attend_date = #{param.atDate}, attend_time = #{param.atTime}, is_paper_change = #{param.isPaperChange}
             , is_use_group = #{param.isUseGroup}, paper_cnt = #{param.paperCnt}, paper_len = #{param.paperLen}, paper_header = #{param.paperHeader}
-            , is_assigned_group = #{param.isAssignedGroup}
+            , is_assigned_group = #{param.isAssignedGroup}, first_assign_paper_cd = #{param.firstAssignPaperCd}, last_assign_paper_cd = #{param.lastAssignPaperCd}
             where attend_cd = #{param.attendCd}
         </if>
     </update>
