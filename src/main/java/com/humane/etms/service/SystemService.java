@@ -1,6 +1,5 @@
 package com.humane.etms.service;
 
-import com.humane.etms.mapper.DataMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.AttendHallRepository;
 import com.humane.etms.repository.AttendMapRepository;
@@ -39,7 +38,6 @@ public class SystemService {
     private final AttendMapRepository attendMapRepository;
     private final AttendHallRepository attendHallRepository;
     private final AttendPaperRepository attendPaperRepository;
-    private final DataMapper mapper;
 
     @Transactional
     public void resetData(boolean photo) {
@@ -56,7 +54,11 @@ public class SystemService {
         QAttendPaperLog attendPaperLog = QAttendPaperLog.attendPaperLog;
         QHall hall = QHall.hall;
         QDevice device = QDevice.device;
+        QStaff staff = QStaff.staff;
+        QAttendManage attendManage = QAttendManage.attendManage;
+        QAttendManageLog attendManageLog = QAttendManageLog.attendManageLog;
 
+        queryFactory.delete(staff).execute();
         queryFactory.delete(attendHall).execute();
         queryFactory.delete(attendMapLog).execute();
         queryFactory.delete(attendPaperLog).execute();
@@ -70,6 +72,11 @@ public class SystemService {
 
         while (scrollAttendMap.next()) {
             String examineeCd = scrollAttendMap.getString(0);
+
+            queryFactory.delete(attendManage)
+                    .where(attendManage.examinee.examineeCd.eq(examineeCd))
+                    .execute();
+
             queryFactory.delete(attendPaper)
                     .where(attendPaper.examinee.examineeCd.eq(examineeCd))
                     .execute();
@@ -90,6 +97,10 @@ public class SystemService {
             }
         }
         scrollAttendMap.close();
+
+        queryFactory.delete(attendManageLog).execute();
+        queryFactory.delete(attendPaperLog).execute();
+        queryFactory.delete(attendMapLog).execute();
 
         queryFactory.delete(attendHall).execute();
 

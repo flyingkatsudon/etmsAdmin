@@ -23,6 +23,7 @@ define(function (require) {
             this.$el.html(Template);
             this.initForm('#frmUploadHall');
             this.initForm('#frmUploadExaminee');
+            this.initForm('#frmUploadPhoto');
 
             // 시험 정보 관리 메뉴
             this.toolbar = new DataToolbar({el: '.hm-ui-search', parent: this}).render();

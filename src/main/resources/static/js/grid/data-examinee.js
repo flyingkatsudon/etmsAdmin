@@ -3,8 +3,13 @@ define(function (require) {
 
     var GridBase = require('../dist/jqgrid.js');
 
+    var DlgPdf = require('../dist/dlg-pdf.js');
+
     return GridBase.extend({
         initialize: function (options) {
+            this.dlgView = new DlgPdf();
+            var _this = this;
+
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
@@ -45,7 +50,7 @@ define(function (require) {
             });
 */
 
-            for(var i = 0; i < colModel.length; i++){
+            for (var i = 0; i < colModel.length; i++) {
                 var col = colModel[i];
                 col['fixed'] = true;
                 col['width'] = 150;
@@ -54,7 +59,20 @@ define(function (require) {
             var opt = $.extend(true, {
                 defaults: {
                     //url: 'data/examinee.json',
-                    colModel: colModel
+                    colModel: colModel,
+                    onCellSelect: function (rowid, index, contents, event) {
+                        var gridData = $(this).jqGrid('getGridParam', 'colModel');
+                        var rowData = $(this).jqGrid('getRowData', rowid);
+
+                        if(gridData[index].name == 'examineeCd' || gridData[index].name == 'examineeNm'){
+                            var param = {
+                                examineeCd: rowData.examineeCd,
+                                examineeNm: rowData.examineeNm
+                            };
+
+                            if (param.examineeCd || param.examineeNm) _this.openPrintWindow(param);
+                        }
+                    }
                 }
             }, options);
 
@@ -65,6 +83,9 @@ define(function (require) {
             this.$grid.closest('.ui-jqgrid-bdiv').css('overflow-x', 'auto');
             this.addExcel('data/examinee.xlsx');
             return this;
+        },
+        openPrintWindow: function (param) {
+            this.dlgView.setUrl('data/examineeId.pdf?' + $.param(param)).render();
         }
     });
 });

@@ -26,8 +26,8 @@ public class Attend {
     @Column(columnDefinition = "bit default 1") private boolean isPaperChange; // 답안지 교체 허용여부
     @Column String paperHeader; // 답안지 헤더값
 
-    @Column String firstAssignPaperCd; // 시험에 배정된 답안지 중 첫번째 코드
-    @Column String lastAssignPaperCd; // 시험에 배정된 답안지 중 마지막 코드
+    @Column(columnDefinition = "String default null") private String firstAssignPaperCd; // 시험에 배정된 답안지 중 첫번째 코드
+    @Column(columnDefinition = "String default null") private String lastAssignPaperCd; // 시험에 배정된 답안지 중 마지막 코드
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
