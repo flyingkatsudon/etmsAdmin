@@ -38,7 +38,6 @@ define(function (require) {
             };
 
             this.$('#attendNm').html(this.getOptions(ToolbarModel.getAttendNm(param)));
-
         }
     });
 });

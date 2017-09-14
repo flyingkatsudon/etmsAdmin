@@ -17,7 +17,7 @@ define(function (require) {
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},
-                {name: 'attendNm', label: '시험구분'},
+                {name: 'attendNm', label: '시험명'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
 

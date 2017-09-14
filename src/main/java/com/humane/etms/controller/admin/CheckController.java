@@ -36,49 +36,4 @@ public class CheckController {
                 );
         }
     }
-
-    @RequestMapping(value = "device.{format:json|xls|xlsx}")
-    public ResponseEntity device(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
-        switch (format) {
-            case JSON:
-                return ResponseEntity.ok(mapper.device(statusDto, pageable));
-            default:
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/check-device.jrxml",
-                        format,
-                        mapper.device(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
-                );
-        }
-    }
-
-    @RequestMapping(value = "recheck.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, Pageable pageable) {
-        examineeDto.setIsCheck(true);
-        examineeDto.setIsNoIdCard(true);
-        switch (format) {
-            case JSON:
-                return ResponseEntity.ok(mapper.recheck(examineeDto, pageable));
-            default:
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/check-recheck.jrxml",
-                        format,
-                        mapper.recheck(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
-                );
-        }
-    }
-
-    @RequestMapping(value = "signature.{format:json|xls|xlsx}")
-    public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
-        statusDto.setIsSignature(false);
-        switch (format) {
-            case JSON:
-                return ResponseEntity.ok(mapper.signature(statusDto, pageable));
-            default:
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/check-signature.jrxml",
-                        format,
-                        mapper.signature(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
-                );
-        }
-    }
 }

@@ -1,6 +1,5 @@
 package com.humane.etms.controller.admin;
 
-import com.humane.etms.dto.DocDto;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.DataMapper;
@@ -74,36 +73,6 @@ public class DataController {
         }
     }
 
-    @RequestMapping(value = "attachment.{format:json|PDF}")
-    public ResponseEntity attachment(@PathVariable String format, DocDto docDto, Pageable pageable){
-        switch(format) {
-            case JSON:
-                return ResponseEntity.ok(mapper.attachment(docDto, pageable));
-            default:
-                List<DocDto> list = mapper.attachment(docDto, pageable).getContent();
-                list.forEach(item -> {
-                    try (InputStream is = imageService.getFile(pathNoIdCard, item.getExamineeCd() + ".jpg")) {
-                        BufferedImage image = ImageIO.read(is);
-                        item.setNoIdCardImage(image);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    try (InputStream is = imageService.getFile(pathNoIdCard, item.getExamineeCd() + "_sign.jpg")) {
-                        BufferedImage image = ImageIO.read(is);
-                        item.setNoIdCardSign(image);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/attachment.jrxml",
-                        JasperReportsExportHelper.EXT_ATTACH_PDF,
-                        list
-                );
-        }
-    }
-
     @RequestMapping(value = "examineeId.pdf")
     public ResponseEntity examineeId(ExamineeDto examineeDto, Pageable pageable) {
         List<ExamineeDto> list = mapper.examinee(examineeDto, pageable).getContent();
@@ -151,51 +120,11 @@ public class DataController {
         }
     }
 
-    @RequestMapping(value = "recheck.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity recheck(@PathVariable String format, ExamineeDto examineeDto, Pageable pageable) {
-        examineeDto.setIsCheck(true);
-        switch (format) {
-            case JSON:
-                return ResponseEntity.ok(mapper.examinee(examineeDto, pageable));
-            default:
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/data-recheck.jrxml",
-                        format,
-                        mapper.examinee(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
-                );
-        }
-    }
-
-    @RequestMapping(value = "otherHall.{format:json|pdf|xls|xlsx}")
-    public ResponseEntity otherHall(@PathVariable String format, ExamineeDto examineeDto, Pageable pageable) {
-        examineeDto.setIsOtherHall(true);
-
-        switch (format) {
-            case JSON:
-                return ResponseEntity.ok(mapper.examinee(examineeDto, pageable));
-            default:
-                return JasperReportsExportHelper.toResponseEntity(
-                        "jrxml/data-otherHall.jrxml",
-                        format,
-                        mapper.examinee(examineeDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
-                );
-        }
-    }
-
-    /**
-     * 감독관 서명 정보를 불러오기 위한 부분
-     *
-     * @param format    요청할 형태
-     * @param statusDto 상태 정보
-     * @param pageable
-     * @return
-     */
     @RequestMapping(value = "signature.{format:json|xlsx}")
     public ResponseEntity signature(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
 
         switch (format) {
             case JSON:
-                // 감독관 서명 정보를 요청함
                 return ResponseEntity.ok(mapper.signature(statusDto, pageable));
             default:
                 return JasperReportsExportHelper.toResponseEntity(
@@ -244,24 +173,6 @@ public class DataController {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(idCheckDttm);
     }
 
-    @RequestMapping(value = "reCheck")
-    public String reCheck(String examineeCd, String attendCd) {
-        Date recheckDttm = new Date();
-        mapper.recheck(examineeCd, recheckDttm, attendCd);
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(recheckDttm);
-    }
-/*
-
-    @RequestMapping(value = "sendPaperInfo.{format:xls|xlsx}")
-    public ResponseEntity sendPaperInfo(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
-        return JasperReportsExportHelper.toResponseEntity(
-                "jrxml/data-sendPaperInfo.jrxml"
-                , format
-                , mapper.sendPaperInfo(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()
-        );
-    }
-*/
-
     @RequestMapping(value = "sendPaperInfo.{format:xls|xlsx}")
     public ResponseEntity sendPaperInfo(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
         JasperReportBuilder report= report()
@@ -289,6 +200,7 @@ public class DataController {
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }
 
+    // TODO: 응시취소자리스트, 쓸지 안쓸지 정해놓아야함
     @RequestMapping(value = "cancelAttend.{format:xls|xlsx}")
     public ResponseEntity cancelAttend(@PathVariable String format, StatusDto param, Pageable pageable) throws DRException {
             param.setIsCancel(true);
