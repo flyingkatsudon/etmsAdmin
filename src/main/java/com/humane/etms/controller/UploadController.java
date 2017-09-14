@@ -10,9 +10,11 @@ import com.humane.etms.form.FormWaitHall;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.*;
 import com.humane.util.file.FileUtils;
+import com.humane.util.zip4j.ZipFile;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.lingala.zip4j.model.FileHeader;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -20,10 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -348,6 +347,44 @@ public class UploadController {
             log.error("{}", throwable.getMessage());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("양식 파일을 확인하세요. 한 시험에 중복된 고사건물이 존재합니다<br><br>" + throwable.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "photo", method = RequestMethod.POST)
+    public ResponseEntity examineePhoto(@RequestPart("file") MultipartFile multipartFile) throws IOException {
+        String path = root + "/image/examinee";
+
+        if (multipartFile.getOriginalFilename().endsWith(".zip")) {
+            try {
+                File file = FileUtils.saveFile(new File(path, "photo_backup"), multipartFile);
+
+                ZipFile zipFile = new ZipFile(file);
+                String charset = zipFile.getCharset();
+                log.debug("Detected charset : {}", charset);
+                zipFile.setFileNameCharset(charset);
+
+                List<FileHeader> fileHeaders = zipFile.getFileHeaders();
+                for (FileHeader fileHeader : fileHeaders) {
+                    String fileName = fileHeader.getFileName();
+
+                    Examinee examinee = examineeRepository.findOne(new BooleanBuilder()
+                            .and(QExaminee.examinee.examineeCd.eq(fileName.replace(".jpg", "")))
+                    );
+
+                    if(examinee != null) {
+                        String tmp = examinee.getExamineeCd() + ".jpg";
+                        if (tmp.equals(fileName) && fileName.endsWith(".jpg")) {
+                            zipFile.extractFile(fileHeader, path);
+                        }
+                    }
+                }
+                return ResponseEntity.ok("완료되었습니다");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일의 용량이 10MB를 초과하거나 존재하지 않는 수험생입니다" + e.getMessage());
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("zip 파일이 아닙니다");
         }
     }
 }

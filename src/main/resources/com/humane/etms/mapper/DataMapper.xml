@@ -323,22 +323,4 @@
     <select id="sqlEdit" resultType="java.util.LinkedHashMap">
         ${sql}
     </select>
-    <select id="attachment" resultType="com.humane.etms.dto.DocDto">
-        SELECT admission.admission_nm, attend_doc.title, attend_doc.content, attend_doc.sign_date, attend_doc.sign
-              , examinee.examinee_cd, examinee.examinee_nm, examinee.dept_nm
-        FROM attend_manage
-        INNER JOIN attend ON attend.attend_cd = attend_manage.attend_cd
-        INNER JOIN admission ON admission.admission_cd = attend.admission_cd
-        INNER JOIN examinee ON examinee.examinee_cd = attend_manage.examinee_cd
-        INNER JOIN attend_doc ON attend_doc.admission_cd = attend.admission_cd
-        <where>
-            AND attend_manage.is_no_id_card = TRUE
-            <if test="param != null">
-                <if test="param.userAdmissions != null">AND attend.admission_cd IN (${param.userAdmissions})</if>
-                <if test="param.admissionNm != null">AND admission.admission_nm =  #{param.admissionNm}</if>
-                <if test="param.attendDate != null">AND attend.attend_date = STR_TO_DATE(#{param.attendDate}, '%Y-%m-%d')</if>
-                <if test="param.attendTime != null">AND attend.attend_time = #{param.attendTime}</if>
-            </if>
-        </where>
-    </select>
 </mapper>

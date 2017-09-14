@@ -24,6 +24,7 @@ define(function (require) {
             this.initForm('#frmUploadWaitHall');
             this.initForm('#frmUploadHall');
             this.initForm('#frmUploadExaminee');
+            this.initForm('#frmUploadPhoto');
 
             // 시험 정보 관리 메뉴
             this.toolbar = new DataToolbar({el: '.hm-ui-search', parent: this}).render();
@@ -67,6 +68,7 @@ define(function (require) {
                     responseDialog.notify({msg: response.responseJSON});
                 },
                 success: function (response) {
+                    $('#search').trigger('click');
                     responseDialog.notify({msg: response});
                 }
             });
@@ -122,6 +124,7 @@ define(function (require) {
                     responseDialog.notify({msg: response.responseJSON});
                 },
                 success: function (response) {
+                    $('#search').trigger('click');
                     responseDialog.notify({msg: response, closable: true});
                 }
             });

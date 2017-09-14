@@ -40,14 +40,18 @@ public class StatusController {
         return ResponseEntity.ok(mapper.hallStat(param));
     }
 
+    // 모든 컨트롤러가 같은 형태를 가짐, URL 마지막에 확장자를 붙이는 포맷으로 만듦
     @RequestMapping(value = "attend.{format:json|pdf|xls|xlsx}")
     public ResponseEntity attend(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
-
+        // 가령, /status/attend.json의 URL을 타고 들어온다면
         switch (format) {
+            // .json 이면 데이터만 page 타입으로 가져온다
             case JSON:
                 return ResponseEntity.ok(mapper.attend(statusDto, pageable));
+            // 그렇지 않으면 .xlsx 파일을 출력한다
+            // jrxml은 jasper studio로 외부에서 작성 후 jrxml 폴더에 위치시킨다
             default:
-                return JasperReportsExportHelper.toResponseEntity(
+               return JasperReportsExportHelper.toResponseEntity(
                         "jrxml/status-attend.jrxml",
                         format,
                         mapper.attend(statusDto, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent()

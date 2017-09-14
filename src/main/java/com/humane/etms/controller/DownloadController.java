@@ -36,12 +36,12 @@ import java.util.Date;
 public class DownloadController {
 
     // windows
-    //@Value("${path.image.examinee:C:/api/etms}") String pathRoot;
-    //@Value("${path.image:C:/api/image}") String jpgRoot;
+    @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
+    @Value("${path.image:C:/api/image}") String jpgRoot;
 
     // mac ex) userid: mac account
-    @Value("${path.image.examinee:/Users/userid/Humane/api/etms}") String pathRoot;
-    @Value("${path.image:/Users/userid/Humane/api/image}") String jpgRoot;
+    //@Value("${path.image.examinee:/Users/userid/Humane/api/etms}") String pathRoot;
+    //@Value("${path.image:/Users/userid/Humane/api/image}") String jpgRoot;
 
     private final StatusMapper statusMapper;
     private final DataMapper dataMapper;

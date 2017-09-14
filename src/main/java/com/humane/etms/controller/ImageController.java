@@ -63,22 +63,6 @@ public class ImageController {
         return imageService.toResponseEntity(pathNoIdCard, fileName);
     }
 
-    @RequestMapping(value = "recheck", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<InputStreamResource> recheck(@RequestParam("file") MultipartFile file) {
-        try {
-            FileUtils.saveFile(pathRecheck, file, false);
-            return ResponseEntity.ok(null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-    }
-
-    @RequestMapping(value = "recheck/{fileName:.+}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<InputStreamResource> recheck(@PathVariable("fileName") String fileName) {
-        return imageService.toResponseEntity(pathRecheck, fileName);
-    }
-
     @RequestMapping(value = "signature", method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> signature(@RequestHeader("attendCd") String attendCd, @RequestHeader("hallCd") String hallCd, @RequestParam("file") MultipartFile file) {
         try {

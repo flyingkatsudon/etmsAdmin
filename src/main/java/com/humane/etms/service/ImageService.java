@@ -45,8 +45,4 @@ public class ImageService {
             }
         }
     }
-
-    public void deleteImage(String path, List<String> list) {
-
-    }
 }
