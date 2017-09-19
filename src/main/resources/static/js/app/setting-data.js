@@ -47,12 +47,7 @@ define(function (require) {
                             responseDialog.notify({msg: '파일을 선택하세요'});
                             return false;
                         }
-
-                        responseDialog.notify({
-                            msg: '<div style="cursor: wait">업로드 중 입니다. 창이 사라지지 않으면 관리자에게 문의하세요</div>',
-                            closable: false
-                        });
-
+                        responseDialog.progress('업로드');
                     }
                 },
                 error: function (response) {
@@ -60,7 +55,7 @@ define(function (require) {
                 },
                 success: function (response) {
                     $('#search').trigger('click');
-                    responseDialog.notify({msg: response});
+                    responseDialog.move(response);
                 }
             });
         },
@@ -107,16 +102,19 @@ define(function (require) {
         reset: function (o) {
 
             $.ajax({
+                beforeSend: function () {
+                    responseDialog.progress('삭제');
+                },
                 url: 'system/reset',
                 data: {
                     photo: o
                 },
-                error: function (response) {
-                    responseDialog.notify({msg: response.responseJSON});
-                },
                 success: function (response) {
                     $('#search').trigger('click');
-                    responseDialog.notify({msg: response, closable: true});
+                    responseDialog.move(response);
+                },
+                error: function (response) {
+                    responseDialog.notify({msg: response.responseJSON});
                 }
             });
         }

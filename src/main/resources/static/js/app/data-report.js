@@ -39,7 +39,9 @@ define(function (require) {
             };
 
             var url = e.currentTarget.form.action;
+
             this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate});
+            //this.dlgDownload.move();
 
             return false;
         },
@@ -56,27 +58,6 @@ define(function (require) {
                 attendDate: e.currentTarget.value
             };
             this.$('#attendTime').html(this.getOptions(ToolbarModel.getAttendTime(param)));
-        },
-        attachmentClicked: function (e) {
-            var param = {
-                admissionNm: this.$('#admissionNm').val(),
-                attendDate: this.$('#attendDate').val(),
-                attendTime: this.$('#attendTime').val()
-            };
-
-            var _this = this;
-
-            $.ajax({
-                url: 'data/attachment.json' + '?admissionNm=' + param.admissionNm + '&attendDate=' + param.attendDate + '&attendTime=' + param.attendTime,
-                success: function (e) {
-                    if (e.content.length == 0) {
-                        responseDialog.complete('신분증 미소지자가 존재하지 않습니다');
-                        return false;
-                    } else {
-                        _this.dlgDownload.render({url: 'data/attachment.PDF?admissionNm=' + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate});
-                    }
-                }
-            });
         }
     });
 });
