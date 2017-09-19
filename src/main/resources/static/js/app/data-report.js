@@ -39,7 +39,9 @@ define(function (require) {
             };
 
             var url = e.currentTarget.form.action;
+
             this.dlgDownload.render({url: url + "?admissionNm=" + param.admissionNm + "&attendTime=" + param.attendTime + "&attendDate=" + param.attendDate});
+            //this.dlgDownload.move();
 
             return false;
         },

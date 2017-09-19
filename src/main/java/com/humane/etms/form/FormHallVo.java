@@ -42,6 +42,9 @@ public class FormHallVo {
     @Column(name = "답안지 자릿수") private String paperLen;
     @Column(name = "답안지 헤더") private String paperHeader;
 
+    @Column(name = "시작 답안지") private String firstAssignPaperCd;
+    @Column(name = "마지막 답안지") private String lastAssignPaperCd;
+
     @Column(name = "각서제목") private String title;
     @Column(name = "각서문구") private String content;
     @Column(name = "각서서명") private String sign;

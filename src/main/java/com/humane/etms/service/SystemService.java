@@ -1,6 +1,5 @@
 package com.humane.etms.service;
 
-import com.humane.etms.mapper.DataMapper;
 import com.humane.etms.model.*;
 import com.humane.etms.repository.AttendHallRepository;
 import com.humane.etms.repository.AttendMapRepository;

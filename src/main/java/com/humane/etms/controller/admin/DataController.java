@@ -200,6 +200,7 @@ public class DataController {
         return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }
 
+    // TODO: 응시취소자리스트, 쓸지 안쓸지 정해놓아야함
     @RequestMapping(value = "cancelAttend.{format:xls|xlsx}")
     public ResponseEntity cancelAttend(@PathVariable String format, StatusDto param, Pageable pageable) throws DRException {
             param.setIsCancel(true);

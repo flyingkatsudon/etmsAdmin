@@ -189,6 +189,13 @@ public class UploadController {
                     Attend attend = mapper.convertValue(dto, Attend.class);
                     attend.setAdmission(admission);
 
+                    // 시험 내 시작 답안지, 마지막 답안지 번호 체크
+                    if (attend.getFirstAssignPaperCd() == null || attend.getFirstAssignPaperCd().equals(""))
+                        attend.setFirstAssignPaperCd(null);
+
+                    if (attend.getLastAssignPaperCd() == null || attend.getLastAssignPaperCd().equals(""))
+                        attend.setLastAssignPaperCd(null);
+
                     // 2. 고사실정보 생성
                     Hall hall = mapper.convertValue(dto, Hall.class);
                     hall = hallRepository.save(hall);

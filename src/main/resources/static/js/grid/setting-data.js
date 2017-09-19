@@ -29,7 +29,9 @@ define(function (require) {
                 {name: 'isAssignedGroup', hidden: true},
                 {name: 'paperCnt', hidden: true},
                 {name: 'paperLen', hidden: true},
-                {name: 'paperHeader', hidden: true}
+                {name: 'paperHeader', hidden: true},
+                {name: 'firstAssignPaperCd', hidden: true},
+                {name: 'lastAssignPaperCd', hidden: true}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
@@ -149,7 +151,9 @@ define(function (require) {
                                             isAssignedGroup: $('input[name=isAssignedGroup]:checked').val(),
                                             paperCnt: $('#paperCnt').val(),
                                             paperLen: $('#paperLen').val(),
-                                            paperHeader: $('#paperHeader').val()
+                                            paperHeader: $('#paperHeader').val(),
+                                            firstAssignPaperCd: $('#firstAssignPaperCd').val(),
+                                            lastAssignPaperCd: $('#lastAssignPaperCd').val()
                                         };
 
                                         if(param.attendNm == '' || param.typeNm == '' || param.atDate == '' || param.atTime == ''
