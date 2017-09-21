@@ -44,10 +44,9 @@ public class UploadController {
 
     // windows
     @Value("${path.image.examinee:C:/api/etms}") String pathRoot;
+    @Value("${path.image.examinee:C:/api}") String root;
     // mac
     //@Value("${path.image.examinee:/Users/Jeremy/Humane/api/etms}") String pathRoot;
-
-    @Value("${path.image.examinee:C:/api}") String root;
 
     @RequestMapping(value = "hall", method = RequestMethod.POST)
     public ResponseEntity hall(@RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -58,14 +57,15 @@ public class UploadController {
 
         try {
             List<FormHallVo> hallList = ExOM.mapFromExcel(file).to(FormHallVo.class).map(1);
-            hallList.forEach(dto -> {
-                if (dto != null && StringUtils.isNotEmpty(dto.getAdmissionCd())) {
 
-                    Admission admission = mapper.convertValue(dto, Admission.class);
+            for (FormHallVo vo : hallList) {
+                if (vo != null && StringUtils.isNotEmpty(vo.getAdmissionCd())) {
+
+                    Admission admission = mapper.convertValue(vo, Admission.class);
                     admission = admissionRepository.save(admission);
 
                     // 1. 시험정보 생성
-                    Attend attend = mapper.convertValue(dto, Attend.class);
+                    Attend attend = mapper.convertValue(vo, Attend.class);
                     attend.setAdmission(admission);
 
                     // 시험 내 시작 답안지, 마지막 답안지 번호 체크
@@ -76,11 +76,11 @@ public class UploadController {
                         attend.setLastAssignPaperCd(null);
 
                     // 2. 고사실정보 생성
-                    Hall hall = mapper.convertValue(dto, Hall.class);
+                    Hall hall = mapper.convertValue(vo, Hall.class);
                     hall = hallRepository.save(hall);
 
                     // 3. 응시고사실 생성
-                    AttendHall attendHall = mapper.convertValue(dto, AttendHall.class);
+                    AttendHall attendHall = mapper.convertValue(vo, AttendHall.class);
                     attendHall.setAttend(attend);
                     attendHall.setHall(hall);
 
@@ -100,7 +100,7 @@ public class UploadController {
                     attendHallRepository.save(attendHall);
 
                     // 6. 각서 저장
-                    AttendDoc attendDoc = mapper.convertValue(dto, AttendDoc.class);
+                    AttendDoc attendDoc = mapper.convertValue(vo, AttendDoc.class);
                     attendDoc.setAdmission(admission);
 
                     AttendDoc _tmp = attendDocRepository.findOne(new BooleanBuilder()
@@ -112,8 +112,10 @@ public class UploadController {
                     }
 
                     attendDocRepository.save(attendDoc);
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("'전형코드' 열이 없거나 비어있습니다");
                 }
-            });
+            }
 
             return ResponseEntity.ok("고사실 정보가 업로드되었습니다");
 
@@ -135,9 +137,7 @@ public class UploadController {
 
         try {
             List<FormExamineeVo> examineeList = ExOM.mapFromExcel(file).to(FormExamineeVo.class).map(1);
-            log.debug("{}:", examineeList);
-
-            examineeList.forEach(vo -> {
+            for (FormExamineeVo vo : examineeList) {
                 if (vo != null && StringUtils.isNoneEmpty(vo.getAdmissionCd())) {
 
                     // 1. AttendHall 에서 고사실 및 시험정보를 가져온다.
@@ -153,27 +153,39 @@ public class UploadController {
                     );
 
                     // 3. 수험생정보 생성
-                    Examinee examinee = mapper.convertValue(vo, Examinee.class);
-                    examineeRepository.save(examinee);
+                    Examinee examinee = null;
+                    try {
+                        examinee = mapper.convertValue(vo, Examinee.class);
+                        examineeRepository.save(examinee);
 
-                    AttendMap attendMap = mapper.convertValue(vo, AttendMap.class);
-                    attendMap.setAttend(attendHall.getAttend());
-                    attendMap.setHall(attendHall.getHall());
-                    attendMap.setExaminee(examinee);
+                        AttendMap attendMap = mapper.convertValue(vo, AttendMap.class);
+                        attendMap.setAttend(attendHall.getAttend());
+                        attendMap.setHall(attendHall.getHall());
+                        attendMap.setExaminee(examinee);
 
-                    if (vo.getGroupNm().equals("")) attendMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
+                        if (vo.getGroupNm().equals("")) attendMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
 
-                    AttendMap tmp = attendMapRepository.findOne(new BooleanBuilder()
-                            .and(QAttendMap.attendMap.attend.attendCd.eq(attendMap.getAttend().getAttendCd()))
-                            .and(QAttendMap.attendMap.examinee.examineeCd.eq(attendMap.getExaminee().getExamineeCd()))
-                    );
+                        AttendMap tmp = attendMapRepository.findOne(new BooleanBuilder()
+                                .and(QAttendMap.attendMap.attend.attendCd.eq(attendMap.getAttend().getAttendCd()))
+                                .and(QAttendMap.attendMap.examinee.examineeCd.eq(attendMap.getExaminee().getExamineeCd()))
+                        );
 
-                    if (tmp != null) attendMap.set_id(tmp.get_id());
+                        if (tmp != null) attendMap.set_id(tmp.get_id());
 
-                    // 3.1 수험생정보 저장
-                    attendMapRepository.save(attendMap);
+                        // 3.1 수험생정보 저장
+                        attendMapRepository.save(attendMap);
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("올바른 수험생 정보가 아닙니다. 다음 수험생의 모든 정보가 올바른지 확인하세요<br><br>수험번호: " + vo.getExamineeCd() + " / 고사실명: " + vo.getHallNm());
+                    }
+
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("전형코드를 확인하세요");
                 }
-            });
+            }
+
             return ResponseEntity.ok("수험생 정보가 업로드되었습니다");
 
         } catch (Throwable throwable) {
@@ -257,7 +269,7 @@ public class UploadController {
                             .and(QExaminee.examinee.examineeCd.eq(fileName.replace(".jpg", "")))
                     );
 
-                    if(examinee != null) {
+                    if (examinee != null) {
                         String tmp = examinee.getExamineeCd() + ".jpg";
                         if (tmp.equals(fileName) && fileName.endsWith(".jpg")) {
                             zipFile.extractFile(fileHeader, path);
