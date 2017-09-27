@@ -153,9 +153,13 @@ public class UploadController {
                     );
 
                     // 3. 수험생정보 생성
-                    Examinee examinee = null;
+                    Examinee examinee;
                     try {
                         examinee = mapper.convertValue(vo, Examinee.class);
+
+                        if(vo.getGender() == null) examinee.setGender(null);
+                        else if (vo.getGender() == "") examinee.setGender(null);
+
                         examineeRepository.save(examinee);
 
                         AttendMap attendMap = mapper.convertValue(vo, AttendMap.class);
@@ -163,7 +167,8 @@ public class UploadController {
                         attendMap.setHall(attendHall.getHall());
                         attendMap.setExaminee(examinee);
 
-                        if (vo.getGroupNm().equals("")) attendMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
+                        if (vo.getGroupNm() == null) attendMap.setGroupNm(null);
+                        else if (vo.getGroupNm().equals("")) attendMap.setGroupNm(null); // 조 정보가 없으면 null로 처리
 
                         AttendMap tmp = attendMapRepository.findOne(new BooleanBuilder()
                                 .and(QAttendMap.attendMap.attend.attendCd.eq(attendMap.getAttend().getAttendCd()))

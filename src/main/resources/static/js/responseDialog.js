@@ -30,6 +30,8 @@ define(function (require) {
         },
         progress: function (msg) {
 
+            BootstrapDialog.closeAll();
+
             var dialog = new BootstrapDialog({
                 title: '',
                 message: '<div style="cursor: wait"><h5><span id="noti">' + msg + ' 중입니다. 잠시만 기다려주세요</span><br><br><div id="myProgress" class="myProgress"></div></h5></div>',

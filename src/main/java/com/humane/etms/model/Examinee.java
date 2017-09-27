@@ -22,7 +22,6 @@ public class Examinee {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     @Temporal(TemporalType.DATE)
     private Date birth;
-    private String neisCd;
-    private String neisNm;
     private String exmAdmNm;
+    private String gender;
 }
