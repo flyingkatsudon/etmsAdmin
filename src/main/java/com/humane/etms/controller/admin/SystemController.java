@@ -56,7 +56,7 @@ public class SystemController {
 
             log.debug("{}", admissionCd + "/" + attendCd);
 
-            // 전형별 삭제 선택 시
+            // 전형별 삭제 시
             if(admissionCd != null) {
                 // 1. 시험코드를 갖지 않는 row는 미리 삭제
                 HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
@@ -72,7 +72,9 @@ public class SystemController {
                     String tmp = vo.getAttendCd();
                     systemService.resetData(tmp, photo);
                 });
-            } else systemService.resetData(attendCd, photo);
+            }
+            // 시험별 삭제 시
+            else systemService.resetData(attendCd, photo);
 
             return ResponseEntity.ok("삭제가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
         } catch (Exception e) {

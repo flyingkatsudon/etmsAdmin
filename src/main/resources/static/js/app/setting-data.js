@@ -60,7 +60,7 @@ define(function (require) {
                 }
             });
         },
-        resetClicked: function (attendCd, e) {
+        resetClicked: function (e) {
             var text = '<select id="admissionCd"><option value="">전체</option>';
 
             var _this = this;
@@ -103,8 +103,8 @@ define(function (require) {
                                             label: '사진 미포함',
                                             action: function () {
 
+                                                console.log(admissionCd);
                                                 if (admissionCd == undefined) admissionCd = '';
-                                                if (attendCd == undefined) attendCd = '';
                                                 _this.reset(admissionCd, null, false);
                                             }
                                         },
@@ -257,7 +257,7 @@ define(function (require) {
                                             if (admissionCd == undefined) admissionCd = '';
                                             if (attendCd == undefined) attendCd = '';
 
-                                            if(attendCd == '') _this.reset(admissionCd, null, false);
+                                            if (attendCd == '') _this.reset(admissionCd, null, false);
                                             else _this.reset(null, attendCd, false);
                                         }
                                     },
@@ -341,7 +341,7 @@ define(function (require) {
                 async: false,
                 success: function (response) {
                     for (var i = 0; i < response.length; i++) {
-                        if(response[i].admissionCd == admissionCd) {
+                        if (response[i].admissionCd == admissionCd) {
                             text += '<option value="' + response[i].attendCd + '">' + response[i].attendNm + '&nbsp;(&nbsp;' + response[i].attendDate + '&nbsp;/&nbsp;' + response[i].attendTime + '&nbsp;)</option>';
                             attendList.push({attendCd: response[i].attendCd, attendNm: response[i].attendNm});
                         }
