@@ -3,12 +3,17 @@ package com.humane.etms.controller.admin;
 import com.humane.etms.dto.*;
 import com.humane.etms.mapper.SystemMapper;
 import com.humane.etms.model.*;
-import com.humane.etms.repository.*;
+import com.humane.etms.repository.AttendRepository;
+import com.humane.etms.repository.StaffRepository;
+import com.humane.etms.repository.UserAdmissionRepository;
+import com.humane.etms.repository.UserRepository;
 import com.humane.etms.service.SystemService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -46,9 +51,31 @@ public class SystemController {
     }
 
     @RequestMapping(value = "reset")
-    public ResponseEntity reset(@RequestParam(defaultValue = "false") boolean photo) throws IOException {
+    public ResponseEntity reset(@RequestParam("admissionCd") String admissionCd, @RequestParam("attendCd") String attendCd, @RequestParam(defaultValue = "false") boolean photo) throws IOException {
         try {
-            systemService.resetData(photo);
+
+            log.debug("{}", admissionCd + "/" + attendCd);
+
+            // 전형별 삭제 시
+            if(admissionCd != null) {
+                // 1. 시험코드를 갖지 않는 row는 미리 삭제
+                HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
+                queryFactory.delete(QAttendDoc.attendDoc).where(QAttendDoc.attendDoc.admission.admissionCd.eq(admissionCd)).execute();
+                queryFactory.delete(QUserAdmission.userAdmission).where(QUserAdmission.userAdmission.admission.admissionCd.eq(admissionCd)).execute();
+
+                // 2. 전형이 가지는 시험코드 리스트 불러옴
+                Iterable<Attend> list = attendRepository.findAll(new BooleanBuilder()
+                        .and(QAttend.attend.admission.admissionCd.eq(admissionCd)));
+
+                // 3. 리스트를 시험코드별로 삭제하는 메서드 반복 실행
+                list.forEach(vo -> {
+                    String tmp = vo.getAttendCd();
+                    systemService.resetData(tmp, photo);
+                });
+            }
+            // 시험별 삭제 시
+            else systemService.resetData(attendCd, photo);
+
             return ResponseEntity.ok("삭제가 완료되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
         } catch (Exception e) {
             e.printStackTrace();

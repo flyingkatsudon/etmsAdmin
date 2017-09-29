@@ -119,6 +119,12 @@ define(function (require) {
                                 if(rowData.paperHeader == null) rowData.paperHeader = '';
                                 $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;헤더<input type="text" id="paperHeader" style="width: 20%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.paperHeader + '"></div>');
 
+                                if(rowData.firstAssignPaperCd == null) rowData.firstAssignPaperCd = '';
+                                $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;시작<input type="text" id="firstAssignPaperCd" style="width: 20%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.firstAssignPaperCd + '"></div>');
+
+                                if(rowData.lastAssignPaperCd == null) rowData.lastAssignPaperCd = '';
+                                $('#detailPart2').append('<div style="margin:3% 0 0 3%;">답안지&nbsp;&nbsp;&nbsp;&nbsp;종료<input type="text" id="lastAssignPaperCd" style="width: 20%; text-align:center; border-radius: 10px; padding: 1%; margin-left: 10%; color: #727272" value="' + rowData.lastAssignPaperCd + '"></div>');
+
                                 $('#attendDate').appendDtpicker({
                                     autodateOnStart: false,
                                     dateOnly: true,

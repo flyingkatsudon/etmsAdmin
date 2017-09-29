@@ -40,93 +40,188 @@ public class SystemService {
     private final AttendPaperRepository attendPaperRepository;
 
     @Transactional
-    public void resetData(boolean photo) {
+    public void resetData(String attendCd, boolean photo) {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
-        QAttendDoc attendDoc = QAttendDoc.attendDoc;
-        QAttendMap attendMap = QAttendMap.attendMap;
-        QAttendMapLog attendMapLog = QAttendMapLog.attendMapLog;
-        QExaminee examinee = QExaminee.examinee;
-        QAttend attend = QAttend.attend;
-        QAttendHall attendHall = QAttendHall.attendHall;
-        QAdmission admission = QAdmission.admission;
-        QAttendPaper attendPaper = QAttendPaper.attendPaper;
-        QAttendPaperLog attendPaperLog = QAttendPaperLog.attendPaperLog;
-        QHall hall = QHall.hall;
-        QDevice device = QDevice.device;
-        QStaff staff = QStaff.staff;
-        QAttendManage attendManage = QAttendManage.attendManage;
-        QAttendManageLog attendManageLog = QAttendManageLog.attendManageLog;
+        if(attendCd != null) {
+            QAttendDoc attendDoc = QAttendDoc.attendDoc;
+            QAttendMap attendMap = QAttendMap.attendMap;
+            QAttendMapLog attendMapLog = QAttendMapLog.attendMapLog;
+            QExaminee examinee = QExaminee.examinee;
+            QAttend attend = QAttend.attend;
+            QAttendHall attendHall = QAttendHall.attendHall;
+            QAdmission admission = QAdmission.admission;
+            QAttendPaper attendPaper = QAttendPaper.attendPaper;
+            QAttendPaperLog attendPaperLog = QAttendPaperLog.attendPaperLog;
+            QHall hall = QHall.hall;
+            QDevice device = QDevice.device;
+            QStaff staff = QStaff.staff;
+            QAttendManage attendManage = QAttendManage.attendManage;
+            QAttendManageLog attendManageLog = QAttendManageLog.attendManageLog;
 
-        queryFactory.delete(staff).execute();
-        queryFactory.delete(attendHall).execute();
-        queryFactory.delete(attendMapLog).execute();
-        queryFactory.delete(attendPaperLog).execute();
-        queryFactory.delete(device).execute();
-        queryFactory.delete(attendDoc).execute();
+            queryFactory.delete(staff).where(staff.attend.attendCd.eq(attendCd)).execute();
+            queryFactory.delete(attendHall).where(attendHall.attend.attendCd.eq(attendCd)).execute();
+            queryFactory.delete(attendMapLog).where(attendMapLog.attend.attendCd.eq(attendCd)).execute();
+            queryFactory.delete(attendPaperLog).where(attendPaperLog.attend.attendCd.eq(attendCd)).execute();
+            queryFactory.delete(device).execute();
+            // 전형별 삭제 구현 전까지 보류
+            //queryFactory.delete(attendDoc).execute();
 
-        ScrollableResults scrollAttendMap = queryFactory.select(attendMap.examinee.examineeCd)
-                .distinct()
-                .from(attendMap)
-                .scroll(ScrollMode.FORWARD_ONLY);
+            ScrollableResults scrollAttendMap = queryFactory.select(attendMap.examinee.examineeCd)
+                    .distinct()
+                    .from(attendMap)
+                    .where(attendMap.attend.attendCd.eq(attendCd))
+                    .scroll(ScrollMode.FORWARD_ONLY);
 
-        while (scrollAttendMap.next()) {
-            String examineeCd = scrollAttendMap.getString(0);
+            while (scrollAttendMap.next()) {
+                String examineeCd = scrollAttendMap.getString(0);
 
-            queryFactory.delete(attendManage)
-                    .where(attendManage.examinee.examineeCd.eq(examineeCd))
-                    .execute();
-
-            queryFactory.delete(attendPaper)
-                    .where(attendPaper.examinee.examineeCd.eq(examineeCd))
-                    .execute();
-
-            queryFactory.delete(attendMap)
-                    .where(attendMap.examinee.examineeCd.eq(examineeCd))
-                    .execute();
-
-            try {
-                queryFactory.delete(examinee)
-                        .where(examinee.examineeCd.eq(examineeCd))
+                queryFactory.delete(attendManage)
+                        .where(attendManage.examinee.examineeCd.eq(examineeCd))
+                        .where(attendManage.attend.attendCd.eq(attendCd))
                         .execute();
 
-                if (photo) new File(pathExaminee, examineeCd + ".jpg").delete();
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.error("{}", e.getMessage());
+                queryFactory.delete(attendPaper)
+                        .where(attendPaper.examinee.examineeCd.eq(examineeCd))
+                        .where(attendPaper.attend.attendCd.eq(attendCd))
+                        .execute();
+
+                queryFactory.delete(attendMap)
+                        .where(attendMap.examinee.examineeCd.eq(examineeCd))
+                        .where(attendMap.attend.attendCd.eq(attendCd))
+                        .execute();
+
+                try {
+                    queryFactory.delete(examinee)
+                            .where(examinee.examineeCd.eq(examineeCd))
+                            .execute();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.error("{}", e.getMessage());
+                }
             }
-        }
-        scrollAttendMap.close();
+            scrollAttendMap.close();
 
-        queryFactory.delete(attendManageLog).execute();
-        queryFactory.delete(attendPaperLog).execute();
-        queryFactory.delete(attendMapLog).execute();
+            queryFactory.delete(attendManageLog).where(attendManageLog.attend.attendCd.eq(attendCd)).execute();
+            queryFactory.delete(attendPaperLog).where(attendPaperLog.attend.attendCd.eq(attendCd)).execute();
+            queryFactory.delete(attendMapLog).where(attendMapLog.attend.attendCd.eq(attendCd)).execute();
 
-        queryFactory.delete(attendHall).execute();
-
-        try {
-            queryFactory.delete(hall).execute();
-        } catch (Exception ignored) {
-        }
-
-        ScrollableResults scrollAttend = queryFactory.select(attend.admission.admissionCd)
-                .distinct()
-                .from(attend)
-                .scroll(ScrollMode.FORWARD_ONLY);
-
-        while (scrollAttend.next()) {
-            String admissionCd = scrollAttend.getString(0);
-            queryFactory.delete(attend)
-                    .where(attend.admission.admissionCd.eq(admissionCd))
-                    .execute();
+            queryFactory.delete(attendHall).where(attendHall.attend.attendCd.eq(attendCd)).execute();
 
             try {
-                queryFactory.delete(admission)
-                        .where(admission.admissionCd.eq(admissionCd))
+                queryFactory.delete(hall).execute();
+            } catch (Exception ignored) {
+            }
+
+            ScrollableResults scrollAttend = queryFactory.select(attend.admission.admissionCd)
+                    .distinct()
+                    .from(attend)
+                    .where(attend.attendCd.eq(attendCd))
+                    .scroll(ScrollMode.FORWARD_ONLY);
+
+            while (scrollAttend.next()) {
+                String admissionCd = scrollAttend.getString(0);
+                queryFactory.delete(attend)
+                        .where(attend.admission.admissionCd.eq(admissionCd))
+                        .where(attend.attendCd.eq(attendCd))
                         .execute();
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.error("{}", e.getMessage());
+
+                try {
+                    queryFactory.delete(admission)
+                            .where(admission.admissionCd.eq(admissionCd))
+                            .execute();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.error("{}", e.getMessage());
+                }
+            }
+        } else {
+
+            QAttendDoc attendDoc = QAttendDoc.attendDoc;
+            QAttendMap attendMap = QAttendMap.attendMap;
+            QAttendMapLog attendMapLog = QAttendMapLog.attendMapLog;
+            QExaminee examinee = QExaminee.examinee;
+            QAttend attend = QAttend.attend;
+            QAttendHall attendHall = QAttendHall.attendHall;
+            QAdmission admission = QAdmission.admission;
+            QAttendPaper attendPaper = QAttendPaper.attendPaper;
+            QAttendPaperLog attendPaperLog = QAttendPaperLog.attendPaperLog;
+            QHall hall = QHall.hall;
+            QDevice device = QDevice.device;
+            QStaff staff = QStaff.staff;
+            QAttendManage attendManage = QAttendManage.attendManage;
+            QAttendManageLog attendManageLog = QAttendManageLog.attendManageLog;
+
+            queryFactory.delete(staff).execute();
+            queryFactory.delete(attendHall).execute();
+            queryFactory.delete(attendMapLog).execute();
+            queryFactory.delete(attendPaperLog).execute();
+            queryFactory.delete(device).execute();
+            queryFactory.delete(attendDoc).execute();
+
+            ScrollableResults scrollAttendMap = queryFactory.select(attendMap.examinee.examineeCd)
+                    .distinct()
+                    .from(attendMap)
+                    .scroll(ScrollMode.FORWARD_ONLY);
+
+            while (scrollAttendMap.next()) {
+                String examineeCd = scrollAttendMap.getString(0);
+
+                queryFactory.delete(attendManage)
+                        .where(attendManage.examinee.examineeCd.eq(examineeCd))
+                        .execute();
+
+                queryFactory.delete(attendPaper)
+                        .where(attendPaper.examinee.examineeCd.eq(examineeCd))
+                        .execute();
+
+                queryFactory.delete(attendMap)
+                        .where(attendMap.examinee.examineeCd.eq(examineeCd))
+                        .execute();
+
+                try {
+                    queryFactory.delete(examinee)
+                            .where(examinee.examineeCd.eq(examineeCd))
+                            .execute();
+
+                    if (photo) new File(pathExaminee, examineeCd + ".jpg").delete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.error("{}", e.getMessage());
+                }
+            }
+            scrollAttendMap.close();
+
+            queryFactory.delete(attendManageLog).execute();
+            queryFactory.delete(attendPaperLog).execute();
+            queryFactory.delete(attendMapLog).execute();
+
+            queryFactory.delete(attendHall).execute();
+
+            try {
+                queryFactory.delete(hall).execute();
+            } catch (Exception ignored) {
+            }
+
+            ScrollableResults scrollAttend = queryFactory.select(attend.admission.admissionCd)
+                    .distinct()
+                    .from(attend)
+                    .scroll(ScrollMode.FORWARD_ONLY);
+
+            while (scrollAttend.next()) {
+                String admissionCd = scrollAttend.getString(0);
+                queryFactory.delete(attend)
+                        .where(attend.admission.admissionCd.eq(admissionCd))
+                        .execute();
+
+                try {
+                    queryFactory.delete(admission)
+                            .where(admission.admissionCd.eq(admissionCd))
+                            .execute();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.error("{}", e.getMessage());
+                }
             }
         }
 

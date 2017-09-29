@@ -140,35 +140,43 @@ define(function (require) {
                                                  */
 
                                                 // 비밀번호 입력여부 검사
-                                                if($('#pw').val() == '') return false;
+                                                if ($('#pw').val() == '') return false;
 
-
-                                                // 권한을 갖는 전형 입력 전에 모두 삭제
-                                                $.ajax({url: 'system/delAdm?userId=' + rowdata.userId});
-
-                                                // 계정별 전형 정보 저장
-                                                var tmp = [];
-
-                                                $('input[name=admissionCd]:checked').each(function () {
-                                                    tmp.push({admissionCd: $(this).val()});
-                                                });
-
-                                                // TODO: json 객체로 넘기도록 바꿔야
-                                                if (tmp.length != 0) {
-                                                    for (var i = 0; i < tmp.length; i++) {
-                                                        $.ajax({url: 'system/mod?userId=' + rowdata.userId + '&admissionCd=' + tmp[i].admissionCd + '&password=' + $('#pw').val()});
-                                                    }
-                                                }
 
                                                 // 선택한 권한이 관리자이면 모든 전형 삭제
-                                                if($('input[name=role]:checked').val() == 'ROLE_ADMIN') $.ajax({url: 'system/delAdm?userId=' + rowdata.userId});
+                                                if ($('input[name=role]:checked').val() == 'ROLE_ADMIN')
+                                                    $.ajax({url: 'system/delAdm?userId=' + rowdata.userId});
+                                                else {
+                                                    // TODO: 전형 삭제를 반드시 먼저 해주어야함 (동기)
+                                                    // 1. 권한을 갖는 전형 입력 전에 모두 삭제
+                                                    $.ajax({
+                                                        url: 'system/delAdm?userId=' + rowdata.userId,
+                                                        async: false,
+                                                        // 1-1. 전형이 모두 지워지면
+                                                        success: function () {
+                                                            // 1-2. 계정별 전형 정보 저장 (json)
+                                                            var tmp = [];
 
+                                                            $('input[name=admissionCd]:checked').each(function () {
+                                                                tmp.push({admissionCd: $(this).val()});
+                                                            });
+
+                                                            if (tmp.length != 0) {
+                                                                for (var i = 0; i < tmp.length; i++) {
+                                                                    $.ajax({
+                                                                        url: 'system/mod?userId=' + rowdata.userId + '&admissionCd=' + tmp[i].admissionCd + '&password=' + $('#pw').val()
+                                                                    });
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                                // 마지막으로 비밀번호 저장
                                                 $.ajax({
                                                     url: 'system/mod?userId=' + rowdata.userId + '&password=' + $('#pw').val() + '&roleName=' + $('input[name=role]:checked').val(),
-                                                    success: function(){
+                                                    success: function () {
                                                         $('#search').trigger('click');
                                                         dialog.close();
-
                                                     }
                                                 });
                                             }
