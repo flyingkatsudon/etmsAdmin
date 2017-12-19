@@ -4,6 +4,9 @@ define(function (require) {
     var GridBase = require('../dist/jqgrid.js');
     var BootstrapDialog = require('bootstrap-dialog');
 
+    var ResponseDialog = require('../responseDialog.js');
+    var responseDialog = new ResponseDialog();
+
     return GridBase.extend({
         initialize: function (options) {
             var colModel = [
@@ -48,8 +51,7 @@ define(function (require) {
 
                             var dialog = new BootstrapDialog({
                                 title: '<h3>' + rowdata.deptNm + ' | ' + rowdata.examineeCd + ' | ' + rowdata.examineeNm + '</h3>',
-                                // message: '이미지 로딩중입니다.',
-                                message: '<div style="text-align:center"><image src="' + url1 + '" height="500px"/>&nbsp;&nbsp;&nbsp;&nbsp;<image src="' + url2 + '" style="height: 500px"/></div>',
+                                message: '<div style="text-align:center"><image src="' + url1 + '" width="40%"/>&nbsp;&nbsp;&nbsp;&nbsp;<image src="' + url2 + '" width="40%"/></div>',
                                 size: 'size-wide',
                                 closable: true,
                                 onshow: function (dialog) {
@@ -59,22 +61,16 @@ define(function (require) {
                                         //  dialog.$modalBody.html('<image src="' + url1 + '" width="400">&nbsp;&nbsp;<image src="' + url2 + '" width="400">');
                                         if (rowdata.idCheckDttm) {
                                             dialog.getButton('idCheck').disable();
-                                            dialog.getButton('cancel').show();
+                                            dialog.getButton('cancel');
                                         }
                                     };
                                     img.onerror = function () {
                                         // dialog.$modalBody.html('잠시 후 다시 시도하세요');
-                                        dialog.$modalBody.html('<div style="text-align:center"><image src="' + url1 + '" height="500px"/>&nbsp;&nbsp;&nbsp;&nbsp;<image src="image/noIdCard/img-default.jpg" width="400"/></div>');
+                                        console.log(url1);
+                                        dialog.$modalBody.html('<div style="text-align:center"><image src="' + url1 + '" width="40%"/>&nbsp;&nbsp;&nbsp;&nbsp;<image src="image/noIdCard/default.jpg" width="40%"/></div>');
                                         dialog.getButton('idCheck').remove();
-                                        var tmp = new BootstrapDialog({
-                                                message: '<h4 style="margin-left:10%; font-weight: normal">사진이 아직 업로드되지 않았습니다. 단말기를 확인해주세요</h4>',
-                                            });
 
-                                        tmp.realize();
-                                        tmp.getModalDialog().css('margin-top', '20%');
-                                        tmp.getModalFooter().css('padding', '1%');
-                                        tmp.getModalHeader().hide();
-                                        tmp.open();
+                                       // responseDialog.notify({msg: '사진이 아직 업로드되지 않았습니다. 단말기를 확인해주세요'});
                                     };
                                 },
                                 buttons: [
@@ -112,7 +108,8 @@ define(function (require) {
                                             innerDialog.getModalHeader().hide();
                                             innerDialog.open();
                                         }
-                                    }, {
+                                    },
+                                    {
                                         label: '닫기',
                                         action: function (dialog) {
                                             dialog.close();

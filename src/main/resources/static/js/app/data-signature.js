@@ -13,9 +13,6 @@ define(function (require) {
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();
             this.list = new List({el: '.hm-ui-grid'}).render();
 
-            $('.hm-ui-grid').hide();
-            $('.notice').show();
-
         }, search: function (o) {
             this.list.search(o);
             this.list.$grid.jqGrid('setGridParam', {url: 'data/signature.json', datatype: 'json'}).trigger('reloadGrid');

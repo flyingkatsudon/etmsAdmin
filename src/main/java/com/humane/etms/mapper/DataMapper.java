@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Mapper
 public interface DataMapper {
-    Page<ExamineeDto> sendPaperInfo(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
+    Page<ExamineeDto> sendPaperInfo(@Param("param") StatusDto param, @Param("name") String name, @Param("pageable") Pageable pageable);
 
     Page<ExamineeDto> cancelAttend(@Param("param") StatusDto param, @Param("pageable") Pageable pageable);
 

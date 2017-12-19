@@ -2,24 +2,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h3>답안지 세부 검증</h3><br>
-            <h4 style="font-weight: normal">'검색' 버튼을 눌러 세부 검증을 진행하세요. 아래 필터는 본 페이지에
-                <span style="font-weight: bold; color: crimson">공통</span>으로 적용됩니다</h4>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="hm-ui-search">
-                        <label for="admissionNm">전형</label><select id="admissionNm"></select>
-                        <label for="typeNm">계열</label><select id="typeNm"></select>
-                        <label for="attendDate">시험일자</label><select id="attendDate"></select>
-                        <label for="attendTime">시험시간</label><select id="attendTime"></select>
-                        <button id="search">검색</button>
-                    </div>
-                </div>
-            </div>
+            <h4 style="font-weight: normal">'검색' 버튼을 눌러 세부 검증을 진행하세요. 아래 필터는 본 페이지에<span style="font-weight: bold; color: crimson">공통</span>으로 적용됩니다</h4>
         </div>
     </div>
     <div class="col-lg-12">
@@ -29,12 +12,11 @@
                 <div class="row" style="text-align:center">
                     <div class="col-sm-1"></div>
                     <div class="panel-title panel-title-color col-sm-2">
-                        <div class="panel-title-color">
-                            <h4>답안지 자릿수</h4>
-                        </div>
+                        <div class="panel-title-color"><h3>답안지 자릿수</h3></div>
                     </div>
                     <div class="panel-content col-sm-6">
-                        <div class="panel-content-color"><h5>각 시험의 답안지 자릿수와 실제 매칭된 그것이 다른 답안지를 검증합니다</h5></div>
+                        <div class="panel-content-color"><h4><span style="font-weight: normal">각 시험의 답안지 자릿수와 실제 매칭된 그것이 다른 답안지를 검증합니다</span>
+                        </h4></div>
                     </div>
                     <button class="panel-result col-sm-2" id="checkDigit">
                         <div class="panel-result-color"><h4 id="cntInvalidDigit">검색</h4></div>
@@ -46,12 +28,11 @@
                 <div class="row">
                     <div class="col-sm-1"></div>
                     <div class="panel-title panel-title-color col-sm-2">
-                        <div class="panel-title-color">
-                            <h4>답안지 범위</h4>
-                        </div>
+                        <div class="panel-title-color"><h3>답안지 범위</h3></div>
                     </div>
                     <div class="panel-content col-sm-6">
-                        <div class="panel-content-color"><h5>각 시험의 답안지 범위에 속하지 않는 답안지를 검증합니다</h5></div>
+                        <div class="panel-content-color"><h4><span style="font-weight: normal">각 시험의 답안지 범위에 속하지 않는 답안지를 검증합니다</span>
+                        </h4></div>
                     </div>
                     <button class="panel-result col-sm-2" id="checkRange">
                         <div class="panel-result-color"><h4 id="cntInvalidRange">검색</h4></div>
@@ -63,10 +44,11 @@
                 <div class="row">
                     <div class="col-sm-1"></div>
                     <div class="panel-title panel-title-color col-sm-2">
-                        <div class="panel-title-color"><h4>특이 답안지</h4></div>
+                        <div class="panel-title-color"><h3>특이 답안지</h3></div>
                     </div>
                     <div class="panel-content col-sm-6">
-                        <div class="panel-content-color"><h5>특수 문자와 알파벳 등 허용하지 않는 문자열의 답안지를 검증합니다</h5></div>
+                        <div class="panel-content-color"><h4><span style="font-weight: normal">특수 문자와 알파벳 등 허용하지 않는 문자열의 답안지를 검증합니다</span>
+                        </h4></div>
                     </div>
                     <button class="panel-result col-sm-2" id="checkChar">
                         <div class="panel-result-color"><h4 id="cntInvalidChar">검색</h4></div>
@@ -78,15 +60,31 @@
     </div>
     <div class="col-lg-12">
         <hr>
-        <br><h4>답안지를 확인하세요</h4><br>
-        <h5>최종 클릭한 검증에 대한 <span style="font-weight: bold; color: crimson">결과가 있을 경우</span> 아래에 테이블이 표시됩니다</h5><br>
+        <br>
+        <h3>답안지를 확인하세요</h3><br>
+        <h4><span style="font-weight: normal">최종 클릭한 검증에 대한 <span style="font-weight: bold; color: crimson">결과가 있을 경우</span> 아래에 테이블이 표시됩니다</span></h4><br>
         <div id="detectResult" hidden></div>
     </div>
     <div class="col-lg-12">
         <hr>
-        <br><h4>다중 처리 이력을 확인하세요</h4><br>
-        <h5>응시 처리 횟수가&nbsp;<span style="font-weight: bold; color: crimson">2회 이상</span>인&nbsp;수험생을 검색합니다.
-            필터를 선택하여 <span style="font-weight: bold; color: crimson">검색 후</span> 답안지를 확인하세요</h5><br>
+        <br>
+        <h3>다중 처리 이력을 확인하세요</h3><br>
+        <h4><span style="font-weight: normal">응시 처리 횟수가&nbsp;<span style="font-weight: bold; color: crimson">2회 이상</span>인&nbsp;수험생을 검색합니다. 필터를 선택하여 <span style="font-weight: bold; color: crimson">검색 후</span> 답안지를 확인하세요</span></h4><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="hm-ui-search">
+                            <label for="admissionNm">전형</label><select id="admissionNm"></select>
+                            <label for="typeNm">계열</label><select id="typeNm"></select>
+                            <label for="attendDate">시험일자</label><select id="attendDate"></select>
+                            <label for="attendTime">시험시간</label><select id="attendTime"></select>
+                            <button id="search">검색</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="multiple" hidden></div>
         <hr>
     </div>

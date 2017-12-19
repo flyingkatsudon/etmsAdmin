@@ -280,7 +280,10 @@
              , (select univ_hall_cd from attend_hall where hall_cd=attend_map.attend_hall_cd and attend_cd = attend_map.attend_cd) as attend_hall_cd
              , h2.hall_nm as attend_hall_nm
           FROM attend_map
-         INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd and attend.paper_cnt > 0
+        <choose>
+            <when test="name.equals('KNU')"> INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd </when>
+            <otherwise> INNER JOIN attend ON attend.attend_cd = attend_map.attend_cd and attend.paper_cnt > 0 </otherwise>
+        </choose>
          INNER JOIN admission ON admission.admission_cd = attend.admission_cd
          INNER JOIN examinee ON attend_map.examinee_cd = examinee.examinee_cd
          INNER JOIN hall h1 ON attend_map.hall_cd = h1.hall_cd
