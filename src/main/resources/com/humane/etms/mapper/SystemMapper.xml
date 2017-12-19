@@ -145,6 +145,7 @@
                         from attend_map_log
                         inner join attend on attend.attend_cd = attend_map_log.attend_cd
                         inner join examinee on examinee.examinee_cd = attend_map_log.examinee_cd
+                        where attend.paper_cnt > 0
                         group by attend_map_log.examinee_cd, attend_map_log.device_id
                     ) a
                 group by a.examinee_cd
@@ -160,7 +161,7 @@
         , attend_map_log.log_dttm, hall.bldg_nm, hall.hall_nm
         from attend_map_log
         inner join examinee on examinee.examinee_cd = attend_map_log.examinee_cd
-        inner join device on device.device_id = attend_map_log.device_id
+        left join device on device.device_id = attend_map_log.device_id
         left join hall on hall.hall_cd = attend_map_log.attend_hall_cd
         <where>
             <if test="param != null">

@@ -650,3 +650,54 @@ h4 {
     height: 30px;
     background-color: #4CAF50;
 }
+
+.panel-title {
+    text-align: center;
+    vertical-align: middle;
+    padding: 1%;
+    height: inherit;
+}
+
+.panel-title-color {
+    border: 1px solid #afd5de;
+    background-color: #afd5de;
+    border-radius: 5%;
+}
+
+.panel-content {
+    text-align: center;
+    vertical-align: middle;
+    padding: 1%;
+    height: inherit;
+    border: 1px solid #d1d1d1;
+}
+
+.panel-content-color {
+}
+
+.panel-result {
+    text-align: center;
+    vertical-align: middle;
+    padding: 1%;
+    height: inherit;
+    background-color: #adabaa;
+    border: 1px solid #adabaa;
+    border-radius: 5%;
+    cursor: pointer;
+}
+
+.panel-result-color {
+    text-align: center;
+    vertical-align: middle;
+    height: inherit;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.panel-btn {
+    padding: 2%;
+    background: #f9cbb8;
+    border: 1px solid #f9cbb8;
+    font-size: 18px;
+    font-weight: bold;
+}

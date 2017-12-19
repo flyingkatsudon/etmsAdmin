@@ -2,9 +2,7 @@ define(function (require) {
     "use strict";
 
     var GridBase = require('../dist/jqgrid.js');
-
     var BootstrapDialog = require('bootstrap-dialog');
-    var DuplicatePaper = require('../grid/check-paper-duplicate.js');
 
     return GridBase.extend({
         initialize: function (options) {
@@ -13,46 +11,50 @@ define(function (require) {
                 {name: 'typeNm', label: '계열'},
                 {name: 'attendDate', label: '시험일자'},
                 {name: 'attendTime', label: '시험시간'},
+                {name: 'examineeCd', label: '수험번호'},
+                {name: 'examineeNm', label: '수험생명'},
                 {name: 'paperCd', label: '답안지번호'},
-                {name: 'duplicateCnt', label: '중복횟수'},
-                {name: 'attendCd', hidden: true}
+                {
+                    name: 'isAttend',
+                    label: '응시여부',
+                    formatter: 'select',
+                    editoptions: {value: {true: '응시', false: '결시'}}
+                },
+                {name: 'attendHeadNm', label: '응시고사본부'},
+                {name: 'attendBldgNm', label: '응시고사건물'},
+                {name: 'attendHallNm', label: '응시고사실'},
+                {name: 'regDttm', label: '등록시간'}
             ];
 
             for (var i = 0; i < colModel.length; i++) {
                 colModel[i].label = colModel[i].label === undefined ? colModel[i].name : colModel[i].label;
             }
 
+            for (var i = 0; i < colModel.length; i++) {
+                var col = colModel[i];
+                col['fixed'] = true;
+                col['width'] = 150;
+            }
+
             var opt = $.extend(true, {
                 defaults: {
-                    //url: 'check/paper.json',
+                    url: options.url,
                     colModel: colModel,
                     onCellSelect: function (rowid, index, contents, event) {
-
-                        var rowData = $(this).jqGrid('getRowData', rowid);
-
-                        var param = {
-                            attendCd: rowData.attendCd,
-                            paperCd: rowData.paperCd
-                        };
+                        var colModel = $(this).jqGrid('getGridParam', 'colModel');
 
                         var dialog = new BootstrapDialog({
-                            title: '<h4>중복된 답안지를 확인하세요. 푸른 영역이 마지막으로 처리된 상태입니다</h4>',
-                            onshown: function(dialog){
-                                dialog.list = new DuplicatePaper({el: dialog.$modalBody, param: param}).render();
-                            },
-                            buttons: [
-                                {
-                                    label: '닫기',
-                                    action: function (dialog) {
-                                        dialog.close();
-                                    }
-                                }
-                            ]
+                            title: '답안지 번호 수정',
+                            message: '준비중입니다',
                         });
 
                         dialog.realize();
+
                         dialog.getModalDialog().css('margin-top', '20%');
-                        dialog.getModalDialog().css('width', '60%');
+                        dialog.getModalDialog().css('text-align', 'center');
+                        dialog.getModalHeader().hide();
+                        dialog.getModalFooter().hide();
+
                         dialog.open();
                     }
                 }
@@ -62,6 +64,7 @@ define(function (require) {
         },
         render: function () {
             this.constructor.__super__.render.call(this);
+            this.$grid.closest('.ui-jqgrid-bdiv').css('overflow-x', 'auto');
             return this;
         }
     });

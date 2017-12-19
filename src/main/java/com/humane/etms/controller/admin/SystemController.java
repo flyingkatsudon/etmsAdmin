@@ -194,12 +194,12 @@ public class SystemController {
 
     @RequestMapping(value = "duplicate")
     public ResponseEntity duplicate(Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.duplicate(pageable).getContent());
+        return ResponseEntity.ok(systemMapper.duplicate(new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
     }
 
     @RequestMapping(value = "innerDuplicate")
     public ResponseEntity innerDuplicate(DuplicateDto param, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.innerDuplicate(param, pageable).getContent());
+        return ResponseEntity.ok(systemMapper.innerDuplicate(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
     }
 
     @RequestMapping(value = "staff.{format:json|pdf|xls|xlsx}")

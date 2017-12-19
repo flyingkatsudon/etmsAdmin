@@ -91,4 +91,192 @@
             </if>
         </where>
     </select>
+
+    <select id="detect1" resultType="com.humane.etms.dto.StatusDto">
+        select admission.admission_nm, attend.type_nm, attend.attend_date, attend.attend_time, result.*
+        from (select a.attend_cd, a.paper_cd, concat(count(*), '회') as duplicateCnt
+                from (select attend_paper.attend_cd, attend_paper.paper_cd, attend_paper.new_paper_cd, attend_paper.reg_dttm
+                        from attend_paper
+                        where attend_paper.new_paper_cd is null
+                     ) a
+                group by a.attend_cd, a.paper_cd
+             ) result
+        inner join attend on attend.attend_cd = result.attend_cd
+        inner join admission on admission.admission_cd = attend.admission_cd
+        <where> and duplicateCnt > 1
+            <if test="param != null">
+                <if test="param != null">
+                    <if test="param.admissionNm != null"> and admission.admission_nm = #{param.admissionNm} </if>
+                    <if test="param.typeNm != null"> and attend.type_nm = #{param.typeNm} </if>
+                    <if test="param.attendDate != null"> and attend.attend_date = #{param.attendDate} </if>
+                    <if test="param.attendTime != null"> and attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="detect2" resultType="com.humane.etms.dto.StatusDto">
+        select hall.bldg_nm as attendBldgNm, hall.hall_nm as attendHallNm, attend_paper.attend_cd, examinee.examinee_cd, examinee.examinee_nm
+            , case when attend_map.attend_dttm is not null then true else false end as is_attend
+            , device.device_no, attend_paper.paper_cd, attend_paper.reg_dttm
+        from attend_paper
+        inner join attend_map on attend_map.attend_cd = attend_paper.attend_cd and attend_map.attend_hall_cd = attend_paper.hall_cd
+        inner join hall on hall.hall_cd = attend_paper.hall_cd
+        inner join examinee on examinee.examinee_cd = attend_paper.examinee_cd and examinee.examinee_cd = attend_map.examinee_cd
+        inner join device on device.device_id = attend_paper.device_id
+        <where>
+            <if test="param != null">
+                <if test="param.attendCd">and attend_paper.attend_cd = #{param.attendCd}</if>
+                <if test="param.paperCd">and attend_paper.paper_cd = #{param.paperCd}</if>
+            </if>
+        </where>
+        group by attend_paper.examinee_cd, attend_paper.paper_cd
+        order by attend_paper.reg_dttm desc
+    </select>
+
+    <select id="invalid" resultType="com.humane.etms.dto.StatusDto">
+        select admission.admission_nm
+            , attend.type_nm
+            , attend.attend_date
+            , attend.attend_time
+            , examinee.examinee_cd
+            , examinee.examinee_nm
+            , (select head_nm from hall where hall.hall_cd = attend_map.hall_cd) as attend_head_nm
+            , (select bldg_nm from hall where hall.hall_cd = attend_map.hall_cd) as attend_bldg_nm
+            , (select hall_nm from hall where hall.hall_cd = attend_map.hall_cd) as attend_hall_nm
+            , case when attend_map.attend_dttm is null then false else true end as is_attend
+            , attend_paper.paper_cd
+            , attend_paper.reg_dttm
+        from attend_paper
+        inner join attend_map on attend_map.examinee_cd = attend_paper.examinee_cd and attend_map.attend_cd = attend_paper.attend_cd and attend_map.attend_hall_cd = attend_paper.hall_cd
+        inner join examinee on examinee.examinee_cd = attend_map.examinee_cd
+        inner join attend on attend.attend_cd = attend_map.attend_cd and attend_paper.attend_cd = attend_map.attend_cd
+        inner join admission on admission.admission_cd = attend.admission_cd
+        inner join hall on hall.hall_cd = attend_paper.hall_cd and hall.hall_cd = attend_map.attend_hall_cd
+        <where>
+            <if test="way == 'digit'"> and length(trim(attend_paper.paper_cd)) != attend.paper_len</if>
+            <if test="way == 'range'"> and cast(attend.first_assign_paper_cd as integer) > cast(attend_paper.paper_cd as integer) or cast(attend_paper.paper_cd as integer) > cast(attend.last_assign_paper_cd as integer)</if>
+            <if test="way == 'char'"> and trim(attend_paper.paper_cd) regexp '^[0-9]+$' != 1 </if>
+            <if test="param != null">
+                <if test="param.admissionNm != null"> and admission.admission_nm = #{param.admissionNm} </if>
+                <if test="param.typeNm != null"> and attend.type_nm = #{param.typeNm} </if>
+                <if test="param.attendDate != null"> and attend.attend_date = #{param.attendDate} </if>
+                <if test="param.attendTime != null"> and attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+            </if>
+        </where>
+    </select>
+
+    <!--<select id="multiple" resultType="com.humane.etms.dto.StatusDto">
+        select distinct result.examinee_cd, result.examinee_nm, concat(cnt, '회') as actionCnt, attend_map.attend_hall_cd, hall.bldg_nm as attend_bldg_nm, hall.hall_nm as attend_hall_nm, device.device_id, device.device_no
+                      , result.attend_dttm
+                      , case when result.attend_dttm is not null then true else false end as is_attend
+                      , result.log_dttm
+        from (select a.examinee_cd, examinee.examinee_nm, a.attend_cd, count(*) as cnt, a.attend_dttm, a.log_dttm
+              from( select attend_map_log.examinee_cd, attend_map_log.attend_cd, attend_map_log.attend_dttm, attend_map_log.log_dttm
+                    from attend_map_log
+                    inner join attend on attend.attend_cd = attend_map_log.attend_cd
+                    inner join admission on admission.admission_cd = attend.admission_cd
+                    <where> and attend.paper_cnt > 0
+                        <if test="param != null">
+                            <if test="param.admissionNm != null"> and admission.admission_nm = #{param.admissionNm} </if>
+                            <if test="param.typeNm != null"> and attend.type_nm = #{param.typeNm} </if>
+                            <if test="param.attendDate != null"> and attend.attend_date = #{param.attendDate} </if>
+                            <if test="param.attendTime != null"> and attend.attend_time = #{param.attendTime} </if>
+                        </if>
+                    </where>
+                    group by attend_map_log.examinee_cd, attend_map_log.log_dttm
+                    order by attend_map_log.examinee_cd, attend_map_log.log_dttm desc
+                  ) a
+              inner join examinee on examinee.examinee_cd = a.examinee_cd
+              <where>
+                <if test="param != null">
+                    <if test="param.examineeCd != null"> and examinee.examinee_cd = #{param.examineeCd} </if>
+                    <if test="param.examineeNm != null"> and examinee.examinee_nm = #{param.examineeNm`} </if>
+                </if>
+              </where>
+              group by a.examinee_cd, a.attend_cd
+              order by a.attend_dttm
+             ) result
+        inner join attend_map on attend_map.attend_cd = result.attend_cd and attend_map.examinee_cd = result.examinee_cd
+        inner join device on device.device_id = attend_map.device_id
+        inner join hall on hall.hall_cd = attend_map.attend_hall_cd
+        where cnt > 1
+    </select>-->
+
+    <select id="multiple" resultType="com.humane.etms.dto.StatusDto">
+        select distinct admission.admission_nm, attend.type_nm, attend.attend_date, attend.attend_time, result.examinee_cd, result.examinee_nm, concat(cnt, '회') as actionCnt
+                    , case when result.attend_dttm is not null then true else false end as is_attend
+                    , result.log_dttm
+                    from (select a.examinee_cd, examinee.examinee_nm, a.attend_cd, count(*) as cnt, a.attend_dttm, a.log_dttm
+                            from( select attend_map_log.examinee_cd, attend_map_log.attend_cd, attend_map_log.attend_dttm, attend_map_log.log_dttm
+                                    from attend_map_log
+                                    inner join attend on attend.attend_cd = attend_map_log.attend_cd
+                                    inner join admission on admission.admission_cd = attend.admission_cd
+                                    <where> and attend.paper_cnt > 0
+                                        <if test="param != null">
+                                            <if test="param.admissionNm != null"> and admission.admission_nm = #{param.admissionNm} </if>
+                                            <if test="param.typeNm != null"> and attend.type_nm = #{param.typeNm} </if>
+                                            <if test="param.attendDate != null"> and attend.attend_date = #{param.attendDate} </if>
+                                            <if test="param.attendTime != null">and attend.attend_time = DATE_FORMAT(#{param.attendTime}, '%T')</if>
+                                        </if>
+                                    </where>
+                                    group by attend_map_log.examinee_cd, attend_map_log.log_dttm
+                                    order by attend_map_log.examinee_cd, attend_map_log.log_dttm desc
+                                ) a
+                            inner join examinee on examinee.examinee_cd = a.examinee_cd
+                            <where>
+                                <if test="param != null">
+                                    <if test="param.examineeCd != null"> and examinee.examinee_cd = #{param.examineeCd} </if>
+                                    <if test="param.examineeNm != null"> and examinee.examinee_nm = #{param.examineeNm`} </if>
+                                </if>
+                            </where>
+                            group by a.examinee_cd, a.attend_cd
+                            order by a.attend_dttm
+                    ) result
+        inner join attend on attend.attend_cd = result.attend_cd
+        inner join admission on admission.admission_cd = attend.admission_cd
+        where cnt > 1
+    </select>
+
+    <select id="getAttendMapLog" resultType="com.humane.util.CamelMap">
+        select attend_map_log.examinee_cd, examinee.examinee_nm, device.device_no
+            , case when hall.head_nm is null then '' else hall.head_nm end as head_nm
+            , case when hall.bldg_nm is null then '' else hall.bldg_nm end as bldg_nm
+            , case when hall.hall_nm is null then '' else hall.hall_nm end as hall_nm
+            , case when attend_map_log.attend_dttm is null then '' else attend_map_log.attend_dttm end as attend_dttm
+            , attend_map_log.log_dttm
+        from attend_map_log
+        inner join examinee on examinee.examinee_cd = attend_map_log.examinee_cd
+        inner join device on device.device_id = attend_map_log.device_id
+        left join hall on hall.hall_cd = attend_map_log.attend_hall_cd
+        <where>
+            <if test="param != null">
+                <if test="param.attendCd != null">and attend_map_log.attend_cd = #{param.attendCd}</if>
+                <if test="param.examineeCd != null">and attend_map_log.examinee_cd = #{param.examineeCd}</if>
+            </if>
+        </where>
+        order by attend_map_log.log_dttm desc
+    </select>
+
+    <select id="getAttendPaperLog" resultType="com.humane.util.CamelMap">
+        select attend_paper_log.examinee_cd, examinee.examinee_nm, device.device_no
+            , case when hall.head_nm is null then '' else hall.head_nm end as head_nm
+            , case when hall.bldg_nm is null then '' else hall.bldg_nm end as bldg_nm
+            , case when hall.hall_nm is null then '' else hall.hall_nm end as hall_nm
+            , case when attend_paper_log.new_paper_cd is null then '' else attend_paper_log.new_paper_cd end as new_paper_cd
+            , case when attend_paper_log.paper_cd is null then '' else attend_paper_log.paper_cd end as paper_cd
+            , attend_paper_log.reg_dttm
+            , attend_paper_log.log_dttm
+        from attend_paper_log
+        inner join examinee on examinee.examinee_cd = attend_paper_log.examinee_cd
+        inner join device on device.device_id = attend_paper_log.device_id
+        inner join hall on hall.hall_cd = attend_paper_log.hall_cd
+        <where>
+            <if test="param != null">
+                <if test="param.attendCd != null">and attend_paper_log.attend_cd = #{param.attendCd}</if>
+                <if test="param.examineeCd != null">and attend_paper_log.examinee_cd = #{param.examineeCd}</if>
+            </if>
+        </where>
+        order by attend_paper_log.log_dttm desc
+    </select>
 </mapper>

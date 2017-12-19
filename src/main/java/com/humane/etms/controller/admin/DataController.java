@@ -3,8 +3,12 @@ package com.humane.etms.controller.admin;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.DataMapper;
+import com.humane.etms.model.AttendMap;
+import com.humane.etms.model.QAttendMap;
+import com.humane.etms.repository.AttendMapRepository;
 import com.humane.etms.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -44,6 +48,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 public class DataController {
     private final DataMapper mapper;
     private final ImageService imageService;
+    private final AttendMapRepository attendMapRepository;
     private static final String JSON = "json";
     private static final String PDF = "pdf";
 
@@ -78,7 +83,20 @@ public class DataController {
         List<ExamineeDto> list = mapper.examinee(examineeDto, pageable).getContent();
 
         list.forEach(item -> {
-            try (InputStream is = imageService.getFile(pathExaminee, item.getExamineeCd() + ".jpg")) {
+
+            List<AttendMap> tmpList = (List<AttendMap>) attendMapRepository.findAll(new BooleanBuilder()
+                    .and(QAttendMap.attendMap.examinee.examineeCd.eq(item.getExamineeCd())));
+
+            String admissionCd = tmpList.get(0).getAttend().getAdmission().getAdmissionCd();
+
+            String path;
+            if(admissionCd == null){
+                path = pathExaminee;
+            } else {
+                path = pathExaminee + "/" + admissionCd;
+            }
+
+            try (InputStream is = imageService.getFile(path, item.getExamineeCd() + ".jpg")) {
                 BufferedImage image;
 
                 if (is == null) {
