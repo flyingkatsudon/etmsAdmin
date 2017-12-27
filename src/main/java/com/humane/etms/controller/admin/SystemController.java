@@ -53,9 +53,6 @@ public class SystemController {
     @RequestMapping(value = "reset")
     public ResponseEntity reset(@RequestParam("admissionCd") String admissionCd, @RequestParam("attendCd") String attendCd, @RequestParam(defaultValue = "false") boolean photo) throws IOException {
         try {
-
-            log.debug("{}", admissionCd + "/" + attendCd);
-
             // 전형별 삭제 시
             if(admissionCd != null) {
                 // 1. 시험코드를 갖지 않는 row는 미리 삭제
@@ -95,42 +92,50 @@ public class SystemController {
         }
     }
 
+    // 중간본부앱이 사용 - 함수명 바꿀 때 앱도 함께 바꿔야함
     @RequestMapping(value = "initMgr")
     public void initMgr(@RequestParam String admissionCd, @RequestParam String attendDate, @RequestParam String headNm, @RequestParam String bldgNm) throws ParseException {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(attendDate);
         systemService.initMgr(admissionCd, date, headNm, bldgNm);
     }
 
+    // 출결앱이 사용 - 함수명 바꿀 때 앱도 함께 바꿔야함
     @RequestMapping(value = "initApp")
     public void initApp(@RequestParam String attendCd, @RequestParam String attendHallCd) {
         systemService.initApp(attendCd, attendHallCd);
     }
 
+    // 계정정보 가져오기
     @RequestMapping(value = "account")
     public ResponseEntity account(AccountDto accountDto, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.account(accountDto, pageable));
     }
 
+    // 단말기정보 가져오기
     @RequestMapping(value = "device")
     public ResponseEntity getDevice(DeviceDto deviceDto, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.getDevice(deviceDto, pageable));
     }
 
+    // 전형정보 가져오기
     @RequestMapping(value = "admission")
     public ResponseEntity admission(Pageable pageable) {
         return ResponseEntity.ok(systemMapper.admission(pageable).getContent());
     }
 
+    // 전형 세부정보
     @RequestMapping(value = "accountDetail")
     public ResponseEntity accountDetail(String userId, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.accountDetail(userId, pageable).getContent());
     }
 
+    // 계정에서 전형권한 삭제
     @RequestMapping(value = "delAdm")
     public void deleteAdmission(String userId) {
         systemMapper.deleteAdmission(userId);
     }
 
+    // 계정 정보 수정
     @RequestMapping(value = "mod")
     public void modify(String userId, String roleName, String admissionCd, String password) {
 
@@ -149,6 +154,7 @@ public class SystemController {
         systemMapper.modifyUser(userId, password);
     }
 
+    // 계정 추가
     @RequestMapping(value = "addAccount")
     public void addAccount(String userId, String password, String roleName) {
         try {
@@ -165,6 +171,7 @@ public class SystemController {
         }
     }
 
+    // 계정 삭제
     @RequestMapping(value = "delAccount")
     public void deleteAccount(String userId) {
         systemMapper.deleteAdmission(userId);
@@ -172,16 +179,19 @@ public class SystemController {
         systemMapper.deleteAccount(userId);
     }
 
+    // 계정 등록 시 id 체크
     @RequestMapping(value = "idCheck")
     public ResponseEntity idCheck(Pageable pageable) {
         return ResponseEntity.ok(systemMapper.idCheck(pageable).getContent());
     }
 
+    // 시험정보 가져오기
     @RequestMapping(value = "attendInfo")
     public ResponseEntity attendInfo(AttendInfoDto param, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.attendInfo(param, pageable).getContent());
     }
 
+    // 시험정보 수정
     @RequestMapping(value = "modifyAttend")
     public ResponseEntity modifyAttend(@RequestBody AttendInfoDto param) {
         try {
@@ -192,16 +202,19 @@ public class SystemController {
         }
     }
 
+    // 중복처리조회
     @RequestMapping(value = "duplicate")
     public ResponseEntity duplicate(Pageable pageable) {
         return ResponseEntity.ok(systemMapper.duplicate(new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
     }
 
+    // 중복처리 상세 내역
     @RequestMapping(value = "innerDuplicate")
     public ResponseEntity innerDuplicate(DuplicateDto param, Pageable pageable) {
         return ResponseEntity.ok(systemMapper.innerDuplicate(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
     }
 
+    // 기술요원 정보
     @RequestMapping(value = "staff.{format:json|pdf|xls|xlsx}")
     public ResponseEntity staff(@PathVariable String format, StaffDto param, Pageable pageable) {
 
@@ -217,6 +230,7 @@ public class SystemController {
         }
     }
 
+    // 기술요원 추가
     @RequestMapping(value = "addStaff")
     public ResponseEntity addStaff(@RequestBody StaffDto param) {
         try {
@@ -249,6 +263,7 @@ public class SystemController {
         }
     }
 
+    // 기술요원 수정
     @RequestMapping(value = "modifyStaff")
     public ResponseEntity modifyStaff(@RequestBody StaffDto param) {
         try {
@@ -298,9 +313,11 @@ public class SystemController {
         }
     }
 
+    // 기술요원 삭제
     @RequestMapping(value = "delStaff")
     public ResponseEntity delStaff(@RequestBody StaffDto param) {
         try {
+            // 시험정보를 찾아 시험코드를 얻는다
             Attend attend = attendRepository.findOne(new BooleanBuilder()
                     .and(QAttend.attend.admission.admissionNm.eq(param.get_admissionNm()))
                     .and(QAttend.attend.attendNm.eq(param.get_attendNm()))
@@ -318,6 +335,7 @@ public class SystemController {
         }
     }
 
+    // 기술요원 전체 삭제
     @RequestMapping(value = "delStaffAll")
     public ResponseEntity delStaffAll() {
         try {

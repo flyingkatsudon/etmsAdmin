@@ -27,6 +27,7 @@ public class CheckController {
     private final CheckMapper checkMapper;
     private final CheckService checkService;
 
+    // 사용 안함
     @RequestMapping(value = "paper.{format:json|xls|xlsx}")
     public ResponseEntity paper(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
         switch (format) {
@@ -41,28 +42,31 @@ public class CheckController {
         }
     }
 
+    // 답안지 중복검증
     @RequestMapping(value = "detect1")
     public ResponseEntity detect1(StatusDto statusDto, Pageable pageable) {
         return ResponseEntity.ok(checkMapper.detect1(statusDto, pageable));
     }
 
+    // 답안지 중복검증 (세부)
     @RequestMapping(value = "detect2")
     public ResponseEntity detect2(StatusDto statusDto, Pageable pageable) {
         return ResponseEntity.ok(checkMapper.detect2(statusDto, pageable));
     }
 
+    // 답안지 유효성 검증 (way에 따라 3가지 스타일)
     @RequestMapping(value = "invalid")
     public ResponseEntity invalid(@RequestParam("way") String way, StatusDto statusDto, Pageable pageable) {
         return ResponseEntity.ok(checkMapper.invalid(way, statusDto, pageable));
     }
 
+    // 다중처리 이력
     @RequestMapping(value = "multiple")
     public ResponseEntity multiple(StatusDto statusDto, Pageable pageable) {
-        log.debug("{}", statusDto.getAttendDate());
-        log.debug("{}", statusDto.getAttendTime());
         return ResponseEntity.ok(checkMapper.multiple(statusDto, pageable));
     }
 
+    // 다중처리 이력 (세부)
     @RequestMapping(value = "detail")
     public ResponseEntity detail(StatusDto statusDto, Pageable pageable) throws ParseException {
         return ResponseEntity.ok(checkService.getDetailLog(statusDto, pageable));

@@ -11,6 +11,10 @@ define(function (require) {
 
     return Backbone.View.extend({
         render: function () {
+            /*
+                각 페이지는 template에 toolbar, grid로 구성되어있다 (응시율 통계 메뉴는 summary 포함)
+                sidebar.html의 <li> 태그에 있는 #... 에서 ...와 파일명을 일치시켜 파일 생성
+             */
             this.$el.html(Template);
             this.$('#hm-ui-summary').html(InnerTemplate);
             this.toolbar = new Toolbar({el: '.hm-ui-search', parent: this}).render();

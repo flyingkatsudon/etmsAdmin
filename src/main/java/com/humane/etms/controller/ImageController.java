@@ -53,8 +53,6 @@ public class ImageController {
             path = pathExaminee + "/" + admissionCd;
         }
 
-        log.debug("{}", path);
-
         return path;
     }
 

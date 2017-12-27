@@ -38,6 +38,9 @@ define(function (require) {
                 });
             }
         },
+        /*
+            앞 필터에 따라 뒤의 필터의 값이 바뀐다.
+         */
         admissionNmChanged: function (e) {
             var param = {
                 admissionNm: e.currentTarget.value
