@@ -1,9 +1,8 @@
 package com.humane.etms.service;
 
 import com.humane.etms.model.*;
-import com.humane.etms.repository.AttendHallRepository;
-import com.humane.etms.repository.AttendMapRepository;
-import com.humane.etms.repository.AttendPaperRepository;
+import com.humane.etms.repository.*;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.hibernate.HibernateDeleteClause;
 import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
@@ -12,10 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.jfree.util.BooleanUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,8 +42,10 @@ public class SystemService {
 
     private final ImageService imageService;
     private final AttendMapRepository attendMapRepository;
+    private final AttendManageRepository attendManageRepository;
     private final AttendHallRepository attendHallRepository;
     private final AttendPaperRepository attendPaperRepository;
+    private final DeviceRepository deviceRepository;
 
     // 데이터 삭제
     @Transactional
@@ -277,22 +280,29 @@ public class SystemService {
 
     // 중간본부 앱에서 서버 초기화 액션을 하는 경우 -> 함수명 바꿀 때 반드시 앱도 함께 바꾸어줘야 함
     @Transactional
-    public void initMgr(String admissionCd, Date attendDate, String headNm, String bldgNm) {
+    public void initMgr(String admissionCd, Date attendDate, String headNm, String bldgNm, Device device) {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
-        QAttendMap attendMap = QAttendMap.attendMap;
+        QAttendManage attendManage = QAttendManage.attendManage;
 
-        List<AttendMap> attendMaps = queryFactory.select(attendMap)
-                .from(attendMap)
-                .where(attendMap.attend.admission.admissionCd.eq(admissionCd))
-                .where(attendMap.attend.attendDate.eq(attendDate))
-                .where(attendMap.hall.headNm.eq(headNm))
-                .where(attendMap.hall.bldgNm.eq(bldgNm))
+        Device tmp = deviceRepository.findOne(new BooleanBuilder()
+                .and(QDevice.device.device.deviceNo.eq(device.getDeviceNo()))
+                .and(QDevice.device.packageName.eq(device.getPackageName()))
+                .and(QDevice.device.uuid.eq(device.getUuid()))
+        );
+
+        List<AttendManage> attendManages = queryFactory.select(attendManage)
+                .from(attendManage)
+                .where(attendManage.attend.admission.admissionCd.eq(admissionCd))
+                .where(attendManage.attend.attendDate.eq(attendDate))
+                .where(attendManage.headNm.eq(headNm))
+                .where(attendManage.bldgNm.eq(bldgNm))
+                .where(attendManage.deviceId.eq(tmp.getDeviceId()))
                 .fetch();
 
-        if (attendMaps != null) {
-            for (AttendMap map : attendMaps) {
-                attendMapRepository.save(map);
+        if (attendManages != null) {
+            for (AttendManage manage : attendManages) {
+                attendManageRepository.delete(manage);
             }
         }
 

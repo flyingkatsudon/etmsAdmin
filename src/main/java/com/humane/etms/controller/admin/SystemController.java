@@ -94,9 +94,16 @@ public class SystemController {
 
     // 중간본부앱이 사용 - 함수명 바꿀 때 앱도 함께 바꿔야함
     @RequestMapping(value = "initMgr")
-    public void initMgr(@RequestParam String admissionCd, @RequestParam String attendDate, @RequestParam String headNm, @RequestParam String bldgNm) throws ParseException {
+    public void initMgr(@RequestParam String admissionCd, @RequestParam String attendDate, @RequestParam String headNm, @RequestParam String bldgNm
+            , @RequestHeader("deviceno") String deviceNo, @RequestHeader("uuid") String uuid, @RequestHeader("packagename") String packageName) throws ParseException {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(attendDate);
-        systemService.initMgr(admissionCd, date, headNm, bldgNm);
+
+        Device device = new Device();
+        device.setDeviceNo(deviceNo);
+        device.setUuid(uuid);
+        device.setPackageName(packageName);
+
+        systemService.initMgr(admissionCd, date, headNm, bldgNm, device);
     }
 
     // 출결앱이 사용 - 함수명 바꿀 때 앱도 함께 바꿔야함
