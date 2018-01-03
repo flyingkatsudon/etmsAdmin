@@ -275,39 +275,54 @@ public class UploadController {
 
     @RequestMapping(value = "photo", method = RequestMethod.POST)
     public ResponseEntity examineePhoto(@RequestPart("file") MultipartFile multipartFile) throws IOException {
-        String path = root + "/image/examinee";
+        String path = root + "/image/examinee/";
+        String ori = path;
+        String admissionCd = multipartFile.getOriginalFilename().replace(".zip", "");
 
-        if (multipartFile.getOriginalFilename().endsWith(".zip")) {
-            try {
-                File file = FileUtils.saveFile(new File(path, "photo_backup"), multipartFile);
+        Admission admission = admissionRepository.findOne(new BooleanBuilder()
+                .and(QAdmission.admission.admissionCd.eq(admissionCd)));
 
-                ZipFile zipFile = new ZipFile(file);
-                String charset = zipFile.getCharset();
-                log.debug("Detected charset : {}", charset);
-                zipFile.setFileNameCharset(charset);
+        // examinee 폴더에 backup 폴더 생성하여 zip파일 저장
+        File file = FileUtils.saveFile(new File(path, "photo_backup"), multipartFile);
 
-                List<FileHeader> fileHeaders = zipFile.getFileHeaders();
-                for (FileHeader fileHeader : fileHeaders) {
-                    String fileName = fileHeader.getFileName();
+        if(admission != null){
+            path += admissionCd;
 
-                    Examinee examinee = examineeRepository.findOne(new BooleanBuilder()
-                            .and(QExaminee.examinee.examineeCd.eq(fileName.replace(".jpg", "")))
-                    );
+            if (multipartFile.getOriginalFilename().endsWith(".zip")) {
+                try {
+                    ZipFile zipFile = new ZipFile(file);
+                    String charset = zipFile.getCharset();
+                    log.debug("Detected charset : {}", charset);
+                    zipFile.setFileNameCharset(charset);
 
-                    if (examinee != null) {
-                        String tmp = examinee.getExamineeCd() + ".jpg";
-                        if (tmp.equals(fileName) && fileName.endsWith(".jpg")) {
-                            zipFile.extractFile(fileHeader, path);
+                    List<FileHeader> fileHeaders = zipFile.getFileHeaders();
+                    for (FileHeader fileHeader : fileHeaders) {
+                        String fileName = fileHeader.getFileName();
+
+                        Examinee examinee = examineeRepository.findOne(new BooleanBuilder()
+                                .and(QExaminee.examinee.examineeCd.eq(fileName.replace(".jpg", "")))
+                        );
+
+                        if (examinee != null) {
+                            String tmp = examinee.getExamineeCd() + ".jpg";
+                            if (tmp.equals(fileName) && fileName.endsWith(".jpg")) {
+                                zipFile.extractFile(fileHeader, path);
+                            }
+                        } else {
+                            String tmp = "default.jpg";
+                            if (tmp.equals(fileName) && fileName.endsWith(".jpg")) {
+                                zipFile.extractFile(fileHeader, ori);
+                            }
                         }
                     }
+                    return ResponseEntity.ok("완료되었습니다");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일의 용량이 10MB를 초과하거나 존재하지 않는 수험생입니다\n\n" + e.getMessage());
                 }
-                return ResponseEntity.ok("완료되었습니다");
-            } catch (Exception e) {
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일의 용량이 10MB를 초과하거나 존재하지 않는 수험생입니다" + e.getMessage());
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("zip 파일이 아닙니다");
-        }
+            } else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("zip 파일이 아닙니다");
+
+        } else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("전형코드가 존재하지 않습니다");
+
     }
 }
