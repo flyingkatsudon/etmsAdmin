@@ -32,15 +32,12 @@ define(function (require) {
             if (this.parent) {
                 this.parent.search({
                     admissionNm: _this.$('#admissionNm').val(),
-                    typeNm: _this.$('#typeNm').val(),
-                    attendDate: _this.$('#attendDate').val(),
-                    attendTime: _this.$('#attendTime').val()
+                    typeNm : _this.$('#typeNm').val(),
+                    attendDate : _this.$('#attendDate').val(),
+                    attendTime : _this.$('#attendTime').val()
                 });
             }
         },
-        /*
-            앞 필터에 따라 뒤의 필터의 값이 바뀐다.
-         */
         admissionNmChanged: function (e) {
             var param = {
                 admissionNm: e.currentTarget.value

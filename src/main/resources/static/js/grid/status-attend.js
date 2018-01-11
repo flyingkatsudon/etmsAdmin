@@ -6,7 +6,11 @@ define(function (require) {
     return GridBase.extend({
         initialize: function (options) {
             this.parent = options.parent;
-            //var _this = this;
+            /*
+                grid는 jqgrid를 사용한다.
+                각 grid의 컬럼은 colModel에 채운다. 모든 페이지는 같은 형식이다.
+                url 형식은 파일명과 비교해 참고 바람
+             */
             var colModel = [
                 {name: 'admissionNm', label: '전형'},
                 {name: 'typeNm', label: '계열'},

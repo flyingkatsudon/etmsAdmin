@@ -1,9 +1,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h3>답안지 확인</h3>
+            <h3>답안지 중복 검증</h3><br>
+            <h4><span style="font-weight: normal">'검색' 버튼을 눌러 중복 검증을 진행하세요</span></h4>
+            <h4><span style="font-weight: normal">검증에 대한 <span style="font-weight: bold; color: crimson">결과가 있을 경우</span> 아래에 테이블이 표시됩니다</span></h4>
         </div>
     </div>
+    <br>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -13,19 +16,6 @@
                         <label for="typeNm">계열</label><select id="typeNm"></select>
                         <label for="attendDate">시험일자</label><select id="attendDate"></select>
                         <label for="attendTime">시험시간</label><select id="attendTime"></select>
-                        <label for="majorNm">전공</label><select id="majorNm"></select>
-                        <label for="examineeCd">수험번호</label><input type="text" size="12" id="examineeCd"/>
-                        <label for="examineeNm">수험생명</label><input type="text" id="examineeNm"/><br>
-                        <label for="attendHeadNm">응시고사본부</label><select id="attendHeadNm"></select>
-                        <label for="attendBldgNm">응시고사건물</label><select id="attendBldgNm"></select>
-                        <label for="attendHallNm">응시고사실</label><select id="attendHallNm"></select>
-                        <label for="isAttend">응시여부</label>
-                            <select id="isAttend">
-                                <option value="">전체</option>
-                                <option value="true">응시</option>
-                                <option value="false">결시</option>
-                            </select>
-                        <label for="paperCd">답안지번호</label><input type="text" size="12" id="paperCd">
                         <button id="search">검색</button>
                     </div>
                 </div>
@@ -33,8 +23,12 @@
         </div>
         <div class="col-lg-12">
             <div class="panel">
-                <div class="notice">원하는 필터를 선택하고 검색버튼을 누르세요</div>
-                <div class="hm-ui-grid"></div>
+                <div class="notice" style="border: 2px solid #d8d6d5; background-color: #d8d6d5">
+                    <h3>필터를 선택 후 '검색' 버튼을 누르세요</h3><br>
+                    <h4>시험이 종료된 시점에서 <span style="color: crimson">답안지 번호가 중복</span>되는 수험생을 검증합니다</h4>
+                </div>
+                <div class="hm-ui-grid" hidden>
+                </div>
             </div>
         </div>
     </div>

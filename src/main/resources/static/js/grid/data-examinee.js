@@ -64,7 +64,7 @@ define(function (require) {
                         var gridData = $(this).jqGrid('getGridParam', 'colModel');
                         var rowData = $(this).jqGrid('getRowData', rowid);
 
-                        if(gridData[index].name == 'examineeCd' || gridData[index].name == 'examineeNm'){
+                        if(gridData[index].name == 'examineeNm'){
                             var param = {
                                 examineeCd: rowData.examineeCd,
                                 examineeNm: rowData.examineeNm

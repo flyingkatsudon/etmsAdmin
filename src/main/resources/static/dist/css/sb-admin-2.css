@@ -396,7 +396,6 @@ table.dataTable thead .sorting:after {
 }
 
 .btn-download {
-    width: 25%;
     background-color: #476600;
     border: 1px solid #476600;
     border-radius: 5px;
@@ -610,6 +609,97 @@ h4 {
     padding: 1%;
     margin-left: 10%;
     color: #727272
+}
+
+.btn-addEach {
+    background-color: #afd5de;
+    border-color: #afd5de;
+    color: black;
+    padding: 3% 13% 3% 10%;
+    font-size: xx-large;
+    border-radius: 15px;
+}
+
+.btn-addForm {
+    background-color: #d7de88;
+    border-color: #d7de88;
+    color: black;
+    padding: 3% 13% 3% 10%;
+    font-size: xx-large;
+    border-radius: 15px;
+}
+
+.staff-toolbar {
+    margin: 1% 0 1% 1%;
+    width: 47%;
+    float: left;
+}
+
+.staff-select {
+    width: 50%;
+    margin-left: 20%;
+}
+
+.myProgress {
+    width: 100%;
+    background-color: #ddd;
+}
+
+.myBar {
+    width: 1%;
+    height: 30px;
+    background-color: #4CAF50;
+}
+
+.panel-title {
+    text-align: center;
+    vertical-align: middle;
+    padding: 1%;
+    height: inherit;
+}
+
+.panel-title-color {
+    border: 1px solid #afd5de;
+    background-color: #afd5de;
+    border-radius: 5%;
+}
+
+.panel-content {
+    text-align: center;
+    vertical-align: middle;
+    padding: 1%;
+    height: inherit;
+    border: 1px solid #d1d1d1;
+}
+
+.panel-content-color {
+}
+
+.panel-result {
+    text-align: center;
+    vertical-align: middle;
+    padding: 1%;
+    height: inherit;
+    background-color: #adabaa;
+    border: 1px solid #adabaa;
+    border-radius: 5%;
+    cursor: pointer;
+}
+
+.panel-result-color {
+    text-align: center;
+    vertical-align: middle;
+    height: inherit;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.panel-btn {
+    padding: 2%;
+    background: #f9cbb8;
+    border: 1px solid #f9cbb8;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .btn-addEach {

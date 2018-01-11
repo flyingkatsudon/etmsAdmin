@@ -46,19 +46,19 @@ public class DownloadController {
     private final StatusMapper statusMapper;
     private final DataMapper dataMapper;
 
-    @RequestMapping(value = "waitHall.xlsx", method = RequestMethod.GET)
-    public ResponseEntity waitHall() {
+    @RequestMapping(value = "staff.xlsx", method = RequestMethod.GET)
+    public ResponseEntity staff() {
         return JasperReportsExportHelper.toResponseEntity(
-                "jrxml/upload-waitHall.jrxml",
+                "jrxml/upload-staff.jrxml",
                 "xlsx",
                 null
         );
     }
 
-    @RequestMapping(value = "staff.xlsx", method = RequestMethod.GET)
-    public ResponseEntity staff() {
+    @RequestMapping(value = "waitHall.xlsx", method = RequestMethod.GET)
+    public ResponseEntity waitHall() {
         return JasperReportsExportHelper.toResponseEntity(
-                "jrxml/upload-staff.jrxml",
+                "jrxml/upload-waitHall.jrxml",
                 "xlsx",
                 null
         );
@@ -151,15 +151,6 @@ public class DownloadController {
         zipFile.addFile(dataPath, noIdCard);
         noIdCard.delete();
 
-        /*dto.setIsCheck(true);
-        File recheck = JasperReportsExportHelper.toXlsxFile(
-                "jrxml/data-recheck.jrxml"
-                , dataMapper.examinee(dto, pageable).getContent()
-        );
-        dto.setIsCheck(null);
-        zipFile.addFile(dataPath, recheck);
-        recheck.delete();*/
-
         File paper = JasperReportsExportHelper.toXlsxFile(
                 "jrxml/data-paper.jrxml"
                 , dataMapper.paper(statusDto, pageable).getContent()
@@ -183,18 +174,6 @@ public class DownloadController {
                 }
             }
         }
-
-
-       /* File recheckFolder = new File(jpgRoot + "/recheck");
-        File[] recheckList = recheckFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg"));
-
-        if (recheckList != null){
-            for (File f : recheckList) {
-                if (f.isFile()) {
-                    zipFile.addFile(dataPath + "/재확인 대상자 사진", f);
-                }
-            }
-        }*/
 
         File signFolder = new File(jpgRoot + "/signature");
         File[] signList = signFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg"));

@@ -53,6 +53,7 @@ public class StatusDto implements Serializable {
     private Boolean isSend;
     private String attendCd;
 
+    private String deviceId;
     private Long deviceNo;
     private Long paperCnt;
     private String firstPaperCd;
@@ -102,6 +103,11 @@ public class StatusDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date regDttm;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Date logDttm;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date sendDttm;
@@ -117,4 +123,6 @@ public class StatusDto implements Serializable {
     private Boolean isPaperCdScanner;
 
     private Long cnt;
+    private String actionCnt;
+    private String duplicateCnt;
 }

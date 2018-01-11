@@ -1,9 +1,8 @@
 package com.humane.etms.service;
 
 import com.humane.etms.model.*;
-import com.humane.etms.repository.AttendHallRepository;
-import com.humane.etms.repository.AttendMapRepository;
-import com.humane.etms.repository.AttendPaperRepository;
+import com.humane.etms.repository.*;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.hibernate.HibernateDeleteClause;
 import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
@@ -12,10 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.jfree.util.BooleanUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,23 +28,33 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SystemService {
-    @PersistenceContext private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
-    @Value("${path.image.noIdCard:C:/api/image/noIdCard}") String pathNoIdCard;
-    @Value("${path.image.recheck:C:/api/image/recheck}") String pathRecheck;
-    @Value("${path.image.signature:C:/api/image/signature}") String pathSignature;
+    @Value("${path.image.examinee:C:/api/image/examinee}")
+    String pathExaminee;
+    @Value("${path.image.noIdCard:C:/api/image/noIdCard}")
+    String pathNoIdCard;
+    @Value("${path.image.recheck:C:/api/image/recheck}")
+    String pathRecheck;
+    @Value("${path.image.signature:C:/api/image/signature}")
+    String pathSignature;
 
     private final ImageService imageService;
     private final AttendMapRepository attendMapRepository;
+    private final AttendManageRepository attendManageRepository;
     private final AttendHallRepository attendHallRepository;
     private final AttendPaperRepository attendPaperRepository;
+    private final DeviceRepository deviceRepository;
 
+    // 데이터 삭제
     @Transactional
     public void resetData(String attendCd, boolean photo) {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
-        if(attendCd != null) {
+        // 1. 시험를 선택하여 삭제하는 경우
+        if (attendCd != null) {
+            // 테이블 정의
             QAttendDoc attendDoc = QAttendDoc.attendDoc;
             QAttendMap attendMap = QAttendMap.attendMap;
             QAttendMapLog attendMapLog = QAttendMapLog.attendMapLog;
@@ -59,14 +70,15 @@ public class SystemService {
             QAttendManage attendManage = QAttendManage.attendManage;
             QAttendManageLog attendManageLog = QAttendManageLog.attendManageLog;
 
+            // 1-1. 1차 삭제
             queryFactory.delete(staff).where(staff.attend.attendCd.eq(attendCd)).execute();
             queryFactory.delete(attendHall).where(attendHall.attend.attendCd.eq(attendCd)).execute();
-            queryFactory.delete(attendMapLog).where(attendMapLog.attend.attendCd.eq(attendCd)).execute();
-            queryFactory.delete(attendPaperLog).where(attendPaperLog.attend.attendCd.eq(attendCd)).execute();
             queryFactory.delete(device).execute();
+
             // 전형별 삭제 구현 전까지 보류
             //queryFactory.delete(attendDoc).execute();
 
+            // 1-2. 2차 삭제 (수험생) - 해당 시험을 응시하는 수험생만 삭제해야함
             ScrollableResults scrollAttendMap = queryFactory.select(attendMap.examinee.examineeCd)
                     .distinct()
                     .from(attendMap)
@@ -75,22 +87,6 @@ public class SystemService {
 
             while (scrollAttendMap.next()) {
                 String examineeCd = scrollAttendMap.getString(0);
-
-                queryFactory.delete(attendManage)
-                        .where(attendManage.examinee.examineeCd.eq(examineeCd))
-                        .where(attendManage.attend.attendCd.eq(attendCd))
-                        .execute();
-
-                queryFactory.delete(attendPaper)
-                        .where(attendPaper.examinee.examineeCd.eq(examineeCd))
-                        .where(attendPaper.attend.attendCd.eq(attendCd))
-                        .execute();
-
-                queryFactory.delete(attendMap)
-                        .where(attendMap.examinee.examineeCd.eq(examineeCd))
-                        .where(attendMap.attend.attendCd.eq(attendCd))
-                        .execute();
-
                 try {
                     queryFactory.delete(examinee)
                             .where(examinee.examineeCd.eq(examineeCd))
@@ -102,17 +98,21 @@ public class SystemService {
             }
             scrollAttendMap.close();
 
+            // 1-3. 3차 삭제
+            queryFactory.delete(attendManage).where(attendManage.attend.attendCd.eq(attendCd)).execute();
+            queryFactory.delete(attendPaper).where(attendPaper.attend.attendCd.eq(attendCd)).execute();
+            queryFactory.delete(attendMap).where(attendMap.attend.attendCd.eq(attendCd)).execute();
+
             queryFactory.delete(attendManageLog).where(attendManageLog.attend.attendCd.eq(attendCd)).execute();
             queryFactory.delete(attendPaperLog).where(attendPaperLog.attend.attendCd.eq(attendCd)).execute();
             queryFactory.delete(attendMapLog).where(attendMapLog.attend.attendCd.eq(attendCd)).execute();
-
-            queryFactory.delete(attendHall).where(attendHall.attend.attendCd.eq(attendCd)).execute();
 
             try {
                 queryFactory.delete(hall).execute();
             } catch (Exception ignored) {
             }
 
+            // 1-4. 4차 삭제 (attend, admission)
             ScrollableResults scrollAttend = queryFactory.select(attend.admission.admissionCd)
                     .distinct()
                     .from(attend)
@@ -135,8 +135,9 @@ public class SystemService {
                     log.error("{}", e.getMessage());
                 }
             }
-        } else {
-
+        }
+        // 2. 전체를 삭제하는 경우
+        else {
             QAttendDoc attendDoc = QAttendDoc.attendDoc;
             QAttendMap attendMap = QAttendMap.attendMap;
             QAttendMapLog attendMapLog = QAttendMapLog.attendMapLog;
@@ -152,13 +153,13 @@ public class SystemService {
             QAttendManage attendManage = QAttendManage.attendManage;
             QAttendManageLog attendManageLog = QAttendManageLog.attendManageLog;
 
+            // 1차 삭제
             queryFactory.delete(staff).execute();
             queryFactory.delete(attendHall).execute();
-            queryFactory.delete(attendMapLog).execute();
-            queryFactory.delete(attendPaperLog).execute();
             queryFactory.delete(device).execute();
             queryFactory.delete(attendDoc).execute();
 
+            // 2차 삭제 (수험생) - 평가에 영향을 끼치지 않는 수험생만 골라냄
             ScrollableResults scrollAttendMap = queryFactory.select(attendMap.examinee.examineeCd)
                     .distinct()
                     .from(attendMap)
@@ -166,18 +167,6 @@ public class SystemService {
 
             while (scrollAttendMap.next()) {
                 String examineeCd = scrollAttendMap.getString(0);
-
-                queryFactory.delete(attendManage)
-                        .where(attendManage.examinee.examineeCd.eq(examineeCd))
-                        .execute();
-
-                queryFactory.delete(attendPaper)
-                        .where(attendPaper.examinee.examineeCd.eq(examineeCd))
-                        .execute();
-
-                queryFactory.delete(attendMap)
-                        .where(attendMap.examinee.examineeCd.eq(examineeCd))
-                        .execute();
 
                 try {
                     queryFactory.delete(examinee)
@@ -192,17 +181,21 @@ public class SystemService {
             }
             scrollAttendMap.close();
 
+            // 3차 삭제
+            queryFactory.delete(attendManage).execute();
+            queryFactory.delete(attendPaper).execute();
+            queryFactory.delete(attendMap).execute();
+
             queryFactory.delete(attendManageLog).execute();
             queryFactory.delete(attendPaperLog).execute();
             queryFactory.delete(attendMapLog).execute();
-
-            queryFactory.delete(attendHall).execute();
 
             try {
                 queryFactory.delete(hall).execute();
             } catch (Exception ignored) {
             }
 
+            // 4차 삭제
             ScrollableResults scrollAttend = queryFactory.select(attend.admission.admissionCd)
                     .distinct()
                     .from(attend)
@@ -229,6 +222,7 @@ public class SystemService {
         if (photo) imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
     }
 
+    // 데이터 초기화
     @Transactional
     public void initData() {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
@@ -288,29 +282,38 @@ public class SystemService {
         imageService.deleteImage(pathNoIdCard, pathRecheck, pathSignature);
     }
 
+    // 중간본부 앱에서 서버 초기화 액션을 하는 경우 -> 함수명 바꿀 때 반드시 앱도 함께 바꾸어줘야 함
     @Transactional
-    public void initMgr(String admissionCd, Date attendDate, String headNm, String bldgNm) {
+    public void initMgr(String admissionCd, Date attendDate, String headNm, String bldgNm, Device device) {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));
 
-        QAttendMap attendMap = QAttendMap.attendMap;
+        QAttendManage attendManage = QAttendManage.attendManage;
 
-        List<AttendMap> attendMaps = queryFactory.select(attendMap)
-                .from(attendMap)
-                .where(attendMap.attend.admission.admissionCd.eq(admissionCd))
-                .where(attendMap.attend.attendDate.eq(attendDate))
-                .where(attendMap.hall.headNm.eq(headNm))
-                .where(attendMap.hall.bldgNm.eq(bldgNm))
+        Device tmp = deviceRepository.findOne(new BooleanBuilder()
+                .and(QDevice.device.device.deviceNo.eq(device.getDeviceNo()))
+                .and(QDevice.device.packageName.eq(device.getPackageName()))
+                .and(QDevice.device.uuid.eq(device.getUuid()))
+        );
+
+        List<AttendManage> attendManages = queryFactory.select(attendManage)
+                .from(attendManage)
+                .where(attendManage.attend.admission.admissionCd.eq(admissionCd))
+                .where(attendManage.attend.attendDate.eq(attendDate))
+                .where(attendManage.headNm.eq(headNm))
+                .where(attendManage.bldgNm.eq(bldgNm))
+                .where(attendManage.deviceId.eq(tmp.getDeviceId()))
                 .fetch();
 
-        if (attendMaps != null) {
-            for (AttendMap map : attendMaps) {
-                attendMapRepository.save(map);
+        if (attendManages != null) {
+            for (AttendManage manage : attendManages) {
+                attendManageRepository.delete(manage);
             }
         }
 
         // imageService.deleteImage(pathNoIdCard);
     }
 
+    // 출결 앱에서 서버 초기화 액션을 하는 경우 -> 함수명 바꿀 때 반드시 앱도 함께 바꾸어줘야 함
     @Transactional
     public void initApp(String attendCd, String attendHallCd) {
         HibernateQueryFactory queryFactory = new HibernateQueryFactory(entityManager.unwrap(Session.class));

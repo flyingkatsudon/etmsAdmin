@@ -3,8 +3,12 @@ package com.humane.etms.controller.admin;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.DataMapper;
+import com.humane.etms.model.AttendMap;
+import com.humane.etms.model.QAttendMap;
+import com.humane.etms.repository.AttendMapRepository;
 import com.humane.etms.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -44,6 +48,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 public class DataController {
     private final DataMapper mapper;
     private final ImageService imageService;
+    private final AttendMapRepository attendMapRepository;
     private static final String JSON = "json";
     private static final String PDF = "pdf";
 
@@ -58,6 +63,9 @@ public class DataController {
     @Value("${path.image.examinee:C:/api/image/examinee}") String pathExaminee;
     @Value("${path.image.examinee:C:/api/image/noIdCard}") String pathNoIdCard;
     @Value("${path.image.univLogo:C:/api/image/univLogo}") String pathUnivLogo;
+
+    @Value("${name}")
+    public String name;
 
     @RequestMapping(value = "examinee.{format:json|pdf|xls|xlsx}")
     public ResponseEntity examinee(@PathVariable String format, StatusDto statusDto, Pageable pageable) {
@@ -78,7 +86,20 @@ public class DataController {
         List<ExamineeDto> list = mapper.examinee(examineeDto, pageable).getContent();
 
         list.forEach(item -> {
-            try (InputStream is = imageService.getFile(pathExaminee, item.getExamineeCd() + ".jpg")) {
+
+            List<AttendMap> tmpList = (List<AttendMap>) attendMapRepository.findAll(new BooleanBuilder()
+                    .and(QAttendMap.attendMap.examinee.examineeCd.eq(item.getExamineeCd())));
+
+            String admissionCd = tmpList.get(0).getAttend().getAdmission().getAdmissionCd();
+
+            String path;
+            if(admissionCd == null){
+                path = pathExaminee;
+            } else {
+                path = pathExaminee + "/" + admissionCd;
+            }
+
+            try (InputStream is = imageService.getFile(path, item.getExamineeCd() + ".jpg")) {
                 BufferedImage image;
 
                 if (is == null) {
@@ -176,28 +197,39 @@ public class DataController {
     @RequestMapping(value = "sendPaperInfo.{format:xls|xlsx}")
     public ResponseEntity sendPaperInfo(@PathVariable String format, ExamineeDto param, Pageable pageable) throws DRException {
         JasperReportBuilder report= report()
-                .columns(
-                        col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("성명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("결시여부", "attendYn", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("시험일자", "attendDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("교시", "attendTime", type.dateType()).setPattern("HH:mm").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5),
-                        col.column("바코드", "paperCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("배정고사실코드", "hallCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("배정고사실명", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7),
-                        col.column("실제고사실코드", "attendHallCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8),
-                        col.column("실제고사실명", "attendHallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7)
-                )
                 .setPageMargin(DynamicReports.margin(0))
                 .setIgnorePageWidth(true)
                 .setIgnorePagination(true);
 
-        report.setDataSource(mapper.sendPaperInfo(param, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
+        if(name.equals("KNU")){
+            report.addColumn(col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("성명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("결시여부", "attendYn", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("시험일자", "attendDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8));
+            report.addColumn(col.column("교시", "attendTime", type.dateType()).setPattern("HH:mm").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5));
+            report.addColumn(col.column("배정고사실코드", "hallCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8));
+            report.addColumn(col.column("배정고사실명", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("실제고사실코드", "attendHallCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8));
+            report.addColumn(col.column("실제고사실명", "attendHallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        } else {
+            report.addColumn(col.column("수험번호", "examineeCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("성명", "examineeNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("결시여부", "attendYn", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("시험일자", "attendDate", type.dateType()).setPattern("yyyy-MM-dd").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8));
+            report.addColumn(col.column("교시", "attendTime", type.dateType()).setPattern("HH:mm").setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(5));
+            report.addColumn(col.column("바코드", "paperCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("배정고사실코드", "hallCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8));
+            report.addColumn(col.column("배정고사실명", "hallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+            report.addColumn(col.column("실제고사실코드", "attendHallCd", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(8));
+            report.addColumn(col.column("실제고사실명", "attendHallNm", type.stringType()).setTitleStyle(columnHeaderStyle).setStyle(columnStyle).setFixedColumns(7));
+        }
+
+        report.setDataSource(mapper.sendPaperInfo(param, name, new PageRequest(0, Integer.MAX_VALUE, pageable.getSort())).getContent());
 
         JasperPrint jasperPrint = report.toJasperPrint();
-        jasperPrint.setName("답안지매칭 전달양식");
+        jasperPrint.setName("응시결과 전달양식");
 
-        return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
+       return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
     }
 
     // TODO: 응시취소자리스트, 쓸지 안쓸지 정해놓아야함
