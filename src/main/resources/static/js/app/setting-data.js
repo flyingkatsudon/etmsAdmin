@@ -40,7 +40,10 @@ define(function (require) {
             });
 
             $('#delAwhAll').click(function(){
-                responseDialog.dialogFormat('삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '삭제', 'student/delAwh');
+                // TODO: 추후 재사용
+                //responseDialog.dialogFormat('삭제하면 복구할 수 없습니다. 그래도 삭제 하시겠습니까?', '삭제', 'student/delAwh');
+                // 시연용
+                responseDialog.notify({msg: '준비중입니다'});
             });
 
             $('#delOrderAll').click(function(){

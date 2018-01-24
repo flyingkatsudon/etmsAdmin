@@ -150,6 +150,13 @@ define(function (require) {
 
                     // 1. 서버에서 생성하기
                     $('#server').click(function () {
+
+                        // 숨기기 위해 작성
+                        responseDialog.notify({msg: '준비중입니다'});
+                        return false;
+
+                        // TODO: 추후 작성 시 사용하도록
+                        /*
                         $.ajax({
                             url: 'student/waitHall',
                             success: function (response) {
@@ -160,7 +167,7 @@ define(function (require) {
                                     return false;
                                 }
                             }
-                        });
+                        });*/
                     });
 
                     // 2. 파일로 업로드

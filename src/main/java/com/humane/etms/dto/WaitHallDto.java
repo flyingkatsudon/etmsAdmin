@@ -24,5 +24,9 @@ public class WaitHallDto{
     private String hallNm;
     private String division;
 
+    // attendHall에 존재
+    private String groupNmList;
+
+    // attend_wait_hall에 존재, 시연용 앱에서는 사용하지 않는 테이블
     private List groupList;
 }

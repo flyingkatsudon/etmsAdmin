@@ -115,15 +115,39 @@
         select user_id from user
     </select>
 
-    <select id="attendInfo" resultType="com.humane.etms.dto.AttendInfoDto">
-        select attend.*, admission.admission_nm
+    <select id="attendBasic" resultType="com.humane.etms.dto.AttendInfoDto">
+        select admission.admission_nm, attend.*
+        , case when (select GROUP_CONCAT(attend_hall.group_nm_list separator ';')) is null then false else true end as isEmptyHall
         from attend
         inner join admission on admission.admission_cd = attend.admission_cd
+        inner join attend_hall on attend_hall.attend_cd = attend.attend_cd
         <where>
             <if test="param != null">
                 <if test="param.admissionNm">and admission.admission_nm = #{param.admissionNm}</if>
                 <if test="param.attendCd">and attend.attend_cd = #{param.attendCd}</if>
                 <if test="param.attendNm">and attend.attend_nm = #{param.attendNm}</if>
+            </if>
+        </where>
+        group by attend.attend_cd
+    </select>
+
+    <select id="attendDetail" resultType="com.humane.etms.dto.AttendInfoDto">
+        select distinct attend.* from attend
+        <where>
+            <if test="param != null">
+                <if test="param.attendCd">and attend.attend_cd = #{param.attendCd}</if>
+            </if>
+        </where>
+        group by attend.attend_cd
+    </select>
+
+    <select id="ahList" resultType="com.humane.etms.dto.WaitHallDto">
+        select attend_hall._id, hall.head_nm, hall.bldg_nm, hall.hall_cd, hall.hall_nm, attend_hall.group_nm_list
+        from attend_hall
+        inner join hall on hall.hall_cd = attend_hall.hall_cd
+        <where>
+            <if test="param != null">
+                <if test="param.attendCd">and attend_hall.attend_cd = #{param.attendCd}</if>
             </if>
         </where>
     </select>
@@ -135,6 +159,15 @@
             , is_use_group = #{param.isUseGroup}, paper_cnt = #{param.paperCnt}, paper_len = #{param.paperLen}, paper_header = #{param.paperHeader}
             , is_assigned_group = #{param.isAssignedGroup}, first_assign_paper_cd = #{param.firstAssignPaperCd}, last_assign_paper_cd = #{param.lastAssignPaperCd}
             where attend_cd = #{param.attendCd}
+        </if>
+    </update>
+
+    <update id="modifyAhList">
+        <if test="param != null">
+            UPDATE attend_hall set group_nm_list = #{param.groupNmList}
+            WHERE attend_cd = #{param.attendCd}
+            and _id = #{param.id}
+            and hall_cd = #{param.hallCd}
         </if>
     </update>
 

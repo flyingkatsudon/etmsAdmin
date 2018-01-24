@@ -192,18 +192,45 @@ public class SystemController {
         return ResponseEntity.ok(systemMapper.idCheck(pageable).getContent());
     }
 
-    // 시험정보 가져오기
-    @RequestMapping(value = "attendInfo")
-    public ResponseEntity attendInfo(AttendInfoDto param, Pageable pageable) {
-        return ResponseEntity.ok(systemMapper.attendInfo(param, pageable).getContent());
+    // 기본 시험정보 가져오기
+    @RequestMapping(value = "attendBasic")
+    public ResponseEntity attendBasic(AttendInfoDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.attendBasic(param, pageable).getContent());
+    }
+
+    // 세부 시험정보 가져오기
+    @RequestMapping(value = "attendDetail")
+    public ResponseEntity attendDetail(AttendInfoDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.attendDetail(param, pageable).getContent());
+    }
+
+    // 고사실 별 조 배정 현황 가져오기
+    @RequestMapping(value = "ahList")
+    public ResponseEntity attendHallList(WaitHallDto param, Pageable pageable) {
+        return ResponseEntity.ok(systemMapper.ahList(param, pageable).getContent());
     }
 
     // 시험정보 수정
     @RequestMapping(value = "modifyAttend")
     public ResponseEntity modifyAttend(@RequestBody AttendInfoDto param) {
+
         try {
             systemMapper.modifyAttend(param);
             return ResponseEntity.ok("시험정보가 변경되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
+        }
+    }
+
+    // 고사실 별 조 배정 현황 수정
+    @RequestMapping(value = "modifyAhList")
+    public ResponseEntity modifyAhList(@RequestBody WaitHallDto param) {
+
+        log.debug("{}", param);
+
+        try {
+            systemMapper.modifyAhList(param);
+            return ResponseEntity.ok("고사실 별 조 배정이 변경되었습니다.&nbsp;&nbsp;클릭하여 창을 종료하세요");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("잠시 후 다시 시도하세요");
         }

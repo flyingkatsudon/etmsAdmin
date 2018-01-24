@@ -35,9 +35,15 @@ public interface SystemMapper {
 
     Page<AccountDto> idCheck(@Param("pageable") Pageable pageable);
 
-    Page<AttendInfoDto> attendInfo(@Param("param") AttendInfoDto param, @Param("pageable") Pageable pageable);
+    Page<AttendInfoDto> attendBasic(@Param("param") AttendInfoDto param, @Param("pageable") Pageable pageable);
+
+    Page<AttendInfoDto> attendDetail(@Param("param") AttendInfoDto param, @Param("pageable") Pageable pageable);
+
+    Page<WaitHallDto> ahList(@Param("param") WaitHallDto param, @Param("pageable") Pageable pageable);
 
     void modifyAttend(@Param("param") AttendInfoDto param);
+
+    void modifyAhList(@Param("param") WaitHallDto param);
 
     Page<DuplicateDto> duplicate(@Param("pageable") Pageable pageable);
 

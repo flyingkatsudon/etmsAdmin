@@ -37,6 +37,8 @@ public class FormHallVo {
 
     @Column(name = "수험번호 자릿수") private String attendLen;
     @Column(name = "조사용여부") private Boolean isUseGroup;
+    @Column(name = "조배정여부") private Boolean isAssignedGroup;
+    @Column(name = "조배정") private String groupNmList;
     @Column(name = "답안지 교체여부") private Boolean isPaperChange;
     @Column(name = "답안지 매수") private String paperCnt;
     @Column(name = "답안지 자릿수") private String paperLen;

@@ -45,6 +45,9 @@ public class AttendInfoDto implements Serializable {
     private String firstAssignPaperCd;
     private String lastAssignPaperCd;
 
+    private boolean isEmptyHall;
+    private String groupNmList;
+
     // 웹으로부터 전달받을 날짜와 시간
     private String atDate;
     private String atTime;

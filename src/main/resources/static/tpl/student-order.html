@@ -12,15 +12,25 @@
                         <label for="admissionNm">전형</label> <select id="admissionNm"> </select>
                         <label for="typeNm">계열</label> <select id="typeNm"> </select>
                         <label for="attendDate">시험일자</label> <select id="attendDate"> </select>
+                        <label for="attendTime">시험시간</label> <select id="attendTime"> </select><br>
+                        <label for="headNm">고사본부</label><select id="headNm"></select>
+                        <label for="bldgNm">고사건물</label><select id="bldgNm"></select>
+                        <label for="hallNm">고사실</label><select id="hallNm"></select>
                         <label for="groupNm">조</label><input type="text" size="5" id="groupNm"/>
                         <label for="groupOrder">면접순서</label><input type="text" size="5" id="groupOrder"/>
                         <label for="debateNm">토론 조</label><input type="text" size="5" id="debateNm"/>
-                        <label for="debateOrder">발언순서</label><input type="text" size="5" id="debateOrder"/>
+                        <label for="debateOrder">순번</label><input type="text" size="5" id="debateOrder"/>
+                        <label for="isAttend">응시여부</label>
+                        <select id="isAttend">
+                            <option value="">전체</option>
+                            <option value="true">응시</option>
+                            <option value="false">결시</option>
+                        </select>
                         <button id="search">검색</button>
                         <div style="float: right">
-                            <button class="btn-primary" id="upload">대기실 업로드</button>
+                            <!--<button class="btn-primary" id="upload">대기실 업로드</button>
                             <button class="btn-primary" id="add">대기실 추가</button>
-                            <button class="btn-primary" id="waitHall">대기실 정보</button>
+                            <button class="btn-primary" id="waitHall">대기실 정보</button>-->
                             <button class="btn-success" id="refresh">순번 갱신</button>
                         </div>
                     </div>
