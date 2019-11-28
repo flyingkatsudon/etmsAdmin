@@ -1,11 +1,13 @@
 package com.humane.etms.controller.admin;
 
+import com.humane.etms.dto.DocDto;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.DataMapper;
-import com.humane.etms.model.AttendMap;
-import com.humane.etms.model.QAttendMap;
+import com.humane.etms.model.*;
 import com.humane.etms.repository.AttendMapRepository;
+import com.humane.etms.repository.AttendRepository;
+import com.humane.etms.repository.ExamineeRepository;
 import com.humane.etms.service.ImageService;
 import com.humane.util.jasperreports.JasperReportsExportHelper;
 import com.querydsl.core.BooleanBuilder;
@@ -32,6 +34,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +52,8 @@ public class DataController {
     private final DataMapper mapper;
     private final ImageService imageService;
     private final AttendMapRepository attendMapRepository;
+    private final AttendRepository attendRepository;
+    private final ExamineeRepository examineeRepository;
     private static final String JSON = "json";
     private static final String PDF = "pdf";
 
@@ -278,5 +283,23 @@ public class DataController {
                 JasperPrint jasperPrint = report.toJasperPrint();
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }
+    }
+
+    @RequestMapping(value = "printDoc.pdf")
+    public ResponseEntity printDoc(DocDto docDto, Pageable pageable) throws ParseException {
+        //List<ExamineeDto> list = mapper.examinee(examineeDto, pageable).getContent();
+
+        List<DocDto> list = mapper.document(docDto, pageable).getContent();
+
+        for(int i=0; i<list.size(); i++){
+            list.get(i).setPrintDate(new SimpleDateFormat("yyyy년 MM월 dd일").format(new Date()));
+            log.debug("{}", list);
+        }
+
+        return JasperReportsExportHelper.toResponseEntity(
+                "jrxml/document.jrxml",
+                JasperReportsExportHelper.EXT_PDF,
+                list
+        );
     }
 }
