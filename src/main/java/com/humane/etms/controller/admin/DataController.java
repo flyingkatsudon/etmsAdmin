@@ -1,6 +1,5 @@
 package com.humane.etms.controller.admin;
 
-import com.humane.etms.dto.DocDto;
 import com.humane.etms.dto.ExamineeDto;
 import com.humane.etms.dto.StatusDto;
 import com.humane.etms.mapper.DataMapper;
@@ -283,23 +282,5 @@ public class DataController {
                 JasperPrint jasperPrint = report.toJasperPrint();
                 return JasperReportsExportHelper.toResponseEntity(jasperPrint, format);
         }
-    }
-
-    @RequestMapping(value = "printDoc.pdf")
-    public ResponseEntity printDoc(DocDto docDto, Pageable pageable) throws ParseException {
-        //List<ExamineeDto> list = mapper.examinee(examineeDto, pageable).getContent();
-
-        List<DocDto> list = mapper.document(docDto, pageable).getContent();
-
-        for(int i=0; i<list.size(); i++){
-            list.get(i).setPrintDate(new SimpleDateFormat("yyyy년 MM월 dd일").format(new Date()));
-            log.debug("{}", list);
-        }
-
-        return JasperReportsExportHelper.toResponseEntity(
-                "jrxml/document.jrxml",
-                JasperReportsExportHelper.EXT_PDF,
-                list
-        );
     }
 }

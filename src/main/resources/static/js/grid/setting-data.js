@@ -9,7 +9,7 @@ define(function (require) {
     var ResponseDialog = require('../responseDialog.js');
     var responseDialog = new ResponseDialog();
 
-    require('jquery-simple-datetimepicker');
+    //require('jquery-simple-datetimepicker');
 
     return GridBase.extend({
         initialize: function (options) {
