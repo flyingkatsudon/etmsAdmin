@@ -18,3 +18,9 @@
 - 대학별 전산양식에 맞춰 산출물 생성
 - 클라우드 서버에 각 대학의 요구사항에 맞춰 Customize하여 배포
 - 개발 이후 원격으로 유지보수
+
+[실행 방법]
+- java 1.8로 세팅
+- 'api' DB 생성
+- maven -> spring-boot:run 으로 실행
+- package 시, maven -> clean:package 로 실행
